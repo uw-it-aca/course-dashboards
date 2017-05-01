@@ -1,0 +1,428 @@
+
+
+/* ==========================================================================
+   MAIN STYLE
+   ========================================================================== */
+/*boundless fonts*/
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  src: url('../../vendor/fonts/encodesanscondensed-400-regular-webfont.eot');
+  src: url('../../vendor/fonts/encodesanscondensed-400-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../../vendor/fonts/encodesanscondensed-400-regular-webfont.woff') format('woff'), url('../../vendor/fonts/encodesanscondensed-400-regular-webfont.ttf') format('truetype'), url('../../vendor/fonts/encodesanscondensed-400-regular-webfont.svg#encodesanscondensed-400-regular-webfont') format('svg');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  src: url('../../vendor/fonts/encodesanscondensed-500-medium-webfont.eot');
+  src: url('../../vendor/fonts/encodesanscondensed-500-medium-webfont.eot?#iefix') format('embedded-opentype'), url('../../vendor/fonts/encodesanscondensed-500-medium-webfont.woff') format('woff'), url('../../vendor/fonts/encodesanscondensed-500-medium-webfont.ttf') format('truetype'), url('../../vendor/fonts/encodesanscondensed-500-medium-webfont.svg#encodesanscondensed-500-medium-webfont') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  src: url('../../vendor/fonts/encodesanscompressed-600-semibold-webfont.eot');
+  src: url('../../vendor/fonts/encodesanscompressed-600-semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../../vendor/fonts/encodesanscompressed-600-semibold-webfont.woff') format('woff'), url('../../vendor/fonts/encodesanscompressed-600-semibold-webfont.ttf') format('truetype'), url('../../vendor/fonts/encodesanscompressed-600-semibold-webfont.svg#encodesanscompressed-600-semibold-webfont') format('svg');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  src: url('../../vendor/fonts/encodesanscompressed-700-bold-webfont.eot');
+  src: url('../../vendor/fonts/encodesanscompressed-700-bold-webfont.eot?#iefix') format('embedded-opentype'), url('../../vendor/fonts/encodesanscompressed-700-bold-webfont.woff') format('woff'), url('../../vendor/fonts/encodesanscompressed-700-bold-webfont.ttf') format('truetype'), url('../../vendor/fonts/encodesanscompressed-700-bold-webfont.svg#encodesanscompressed-700-bold-webfont') format('svg');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  src: url('../../vendor/fonts/encodesanscompressed-800-extrabold-webfont.eot');
+  src: url('../../vendor/fonts/encodesanscompressed-800-extrabold-webfont.eot?#iefix') format('embedded-opentype'), url('../../vendor/fonts/encodesanscompressed-800-extrabold-webfont.woff') format('woff'), url('../../vendor/fonts/encodesanscompressed-800-extrabold-webfont.ttf') format('truetype'), url('../../vendor/fonts/encodesanscompressed-800-extrabold-webfont.svg#encodesanscompressed-800-extrabold-webfont') format('svg');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  src: url('../../vendor/fonts/encodesanscompressed-900-black-webfont.eot');
+  src: url('../../vendor/fonts/encodesanscompressed-900-black-webfont.eot?#iefix') format('embedded-opentype'), url('../../vendor/fonts/encodesanscompressed-900-black-webfont.woff') format('woff'), url('../../vendor/fonts/encodesanscompressed-900-black-webfont.ttf') format('truetype'), url('../../vendor/fonts/encodesanscompressed-900-black-webfont.svg#encodesanscompressed-900-black-webfont') format('svg');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* ++++++++++++++++++++++++++ GLOBAL ELEMENTS ++++++++++++++++++++++++++ */
+/* color: #cc721e; orange */
+/* color: #f7b670;  lite orange */
+/* color:#4b2e83;  UW Purple */
+
+/*********** Global Reset ***********/
+
+html, body {
+    font-family: 'Open Sans', Helvetica, arial, san-serif;
+    padding:0;
+    margin:0;
+    height: 100%;
+   /* font-size: 100%;*/
+}
+p {
+   margin: 0;
+   padding: 0;
+   line-height: 1.45em;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section {
+  display: block;
+} 
+img {
+   border: 0;
+   max-width: 100%;
+   height: auto;
+}
+/*********** Spacing ***********/
+
+/* align center */
+.center {
+	margin: auto;
+	/* width: 50%;*/
+	text-align: center;
+}
+
+.search-text {
+	margin-top: 10px;
+}
+
+.no-btm-margin {
+	margin-bottom: 0px;
+}
+
+/* Text structure */
+
+h1, h2, h3, h4 { font-weight: bold; }
+
+h1 {
+  color: #4b2e83;
+  font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #4b2e83;
+  margin-top: 1em;
+  margin-bottom: 10px;
+}
+/* compensate 'Row' margin*/
+.course-h2 {
+	margin-left: 5px;
+} 
+
+/* Hyperlink style:*/
+a, a:hover {
+	color:#0077c2;
+}
+
+a:focus { /* Hyperlink style:*/
+	  color: #b5754d;
+	  border: 1px dotted ;
+}
+
+a.no-hover:hover, a.no-hover:focus {
+    text-decoration: none;
+    border:none;
+}
+/* Skip to #main-content button at top */
+a.skip-to-main {
+	position: absolute;
+	left:.5em;
+	top:-99px;	
+}
+a.skip-to-main:focus {
+	z-index: 999;
+	font-size: 1em;
+	font-weight: 800;
+	text-decoration: none;
+	top: 6px;
+    padding: 15px 23px 14px;
+    background-color: #f1f1f1;
+    color: #4b2e83;
+    box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
+}
+
+
+}/* CLEAN UP: WHERE'S THE OPENING?*/
+
+/* Remove bold from the form */
+label{
+	font-weight: normal;
+}
+
+/* Stretch top banner base */
+.topbanner-bg {
+	background-color:#4b2e83; /* UW Purple */
+}
+
+.topbanner{ /* topbanner content chunk */
+	margin: 20px 0px 0px;
+}
+
+.sitename{
+	font-size: 3em;
+	padding: 20px 0px;
+	margin-right: 20px;
+	color: #F38A28;
+	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
+	font-weight: 400;
+}
+
+.tagline{
+	color: #e8e3d3; /* lite tan */
+	display: inline-block;
+	font-style: italic;
+	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
+	font-weight: 400;
+	letter-spacing: 0.1em;
+}
+
+.login {
+	float: right;
+    margin-top: 10px;
+    margin: auto;
+    padding-top: 35px;
+    padding-bottom: 10px;
+    color: #aaa;
+    font-family: open sans, sans-serif;
+    font-weight: 300;
+    font-size: .9em;
+}
+
+
+/* Global nav style */
+#nav a {
+	color:white;
+	font-size: 1.286em;
+}
+
+.underline > li > a, .underline > li > a:active {
+	border:none;
+	border-radius: 0px;
+	padding: 5px 10px;
+	color:#f7b670;
+	margin-right: 10px;
+}
+/* override the Bootstrap style for hamburger menu  */
+.navbar-toggle {
+	float: left
+}
+/* Divider line between nav menu and icon  */
+.navbar-default .navbar-collapse {
+	border-color: #f7b670;
+}
+
+/* override the Bootstrap style for nav  */
+
+.navbar {
+	margin-bottom: 0px;
+}
+.navbar-default{
+	background-image: none;
+	background-color: #4b2e83;
+	border: none;
+	box-shadow: none;
+}
+.navbar-collapse {
+	margin-top: 10px;
+}
+.navbar-default .navbar-nav>li>a {
+	color: #f7b670;
+}
+
+/* Remove the active state grey background  */
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus {
+	background-image: none;
+	background-color:#4b2e83;
+	color:white;
+	box-shadow: none;
+}
+
+
+/* Modify the toggle button's look  */
+.navbar-default .navbar-toggle {
+	border-color: #f7b670;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+	background-color: #cc721e;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+	background-color:#f7b670;
+}
+
+
+/* display the orange bar  */
+.underline > li.active > a {
+	background-color: #4b2e83;
+	border-bottom:2px solid #cc721e;
+	color: white;
+	/* color: #f7b670;  lite orange */
+
+}
+
+.underline > li.active > a {
+	font-weight: bold;
+	color:white;
+}
+/* Selelected: Active & hover  */
+.underline > li.active > a:hover, .underline > li > a:hover, .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.active>a:hover  {
+	background-color: #b46100;	 /* orange */
+	border-bottom:2px solid #b46100;
+	color:white;
+}
+
+/* Active+hover & focus: Change the background to orange */
+ .underline > li.active > a:focus,  .underline > li > a:focus, .navbar-default .navbar-nav>li>a:focus {
+	/* background-color: #b46100; */
+	border-bottom:2px solid #b46100;
+	color:white;
+ }
+
+
+
+
+
+
+/**************** Main stuff *************/
+
+.main-content {
+	margin: 40px 0px;
+	min-height: 100%;
+}
+
+.page-title {
+	padding-bottom:20px;
+}
+
+/
+
+.page-wrap {
+	content: "";
+	display: block;
+	width: 100%;
+	/* min-width: 500px;  prevent the nav menu wrapping */
+}
+
+.site-footer, .page-wrap:after {
+  /* .push must be the same height as footer */
+	height: 160px;
+}
+
+
+
+/* footer  Stuff*/
+
+/* Footer's horizontal line */
+footer {
+	border-top: #eee 1px solid;
+	padding-top: 20px;
+	margin-top: 50px;
+}
+
+.site-footer {
+	background: #eee;
+}
+
+
+footer a {
+	color: #666;
+	font-size: 0.9em;
+	text-decoration: none;
+}
+
+.footer-links ul {
+    list-style: outside none none;
+    margin-bottom: 0.5em;
+    padding: 0;
+}
+
+.footer-links ul li {
+    border-right: 1px solid #bdc3c7;
+    display: inline-block;
+    margin-right: 5px;
+    padding-right: 10px;
+
+}
+
+footer .footer-links ul li:last-child {
+	    border: 0px;
+    margin-right:0px;
+    padding-right:0px;
+}
+
+.credit {
+	font-size: 0.8em;
+	color: #6c6c6c;
+	width: 100%;
+	margin-top: 15px;
+}
+
+.uw-it-logo {
+	margin-top: 20px;
+	width: 220px;
+	height: auto;
+}
+
+
+
+
+
+
+/***** EVERYTHING ELSE *****/
+
+
+/* may not be needed once Bootstrap is in use */
+#boxplots {
+    clear:both;
+}
+
+/* modify Bootstrap grid styles */
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+
+
+ /* ==========================================================================
+   SMALL SCREEN
+   ========================================================================== */
+
+ /* Small devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+	.login {
+	float: right;
+    margin: auto;
+    padding-top: 35px;
+    padding-bottom: 5px;
+    color: #aaa;
+    font-family: open sans, sans-serif;
+    font-weight: 300;
+    font-size: .9em;
+	}
+
+  /* Selelected: Active & hover  */
+.underline > li.active > a, .underline > li.active > a:hover, .underline > li > a:hover, .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.active>a:hover  {
+	background-color: #b46100;	 /* orange */
+	border-left:5px solid #b46100;
+	color:white;
+	border-bottom: 0px;
+	}
+
+
+/* Active+hover & focus: Change the background to orange */
+ .underline > li.active > a:focus,  .underline > li > a:focus, .navbar-default .navbar-nav>li>a:focus {
+	/* background-color: #b46100; */
+	border-left:5px solid #b46100;
+	color:white;
+	}
+
+}
