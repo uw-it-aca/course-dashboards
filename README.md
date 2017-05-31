@@ -54,7 +54,7 @@ Modify at least the following settings in project/settings.py:
 ```
     INSTALLED_APPS
     (add: 'compressor', 'templatetag_handlebars', 'coursedashboards')
-    ```
+```
 
 
     You need to use MIDDLEWARE_CLASSES instead of MIDDLEWARE.  Add these:
@@ -86,9 +86,9 @@ Modify at least the following settings in project/settings.py:
             },
         },
     ]
-    ```
+```
     Add: 
-    ```
+```
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
