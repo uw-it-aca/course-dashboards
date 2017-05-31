@@ -54,10 +54,11 @@ Modify at least the following settings in project/settings.py:
 ```
     INSTALLED_APPS
     (add: 'compressor', 'templatetag_handlebars', 'coursedashboards')
+    ```
 
 
     You need to use MIDDLEWARE_CLASSES instead of MIDDLEWARE.  Add these:
-
+```
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,9 +67,9 @@ Modify at least the following settings in project/settings.py:
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'django_mobileesp.middleware.UserAgentDetectionMiddleware',
-
+```
     Below that add:
-
+```
      TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,9 +86,10 @@ Modify at least the following settings in project/settings.py:
             },
         },
     ]
-    
+    ```
     Add: 
-    # Static files (CSS, JavaScript, Images)
+    ```
+# Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
