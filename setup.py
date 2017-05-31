@@ -14,6 +14,8 @@ setup(
     install_requires=[
         'Django<1.11',
         'django-compressor',
+        'django-pyscss',
+        'django_mobileesp',
         'django-templatetag-handlebars'
     ],
     license='Apache License, Version 2.0',  # example license
