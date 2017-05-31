@@ -4,15 +4,22 @@
 <html class="no-js" lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Course Dashboard</title>
         {% include "include/head.html" %}
     </head>
 
-<body>
+<body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
+    <p>device is:</p>
+    {% if request.is_desktop %}
+    <p>DESKTOP</p>
+    {% else %}
+    <p>not desktop</p>
+    {% endif %}
+    {% if request.is_tablet %}
+    <p>TABLET</p>
+    {% endif %}
+    {% if request.is_mobile %}
+    <p>MOBILE</p>
+    {% endif %}
     <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
         <header class="topbanner-bg" role="banner">
             <div class="container" >

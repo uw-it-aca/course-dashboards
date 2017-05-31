@@ -8,8 +8,7 @@ from coursedashboards.views import (
 
 urlpatterns = [
     # Home
-    url(r'^$', RedirectView.as_view(url='/major-gpa')),
+    url(r'^$', HomeView.as_view(), name="index"),
     url(r'^course-page$', CoursePageView.as_view(), name='coursepage'),
-    url(r'^$', HomeView.as_view(), name='home'),
 
 ]
