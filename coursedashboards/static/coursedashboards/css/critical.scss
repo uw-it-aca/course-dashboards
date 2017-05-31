@@ -4,10 +4,19 @@
    MAIN STYLE
    ========================================================================== */
 
-/* ++++++++++++++++++++++++++ GLOBAL ELEMENTS ++++++++++++++++++++++++++ */
-/* color: #cc721e; orange */
-/* color: #f7b670;  lite orange */
-/* color:#4b2e83;  UW Purple */
+/* ++++++++++++++++++++++++++ Mixins ++++++++++++++++++++++++++ */
+$uwpurple: #4b2e83;
+$gold: #b7a57a;
+$lightgold: #e8e3d3;
+$metgold: #85754d;
+$lightgray: #d9d9d9;
+$darkgray: #444;
+$lightgray: #aaa;
+$orange: #cc721e; 
+$link_blue: #b5754d;
+
+
+
 
 /*********** Global Reset ***********/
 
@@ -31,6 +40,13 @@ img {
    max-width: 100%;
    height: auto;
 }
+
+.visually-hidden{
+	position: absolute;
+	left:.5em;
+	top:-99px;	
+}
+
 /*********** Spacing ***********/
 
 /* align center */
@@ -52,13 +68,13 @@ img {
 h1, h2, h3, h4 { font-weight: bold; }
 
 h1 {
-  color: #4b2e83;
+  color: $uwpurple;
   font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
 }
 
 h2 {
   font-size: 1.5em;
-  color: #4b2e83;
+  color: $uwpurple;
   margin-top: 1em;
   margin-bottom: 10px;
 }
@@ -73,7 +89,7 @@ a, a:hover {
 }
 
 a:focus { /* Hyperlink style:*/
-	  color: #b5754d;
+	  color: $link_blue;
 	  border: 1px dotted ;
 }
 
@@ -81,35 +97,10 @@ a.no-hover:hover, a.no-hover:focus {
     text-decoration: none;
     border:none;
 }
-/* Skip to #main-content button at top */
-a.skip-to-main {
-	position: absolute;
-	left:.5em;
-	top:-99px;	
-}
-a.skip-to-main:focus {
-	z-index: 999;
-	font-size: 1em;
-	font-weight: 800;
-	text-decoration: none;
-	top: 6px;
-    padding: 15px 23px 14px;
-    background-color: #f1f1f1;
-    color: #4b2e83;
-    box-shadow: 0 0 2px 2px rgba(0,0,0,.6);
-}
 
 
-/* CLEAN UP: WHERE'S THE OPENING?*/
-
-/* Remove bold from the form */
-label{
-	font-weight: normal;
-}
-
-/* Stretch top banner base */
 .topbanner-bg {
-	background-color:#4b2e83; /* UW Purple */
+	background-color:$uwpurple; /* UW Purple */
 }
 
 .topbanner{ /* topbanner content chunk */
@@ -126,7 +117,7 @@ label{
 }
 
 .tagline{
-	color: #e8e3d3; /* lite tan */
+	color: $lightgold; /* lite tan */
 	display: inline-block;
 	font-style: italic;
 	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
@@ -140,7 +131,7 @@ label{
     margin: auto;
     padding-top: 35px;
     padding-bottom: 10px;
-    color: #aaa;
+    color: $lightgray;
     font-family: open sans, sans-serif;
     font-weight: 300;
     font-size: .9em;
@@ -176,7 +167,7 @@ label{
 }
 .navbar-default{
 	background-image: none;
-	background-color: #4b2e83;
+	background-color: $uwpurple;
 	border: none;
 	box-shadow: none;
 }
@@ -190,7 +181,7 @@ label{
 /* Remove the active state grey background  */
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus {
 	background-image: none;
-	background-color:#4b2e83;
+	background-color:$uwpurple;
 	color:white;
 	box-shadow: none;
 }
@@ -202,7 +193,7 @@ label{
 }
 
 .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
-	background-color: #cc721e;
+	background-color: $orange;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
@@ -212,10 +203,9 @@ label{
 
 /* display the orange bar  */
 .underline > li.active > a {
-	background-color: #4b2e83;
-	border-bottom:2px solid #cc721e;
+	background-color: $uwpurple;
+	border-bottom:2px solid $orange;
 	color: white;
-	/* color: #f7b670;  lite orange */
 
 }
 
@@ -232,7 +222,6 @@ label{
 
 /* Active+hover & focus: Change the background to orange */
  .underline > li.active > a:focus,  .underline > li > a:focus, .navbar-default .navbar-nav>li>a:focus {
-	/* background-color: #b46100; */
 	border-bottom:2px solid #b46100;
 	color:white;
  }
@@ -346,38 +335,39 @@ footer .footer-links ul li:last-child {
 }
 
 
-
  /* ==========================================================================
    SMALL SCREEN
    ========================================================================== */
 
  /* Small devices (tablets, 768px and up) */
-@media (max-width: 768px) {
+/* 
+$media (max-width: 768px) {
 	.login {
 	float: right;
     margin: auto;
     padding-top: 35px;
     padding-bottom: 5px;
-    color: #aaa;
+    color: $lightgray;
     font-family: open sans, sans-serif;
     font-weight: 300;
     font-size: .9em;
 	}
-
+*/
   /* Selelected: Active & hover  */
+/* 
 .underline > li.active > a, .underline > li.active > a:hover, .underline > li > a:hover, .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.active>a:hover  {
-	background-color: #b46100;	 /* orange */
 	border-left:5px solid #b46100;
 	color:white;
 	border-bottom: 0px;
 	}
-
+*/
 
 /* Active+hover & focus: Change the background to orange */
+/* 
  .underline > li.active > a:focus,  .underline > li > a:focus, .navbar-default .navbar-nav>li>a:focus {
-	/* background-color: #b46100; */
 	border-left:5px solid #b46100;
 	color:white;
 	}
 
 }
+*/
