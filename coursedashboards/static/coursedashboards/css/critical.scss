@@ -12,6 +12,14 @@ $metgold: #85754d;
 $link_focus: #b5754d;
 
 
+/*********** Development Style (clear out before production deploy ***********/
+
+.dummy {
+    color: red;
+    font-weight: bold;
+}
+
+
 
 /*********** Global Reset ***********/
 
@@ -21,11 +29,11 @@ html, body {
     margin:0;
     height: 100%;
 }
-p {
-   margin: 0;
-   padding: 0;
-   line-height: 1.45em;
+
+div, span {
+    padding: 5px;
 }
+
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section {
   display: block;
 } 
@@ -42,6 +50,18 @@ img {
 }
 
 /*********** Spacing ***********/
+
+.clear {
+    clear:both;
+}
+
+.pull-left {
+    float:left;
+}
+
+.pull-right {
+    float:right;
+}
 
 /* align center */
 .center {
@@ -97,6 +117,9 @@ a {
 	padding-bottom:20px;
 }
 
+.userinfo {
+    float: right;
+}
 
 .page-wrap {
 	content: "";

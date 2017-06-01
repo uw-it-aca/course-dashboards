@@ -24,30 +24,24 @@
         <header class="topbanner-bg" role="banner">
             <div class="container" >
                 <section class="topbanner" >
-	                <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
-	                <a href="major-gpa" class="no-hover"><span class="sitename">Course Dashboard</span></a>
-                    <nav class="navbar navbar-default" role="navigation">
-                        <!-- Hide NetID for Beta 		<div class="login"> Hi, netid123 </div> -->
-                        <!-- Hamburger for 768px -->
-                        <div class="navbar-header" >
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu" aria-expanded="true" aria-label='navigation menu'>
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                        </div>	<!-- END OF navbar-header -->
-                        <!-- END OF hamburger view -->
-                        <div class="navbar-collapse collapse" id="menu" aria-expanded="true">
-                            <ul class="nav navbar-nav underline">
-                                <li role="presentation" class="active"><a href="/major-gpa" title="View Major GPAs">COURSE 101</a></li>
-                                <li role="presentation" ><a href="/course-gpa" title="View Course GPAs">View Course GPAs</a></li>
-                                <li role="presentation" ><a href="/resources" title="Resources: more about Pivot data">Resources</a></li>
-                            </ul>
-                        </div><!-- END OF navbar-collapse -->
-
-                    </nav>
-                </section>
+	               <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
+	               <div class="userinfo pull-right"><span class="visually-hidden">Logged in as: </span><span class="dummy">joeuser</span> <a href="#">logout</a></div>
+	               <h1 class="sitename pull-left">Course Dashboard <span class="dummy">
+    	               <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
+    	               <select name="my_courses" id="my_courses">
+        	               <optgroup label="Autumn 2017">
+            	               <option class="dummy" selected>MATH 121 A</option>
+            	               <option class="dummy">MATH 121 C</option>
+            	               <option class="dummy">MATH 333 A</option>
+        	               </optgroup>
+        	               <optgroup label="Winter 2017">
+            	               <option class="dummy">MATH 222 A</option>
+            	               <option class="dummy">MATH 222 B</option>
+        	               </optgroup>
+    	               </select></span></h1>
+	               <div class="clear">
+	               </div>
+                    </section>
             </div>	<!-- END OF CONTAINER -->
         </header>
 
@@ -61,11 +55,9 @@
 		<div class="container center">
 				<div class="footer-links">
 	                <ul>
-		                <li><a href="resources" title="Resources">Resources</a></li>
-		                <li><a href="feedback" title="Send us feedback">Feedback</a></li>
 	                    <li><a href="http://www.washington.edu/online/terms/" target="_blank" title="Go to the University of Washington Website Terms and Conditions of Use">Terms </a></li>
 	                    <li><a href="http://www.washington.edu/online/privacy/" target="_blank" title="Go to the University of Washington Online Privacy Statement">Privacy</a></li>
-	                    <li><a href="/logout" target="" title="">Log out</a></li>
+	                    <li><a href="mailto:help@uw.edu" title="Get Help and send us feedback">Help</a></li>
 	                </ul>
 	            </div><!-- end of footer links -->
 	            <p class="credit">©2016 University of Washington Information Technology </p>
