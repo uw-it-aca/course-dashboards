@@ -1,0 +1,29 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "page-top" %}
+
+        <header class="topbanner-bg" role="banner">
+            <div class="container" >
+                <section class="topbanner" >
+	               <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
+	               <div class="userinfo pull-right"><span class="visually-hidden">Logged in as: </span><span class="dummy">{{netid}}</span> <a href="#">logout</a></div>
+	               <h1 class="sitename pull-left">Course Dashboard <span class="dummy">
+    	               <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
+    	               <select name="my_courses" id="my_courses">
+        	               <optgroup label="Autumn 2017">
+            	               <option class="dummy" selected>MATH 121 A</option>
+            	               <option class="dummy">MATH 121 C</option>
+            	               <option class="dummy">MATH 333 A</option>
+        	               </optgroup>
+        	               <optgroup label="Winter 2017">
+            	               <option class="dummy">MATH 222 A</option>
+            	               <option class="dummy">MATH 222 B</option>
+        	               </optgroup>
+    	               </select></span></h1>
+	               <div class="clear">
+	               </div>
+                    </section>
+            </div>	<!-- END OF CONTAINER -->
+        </header>
+
+        
+{% endtplhandlebars %}
