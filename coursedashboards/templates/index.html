@@ -2,6 +2,32 @@
 {% load staticfiles %}
 {% block web_content %}
 
+<script>
+    //Copied from MyUW...probably don't need all of this data
+    window.user = {
+        "student": {{ user.affiliations.student|yesno:"true, false" }},
+        "grad": {{ user.affiliations.grad|yesno:"true, false" }},
+        "undergrad": {{ user.affiliations.undergrad|yesno:"true, false" }},
+        "pce": {{ user.affiliations.pce|yesno:"true, false" }},
+        "stud_employee": {{ user.affiliations.stud_employee|yesno:"true, false" }},
+        "employee": {{ user.affiliations.employee|yesno:"true, false" }},
+        "fyp": {{ user.affiliations.fyp|yesno:"true, false" }},
+        "faculty": {{ user.affiliations.faculty|yesno:"true, false" }},
+        "clinician": {{ user.affiliations.clinician|yesno:"true, false" }},
+        "seattle": {{ user.affiliations.official_seattle|yesno:"true, false" }},
+        "bothell": {{ user.affiliations.official_bothell|yesno:"true, false" }},
+        "tacoma": {{ user.affiliations.official_tacoma|yesno:"true, false" }},
+        "seattle_affil": {{ user.affiliations.seattle|yesno:"true, false" }},
+        "bothell_affil": {{ user.affiliations.bothell|yesno:"true, false" }},
+        "tacoma_affil": {{ user.affiliations.tacoma|yesno:"true, false" }},
+        "email_forward_url": "{{ user.email_forward_url }}",
+        "email_forward_title": "{{ user.email_forward_title }}",
+        "email_forward_icon": "{{ user.email_forward_icon }}",
+        "netid": "{{ user.netid }}"
+    };
+
+</script>
+
 <!-- MAIN CONTENT BELOW THE BANNER -->
   	<main class="container" role="main">
 

@@ -40,6 +40,7 @@ source bin/activate
 Install required Python packages with pip:
 ```
 $ pip install -r requirements.txt
+$ pip install uw-restclients
 ```
 
 If you receive errors with the above, ensure you have lib32z1-dev, libxslt1-dev, libxml2-dev, and python-dev installed. 
@@ -53,7 +54,7 @@ That '.' at the end is important!
 Modify at least the following settings in project/settings.py:
 ```
     INSTALLED_APPS
-    (add: 'compressor', 'templatetag_handlebars', 'coursedashboards')
+    (add: 'compressor', 'templatetag_handlebars', 'coursedashboards.apps.CourseDashboardsConfig', 'restclients', 'userservice')
 ```
 
 
@@ -67,9 +68,15 @@ Modify at least the following settings in project/settings.py:
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'django_mobileesp.middleware.UserAgentDetectionMiddleware',
+        'django.contrib.auth.middleware.RemoteUserMiddleware',
+        'userservice.user.UserServiceMiddleware',
+        'restclients.middleware.EnableServiceDegradationMiddleware'
 ```
     Below that add:
 ```
+     AUTHENTICATION_BACKENDS = [
+        'django.contrib.auth.backends.RemoteUserBackend'
+     ]
      TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
