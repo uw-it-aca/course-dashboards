@@ -174,3 +174,7 @@ You should now be able to run your development server:
 ```
 $ python manage.py runserver 0.0.0.0:<your port>
 ```
+Run as a mock user e.g., javerage:
+```
+$ REMOTE_USER=<netid> ./manage.py runserver 0.0.0.0:<your port>
+```
