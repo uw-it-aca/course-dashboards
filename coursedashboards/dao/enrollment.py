@@ -20,7 +20,7 @@ CLASS_CODES = {
     "GRADUATE": 5,
 }
 DEFAULT_CLASS_CODE = 6
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 
 def get_all_enrollments():
@@ -68,10 +68,10 @@ def get_main_campus(request):
         for major in enrollment.majors:
             campuses.append(major.campus)
     except DataFailureException as ex:
-        logger.error("get_current_quarter_enrollment: %s" % ex)
+        #logger.error("get_current_quarter_enrollment: %s" % ex)
         raise IndeterminateCampusException()
     except Exception as ex:
-        logger.error("get_current_quarter_enrollment: %s" % ex)
+        #logger.error("get_current_quarter_enrollment: %s" % ex)
         pass
 
     return campuses

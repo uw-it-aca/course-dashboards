@@ -8,6 +8,8 @@ from django.conf import settings
 from coursedashboards.dao.term import get_current_quarter
 from coursedashboards.dao.affiliation import get_all_affiliations
 from coursedashboards.dao import get_netid_of_current_user
+from coursedashboards.dao.pws import get_person_of_current_user
+from uw_sws.section import get_sections_by_instructor_and_term
 
 
 #logger = logging.getLogger(__name__)
@@ -40,5 +42,11 @@ def page(request,
             context["quarter"] = cur_term.quarter
     else:
         pass
-    print context
+    
+    #adding below so can get instructors schedule
+    person = get_person_of_current_user()
+    
+    #TEMP REMOVED DUE TO ERROR sections = get_sections_by_instructor_and_term(person, cur_term)
+    #TEMP REMOVED DUE TO ERROR print sections.json_data()
+    
     return render(request, template, context)
