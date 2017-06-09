@@ -34,10 +34,6 @@ html, body {
     height: 100%;
 }
 
-div, span {
-    padding: 5px;
-}
-
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section {
   display: block;
 } 
@@ -105,6 +101,21 @@ a {
 
 
 /**************** Main stuff *************/
+
+.topbanner-bg {background-color: $uwpurple;
+    .uw-logo {
+      display: block;
+      text-indent: -9999px;
+      width: 163px;
+      height: 110px;
+      background: url('img/InfoTech_UW_vsml.footer.png') no-repeat 0 0 transparent;
+      position: absolute;
+      top: 52px;
+      left: 0;
+      z-index: 1;
+    }
+}
+
 
 .main-content {
 	margin: 40px 0px;

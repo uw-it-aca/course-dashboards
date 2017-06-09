@@ -1,7 +1,7 @@
 var source = $("#page-top").html();
 var template = Handlebars.compile(source);
 //plain_template({"netid": "test"});
-$("#username-container").html(template({
+$("#top_banner").html(template({
     netid: window.user.netid,
     quarter: firstLetterUppercase(window.term.quarter),
     year: window.term.year

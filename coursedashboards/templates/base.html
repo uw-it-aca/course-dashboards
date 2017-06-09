@@ -8,20 +8,8 @@
     </head>
 
 <body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
-    <p>device is:</p>
-    {% if is_desktop %}
-    <p>DESKTOP</p>
-    {% else %}
-    <p>not desktop</p>
-    {% endif %}
-    {% if request.is_tablet %}
-    <p>TABLET</p>
-    {% endif %}
-    {% if request.is_mobile %}
-    <p>MOBILE</p>
-    {% endif %}
     <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
-        <div id="username-container"> <!-- username and logout goes here, handlebars/page-top.html -->
+        <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
         </div>
     
     {% block web_content %}{% endblock %}
@@ -50,6 +38,17 @@
 </div><!-- footer role -->
 {% include "handlebars/page-top.html" %}
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
-
+    <p>device is:</p>
+    {% if is_desktop %}
+    <p>DESKTOP</p>
+    {% else %}
+    <p>not desktop</p>
+    {% endif %}
+    {% if request.is_tablet %}
+    <p>TABLET</p>
+    {% endif %}
+    {% if request.is_mobile %}
+    <p>MOBILE</p>
+    {% endif %}
 </body>
 </html>
