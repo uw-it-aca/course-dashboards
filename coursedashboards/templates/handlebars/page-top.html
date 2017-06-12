@@ -1,8 +1,9 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "page-top" %}
+{% load staticfiles %}
 
         <header class="topbanner-bg" role="banner">
-            <a href="http://www.uw.edu" class="uw-logo">University of Washington</a>
+            <a href="http://www.uw.edu" class="uw-logo" style="background: transparent url('{% static "coursedashboards/img/uw-sprite-mini.png" %}') no-repeat;">University of Washington</a>
             <div class="container" >
                 <section class="topbanner" >
 	               <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
