@@ -77,10 +77,6 @@ img {
 
 h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; color: $uwpurple; }   
 
-h1 {
-    &.sitename {margin-right: 30px;}
-}
-
 h2 {
     margin-top:25px;  
 }
@@ -100,7 +96,7 @@ a {
 
 .sitename{
 	font-size: 2em;
-	margin: 20px 10%;
+	margin: 35px 30px 5px 10%;
 	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
 	font-weight: 400;
 	color: white;
@@ -125,13 +121,13 @@ select {
       width: 80px;
       height: 60px;
       position: absolute;
-      top: 25px;
+      top: 19px;
       left: 0;
       z-index: 1;
     }
     select {
         font-size:1.2em;
-        margin-top: 25px;
+        margin-top: 38px;
     }
 }
 
