@@ -45,8 +45,8 @@ img {
 
 .visually-hidden{
 	position: absolute;
-	left:.5em;
-	top:-99px;	
+	left:-999px;
+	top:-999px;	
 }
 
 /*********** Spacing ***********/
@@ -75,7 +75,15 @@ img {
 
 /* Text structure */
 
-h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; color: $uwpurple; }
+h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; color: $uwpurple; }   
+
+h1 {
+    &.sitename {margin-right: 30px;}
+}
+
+h2 {
+    margin-top:25px;  
+}
 
 h3 {
     padding-top: 20px;
@@ -92,7 +100,7 @@ a {
 
 .sitename{
 	font-size: 2em;
-	margin: 20px 0px;
+	margin: 20px 10%;
 	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
 	font-weight: 400;
 	color: white;
@@ -105,6 +113,11 @@ a {
 
 /**************** Main stuff *************/
 
+select {
+    &.historic-filter {margin-top:34px;}
+}
+
+
 .topbanner-bg {background-color: $uwpurple;
     .uw-logo {
       display: block;
@@ -115,6 +128,10 @@ a {
       top: 25px;
       left: 0;
       z-index: 1;
+    }
+    select {
+        font-size:1.2em;
+        margin-top: 25px;
     }
 }
 

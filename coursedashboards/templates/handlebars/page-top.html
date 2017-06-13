@@ -4,11 +4,8 @@
 
         <header class="topbanner-bg" role="banner">
             <a href="http://www.uw.edu" class="uw-logo" style="background: transparent url('{% static "coursedashboards/img/uw-sprite-mini.png" %}') no-repeat;">University of Washington</a>
-            <div class="container" >
-                <section class="topbanner" >
-	               <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
-	               <div class="userinfo pull-right"><span class="visually-hidden">Logged in as: </span><span>{{netid}}</span> <a href="#">logout</a></div>
-	               <h1 class="sitename pull-left">Course Dashboard <span class="dummy">
+            <h1 class="sitename pull-left">Course Dashboard </h1>
+            <span class="dummy">
     	               <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
     	               <select name="my_courses" id="my_courses">
         	               <optgroup label="{{quarter}} {{year}}">
@@ -23,7 +20,11 @@
             	               <option class="dummy">MATH 222 A</option>
             	               <option class="dummy">MATH 222 B</option>
         	               </optgroup>
-    	               </select></span></h1>
+    	               </select></span>
+            <div class="container" >
+                <section class="topbanner" >
+	               <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
+	               <div class="userinfo pull-right"><span class="visually-hidden">Logged in as: </span><span>{{netid}}</span> <a href="#">logout</a></div>
 	               <div class="clear">
 	               </div>
                     </section>
