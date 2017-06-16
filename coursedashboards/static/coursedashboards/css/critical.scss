@@ -73,13 +73,10 @@ img {
 	margin-bottom: 0px;
 }
 
+.inline {display:inline;}
 /* Text structure */
 
 h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; color: $uwpurple; }   
-
-h2 {
-    margin-top:25px;  
-}
 
 h3 {
     padding-top: 20px;
@@ -96,25 +93,22 @@ a {
 
 .sitename{
 	font-size: 2em;
-	margin: 35px 30px 5px 10%;
+	margin: 38px 10px 0 110px;
 	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
 	font-weight: 400;
 	color: white;
 	select {
-    	
+    	padding-bottom: 10px;
 	}
 }
 
 
 
 /**************** Main stuff *************/
-
-select {
-    &.historic-filter {margin-top:34px;}
-}
+.no-wrap {white-space: nowrap;}
 
 
-.topbanner-bg {background-color: $uwpurple;
+.topbanner-bg {background-color: $uwpurple; height: 76px;
     .uw-logo {
       display: block;
       text-indent: -9999px;
@@ -126,11 +120,15 @@ select {
       z-index: 1;
     }
     select {
-        font-size:1.2em;
-        margin-top: 38px;
+        font-size:.8em;
     }
 }
 
+.userinfo {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
 
 .main-content {
 	margin: 40px 0px;
@@ -141,8 +139,8 @@ select {
 	padding-bottom:20px;
 }
 
-.userinfo {
-    float: right;
+.data-section {
+    margin-top:25px;
 }
 
 .page-wrap {
@@ -218,18 +216,16 @@ footer .footer-links ul li:last-child {
    ========================================================================== */
 
  /* Small devices (tablets, 768px and up) */
-/* 
-$media (max-width: 768px) {
-	.login {
-	float: right;
-    margin: auto;
-    padding-top: 35px;
-    padding-bottom: 5px;
-    font-family: open sans, sans-serif;
-    font-weight: 300;
-    font-size: .9em;
+ 
+@media (max-width: 768px) {
+	.hide-sm {
+	position: absolute;
+	left:-999px;
+	top:-999px;	
 	}
-*/
+	.sitename{
+	font-size: 1.5em;}
+}
   /* Selelected: Active & hover  */
 /* 
 .underline > li.active > a, .underline > li.active > a:hover, .underline > li > a:hover, .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.active>a:hover  {
