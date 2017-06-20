@@ -33,7 +33,6 @@ def page(request,
     context["home_url"] = "/"
     context["err"] = None
     context["user"]["affiliations"] = get_all_affiliations(request)
-    #print context["user"]["affiliations"]
 
     if ('year' not in context or context['year'] is None or
             'quarter' not in context and context['quarter'] is None):

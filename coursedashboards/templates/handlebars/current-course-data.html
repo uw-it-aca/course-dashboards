@@ -1,0 +1,33 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "current-course-data" %}
+{% load staticfiles %}
+<div class="row">
+    <div class="col-md-6"><h2 class="inline">Your Course Data</h2></div>
+    <div class="col-md-6"><a class="dummy" href="#">Time Schedule Entry</a></div>
+    <div class="col-12">Median cumulative GPA of students: <span class="dummy">{{current_median}}</span></div>
+    <div class="col-md-6">Students Registered: <span class="dummy">{{current_num_registered}} / {{current_capacity}}</span></div>
+    <div class="col-md-6"><span class="dummy">{{current_repeat_students}}</span> students are repeating this course.</div>
+</div>
+<div class="row ">
+    <div class="list col-md-6">
+        <h3>Courses being taken concurrently:</h3>
+        <ol>
+           <li class="dummy"><span>MATH 100 </span><span>[% of class that takes this course]</span></li>
+           <li class="dummy"><span>MATH 240 </span><span>[% of class that takes this course]</span></li>
+           <li class="dummy"><span>STATS 100 </span><span>[% of class that takes this course]</span></li>
+           <li class="dummy"><span>ENGL 200 </span><span>[% of class that takes this course]</span></li>
+           <li class="dummy"><span>PHYS 101 </span><span>[% of class that takes this course]</span></li>
+       </ol> 
+    </div>
+    <div class="list col-md-6">
+        <h3>Declared Majors:</h3>
+        <ol>
+           <li class="dummy"><span>Mathematics </span><span>[% of class that had this major]</span></li>
+           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
+           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
+           <li class="dummy"><span>Physics </span><span>[% of class that had this major]</span></li>
+           <li class="dummy"><span>English </span><span>[% of class that had this major]</span></li>
+       </ol> 
+    </div> 
+</div> 
+{% endtplhandlebars %}

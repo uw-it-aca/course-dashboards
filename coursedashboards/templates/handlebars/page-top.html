@@ -15,7 +15,7 @@
     	               <select name="my_courses" id="my_courses">
         	               <optgroup label="{{quarter}} {{year}}">
                                {{#each sections}}
-                                   <option {{#if @first}}selected{{/if}}>{{curriculum}} {{course_number}} {{section_id}}</option>
+                                   <option data-label="{{section_label}}" {{#if @first}}selected{{/if}}>{{curriculum}} {{course_number}} {{section_id}}</option>
                                {{/each}}
                            </optgroup>
     	               </select>
