@@ -1,42 +1,57 @@
 {
-    "ClassLevel": "SENIOR",
-    "FullName": "AVERAGE,JOHN JOSEPH",
-    "HonorsProgram": false,
-    "LeaveEndQuarter": 0,
-    "LeaveEndYear": 0,
-    "Majors": [{
-            "Abbreviation": "ACMS",
-            "Campus": "Seattle",
-            "DegreeLevel": 1,
-            "DegreeName": "BACHELOR OF SCIENCE (APPLIED & COMPUTATIONAL MATH SCIENCES)",
-            "DegreeType": 5,
-            "FullName": "App & Comp Math Sci (Social & Behav Sci)",
-            "MajorName": "ACMS (SOC & BEH SCI)",
-            "Pathway": 80,
-            "ShortName": "ACMS (SBS)"
-        }],
-    "Minors":[{"Abbreviation":"ASL",
-        "CampusName":"Seattle",
-        "FullName":"American Sign Language",
-        "Name":"AMERICAN SIGN LANGUAGE",
-        "Pathway":0,
-        "ShortName":"ASL"}],
-    "PendingClassChange": false,
-    "PendingHonorsChange": false,
-    "PendingMajorChange": false,
-    "PendingResidentChange": false,
-    "PendingSpecialProgramChange": false,
-    "Person": {
-        "Href": "/student/v5/person/9136CCB8F66711D5BE060004AC494FFE.json",
-        "Name": "AVERAGE,JAMES",
-        "RegID": "9136CCB8F66711D5BE060004AC494FFE"
+    "Current":
+     {
+        "Href": "/student/v5/enrollment.json?reg_id=12345678901234567890123456789012&verbose=true&changed_since_date=&transcriptable_course=all",
+        "RegID": "12345678901234567890123456789012",
+        "Verbose": true
     },
-    "QtrGradePoints": 22,
-    "QtrGradedAttmp": 10,
-    "QtrNonGrdEarned": 2,
-    "RegID": "9136CCB8F66711D5BE060004AC494FFE",
-    "Registrations": [
+    "Enrollments": [
         {
+            "ClassLevel": "SENIOR",
+            "CurrentRegisteredCredits": null,
+            "EnrollmentStatus": "Registered",
+            "EnrollmentStatusDate": "2013-06-08",
+            "FullName": "James McMiddle Average",
+            "HonorsProgram": false,
+            "LeaveEndQuarter": 0,
+            "LeaveEndYear": 0,
+            "Majors": [
+                {"Abbreviation": "ACMS",
+                 "Campus": "Seattle",
+                 "DegreeLevel": 1,
+                 "DegreeName": "BACHELOR OF SCIENCE (APPLIED & COMPUTATIONAL MATH SCIENCES)",
+                 "DegreeType": 5,
+                 "FullName": "App & Comp Math Sci (Social & Behav Sci)",
+                 "MajorName": "ACMS (SOC & BEH SCI)",
+                 "Pathway": 80,
+                 "ShortName": "ACMS (SBS)"
+                }
+            ],
+            "Metadata": "EnrollmentSourceLocation=SDB;",
+            "Minors": [
+                {"Abbreviation":"ASL",
+                 "CampusName":"Seattle",
+                 "FullName":"American Sign Language",
+                 "Name":"AMERICAN SIGN LANGUAGE",
+                 "Pathway":0,
+                 "ShortName":"ASL"}
+            ],
+            "PendingClassChange": false,
+            "PendingHonorsChange": false,
+            "PendingMajorChange": false,
+            "PendingResidentChange": false,
+            "PendingSpecialProgramChange": false,
+            "Person": {
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
+                "Name": "James McMiddle Average",
+                "RegID": "12345678901234567890123456789012"
+            },
+            "QtrGradePoints": 38,
+            "QtrGradedAttmp": 10,
+            "QtrNonGrdEarned": 2,
+            "RegID": "12345678901234567890123456789012",
+            "Registrations": [
+            {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 2.0",
@@ -50,9 +65,9 @@
             "HonorsCourse": false,
             "IsActive": true,
             "Person": {
-                "Href": "/student/v5/person/9136CCB8F66711D5BE060004AC494FFE.json",
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
                 "Name": "AVERAGE,JAMES",
-                "RegID": "9136CCB8F66711D5BE060004AC494FFE"
+                "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
             "RequestDate": "",
@@ -67,8 +82,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": false
-        },
-        {
+           },
+           {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 5.0",
@@ -82,9 +97,9 @@
             "HonorsCourse": false,
             "IsActive": true,
             "Person": {
-                "Href": "/student/v5/person/9136CCB8F66711D5BE060004AC494FFE.json",
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
                 "Name": "AVERAGE,JAMES",
-                "RegID": "9136CCB8F66711D5BE060004AC494FFE"
+                "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
             "RequestDate": "",
@@ -99,8 +114,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": false
-        },
-        {
+           },
+           {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 3.0",
@@ -114,9 +129,9 @@
             "HonorsCourse": false,
             "IsActive": true,
             "Person": {
-                "Href": "/student/v5/person/9136CCB8F66711D5BE060004AC494FFE.json",
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
                 "Name": "AVERAGE,JAMES",
-                "RegID": "9136CCB8F66711D5BE060004AC494FFE"
+                "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
             "RequestDate": "",
@@ -131,8 +146,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": true
-        },
-        {
+           },
+           {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 1.0",
@@ -146,9 +161,9 @@
             "HonorsCourse": false,
             "IsActive": true,
             "Person": {
-                "Href": "/student/v5/person/9136CCB8F66711D5BE060004AC494FFE.json",
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
                 "Name": "AVERAGE,JAMES",
-                "RegID": "9136CCB8F66711D5BE060004AC494FFE"
+                "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
             "RequestDate": "",
@@ -163,8 +178,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": true
-        },
-        {
+           },
+           {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 1.0",
@@ -178,9 +193,9 @@
             "HonorsCourse": false,
             "IsActive": true,
             "Person": {
-                "Href": "/student/v5/person/9136CCB8F66711D5BE060004AC494FFE.json",
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
                 "Name": "AVERAGE,JAMES",
-                "RegID": "9136CCB8F66711D5BE060004AC494FFE"
+                "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
             "RequestDate": "",
@@ -195,12 +210,19 @@
             },
             "VariableCredit": false,
             "WritingCourse": true
-        }
-
+         }
+      ],
+      "RepositoryTimeStamp": "3/28/2017 2:21:36 PM",
+      "Term": {
+                "Href": "/student/v5/term/2013,spring.json",
+                "Quarter": "spring",
+                "Year": 2013
+            }
+   }
     ],
-    "Term": {
-        "Href": "/student/v5/term/2013,spring.json",
-        "Quarter": "spring",
-        "Year": "2013"
-    }
+    "Next": null,
+    "PageSize": "10",
+    "PageStart": "1",
+    "Previous": null,
+    "TotalCount": 6
 }
