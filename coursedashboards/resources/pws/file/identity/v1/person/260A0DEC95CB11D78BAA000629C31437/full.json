@@ -2,7 +2,8 @@
   "EduPersonAffiliations" : [ "member",
       "alum",
       "staff",
-      "employee"
+      "employee",
+      "faculty"
     ],
   "IsTestEntity" : false,
   "PersonAffiliations" : { "AlumPersonAffiliation" : { "DevelopmentID" : "0000773897" },
@@ -33,7 +34,7 @@
   "RegisteredName" : "JAMES AVERAGE TEACHER",
   "RegisteredSurname" : "TEACHER",
   "UIDNumber" : "35943",
-  "UWNetID" : "james",
+  "UWNetID" : "javerage",
   "UWRegID" : "260A0DEC95CB11D78BAA000629C31437",
   "WhitepagesPublish" : true
 }

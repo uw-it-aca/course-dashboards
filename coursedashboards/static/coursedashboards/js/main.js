@@ -4,7 +4,8 @@ var template = Handlebars.compile(source);
 $("#top_banner").html(template({
     netid: window.user.netid,
     quarter: firstLetterUppercase(window.term.quarter),
-    year: window.term.year
+    year: window.term.year,
+    sections: window.section_data
 }));
 
 //Capitalize the first letter of a word
