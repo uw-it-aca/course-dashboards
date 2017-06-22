@@ -20,11 +20,9 @@
     <div class="list col-md-6">
         <h3>Declared Majors:</h3>
         <ol>
-           <li class="dummy"><span>Mathematics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Physics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>English </span><span>[% of class that had this major]</span></li>
+            {{#each current_majors}}
+                <li><span>{{major}}</span> [{{percent_students}}%]</li>
+            {{/each}}
        </ol> 
     </div> 
 </div> 

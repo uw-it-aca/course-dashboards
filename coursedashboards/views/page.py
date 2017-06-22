@@ -14,7 +14,7 @@ from coursedashboards.dao.pws import get_person_of_current_user
 from coursedashboards.dao.instructor_schedule import get_instructor_schedule_by_term
 from uw_sws.section import get_sections_by_instructor_and_term, get_section_by_label
 from uw_sws.registration import get_active_registrations_by_section
-from uw_sws.enrollment import enrollment_search_by_regid, get_grades_by_regid_and_term
+from uw_sws.enrollment import enrollment_search_by_regid, get_grades_by_regid_and_term, get_enrollment_by_regid_and_term
 
 
 #logger = logging.getLogger(__name__)
@@ -52,6 +52,7 @@ def page(request,
     
     #WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
     #currently getting ALL data for EVERY section being taught...perhaps should only pull data when needed?
+    #SEPARATE FUNCTION
     sections = get_sections_by_instructor_and_term(person, cur_term)
     context["sections"] = []
     for section in sections:
@@ -59,6 +60,7 @@ def page(request,
         status = get_section_by_label(cur_section['section_label'])
         students = get_current_students(status)
         concurrent_courses = get_concurrent_courses_all_students(students, cur_section['curriculum_abbr'] + " " + cur_section['course_number'] + " " + cur_section['section_id'], cur_term)
+        current_majors = get_majors_all_students(students, cur_term)
         section_status = status.json_data()
         context["sections"].append({
             'curriculum':cur_section['curriculum_abbr'],
@@ -68,7 +70,8 @@ def page(request,
             'current_enrollment':section_status['current_enrollment'],
             'limit_estimate_enrollment':section_status['limit_estimate_enrollment'],
             'current_median':calc_median_gpa_enrolled(status, students),
-            'concurrent_courses':concurrent_courses
+            'concurrent_courses':concurrent_courses,
+            'current_student_majors':current_majors
         })
     context["sections"] = json.dumps(list(context["sections"]), cls=DjangoJSONEncoder)
     
@@ -95,6 +98,28 @@ def get_current_students(section):
         students.append(registration.person.json_data())
     return students
 
+def get_majors_all_students(students, term):
+    majors_dict = {}
+    total_students = len(students)
+    for student in students:
+        major = get_student_major(student, term)
+        for m in major:
+            if majors_dict.has_key(m.full_name):
+                majors_dict[m.full_name] += 1
+            else: majors_dict[m.full_name] = 1
+    sorted_majors = sorted(majors_dict, reverse=True, key=majors_dict.get)
+    top_majors = []
+    for sort in sorted_majors:
+        top_majors.append({
+            "major":sort,
+            "percent_students":round((float(majors_dict[sort])/float(total_students))*100.0,2)
+        })
+    return top_majors
+
+def get_student_major(student, term):
+    enrollment = get_enrollment_by_regid_and_term(student["uwregid"], term)
+    return enrollment.majors
+
 def get_student_gpa(student):
     #get enrollments for this student then calculate GPA
     #for each enrollment, add up QtrGradePoints, and QtrGradedAttmp
@@ -105,7 +130,6 @@ def get_student_gpa(student):
         grades = get_grades_by_regid_and_term(student["uwregid"], term)
         grade_points += grades.grade_points
         credits_attempted += grades.credits_attempted
-        #print grades.grades[0].section.curriculum_abbr + " " + grades.grades[0].section.course_number
     return grade_points / credits_attempted
 
 def get_concurrent_courses_all_students(students, this_course, term):
@@ -121,14 +145,13 @@ def get_concurrent_courses_all_students(students, this_course, term):
             else:
                 course_dict[course] = 1
     sorted_courses = sorted(course_dict, reverse=True, key=course_dict.get)
-    top_5 = []
+    top_courses = []
     for sort in sorted_courses:
-        top_5.append({
+        top_courses.append({
             "course":sort,
             "percent_students":round((float(course_dict[sort])/float(total_students))*100.0,2)
         })
-        if len(top_5) == 5: break
-    return top_5
+    return top_courses
 
 def get_concurrent_courses_by_student(student, term):
     grades = grades = get_grades_by_regid_and_term(student["uwregid"], term)
