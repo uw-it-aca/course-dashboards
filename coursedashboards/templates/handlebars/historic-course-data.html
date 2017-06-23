@@ -2,7 +2,7 @@
 {% tplhandlebars "historic-course-data" %}
 {% load staticfiles %}
 <div class="row">
-    <h2 class="col-md-6">Historic Course Data </h2>
+    <h2 class="col-md-6">Historic Student Data </h2>
 <!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
 1. 2+ course sections were offered  OR
 2. The logged in user was IOR for the single section offered that term.
@@ -61,7 +61,7 @@
        </ol> 
     </div>
     <div class="list col-md-6">
-        <h3>Common courses taken concurrently:</h3>
+        <h3>Concurrent Courses:</h3>
         <ol>
            <li class="dummy"><span>MATH 100 </span><span>[% of class that takes this course]</span></li>
            <li class="dummy"><span>ENG 200 </span><span>[% of class that takes this course]</span></li>
