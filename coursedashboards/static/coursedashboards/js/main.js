@@ -10,14 +10,17 @@ $("#top_banner").html(template({
 
 //Listed for course dropdown selection change
 $("#my_courses").change(function() {
-    showCurrentCourseData();
+    var index = $("select[name='my_courses'] option:selected").index();
+    showCurrentCourseData(index);
+    showHistoricCourseData(index);
 })
 
-showCurrentCourseData();
+var index = $("select[name='my_courses'] option:selected").index();
+showCurrentCourseData(index);
+showHistoricCourseData(index);
 
 //Display data about the currently selected course - called whenever selection changes
-function showCurrentCourseData() {
-    var index = $("select[name='my_courses'] option:selected").index()
+function showCurrentCourseData(index) {
     var current = $("#current-course-data").html();
     var currentTemplate = Handlebars.compile(current);
     $("#current-course-target").html(currentTemplate({
@@ -27,6 +30,15 @@ function showCurrentCourseData() {
         current_repeat_students:3,
         concurrent_courses:window.section_data[index].concurrent_courses,
         current_majors:window.section_data[index].current_student_majors
+    }));
+}
+
+//Display data about the past offerings of selected course - called whenever selection changes
+function showHistoricCourseData(index) {
+    var historic = $("#historic-course-data").html();
+    var historicTemplate = Handlebars.compile(historic);
+    $("#historic-course-target").html(historicTemplate({
+        
     }));
 }
 

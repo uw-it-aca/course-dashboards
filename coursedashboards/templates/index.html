@@ -4,12 +4,6 @@
 
 <script>
     window.user = {
-        "seattle": {{ user.affiliations.official_seattle|yesno:"true, false" }},
-        "bothell": {{ user.affiliations.official_bothell|yesno:"true, false" }},
-        "tacoma": {{ user.affiliations.official_tacoma|yesno:"true, false" }},
-        "seattle_affil": {{ user.affiliations.seattle|yesno:"true, false" }},
-        "bothell_affil": {{ user.affiliations.bothell|yesno:"true, false" }},
-        "tacoma_affil": {{ user.affiliations.tacoma|yesno:"true, false" }},
         "netid": "{{ user.netid }}"
     };
     window.term = {
@@ -26,86 +20,8 @@
     		 <div id="current-course-target"><!-- handlebars target for current-course-data.html -->
                 
             </div>   
-        	<div class="course_info data-section">
-        	    <div class="row">
-            	    <h2 class="col-md-6">Historic Course Data </h2>
-<!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
-    1. 2+ course sections were offered  OR
-    2. The logged in user was IOR for the single section offered that term.
-     -->
-            	    <span class="col-md-6 historic-filters">
-                	    <span class="dummy">
-        	               <label for="histoic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
-        	               <select class="historic-filter" name="histoic_filter_quarter" id="histoic_filter_quarter">
-                	               <option class="dummy" selected>All Quarters</option>
-                	               <option class="dummy">Autumn</option>
-                	               <option class="dummy">Winter</option>
-                	               <option class="dummy">Spring</option>
-                	               <option class="dummy">Summer</option>
-        	               </select>
-        	           </span> 
-        	           <span class="dummy">
-        	               <label for="histoic_filter_year" class="visually-hidden">Filter historic data by year:</label>
-        	               <select class="historic-filter" name="histoic_filter_year" id="histoic_filter_year">
-                	               <option class="dummy" selected>All Years</option>
-                	               <option class="dummy">2017</option>
-                	               <option class="dummy">2016</option>
-                	               <option class="dummy">2015</option>
-                	               <option class="dummy">2013</option>
-        	               </select>
-        	           </span> 
-            	    </span>
-            	    <div class="col-sm-4"><span>Median GPA: </span><span class="dummy">3.2</span></div>
-            	    <div class="col-sm-8"><span>% that failed the course: </span><span class="dummy">2%</span></div>
-        	    </div>
-        	    <div class="row"><span class="col">Note: it would be great to show historic data for previous times the logged in user was IOR for this course... maybe overlayed on the same visualization with generic historic data for the course.</span></div>
-        	    <div class="row">
-            	    <div class="list col-12">
-                	    <h3>Grade Distribution</h3>
-                	    <p class="dummy">[Visualization of grade distribution for selected quarter(s) (include median GPA)]</p>
-            	    </div>
-        	    </div>
-        	    <div class="row">
-            	    <div class="list col-md-6">
-                	    <h3>Common majors (when taking the course):</h3>
-                	    <ol>
-                           <li class="dummy"><span>Mathmatics </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Philosophy </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>English </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
-                       </ol> 
-            	    </div>
-            	    <div class="list col-md-6">
-                	    <h3>Common majors (upon graduation):</h3>
-                	    <ol>
-                           <li class="dummy"><span>Mathmatics </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Human Computer Design & Engineering </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Computer Science </span><span>[% of class that had this major]</span></li>
-                           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
-                       </ol> 
-            	    </div>
-            	    <div class="list col-md-6">
-                	    <h3>Common courses taken concurrently:</h3>
-                	    <ol>
-                           <li class="dummy"><span>MATH 100 </span><span>[% of class that takes this course]</span></li>
-                           <li class="dummy"><span>ENG 200 </span><span>[% of class that takes this course]</span></li>
-                           <li class="dummy"><span>STATS 100 </span><span>[% of class that takes this course]</span></li>
-                           <li class="dummy"><span>MATH 300 </span><span>[% of class that takes this course]</span></li>
-                           <li class="dummy"><span>MATH 222 </span><span>[% of class that takes this course]</span></li>
-                       </ol> 
-            	    </div>
-            	    <div class="previous-instructors col-md-6">	
-            		   <h3>Previous Instructors for this course:</h3>
-                       <ol>
-                           <li class="dummy"><span class="quarter">Autumn 2016</span><span class="name">Joe Schmoe</span><span class="email"><a class="dummy" href="mailto:jscmwe22@uw.edu">jscmwe22@uw.edu</a></span></li>
-                           <li class="dummy"><span class="quarter">Autumn 2016</span><span class="name">Jill Schmoe</span><span class="email"><a class="dummy" href="mailto:jscee@uw.edu">jscee@uw.edu</a></span></li>
-                           <li class="dummy"><span class="quarter">Spring 2015</span><span class="name">Dippy Smith</span><span class="email"><a class="dummy" href="mailto:dls2020@uw.edu">dls2020@uw.edu</a></span></li>
-                       </ol>   
-                	</div>   
-
-                </div>
+        	<div class="course_info data-section" id="historic-course-target">
+        	    
         	</div>
            
 		</div>	<!-- end of main -->
