@@ -3,8 +3,8 @@ This module direct interfaces with restclient for the term data
 """
 
 from datetime import date, datetime, timedelta
-#import logging
-#import pytz
+# import logging
+# import pytz
 from django.conf import settings
 from django.utils import timezone
 from uw_sws.models import Term
@@ -18,7 +18,7 @@ from uw_sws.term import get_term_by_date, get_specific_term, \
 from coursedashboards.dao import is_using_file_dao
 
 
-#logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 def get_default_date():

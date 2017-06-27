@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 
+
 def page_view(func):
     @login_required
     @cache_control(max_age=0, no_cache=True,

@@ -8,16 +8,19 @@ from django.conf import settings
 from coursedashboards.dao import get_netid_of_current_user
 from coursedashboards.dao.pws import get_person_of_current_user
 from coursedashboards.dao.term import get_current_quarter
-from coursedashboards.dao.section import create_sections_context, get_instructor_current_sections
+from coursedashboards.dao.section import create_sections_context,\
+    get_instructor_current_sections
+
 
 def page(request,
          context={},
          template='course-page.html'):
     netid = get_netid_of_current_user()
-    #below is placeholder if login fails... should log and return something useful
+    # below is placeholder if login fails...
+    # should log and return something useful
     if not netid:
-        #log_invalid_netid_response(logger, timer)
-        return "nope"#invalid_session()
+        # log_invalid_netid_response(logger, timer)
+        return "nope"  # insvalid_session()
     context["user"] = {
         "netid": netid,
         "session_key": request.session.session_key,
@@ -38,10 +41,9 @@ def page(request,
     
     person = get_person_of_current_user()
     
-    #WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
-    #currently getting ALL data for EVERY section being taught...perhaps should only pull data when needed?
+    # WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
     sections = get_instructor_current_sections(person, cur_term)
-    context["sections"] = create_sections_context(sections,cur_term)
-    
+    context["sections"] = create_sections_context(sections, cur_term)
+    # get historic offerings of courses
+    # get_past_offering_of_course("TRAIN","101",cur_term)
     return render(request, template, context)
-

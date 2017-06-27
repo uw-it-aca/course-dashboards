@@ -1,5 +1,12 @@
-from uw_sws.enrollment import enrollment_search_by_regid, get_grades_by_regid_and_term, get_enrollment_by_regid_and_term
+from uw_sws.enrollment import enrollment_search_by_regid,\
+    get_grades_by_regid_and_term, get_enrollment_by_regid_and_term
 from uw_sws.registration import get_active_registrations_by_section
+
+"""
+Gets data about students e.g. students enrolled
+in course X, students' majors and GPAs
+"""
+
 
 def get_students_in_section(section):
     students = []
@@ -15,16 +22,19 @@ def get_students_in_section(section):
         students.append(registration.person.json_data())
     return students
 
-def get_concurrent_courses_all_students(students, curriculum, course_number, section_id, term):
+
+def get_concurrent_sections_all_students(students,
+                                         curriculum, course_number,
+                                         section_id, term):
     all_courses = []
     course_dict = {}
     this_course = curriculum + " " + course_number + " " + section_id
     total_students = len(students)
     for student in students:
-        all_courses += get_concurrent_courses_by_student(student, term)
+        all_courses += get_concurrent_sections_by_student(student, term)
     for course in all_courses:
         if course != this_course:
-            if course_dict.has_key(course):
+            if course in course_dict:
                 course_dict[course] += 1
             else:
                 course_dict[course] = 1
@@ -32,17 +42,25 @@ def get_concurrent_courses_all_students(students, curriculum, course_number, sec
     top_courses = []
     for sort in sorted_courses:
         top_courses.append({
-            "course":sort,
-            "percent_students":round((float(course_dict[sort])/float(total_students))*100.0,2)
+            "course": sort,
+            "percent_students":
+                round(
+                    (float(course_dict[sort]) / float(total_students)) *
+                    100.0, 2)
         })
     return top_courses
-    
-def get_concurrent_courses_by_student(student, term):
+
+
+def get_concurrent_sections_by_student(student, term):
     grades = grades = get_grades_by_regid_and_term(student["uwregid"], term)
     concurrent_courses = []
     for course in grades.grades:
-        concurrent_courses.append(course.section.curriculum_abbr + " " + course.section.course_number + " " + course.section.section_id)
+        concurrent_courses.append(
+            course.section.curriculum_abbr +
+            " " + course.section.course_number +
+            " " + course.section.section_id)
     return concurrent_courses
+
 
 def get_majors_all_students(students, term):
     majors_dict = {}
@@ -50,21 +68,27 @@ def get_majors_all_students(students, term):
     for student in students:
         major = get_student_major(student, term)
         for m in major:
-            if majors_dict.has_key(m.full_name):
+            if m.full_name in majors_dict:
                 majors_dict[m.full_name] += 1
-            else: majors_dict[m.full_name] = 1
+            else:
+                majors_dict[m.full_name] = 1
     sorted_majors = sorted(majors_dict, reverse=True, key=majors_dict.get)
     top_majors = []
     for sort in sorted_majors:
         top_majors.append({
-            "major":sort,
-            "percent_students":round((float(majors_dict[sort])/float(total_students))*100.0,2)
+            "major": sort,
+            "percent_students":
+                round(
+                    (float(majors_dict[sort]) / float(total_students)) *
+                    100.0, 2)
         })
     return top_majors
+
 
 def get_student_major(student, term):
     enrollment = get_enrollment_by_regid_and_term(student["uwregid"], term)
     return enrollment.majors
+
 
 def calc_median_gpa(students):
     gpas = []
@@ -74,8 +98,8 @@ def calc_median_gpa(students):
 
 
 def get_student_gpa(student):
-    #get enrollments for this student then calculate GPA
-    #for each enrollment, add up QtrGradePoints, and QtrGradedAttmp
+    # get enrollments for this student then calculate GPA
+    # for each enrollment, add up QtrGradePoints, and QtrGradedAttmp
     enrollments = enrollment_search_by_regid(student["uwregid"])
     grade_points = 0
     credits_attempted = 0
@@ -85,12 +109,13 @@ def get_student_gpa(student):
         credits_attempted += grades.credits_attempted
     return grade_points / credits_attempted
 
+
 def median(values):
     values = sorted(values)
     n = len(values)
     if n < 1:
         return 0
-    if n%2==1:
+    if n % 2 == 1:
         return values[n//2]
     else:
         return sum(values[n//2-1:n//2+1]) / 2.0

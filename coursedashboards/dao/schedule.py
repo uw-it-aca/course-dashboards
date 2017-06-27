@@ -3,18 +3,19 @@ STOLEN FROM MYUW
 This module provides access to registered class schedule and sections
 """
 
-#import logging
+# import logging
 from uw_sws.models import ClassSchedule
 from uw_sws.registration import get_schedule_by_regid_and_term
 from restclients.thread import generic_prefetch
-#from restclients.library.currics import get_subject_guide_for_section_params
+# from restclients.library.currics import get_subject_guide_for_section_params
 from coursedashboards.dao.pws import get_regid_of_current_user
-from coursedashboards.dao.term import get_current_quarter, get_next_quarter, get_next_autumn_quarter, get_current_summer_term,\
+from coursedashboards.dao.term import get_current_quarter, get_next_quarter,\
+    get_next_autumn_quarter, get_current_summer_term,\
     is_a_term, is_b_term
 from coursedashboards.dao.term import get_comparison_date
 
 
-#logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 EARLY_FALL_START = "EARLY FALL START"
 
 
@@ -47,6 +48,7 @@ def myuw_section_prefetch(data):
 
     return [[key, method]]
 """
+
 
 def get_schedule_by_term(request, term):
     """
