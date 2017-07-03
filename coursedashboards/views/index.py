@@ -1,7 +1,9 @@
 from coursedashboards.views.page import page
 from coursedashboards.util.page_view import page_view
+from restclients_core.util.local_cache import local_cache
 
 
+@local_cache()
 @page_view
 def index(request, year=None, quarter=None, curriculum_abbr=None, course_number=None,section_label=None,sections=None):
     context = {

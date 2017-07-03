@@ -1,5 +1,7 @@
 from uw_sws.enrollment import enrollment_search_by_regid, get_grades_by_regid_and_term, get_enrollment_by_regid_and_term
 from uw_sws.registration import get_active_registrations_by_section
+from coursedashboards.models import CourseMedianGPA
+
 
 def get_students_in_section(section):
     students = []
@@ -66,11 +68,18 @@ def get_student_major(student, term):
     enrollment = get_enrollment_by_regid_and_term(student["uwregid"], term)
     return enrollment.majors
 
-def calc_median_gpa(students):
+def calc_median_gpa(section, students):
+    saved_value = CourseMedianGPA.get_cached(section)
+    if saved_value:
+        return saved_value
     gpas = []
     for student in students:
         gpas.append(get_student_gpa(student))
-    return median(gpas)
+    new_value = median(gpas)
+
+    CourseMedianGPA.save_value(section, new_value)
+
+    return new_value
 
 
 def get_student_gpa(student):
