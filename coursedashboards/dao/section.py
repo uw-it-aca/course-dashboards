@@ -1,10 +1,11 @@
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from uw_sws.section import get_sections_by_instructor_and_term,\
-    get_section_by_label, get_section_by_url
+    get_section_by_label
+from uw_sws.models import Term
 from coursedashboards.dao.student import get_students_in_section,\
     get_concurrent_sections_all_students, get_majors_all_students,\
-    calc_median_gpa
+    calc_median_gpa, get_all_course_grades
 
 quarter = ["winter", "spring", "summer", "autumn"]
 
@@ -15,13 +16,54 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
     # need to find at least min_offerings in order to display data
     course_prefix = "/student/v5/course/"
     start_quarter = quarter.index(start_term.quarter)
-    furthest_quarter = start_quarter + 1 if (start_quarter < 4) else 0
-    furthest_year = start_term.year - years if (furthest_quarter > 0)\
+    test_quarter = start_quarter + 1 if (start_quarter < 4) else 0
+    test_year = start_term.year - years if (test_quarter > 0)\
         else start_term.year - (years-1)
-    # loop backwards through time
-    url = course_prefix + str(start_term.year) + "," + start_term.quarter\
-        + "," + curriculum + "," + course_number + "/A.json"
-    return get_section_by_url(url).json_data()
+    # look for past offerings in each quarter
+    # don't need to return full section info
+    # create object containing section term info plus every student grade
+    
+    
+    past_offerings = []
+    grades = []
+    while test_year <= start_term.year:
+        """
+        Can't get grades until sws rest client is updated
+        try:
+            section = get_section_by_label(str(test_year) + "," + quarter[test_quarter] + "," + curriculum + "," + str(course_number) + "/A")
+            grades = get_all_course_grades(section)
+            print grades
+        except Exception as ex:
+            msg = ex.args 
+            print msg
+        """
+        term = Term()
+        term.quarter = quarter[test_quarter]
+        term.year = test_year
+        
+        try:
+            section = get_section_by_label(str(test_year) + "," + quarter[test_quarter] + "," + curriculum + "," + str(course_number) + "/A")
+            students = get_students_in_section(section)
+            concurrent_majors = get_majors_all_students(students, term)
+            concurrent_courses = get_concurrent_sections_all_students(students, curriculum, course_number, "A", term)
+            #print concurrent_majors
+            past_offerings.append({
+                "year": test_year,
+                "quarter": quarter[test_quarter],
+                "majors": concurrent_majors,
+                "concurrent_courses": concurrent_courses
+            })
+        except Exception as ex:
+            msg = ex.args
+        if test_quarter == 3:
+            test_year += 1
+            test_quarter = 0
+        else: 
+            test_quarter += 1
+        if test_year == start_term.year and\
+        test_quarter == quarter.index(start_term.quarter):
+            break
+    return past_offerings
 
 
 def create_sections_context(sections, term):
@@ -39,7 +81,6 @@ def create_sections_context(sections, term):
         past_offerings = get_past_offering_of_course(
             cur_section['curriculum_abbr'],
             cur_section['course_number'], term)
-        print past_offerings
         con_sections.append({
             'curriculum': cur_section['curriculum_abbr'],
             'course_number': cur_section['course_number'],

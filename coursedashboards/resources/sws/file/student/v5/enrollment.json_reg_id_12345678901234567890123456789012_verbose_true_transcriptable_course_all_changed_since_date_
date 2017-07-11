@@ -1,57 +1,48 @@
-{
-    "Current":
-     {
-        "Href": "/student/v5/enrollment.json?reg_id=12345678901234567890123456789012&verbose=true&changed_since_date=&transcriptable_course=all",
-        "RegID": "12345678901234567890123456789012",
-        "Verbose": true
+{"Current":{
+  "Href":"\/student\/v5\/enrollment.json?reg_id=12345678901234567890123456789012&verbose=true&changed_since_date=&transcriptable_course=all", "RegID":"12345678901234567890123456789012","Verbose":true},
+"Enrollments":[
+    {
+    "ClassLevel": "SENIOR",
+    "FullName": "CLASS, EIGHT",
+    "HonorsProgram": false,
+    "LeaveEndQuarter": 0,
+    "LeaveEndYear": 0,
+    "Majors": [
+       {"Abbreviation":"ECON",
+        "Campus":"Tacoma",
+        "DegreeLevel":1,
+        "DegreeName":"BACHELOR OF SCIENCE (ECONOMICS)",
+        "DegreeType":5,
+        "FullName":"Economics",
+        "MajorName":"ECONOMICS",
+        "Pathway":0,
+        "ShortName":"ECONOMICS"},
+       {"Abbreviation":"MATH",
+        "Campus":"Tacoma",
+        "DegreeLevel":1,
+        "DegreeName":"BACHELOR OF SCIENCE (MATHEMATICS)",
+        "DegreeType":5,
+        "FullName":"Mathematics",
+        "MajorName":"MATHEMATICS",
+        "Pathway":0,
+        "ShortName":"MATH"}
+    ],
+    "PendingClassChange": false,
+    "PendingHonorsChange": false,
+    "PendingMajorChange": false,
+    "PendingResidentChange": false,
+    "PendingSpecialProgramChange": false,
+    "Person": {
+        "Href": "/student/v5/person/12345678901234567890123456789012.json",
+        "Name": "CLASS, EIGHT",
+        "RegID": "12345678901234567890123456789012"
     },
-    "Enrollments": [
+    "QtrGradePoints": 30,
+    "QtrGradedAttmp": 10,
+    "QtrNonGrdEarned": 2,
+    "RegID": "12345678901234567890123456789012",
+    "Registrations": [
         {
-            "ClassLevel": "SENIOR",
-            "CurrentRegisteredCredits": null,
-            "EnrollmentStatus": "Registered",
-            "EnrollmentStatusDate": "2013-06-08",
-            "FullName": "James McMiddle Average",
-            "HonorsProgram": false,
-            "LeaveEndQuarter": 0,
-            "LeaveEndYear": 0,
-            "Majors": [
-                {"Abbreviation": "ACMS",
-                 "Campus": "Seattle",
-                 "DegreeLevel": 1,
-                 "DegreeName": "BACHELOR OF SCIENCE (APPLIED & COMPUTATIONAL MATH SCIENCES)",
-                 "DegreeType": 5,
-                 "FullName": "App & Comp Math Sci (Social & Behav Sci)",
-                 "MajorName": "ACMS (SOC & BEH SCI)",
-                 "Pathway": 80,
-                 "ShortName": "ACMS (SBS)"
-                }
-            ],
-            "Metadata": "EnrollmentSourceLocation=SDB;",
-            "Minors": [
-                {"Abbreviation":"ASL",
-                 "CampusName":"Seattle",
-                 "FullName":"American Sign Language",
-                 "Name":"AMERICAN SIGN LANGUAGE",
-                 "Pathway":0,
-                 "ShortName":"ASL"}
-            ],
-            "PendingClassChange": false,
-            "PendingHonorsChange": false,
-            "PendingMajorChange": false,
-            "PendingResidentChange": false,
-            "PendingSpecialProgramChange": false,
-            "Person": {
-                "Href": "/student/v5/person/12345678901234567890123456789012.json",
-                "Name": "James McMiddle Average",
-                "RegID": "12345678901234567890123456789012"
-            },
-            "QtrGradePoints": 38,
-            "QtrGradedAttmp": 10,
-            "QtrNonGrdEarned": 2,
-            "RegID": "12345678901234567890123456789012",
-            "Registrations": [
-            {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 2.0",
@@ -66,7 +57,7 @@
             "IsActive": true,
             "Person": {
                 "Href": "/student/v5/person/12345678901234567890123456789012.json",
-                "Name": "AVERAGE,JAMES",
+                "Name": "CLASS, EIGHT",
                 "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
@@ -82,8 +73,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": false
-           },
-           {
+        },
+        {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 5.0",
@@ -98,7 +89,7 @@
             "IsActive": true,
             "Person": {
                 "Href": "/student/v5/person/12345678901234567890123456789012.json",
-                "Name": "AVERAGE,JAMES",
+                "Name": "CLASS,EIGHT",
                 "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
@@ -114,8 +105,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": false
-           },
-           {
+        },
+        {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 3.0",
@@ -130,7 +121,7 @@
             "IsActive": true,
             "Person": {
                 "Href": "/student/v5/person/12345678901234567890123456789012.json",
-                "Name": "AVERAGE,JAMES",
+                "Name": "CLASS,EIGHT",
                 "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
@@ -146,8 +137,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": true
-           },
-           {
+        },
+        {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 1.0",
@@ -162,7 +153,7 @@
             "IsActive": true,
             "Person": {
                 "Href": "/student/v5/person/12345678901234567890123456789012.json",
-                "Name": "AVERAGE,JAMES",
+                "Name": "CLASS,EIGHT",
                 "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
@@ -178,8 +169,8 @@
             },
             "VariableCredit": false,
             "WritingCourse": true
-           },
-           {
+        },
+        {
             "AddAccessCode": "",
             "Auditor": false,
             "Credits": " 1.0",
@@ -194,7 +185,7 @@
             "IsActive": true,
             "Person": {
                 "Href": "/student/v5/person/12345678901234567890123456789012.json",
-                "Name": "AVERAGE,JAMES",
+                "Name": "CLASS,EIGHT",
                 "RegID": "12345678901234567890123456789012"
             },
             "RepeatCourse": false,
@@ -210,19 +201,224 @@
             },
             "VariableCredit": false,
             "WritingCourse": true
-         }
-      ],
-      "RepositoryTimeStamp": "3/28/2017 2:21:36 PM",
-      "Term": {
-                "Href": "/student/v5/term/2013,spring.json",
+        },
+        {
+            "AddAccessCode": "",
+            "Auditor": false,
+            "Credits": " 5.0",
+            "DropAccessCode": "",
+            "DuplicateCode": "1",
+            "FacultySequenceNumber": "",
+            "FeeBaseType": "",
+            "Grade": "3.1",
+            "GradeDate": "",
+            "GradeDocumentID": "061702510",
+            "HonorsCourse": false,
+            "IsActive": true,
+            "Person": {
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
+                "Name": "CLASS,EIGHT",
+                "RegID": "12345678901234567890123456789012"
+            },
+            "RepeatCourse": false,
+            "RequestDate": "",
+            "RequestStatus": "",
+            "Section": {
+                "Href": "/student/v5/course/2013,spring,T%20ARTS,110/A.json",
+                "CourseNumber": "110",
+                "CurriculumAbbreviation": "T ARTS",
                 "Quarter": "spring",
-                "Year": 2013
-            }
-   }
+                "SectionID": "A",
+                "Year": "2013"
+            },
+            "VariableCredit": false,
+            "WritingCourse": true
+        },
+        {
+            "AddAccessCode": "",
+            "Auditor": false,
+            "Credits": " 5.0",
+            "DropAccessCode": "",
+            "DuplicateCode": "1",
+            "FacultySequenceNumber": "",
+            "FeeBaseType": "",
+            "Grade": "3.0",
+            "GradeDate": "",
+            "GradeDocumentID": "061702510",
+            "HonorsCourse": false,
+            "IsActive": true,
+            "Person": {
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
+                "Name": "CLASS,EIGHT",
+                "RegID": "12345678901234567890123456789012"
+            },
+            "RepeatCourse": false,
+            "RequestDate": "",
+            "RequestStatus": "",
+            "Section": {
+                "Href": "/student/v5/course/2013,spring,ROLING,310/A.json",
+                "CourseNumber": "310",
+                "CurriculumAbbreviation": "ROLING",
+                "Quarter": "spring",
+                "SectionID": "A",
+                "Year": "2013"
+            },
+            "VariableCredit": false,
+            "WritingCourse": true
+        },
+        {
+            "AddAccessCode": "",
+            "Auditor": false,
+            "Credits": " 5.0",
+            "DropAccessCode": "",
+            "DuplicateCode": "1",
+            "FacultySequenceNumber": "",
+            "FeeBaseType": "",
+            "Grade": "3.9",
+            "GradeDate": "",
+            "GradeDocumentID": "061702510",
+            "HonorsCourse": false,
+            "IsActive": true,
+            "Person": {
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
+                "Name": "CLASS,EIGHT",
+                "RegID": "12345678901234567890123456789012"
+            },
+            "RepeatCourse": false,
+            "RequestDate": "",
+            "RequestStatus": "",
+            "Section": {
+                "Href": "/student/v5/course/2013,spring,ARCTIC,200/A.json",
+                "CourseNumber": "200",
+                "CurriculumAbbreviation": "ARCTIC",
+                "Quarter": "spring",
+                "SectionID": "A",
+                "Year": "2013"
+            },
+            "VariableCredit": false,
+            "WritingCourse": true
+        }
+
     ],
-    "Next": null,
-    "PageSize": "10",
-    "PageStart": "1",
-    "Previous": null,
-    "TotalCount": 6
+    "Term": {
+        "Href": "/student/v5/term/2013,spring.json",
+        "Quarter": "spring",
+        "Year": "2013"
+    }
+},
+        {
+            "ClassLevel": "SENIOR",
+            "FullName": "CLASS, EIGHT",
+            "HonorsProgram": false,
+            "LeaveEndQuarter": 0,
+            "LeaveEndYear": 0,
+            "Majors": [
+            {"Abbreviation":"ECON",
+                "Campus":"Tacoma",
+                "DegreeLevel":1,
+                "DegreeName":"BACHELOR OF SCIENCE (ECONOMICS)",
+                "DegreeType":5,
+                "FullName":"Economics",
+                "MajorName":"ECONOMICS",
+                "Pathway":0,
+                "ShortName":"ECONOMICS"},
+                {"Abbreviation":"PHIL",
+                    "Campus":"Tacoma",
+                    "DegreeLevel":1,
+                    "DegreeName":"BACHELOR OF ARTS (PHILOSOPHY)",
+                    "DegreeType":5,
+                    "FullName":"Philosophy",
+                    "MajorName":"PHILOSOPHY",
+                    "Pathway":0,
+                    "ShortName":"PHILOSOPHY"},
+                {"Abbreviation":"MATH",
+                "Campus":"Tacoma",
+                "DegreeLevel":1,
+                "DegreeName":"BACHELOR OF SCIENCE (MATHEMATICS)",
+                "DegreeType":5,
+                "FullName":"Mathematics",
+                "MajorName":"MATHEMATICS",
+                "Pathway":0,
+                "ShortName":"MATH"}
+
+            ],
+            "PendingClassChange": false,
+            "PendingHonorsChange": false,
+            "PendingMajorChange": false,
+            "PendingResidentChange": false,
+            "PendingSpecialProgramChange": false,
+            "Person": {
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
+                "Name": "CLASS, EIGHT",
+                "RegID": "12345678901234567890123456789012"
+            },
+            "QtrGradePoints": 30,
+            "QtrGradedAttmp": 10,
+            "QtrNonGrdEarned": 2,
+            "RegID": "12345678901234567890123456789012",
+            "Registrations": [
+
+            ],
+            "Term": {
+                "Href": "/student/v5/term/2013,summer.json",
+                "Quarter": "summer",
+                "Year": "2013"
+            }
+        },
+        {
+            "ClassLevel": "SENIOR",
+            "FullName": "CLASS, EIGHT",
+            "HonorsProgram": false,
+            "LeaveEndQuarter": 0,
+            "LeaveEndYear": 0,
+            "Majors": [
+            {"Abbreviation":"ECON",
+                "Campus":"Tacoma",
+                "DegreeLevel":1,
+                "DegreeName":"BACHELOR OF SCIENCE (ECONOMICS)",
+                "DegreeType":5,
+                "FullName":"Economics",
+                "MajorName":"ECONOMICS",
+                "Pathway":0,
+                "ShortName":"ECONOMICS"},
+                {"Abbreviation":"MATH",
+                "Campus":"Tacoma",
+                "DegreeLevel":1,
+                "DegreeName":"BACHELOR OF SCIENCE (MATHEMATICS)",
+                "DegreeType":5,
+                "FullName":"Mathematics",
+                "MajorName":"MATHEMATICS",
+                "Pathway":0,
+                "ShortName":"MATH"}
+
+            ],
+            "PendingClassChange": false,
+            "PendingHonorsChange": false,
+            "PendingMajorChange": false,
+            "PendingResidentChange": false,
+            "PendingSpecialProgramChange": false,
+            "Person": {
+                "Href": "/student/v5/person/12345678901234567890123456789012.json",
+                "Name": "CLASS, EIGHT",
+                "RegID": "12345678901234567890123456789012"
+            },
+            "QtrGradePoints": 30,
+            "QtrGradedAttmp": 10,
+            "QtrNonGrdEarned": 2,
+            "RegID": "12345678901234567890123456789012",
+            "Registrations": [
+
+            ],
+            "Term": {
+                "Href": "/student/v5/term/2013,autumn.json",
+                "Quarter": "autumn",
+                "Year": "2013"
+            }
+        }
+],
+"Next":null,
+"PageSize":"10",
+"PageStart":"1",
+"Previous":null,
+"TotalCount": 1
 }

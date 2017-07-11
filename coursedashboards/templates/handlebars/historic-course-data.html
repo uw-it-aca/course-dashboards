@@ -9,23 +9,21 @@
 -->
     <span class="col-md-6 historic-filters">
         <span class="dummy">
-           <label for="histoic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
-           <select class="historic-filter" name="histoic_filter_quarter" id="histoic_filter_quarter">
-                   <option class="dummy" selected>All Quarters</option>
-                   <option class="dummy">Autumn</option>
-                   <option class="dummy">Winter</option>
-                   <option class="dummy">Spring</option>
-                   <option class="dummy">Summer</option>
+           <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
+           <select class="historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
+               <option data-label="all" selected>All Quarters</option>
+               {{#each past_terms}}
+                   <option data-label="{{quarter}}">{{quarter}}</option>
+               {{/each}}
            </select>
        </span> 
        <span class="dummy">
-           <label for="histoic_filter_year" class="visually-hidden">Filter historic data by year:</label>
-           <select class="historic-filter" name="histoic_filter_year" id="histoic_filter_year">
-                   <option class="dummy" selected>All Years</option>
-                   <option class="dummy">2017</option>
-                   <option class="dummy">2016</option>
-                   <option class="dummy">2015</option>
-                   <option class="dummy">2013</option>
+           <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
+           <select class="historic-filter" name="historic_filter_year" id="historic_filter_year">
+                   <option data-label="all" selected>All Years</option>
+                   {{#each past_terms}}
+                   <option data-label="{{year}}">{{year}}</option>
+                {{/each}}
            </select>
        </span> 
     </span>
@@ -43,11 +41,9 @@
     <div class="list col-md-6">
         <h3>Common majors (when taking the course):</h3>
         <ol>
-           <li class="dummy"><span>Mathmatics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Philosophy </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>English </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
+            {{#each common_majors}}
+           <li><span>{{major}} </span><span>[{{percent_students}}%]</span></li>
+           {{/each}}
        </ol> 
     </div>
     <div class="list col-md-6">
@@ -63,11 +59,9 @@
     <div class="list col-md-6">
         <h3>Concurrent Courses:</h3>
         <ol>
-           <li class="dummy"><span>MATH 100 </span><span>[% of class that takes this course]</span></li>
-           <li class="dummy"><span>ENG 200 </span><span>[% of class that takes this course]</span></li>
-           <li class="dummy"><span>STATS 100 </span><span>[% of class that takes this course]</span></li>
-           <li class="dummy"><span>MATH 300 </span><span>[% of class that takes this course]</span></li>
-           <li class="dummy"><span>MATH 222 </span><span>[% of class that takes this course]</span></li>
+            {{#each common_courses}}
+           <li><span>{{course}} </span><span>[{{percent_students}}%]</span></li>
+           {{/each}}
        </ol> 
     </div>
     <div class="previous-instructors col-md-6">	

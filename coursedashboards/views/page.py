@@ -44,6 +44,4 @@ def page(request,
     # WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
     sections = get_instructor_current_sections(person, cur_term)
     context["sections"] = create_sections_context(sections, cur_term)
-    # get historic offerings of courses
-    # get_past_offering_of_course("TRAIN","101",cur_term)
     return render(request, template, context)

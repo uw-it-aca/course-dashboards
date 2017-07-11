@@ -1,6 +1,8 @@
 from uw_sws.enrollment import enrollment_search_by_regid,\
     get_grades_by_regid_and_term, get_enrollment_by_regid_and_term
 from uw_sws.registration import get_active_registrations_by_section
+from urllib import urlencode
+from uw_sws import get_resource
 
 """
 Gets data about students e.g. students enrolled
@@ -43,6 +45,7 @@ def get_concurrent_sections_all_students(students,
     for sort in sorted_courses:
         top_courses.append({
             "course": sort,
+            "number_students":course_dict[sort],
             "percent_students":
                 round(
                     (float(course_dict[sort]) / float(total_students)) *
@@ -68,6 +71,7 @@ def get_majors_all_students(students, term):
     for student in students:
         major = get_student_major(student, term)
         for m in major:
+            print m.full_name
             if m.full_name in majors_dict:
                 majors_dict[m.full_name] += 1
             else:
@@ -77,6 +81,7 @@ def get_majors_all_students(students, term):
     for sort in sorted_majors:
         top_majors.append({
             "major": sort,
+            "number_students": majors_dict[sort],
             "percent_students":
                 round(
                     (float(majors_dict[sort]) / float(total_students)) *
@@ -105,9 +110,25 @@ def get_student_gpa(student):
     credits_attempted = 0
     for term in enrollments:
         grades = get_grades_by_regid_and_term(student["uwregid"], term)
-        grade_points += grades.grade_points
-        credits_attempted += grades.credits_attempted
+        grade_points += count_numeric_only(grades.grade_points)
+        credits_attempted += count_numeric_only(grades.credits_attempted)
     return grade_points / credits_attempted
+
+
+def count_numeric_only(num):
+    try:
+        ret = float(num)
+        return ret
+    except TypeError:
+        return 0
+
+def get_all_course_grades(section):
+    students = get_active_registrations_by_section(section)
+    for student in students:
+        student.grade = 3.5;
+    # ADD WHEN SWS CLIENT UPDATED print student.grade
+    return students
+        
 
 
 def median(values):
