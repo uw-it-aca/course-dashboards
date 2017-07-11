@@ -5,7 +5,7 @@ from uw_sws.section import get_sections_by_instructor_and_term,\
 from uw_sws.models import Term
 from coursedashboards.dao.student import get_students_in_section,\
     get_concurrent_sections_all_students, get_majors_all_students,\
-    calc_median_gpa, get_all_course_grades
+    calc_median_gpa, get_all_course_grades, get_most_recent_majors_all_students
 
 quarter = ["winter", "spring", "summer", "autumn"]
 
@@ -44,17 +44,17 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
         try:
             section = get_section_by_label(str(test_year) + "," + quarter[test_quarter] + "," + curriculum + "," + str(course_number) + "/A")
             students = get_students_in_section(section)
-            concurrent_majors = get_majors_all_students(students, term)
-            concurrent_courses = get_concurrent_sections_all_students(students, curriculum, course_number, "A", term)
             past_offerings.append({
                 "year": test_year,
                 "quarter": quarter[test_quarter],
-                "majors": concurrent_majors,
-                "concurrent_courses": concurrent_courses,
-                "instructors": get_instructors_for_section(section)
+                "majors": get_majors_all_students(students, term),
+                "concurrent_courses": get_concurrent_sections_all_students(students, curriculum, course_number, "A", term),
+                "instructors": get_instructors_for_section(section),
+                "latest_majors": get_most_recent_majors_all_students(students)
             })
         except Exception as ex:
             msg = ex.args
+            print ex
         if test_quarter == 3:
             test_year += 1
             test_quarter = 0

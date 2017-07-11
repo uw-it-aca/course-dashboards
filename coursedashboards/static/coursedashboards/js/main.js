@@ -51,6 +51,7 @@ function showHistoricCourseData(index, quarter, year) {
     $("#historic-course-target").html(historicTemplate({
         past_terms:window.section_data[index].past_offerings,
         common_majors:calculateCommonMajorsForOffering(index, quarter, year),
+        latest_majors:calculateRecentMajorsForOffering(index, quarter, year),
         common_courses:commonConcurrentCoursesForOffering(index, quarter, year),
         selected_quarter:quarter,
         selected_year:year
@@ -77,7 +78,6 @@ $("#historic_filter_year").change(function() {
 function calculateCommonMajorsForOffering(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    console.log(quarter + ", " + year);
     var past_offerings = window.section_data[index].past_offerings;
     var majors = {};
     var total_students = 0;
@@ -89,9 +89,10 @@ function calculateCommonMajorsForOffering(index, quarter, year) {
     }
     else {
         for (var o = 0; o < past_offerings.length; o++) {
-            if ((past_offerings[o].year == year && quarter == all_quarters) ||
-               (year == all_years && past_offerings[o].quarter == quarter) ||
-               (year == all_years && quarter == all_quarters)) {
+            if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
+            //if ((past_offerings[o].year == year && quarter == all_quarters) ||
+               //(year == all_years && past_offerings[o].quarter == quarter) ||
+               //(year == all_years && quarter == all_quarters)) {
                 var term_majors = past_offerings[o].majors;
                 for (var m = 0; m < term_majors.length; m++) {
                     total_students += term_majors[m].number_students;
@@ -103,6 +104,50 @@ function calculateCommonMajorsForOffering(index, quarter, year) {
         }
         
     }
+    return sortMajors(majors, total_students);
+}
+
+function calculateRecentMajorsForOffering(index, quarter, year) {
+    var all_quarters = "All Quarters";
+    var all_years = "All Years";
+    var past_offerings = window.section_data[index].past_offerings;
+    var majors = {};
+    var total_students = 0;
+    if (quarter != all_quarters && year != all_years) {
+        for (var o = 0; o < past_offerings.length; o++) {
+            if (past_offerings[o].quarter == quarter && past_offerings[o].year == year)
+                majors = past_offerings[o].latest_majors;
+        }
+    }
+    else {
+        for (var o = 0; o < past_offerings.length; o++) {
+            if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
+            //if ((past_offerings[o].year == year && quarter == all_quarters) ||
+               //(year == all_years && past_offerings[o].quarter == quarter) ||
+               //(year == all_years && quarter == all_quarters)) {
+                var term_majors = past_offerings[o].latest_majors;
+                for (var m = 0; m < term_majors.length; m++) {
+                    total_students += term_majors[m].number_students;
+                    if (majors.hasOwnProperty(term_majors[m].major))
+                        majors[term_majors[m].major] += term_majors[m].number_students;
+                    else majors[term_majors[m].major] = term_majors[m].number_students;
+                }
+            }
+        }
+        
+    }
+    return sortMajors(majors, total_students);
+}
+
+function quarterIsInRange(past_offering, year, all_years, quarter, all_quarters) {
+    if ((past_offering.year == year && quarter == all_quarters) ||
+        (year == all_years && past_offering.quarter == quarter) ||
+        (year == all_years && quarter == all_quarters))
+        return true;
+    else return false;
+}
+
+function sortMajors(majors, total_students) {
     var sorted = [];
     for (var m in majors) {
         sorted.push({"major":m, "number_students":majors[m], "percent_students": ((majors[m]/total_students)*100).toFixed(2)});
@@ -127,9 +172,10 @@ function commonConcurrentCoursesForOffering(index, quarter, year) {
     }
     else {
         for (var o = 0; o < past_offerings.length; o++) {
-            if ((past_offerings[o].year == year && quarter == all_quarters) ||
-               (year == all_years && past_offerings[o].quarter == quarter) ||
-               (year == all_years && quarter == all_quarters)) {
+            if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
+            //if ((past_offerings[o].year == year && quarter == all_quarters) ||
+               //(year == all_years && past_offerings[o].quarter == quarter) ||
+               //(year == all_years && quarter == all_quarters)) {
                 var term_courses = past_offerings[o].concurrent_courses;
                 for (var m = 0; m < term_courses.length; m++) {
                     total_students += term_courses[m].number_students;

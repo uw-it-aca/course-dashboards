@@ -49,11 +49,9 @@
     <div class="list col-md-6">
         <h3>Common majors (upon graduation):</h3>
         <ol>
-           <li class="dummy"><span>Mathmatics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Human Computer Design & Engineering </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Computer Science </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
+           {{#each latest_majors}}
+           <li><span>{{major}} </span><span>[{{percent_students}}%]</span></li>
+           {{/each}}
        </ol> 
     </div>
     <div class="list col-md-6">

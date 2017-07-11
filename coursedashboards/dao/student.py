@@ -1,8 +1,10 @@
 from uw_sws.enrollment import enrollment_search_by_regid,\
-    get_grades_by_regid_and_term, get_enrollment_by_regid_and_term
+    get_grades_by_regid_and_term, get_enrollment_by_regid_and_term, enrollment_search_by_regid
 from uw_sws.registration import get_active_registrations_by_section
+from uw_sws.person import get_person_by_regid
 from urllib import urlencode
 from uw_sws import get_resource
+from uw_sws.models import Term
 
 """
 Gets data about students e.g. students enrolled
@@ -64,6 +66,19 @@ def get_concurrent_sections_by_student(student, term):
             " " + course.section.section_id)
     return concurrent_courses
 
+def order_majors(majors, total_students):
+    sorted_majors = sorted(majors, reverse=True, key=majors.get)
+    top_majors = []
+    for sort in sorted_majors:
+        top_majors.append({
+            "major": sort,
+            "number_students": majors[sort],
+            "percent_students":
+                round(
+                    (float(majors[sort]) / float(total_students)) *
+                    100.0, 2)
+        })
+    return top_majors
 
 def get_majors_all_students(students, term):
     majors_dict = {}
@@ -76,19 +91,24 @@ def get_majors_all_students(students, term):
                 majors_dict[m.full_name] += 1
             else:
                 majors_dict[m.full_name] = 1
-    sorted_majors = sorted(majors_dict, reverse=True, key=majors_dict.get)
-    top_majors = []
-    for sort in sorted_majors:
-        top_majors.append({
-            "major": sort,
-            "number_students": majors_dict[sort],
-            "percent_students":
-                round(
-                    (float(majors_dict[sort]) / float(total_students)) *
-                    100.0, 2)
-        })
-    return top_majors
+    return order_majors(majors_dict, total_students)
 
+def get_most_recent_majors_all_students(students):
+    majors_dict = {}
+    total_students = len(students)
+    for student in students:
+        person = get_person_by_regid(student["uwregid"])
+        term = Term()
+        term.quarter = person.last_enrolled.quarter
+        term.year = person.last_enrolled.year
+        majors = get_student_major(student, term)
+        for m in majors:
+            print m.full_name
+            if m.full_name in majors_dict:
+                majors_dict[m.full_name] += 1
+            else:
+                majors_dict[m.full_name] = 1
+    return order_majors(majors_dict, total_students)        
 
 def get_student_major(student, term):
     enrollment = get_enrollment_by_regid_and_term(student["uwregid"], term)
