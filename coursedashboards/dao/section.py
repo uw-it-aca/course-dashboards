@@ -46,12 +46,12 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
             students = get_students_in_section(section)
             concurrent_majors = get_majors_all_students(students, term)
             concurrent_courses = get_concurrent_sections_all_students(students, curriculum, course_number, "A", term)
-            #print concurrent_majors
             past_offerings.append({
                 "year": test_year,
                 "quarter": quarter[test_quarter],
                 "majors": concurrent_majors,
-                "concurrent_courses": concurrent_courses
+                "concurrent_courses": concurrent_courses,
+                "instructors": get_instructors_for_section(section)
             })
         except Exception as ex:
             msg = ex.args
@@ -64,6 +64,16 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
         test_quarter == quarter.index(start_term.quarter):
             break
     return past_offerings
+
+def get_instructors_for_section(section):
+    instructors = []
+    for meeting in section.meetings:
+        for instructor in meeting.instructors:
+            instructors.append({
+                'display_name': instructor.display_name,
+                'uwnetid': instructor.uwnetid
+            })
+    return instructors
 
 
 def create_sections_context(sections, term):

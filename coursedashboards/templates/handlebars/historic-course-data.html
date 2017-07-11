@@ -67,9 +67,11 @@
     <div class="previous-instructors col-md-6">	
        <h3>Previous Instructors for this course:</h3>
        <ol>
-           <li class="dummy"><span class="quarter">Autumn 2016</span><span class="name">Joe Schmoe</span><span class="email"><a class="dummy" href="mailto:jscmwe22@uw.edu">jscmwe22@uw.edu</a></span></li>
-           <li class="dummy"><span class="quarter">Autumn 2016</span><span class="name">Jill Schmoe</span><span class="email"><a class="dummy" href="mailto:jscee@uw.edu">jscee@uw.edu</a></span></li>
-           <li class="dummy"><span class="quarter">Spring 2015</span><span class="name">Dippy Smith</span><span class="email"><a class="dummy" href="mailto:dls2020@uw.edu">dls2020@uw.edu</a></span></li>
+           {{#each past_terms}}
+            {{#each instructors}}
+                <li>{{../quarter}} {{../year}} {{display_name}} {{uwnetid}}@uw.edu</li>
+            {{/each}}
+           {{/each}}
        </ol>   
     </div>   
 
