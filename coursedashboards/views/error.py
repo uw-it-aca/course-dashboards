@@ -2,7 +2,7 @@ import sys
 from django.http import HttpResponse
 from restclients_core.exceptions import (DataFailureException, InvalidNetID,
                                          InvalidRegID)
-#from myuw.logger.logresp import log_err
+# from myuw.logger.logresp import log_err
 
 
 HTTP_BAD_REQUEST = 400
@@ -51,7 +51,7 @@ def data_error():
 
 
 def handle_exception(logger, timer, stack_trace):
-    #log_err(logger, timer, stack_trace.format_exc())
+    # log_err(logger, timer, stack_trace.format_exc())
     exc_type, exc_value, exc_traceback = sys.exc_info()
     if isinstance(exc_value, InvalidNetID) or\
             isinstance(exc_value, InvalidRegID):

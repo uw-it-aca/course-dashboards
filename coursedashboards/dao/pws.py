@@ -15,6 +15,7 @@ MAILSTOP_MAX_TACOMA = 358499
 MAILSTOP_MIN_BOTHELL = 358500
 MAILSTOP_MAX_BOTHELL = 358599
 
+
 def get_person_of_current_user():
     """
     Retrieve the person data using the netid of the current user

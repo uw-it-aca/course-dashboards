@@ -8,4 +8,3 @@ class HomeView(TemplateView):
 
 class CoursePageView(TemplateView):
     template_name = 'course-page.html'
-

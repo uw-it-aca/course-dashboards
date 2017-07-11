@@ -1,24 +1,18 @@
-{% extends "coursedashboards/base.html" %}
+{% extends "base.html" %}
 {% load staticfiles %}
-
-{% block title %}Page not found{% endblock %}
-
 {% block web_content %}
 
-<div id="page_403" class="content">
-    <div class="card error" style="margin:0;">
-        <h2 class="visually-hidden">403 error</h2>
-        <p class="error-msg">You don't have permission to access this page.</p>
+<!-- MAIN CONTENT BELOW THE BANNER -->
+  	<main class="container" role="main">
+		<div class="main-content" id="maincontent">                 
+    		<h2>You do not have access.</h2> 
+                <p>Unfortunately, you don't appear to be authorized to view this page.</p>
+                <p>If you believe that you should have permission to view this page, you may want to:</p> 
+                <ul>
+                    <li>Check to make sure that you are authenticated with the correct NetID.</li>
+                    <li><a href="mailto:help@uw.edu?subject=Course Dashboard Authentication Request">Contact us</a> to request access. </li>
+                </ul>  		 
+		</div>	<!-- end of main -->
 
-        <div class="error-body">
-            <p>You may want to:</p>
-            <ul>
-                <li>Check to make sure that you are logged into the right account.</li>
-                <li>Email us at <a href="mailto:help@uw.edu>">help@uw.edu</a> if you feel like you should have permission to view this page.</li>
-            </ul>
-        </div>
-
-    </div>
-</div>
-
+	</main>  <!-- end of main container -->
 {% endblock %}

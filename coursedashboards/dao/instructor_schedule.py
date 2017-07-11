@@ -14,11 +14,6 @@ from uw_sws.models import ClassSchedule
 from restclients_core.exceptions import DataFailureException
 from coursedashboards.dao.pws import get_person_of_current_user
 from coursedashboards.dao.term import get_current_quarter
-#from myuw.dao.exceptions import NotSectionInstructorException
-#from myuw.util.thread import Thread, ThreadWithResponse
-
-
-#logger = logging.getLogger(__name__)
 
 
 def _get_instructor_sections(person, term):
