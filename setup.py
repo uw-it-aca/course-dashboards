@@ -16,7 +16,8 @@ setup(
         'django-compressor',
         'django-pyscss',
         'django_mobileesp',
-        'django-templatetag-handlebars'
+        'django-templatetag-handlebars',
+        'UW-RestClients',
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',

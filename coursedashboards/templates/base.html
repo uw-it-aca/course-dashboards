@@ -8,46 +8,14 @@
     </head>
 
 <body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
-    <p>device is:</p>
-    {% if is_desktop %}
-    <p>DESKTOP</p>
-    {% else %}
-    <p>not desktop</p>
-    {% endif %}
-    {% if request.is_tablet %}
-    <p>TABLET</p>
-    {% endif %}
-    {% if request.is_mobile %}
-    <p>MOBILE</p>
-    {% endif %}
     <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
-        <header class="topbanner-bg" role="banner">
-            <div class="container" >
-                <section class="topbanner" >
-	               <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
-	               <div class="userinfo pull-right"><span class="visually-hidden">Logged in as: </span><span class="dummy">joeuser</span> <a href="#">logout</a></div>
-	               <h1 class="sitename pull-left">Course Dashboard <span class="dummy">
-    	               <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
-    	               <select name="my_courses" id="my_courses">
-        	               <optgroup label="Autumn 2017">
-            	               <option class="dummy" selected>MATH 121 A</option>
-            	               <option class="dummy">MATH 121 C</option>
-            	               <option class="dummy">MATH 333 A</option>
-        	               </optgroup>
-        	               <optgroup label="Winter 2017">
-            	               <option class="dummy">MATH 222 A</option>
-            	               <option class="dummy">MATH 222 B</option>
-        	               </optgroup>
-    	               </select></span></h1>
-	               <div class="clear">
-	               </div>
-                    </section>
-            </div>	<!-- END OF CONTAINER -->
-        </header>
-
-        {% block web_content %}{% endblock %}
+        <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
+        </div>
+    
+    {% block web_content %}{% endblock %}
 
     </div> <!-- end of .page-wrap  -->
+    
     <!-- FOOTER STUFF -->
 
 <div>
@@ -68,7 +36,21 @@
     
 
 </div><!-- footer role -->
+{% include "handlebars/page-top.html" %}
+{% include "handlebars/current-course-data.html" %}
+{% include "handlebars/historic-course-data.html" %}    
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
-
+    <p>device is:</p>
+    {% if is_desktop %}
+    <p>DESKTOP</p>
+    {% else %}
+    <p>not desktop</p>
+    {% endif %}
+    {% if request.is_tablet %}
+    <p>TABLET</p>
+    {% endif %}
+    {% if request.is_mobile %}
+    <p>MOBILE</p>
+    {% endif %}
 </body>
 </html>

@@ -1,0 +1,31 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "page-top" %}
+{% load staticfiles %}
+
+        <header class="topbanner-bg" role="banner">
+            <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
+            <a href="http://www.uw.edu" class="uw-logo" style="background: transparent url('{% static "coursedashboards/img/uw-sprite-mini.png" %}') no-repeat;">University of Washington</a>
+            <div class="userinfo">
+                <span class="visually-hidden logout">Logged in as: </span><span>{{netid}}</span> <a href="#">logout</a>
+            </div>
+            <div class="row">
+                <h1 class="sitename"><span class="hide-sm">Course</span> Dashboard 
+                    <span class="dummy">
+    	               <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
+    	               <select name="my_courses" id="my_courses">
+        	               <optgroup label="{{quarter}} {{year}}">
+                               {{#each sections}}
+                                   <option data-label="{{section_label}}" {{#if @first}}selected{{/if}}>{{curriculum}} {{course_number}} {{section_id}}</option>
+                               {{/each}}
+                           </optgroup>
+    	               </select>
+                    </span>
+                </h1>
+            </div>
+	               <div class="clear">
+	               </div>
+	               
+        </header>
+
+        
+{% endtplhandlebars %}
