@@ -151,6 +151,10 @@ function commonConcurrentCoursesForOffering(index, quarter, year) {
     return sorted;
 }
 
+function getInstructors(section) {
+    
+}
+
 //Capitalize the first letter of a word
 function firstLetterUppercase(word) 
 {

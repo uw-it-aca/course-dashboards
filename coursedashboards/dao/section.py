@@ -67,12 +67,15 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
 
 def get_instructors_for_section(section):
     instructors = []
+    netids = []
     for meeting in section.meetings:
         for instructor in meeting.instructors:
-            instructors.append({
-                'display_name': instructor.display_name,
-                'uwnetid': instructor.uwnetid
-            })
+            if instructor.uwnetid not in netids and instructor.uwnetid:
+                instructors.append({
+                    'display_name': instructor.display_name,
+                    'uwnetid': instructor.uwnetid
+                })
+                netids.append(instructor.uwnetid)
     return instructors
 
 
