@@ -90,9 +90,6 @@ function calculateCommonMajorsForOffering(index, quarter, year) {
     else {
         for (var o = 0; o < past_offerings.length; o++) {
             if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
-            //if ((past_offerings[o].year == year && quarter == all_quarters) ||
-               //(year == all_years && past_offerings[o].quarter == quarter) ||
-               //(year == all_years && quarter == all_quarters)) {
                 var term_majors = past_offerings[o].majors;
                 for (var m = 0; m < term_majors.length; m++) {
                     total_students += term_majors[m].number_students;
@@ -122,9 +119,6 @@ function calculateRecentMajorsForOffering(index, quarter, year) {
     else {
         for (var o = 0; o < past_offerings.length; o++) {
             if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
-            //if ((past_offerings[o].year == year && quarter == all_quarters) ||
-               //(year == all_years && past_offerings[o].quarter == quarter) ||
-               //(year == all_years && quarter == all_quarters)) {
                 var term_majors = past_offerings[o].latest_majors;
                 for (var m = 0; m < term_majors.length; m++) {
                     total_students += term_majors[m].number_students;
@@ -152,10 +146,14 @@ function sortMajors(majors, total_students) {
     for (var m in majors) {
         sorted.push({"major":m, "number_students":majors[m], "percent_students": ((majors[m]/total_students)*100).toFixed(2)});
     }
-    sorted.sort(function(a, b) {
-        return a[1] - b[1];
+    return reverseSortByNumStudents(sorted);
+}
+
+function reverseSortByNumStudents(arr) {
+    arr.sort(function(a, b) {
+        return a.number_students - b.number_students;
     });
-    return sorted;
+    return arr.reverse();
 }
 
 function commonConcurrentCoursesForOffering(index, quarter, year) {
@@ -173,9 +171,6 @@ function commonConcurrentCoursesForOffering(index, quarter, year) {
     else {
         for (var o = 0; o < past_offerings.length; o++) {
             if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
-            //if ((past_offerings[o].year == year && quarter == all_quarters) ||
-               //(year == all_years && past_offerings[o].quarter == quarter) ||
-               //(year == all_years && quarter == all_quarters)) {
                 var term_courses = past_offerings[o].concurrent_courses;
                 for (var m = 0; m < term_courses.length; m++) {
                     total_students += term_courses[m].number_students;
@@ -191,14 +186,7 @@ function commonConcurrentCoursesForOffering(index, quarter, year) {
     for (var m in courses) {
         sorted.push({"course":m, "number_students":courses[m], "percent_students": ((courses[m]/total_students)*100).toFixed(2)});
     }
-    sorted.sort(function(a, b) {
-        return a[1] - b[1];
-    });
-    return sorted;
-}
-
-function getInstructors(section) {
-    
+    return reverseSortByNumStudents(sorted);
 }
 
 //Capitalize the first letter of a word
