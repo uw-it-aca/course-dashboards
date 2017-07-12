@@ -12,7 +12,7 @@ $("#top_banner").html(template({
 $("#my_courses").change(function() {
     var index = $("select[name='my_courses'] option:selected").index();
     showCurrentCourseData(index);
-    showHistoricDataSelectors(index);
+    showHistoricDataSelectors(index, "All Quarters", "All Years");
     showHistoricCourseData(index, "All Quarters", "All Years");
 });
 
