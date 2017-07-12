@@ -54,7 +54,6 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
             })
         except Exception as ex:
             msg = ex.args
-            print ex
         if test_quarter == 3:
             test_year += 1
             test_quarter = 0

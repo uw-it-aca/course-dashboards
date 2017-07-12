@@ -130,8 +130,6 @@ def get_student_gpa(student):
     credits_attempted = 0
     for term in enrollments:
         grades = get_grades_by_regid_and_term(student["uwregid"], term)
-        print "GRADE " + student["uwregid"]
-        print grades.grade_points
         grade_points += count_numeric_only(grades.grade_points)
         credits_attempted += count_numeric_only(grades.credits_attempted)
     return grade_points / credits_attempted
@@ -144,6 +142,7 @@ def count_numeric_only(num):
     except TypeError:
         return 0
 
+# PLACEHOLDER until SWS client is updated
 def get_all_course_grades(section):
     students = get_active_registrations_by_section(section)
     for student in students:
