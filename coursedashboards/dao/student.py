@@ -130,6 +130,8 @@ def get_student_gpa(student):
     credits_attempted = 0
     for term in enrollments:
         grades = get_grades_by_regid_and_term(student["uwregid"], term)
+        print "GRADE " + student["uwregid"]
+        print grades.grade_points
         grade_points += count_numeric_only(grades.grade_points)
         credits_attempted += count_numeric_only(grades.credits_attempted)
     return grade_points / credits_attempted
