@@ -85,7 +85,7 @@ h3 {
 /* Hyperlink style:*/
 a {
 	color:#0077c2;
-	&:focus{
+	&:focus, &:hover {
         color: $link_focus;
         border: 1px dotted ;
 	}
