@@ -17,7 +17,7 @@
         <h3>Common majors (when taking the course):</h3>
         <ol>
             {{#each common_majors}}
-           <li><span>{{major}} </span><span>[{{percent_students}}%]</span></li>
+           <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
        </ol> 
     </div>
@@ -25,7 +25,7 @@
         <h3>Common majors (upon graduation):</h3>
         <ol>
            {{#each latest_majors}}
-           <li><span>{{major}} </span><span>[{{percent_students}}%]</span></li>
+           <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
        </ol> 
     </div>
@@ -33,7 +33,7 @@
         <h3>Concurrent Courses:</h3>
         <ol>
             {{#each common_courses}}
-           <li><span>{{course}} </span><span>[{{percent_students}}%]</span></li>
+           <li>{{percent_students}}% : <span>{{course}} </span></li>
            {{/each}}
        </ol> 
     </div>
