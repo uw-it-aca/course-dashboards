@@ -41,12 +41,12 @@
        <h3>Previous Instructors for this course:</h3>
        <ol>
            {{#each instructors}}
-            <li>{{quarter}} {{year}} {{display_name}} {{uw_email}}</li>
+            <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
            {{/each}}
            
            {{#each past_terms}}
             {{#each instructors}}
-                <li>{{../quarter}} {{../year}} {{display_name}} {{uwnetid}}@uw.edu</li>
+                <li><a href="mailto:{{uwnetid}}@uw.edu">{{display_name}}</a>, {{../quarter}} {{../year}}</li>
             {{/each}}
            {{/each}}
        </ol>   
