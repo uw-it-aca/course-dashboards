@@ -37,6 +37,11 @@ cd course-dashboards
 source bin/activate
 ```
 
+Checkout develop:
+```
+git checkout develop
+```
+
 Install required Python packages with pip:
 ```
 $ pip install -r requirements.txt
