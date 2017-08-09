@@ -21,19 +21,19 @@ $ easy_install virtualenv
 ```
  
 
-Checkout the master of the coursedashboards project:
+Checkout the master of the course-dashboards project:
 ```
 $ git clone git@github.com:uw-it-aca/course-dashboards.git OR https://github.com/uw-it-aca/course-dashboards.git
 ```
 
-Turn coursedashboards into a virtualenv:
+Turn course-dashboards into a virtualenv:
 ```
 $ virtualenv course-dashboards  
 ```
 
 Activate your virtualenv:
 ```
-cd coursedashboards
+cd course-dashboards
 source bin/activate
 ```
 
@@ -45,7 +45,7 @@ $ pip install uw-restclients
 
 If you receive errors with the above, ensure you have lib32z1-dev, libxslt1-dev, libxml2-dev, and python-dev installed. 
 
-Create a django project in the coursedashboards dir:
+Create a django project in the course-dashboards dir:
 ```
 $ django-admin.py startproject project .
 ```
