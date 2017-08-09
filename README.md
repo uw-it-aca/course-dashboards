@@ -28,7 +28,7 @@ $ git clone git@github.com:uw-it-aca/course-dashboards.git OR https://github.com
 
 Turn coursedashboards into a virtualenv:
 ```
-$ virtualenv coursedashboards  
+$ virtualenv course-dashboards  
 ```
 
 Activate your virtualenv:
