@@ -101,7 +101,7 @@ def create_sections_context(sections, term):
             'current_enrollment': section_status['current_enrollment'],
             'limit_estimate_enrollment':
                 section_status['limit_estimate_enrollment'],
-            'current_median': calc_median_gpa(students),
+            'current_median': calc_median_gpa(section, students),
             'concurrent_courses': concurrent_sections,
             'current_student_majors': current_majors,
             'past_offerings': past_offerings
