@@ -2,31 +2,6 @@
 {% tplhandlebars "historic-course-data" %}
 {% load staticfiles %}
 <div class="row">
-    <h2 class="col-md-6">Historic Student Data </h2>
-<!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
-1. 2+ course sections were offered  OR
-2. The logged in user was IOR for the single section offered that term.
--->
-    <span class="col-md-6 historic-filters">
-        <span class="dummy">
-           <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
-           <select class="historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
-               <option data-label="all" selected>All Quarters</option>
-               {{#each past_terms}}
-                   <option data-label="{{quarter}}">{{quarter}}</option>
-               {{/each}}
-           </select>
-       </span> 
-       <span class="dummy">
-           <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
-           <select class="historic-filter" name="historic_filter_year" id="historic_filter_year">
-                   <option data-label="all" selected>All Years</option>
-                   {{#each past_terms}}
-                   <option data-label="{{year}}">{{year}}</option>
-                {{/each}}
-           </select>
-       </span> 
-    </span>
     <div class="col-sm-4"><span>Median Course Grade: </span><span class="dummy">3.2</span></div>
     <div class="col-sm-8"><span>% that failed the course: </span><span class="dummy">2%</span></div>
 </div>
@@ -42,34 +17,38 @@
         <h3>Common majors (when taking the course):</h3>
         <ol>
             {{#each common_majors}}
-           <li><span>{{major}} </span><span>[{{percent_students}}%]</span></li>
+           <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
        </ol> 
     </div>
     <div class="list col-md-6">
         <h3>Common majors (upon graduation):</h3>
         <ol>
-           <li class="dummy"><span>Mathmatics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Statistics </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Human Computer Design & Engineering </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Computer Science </span><span>[% of class that had this major]</span></li>
-           <li class="dummy"><span>Anthropology </span><span>[% of class that had this major]</span></li>
+           {{#each latest_majors}}
+           <li>{{percent_students}}% : <span>{{major}} </span></li>
+           {{/each}}
        </ol> 
     </div>
     <div class="list col-md-6">
         <h3>Concurrent Courses:</h3>
         <ol>
             {{#each common_courses}}
-           <li><span>{{course}} </span><span>[{{percent_students}}%]</span></li>
+           <li>{{percent_students}}% : <span>{{course}} </span></li>
            {{/each}}
        </ol> 
     </div>
     <div class="previous-instructors col-md-6">	
        <h3>Previous Instructors for this course:</h3>
        <ol>
-           <li class="dummy"><span class="quarter">Autumn 2016</span><span class="name">Joe Schmoe</span><span class="email"><a class="dummy" href="mailto:jscmwe22@uw.edu">jscmwe22@uw.edu</a></span></li>
-           <li class="dummy"><span class="quarter">Autumn 2016</span><span class="name">Jill Schmoe</span><span class="email"><a class="dummy" href="mailto:jscee@uw.edu">jscee@uw.edu</a></span></li>
-           <li class="dummy"><span class="quarter">Spring 2015</span><span class="name">Dippy Smith</span><span class="email"><a class="dummy" href="mailto:dls2020@uw.edu">dls2020@uw.edu</a></span></li>
+           {{#each instructors}}
+            <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
+           {{/each}}
+           
+           {{#each past_terms}}
+            {{#each instructors}}
+                <li><a href="mailto:{{uwnetid}}@uw.edu">{{display_name}}</a>, {{../quarter}} {{../year}}</li>
+            {{/each}}
+           {{/each}}
        </ol>   
     </div>   
 

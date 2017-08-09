@@ -13,7 +13,7 @@
         <h3>Concurrent Courses:</h3>
         <ol>
            {{#each concurrent_courses}}
-                <li><span>{{course}}</span> [{{percent_students}}%]</li>  
+                <li>{{percent_students}}% : <span>{{course}}</span></li>  
            {{/each}}
        </ol> 
     </div>
@@ -21,7 +21,7 @@
         <h3>Declared Majors:</h3>
         <ol>
             {{#each current_majors}}
-                <li><span>{{major}}</span> [{{percent_students}}%]</li>
+                <li>{{percent_students}}% : <span>{{major}}</span></li>
             {{/each}}
        </ol> 
     </div> 
