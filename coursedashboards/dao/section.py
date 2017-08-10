@@ -64,6 +64,7 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
             break
     return past_offerings
 
+
 def get_instructors_for_section(section):
     instructors = []
     netids = []
