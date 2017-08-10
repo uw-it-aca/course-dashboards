@@ -67,6 +67,7 @@ def get_concurrent_sections_by_student(student, term):
             " " + course.section.section_id)
     return concurrent_courses
 
+
 def order_majors(majors, total_students):
     sorted_majors = sorted(majors, reverse=True, key=majors.get)
     top_majors = []
@@ -81,6 +82,7 @@ def order_majors(majors, total_students):
         })
     return top_majors
 
+
 def get_majors_all_students(students, term):
     majors_dict = {}
     total_students = len(students)
@@ -93,6 +95,7 @@ def get_majors_all_students(students, term):
             else:
                 majors_dict[m.full_name] = 1
     return order_majors(majors_dict, total_students)
+
 
 def get_most_recent_majors_all_students(students):
     majors_dict = {}
@@ -110,6 +113,7 @@ def get_most_recent_majors_all_students(students):
             else:
                 majors_dict[m.full_name] = 1
     return order_majors(majors_dict, total_students)        
+
 
 def get_student_major(student, term):
     enrollment = get_enrollment_by_regid_and_term(student["uwregid"], term)
@@ -150,6 +154,7 @@ def count_numeric_only(num):
     except TypeError:
         return 0
 
+
 # PLACEHOLDER until SWS client is updated
 def get_all_course_grades(section):
     students = get_active_registrations_by_section(section)
@@ -158,7 +163,6 @@ def get_all_course_grades(section):
     # ADD WHEN SWS CLIENT UPDATED print student.grade
     return students
         
-
 
 def median(values):
     values = sorted(values)
