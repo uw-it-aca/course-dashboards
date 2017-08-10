@@ -9,6 +9,7 @@ from coursedashboards.dao import get_netid_of_current_user
 
 logger = logging.getLogger(__name__)
 
+
 def get_person_of_current_user():
     """
     Retrieve the person data using the netid of the current user

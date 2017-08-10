@@ -1,11 +1,9 @@
-from uw_sws.enrollment import enrollment_search_by_regid,\
-    get_grades_by_regid_and_term, get_enrollment_by_regid_and_term, enrollment_search_by_regid
-from uw_sws.registration import get_active_registrations_by_section
 from coursedashboards.models import CourseMedianGPA
-from uw_sws.person import get_person_by_regid
-from urllib import urlencode
-from uw_sws import get_resource
+from uw_sws.enrollment import get_grades_by_regid_and_term, \
+    get_enrollment_by_regid_and_term, enrollment_search_by_regid
 from uw_sws.models import Term
+from uw_sws.person import get_person_by_regid
+from uw_sws.registration import get_active_registrations_by_section
 
 """
 Gets data about students e.g. students enrolled

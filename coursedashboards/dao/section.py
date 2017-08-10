@@ -22,8 +22,7 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
     # look for past offerings in each quarter
     # don't need to return full section info
     # create object containing section term info plus every student grade
-    
-    
+
     past_offerings = []
     grades = []
     while test_year <= start_term.year:
@@ -42,13 +41,19 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
         term.year = test_year
         
         try:
-            section = get_section_by_label(str(test_year) + "," + quarter[test_quarter] + "," + curriculum + "," + str(course_number) + "/A")
+            section = get_section_by_label(str(test_year) + "," +
+                                           quarter[test_quarter] +
+                                           "," + curriculum + "," +
+                                           str(course_number) + "/A")
             students = get_students_in_section(section)
             past_offerings.append({
                 "year": test_year,
                 "quarter": quarter[test_quarter],
                 "majors": get_majors_all_students(students, term),
-                "concurrent_courses": get_concurrent_sections_all_students(students, curriculum, course_number, "A", term),
+                "concurrent_courses":
+                    get_concurrent_sections_all_students(students, curriculum,
+                                                         course_number, "A",
+                                                         term),
                 "instructors": get_instructors_for_section(section),
                 "latest_majors": get_most_recent_majors_all_students(students)
             })
@@ -60,7 +65,7 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
         else: 
             test_quarter += 1
         if test_year == start_term.year and\
-        test_quarter == quarter.index(start_term.quarter):
+                test_quarter == quarter.index(start_term.quarter):
             break
     return past_offerings
 

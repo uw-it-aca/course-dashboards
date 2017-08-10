@@ -3,6 +3,8 @@ from django.shortcuts import (
 )
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.template import RequestContext
+
+
 # HTTP Error 400
 def bad_request(request):
     response = render_to_response(
@@ -13,7 +15,8 @@ def bad_request(request):
     response.status_code = 400
     
     return response
-    
+
+
 # HTTP Error 403
 def permission_denied(request):
     response = render_to_response(
@@ -25,6 +28,7 @@ def permission_denied(request):
     
     return response
 
+
 # HTTP Error 404
 def page_not_found(request):
     response = render_to_response(
@@ -35,6 +39,7 @@ def page_not_found(request):
     response.status_code = 404
     
     return response
+
 
 # HTTP Error 500
 def server_error(request):

@@ -1,8 +1,4 @@
-import hashlib
 from datetime import timedelta
-from datetime import datetime
-from dateutil.parser import parse
-from django.utils import timezone
 from django.db import models
 from django.utils import timezone
 
