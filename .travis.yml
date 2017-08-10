@@ -13,7 +13,7 @@ before_script:
 - pip install commonconf
 - pip install python-coveralls
 script:
-- pep8 --exclude=coursedashboards/tests coursedashboards
+- pep8 --exclude=coursedashboards/tests coursedashboards --exclude coursedashboards/migrations
 - coverage run coursedashboards/test.py -v
 after_script:
 - coveralls
