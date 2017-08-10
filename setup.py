@@ -17,7 +17,8 @@ setup(
         'django-pyscss',
         'django_mobileesp',
         'django-templatetag-handlebars',
-        'UW-RestClients',
+        'UW-RestClients-SWS',
+        'UW-Restclients-Django-Utils'
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',
