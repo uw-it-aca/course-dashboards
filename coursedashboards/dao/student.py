@@ -46,7 +46,7 @@ def get_concurrent_sections_all_students(students,
     for sort in sorted_courses:
         top_courses.append({
             "course": sort,
-            "number_students":course_dict[sort],
+            "number_students": course_dict[sort],
             "percent_students":
                 round(
                     (float(course_dict[sort]) / float(total_students)) *
@@ -110,7 +110,7 @@ def get_most_recent_majors_all_students(students):
                 majors_dict[m.full_name] += 1
             else:
                 majors_dict[m.full_name] = 1
-    return order_majors(majors_dict, total_students)        
+    return order_majors(majors_dict, total_students)
 
 
 def get_student_major(student, term):
@@ -157,10 +157,10 @@ def count_numeric_only(num):
 def get_all_course_grades(section):
     students = get_active_registrations_by_section(section)
     for student in students:
-        student.grade = 3.5;
+        student.grade = 3.5
     # ADD WHEN SWS CLIENT UPDATED print student.grade
     return students
-        
+
 
 def median(values):
     values = sorted(values)

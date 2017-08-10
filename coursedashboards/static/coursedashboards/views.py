@@ -11,9 +11,9 @@ def bad_request(request):
         '400.html',
         context_instance=RequestContext(request)
     )
-    
+
     response.status_code = 400
-    
+
     return response
 
 
@@ -23,9 +23,9 @@ def permission_denied(request):
         '403.html',
         context_instance=RequestContext(request)
     )
-    
+
     response.status_code = 403
-    
+
     return response
 
 
@@ -35,9 +35,9 @@ def page_not_found(request):
         '404.html',
         context_instance=RequestContext(request)
     )
-    
+
     response.status_code = 404
-    
+
     return response
 
 
@@ -47,7 +47,7 @@ def server_error(request):
         '500.html',
         context_instance=RequestContext(request)
     )
-    
+
     response.status_code = 500
-    
+
     return response

@@ -1,15 +1,10 @@
-import re
-import logging
-import traceback
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.contrib.auth import logout as django_logout
-from django.conf import settings
+
 from coursedashboards.dao import get_netid_of_current_user
 from coursedashboards.dao.pws import get_person_of_current_user
-from coursedashboards.dao.term import get_current_quarter
-from coursedashboards.dao.section import create_sections_context,\
+from coursedashboards.dao.section import create_sections_context, \
     get_instructor_current_sections
+from coursedashboards.dao.term import get_current_quarter
 
 
 def page(request,
@@ -38,9 +33,9 @@ def page(request,
             context["quarter"] = cur_term.quarter
     else:
         pass
-    
+
     person = get_person_of_current_user()
-    
+
     # WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
     sections = get_instructor_current_sections(person, cur_term)
     context["sections"] = create_sections_context(sections, cur_term)
