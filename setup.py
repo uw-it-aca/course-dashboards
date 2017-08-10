@@ -24,8 +24,8 @@ setup(
     description='A Django App for viewing course data',
     long_description=README,
     url='http://www.example.com/',
-    author='Your Name',
-    author_email='yourname@example.com',
+    author='UW IT AXDD',
+    author_email='uw-it-aca@uw.edu',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
