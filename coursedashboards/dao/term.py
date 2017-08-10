@@ -34,6 +34,7 @@ def get_default_datetime():
         term = get_current_term()
         first_day = term.first_day_quarter
         default_date = first_day + timedelta(days=14)
+
         return datetime(default_date.year,
                         default_date.month,
                         default_date.day,
@@ -64,6 +65,7 @@ def get_comparison_datetime(request):
                         timedelta(seconds=1)
                 except Exception:
                     raise
+
             except Exception as ex:
                 pass
 
@@ -129,8 +131,10 @@ def get_next_quarter(request):
     """
     if hasattr(request, 'myuw_next_quarter'):
         return request.myuw_next_quarter
+
     term = get_term_after(get_current_quarter(request))
     request.myuw_next_quarter = term
+
     return term
 
 
@@ -156,6 +160,7 @@ def get_previous_quarter(request):
     """
     if hasattr(request, "myuw_previous_quarter"):
         return request.myuw_previous_quarter
+
     term = get_term_before(get_current_quarter(request))
     request.myuw_previous_quarter = term
     return term
@@ -443,6 +448,7 @@ def add_term_data_to_context(request, context):
     context["break_quarter"] = break_term.quarter
 
     context['is_finals'] = False
+    # TODO: simplify - ezturner
     if (compare > cur_term.last_day_instruction and
             compare <= cur_term.last_final_exam_date):
         context['is_finals'] = True

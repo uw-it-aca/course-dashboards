@@ -8,6 +8,7 @@ from restclients_core.util.local_cache import local_cache
 def index(request, year=None, quarter=None,
           curriculum_abbr=None, course_number=None,
           section_label=None, sections=None):
+
     context = {
         "year": year,
         "quarter": quarter,
@@ -16,4 +17,5 @@ def index(request, year=None, quarter=None,
         "section_label": section_label,
         "sections": sections,
     }
+
     return page(request, context, template='index.html')
