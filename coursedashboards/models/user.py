@@ -1,10 +1,4 @@
-import hashlib
-from datetime import timedelta
-from datetime import datetime
-from dateutil.parser import parse
-from django.utils import timezone
 from django.db import models
-from django.utils import timezone
 
 
 class User(models.Model):
@@ -17,4 +11,4 @@ class User(models.Model):
                                db_index=True,
                                unique=True)
 
-    last_visit = models.DateTimeField(default=timezone.now)
+    email = models.CharField(max_length=255)
