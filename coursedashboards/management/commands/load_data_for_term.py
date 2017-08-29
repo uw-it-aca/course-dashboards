@@ -9,6 +9,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('quarter')
         parser.add_argument('year', type=int)
+        parser.add_argument('--previous', dest='previous', default=0, type=int,
+                            help='count of previous terms to include')
 
     def handle(self, *args, **options):
         # determine change_since
