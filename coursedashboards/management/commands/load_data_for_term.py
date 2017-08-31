@@ -30,7 +30,7 @@ class Command(BaseCommand):
             '--term', dest='term', default=None,
             help='term to load yyyy,quarter')
         parser.add_argument(
-            '--previous', dest='previous', default=0, type=int,
+            '--previous', dest='previous_terms', default=0, type=int,
             help='count of previous terms to include')
         parser.add_argument(
             '--instructor', dest='instructor', default=None,
@@ -43,8 +43,8 @@ class Command(BaseCommand):
                 options.get('previous_terms', 0)))
         term_string = options.get('term')
         if term_string:
-            year, quarter = term_string.split(',', 1)
-            sws_term = get_term_by_year_and_quarter(quarter, year)
+            year, quarter = term_string.split(',')
+            sws_term = get_term_by_year_and_quarter(year, quarter)
         else:
             sws_term = get_current_term()
 
