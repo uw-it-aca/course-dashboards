@@ -182,7 +182,8 @@ class Command(BaseCommand):
             except Registration.DoesNotExist:
                 Registration.objects.create(
                     user=user, term=term, course=course,
-                    grade=registration.grade)
+                    grade=registration.grade,
+                    is_repeat=registration.repeat_course)
 
         # remove dropped registrations
         prior_registrations.delete()
