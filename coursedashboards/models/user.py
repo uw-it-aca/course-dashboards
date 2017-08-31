@@ -11,4 +11,5 @@ class User(models.Model):
                                db_index=True,
                                unique=True)
 
-    email = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=250, null=True)
+    email = models.CharField(max_length=255, null=True)

@@ -26,3 +26,8 @@ class CourseRequestEmailRecipientNotFound(Exception):
 class IndeterminateCampusException(Exception):
     """Cannot determine campus from registrations or PWS"""
     pass
+
+
+class MalformedOrInconsistentUser(Exception):
+    """Cannot determine campus from registrations or PWS"""
+    pass

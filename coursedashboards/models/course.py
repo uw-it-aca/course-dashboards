@@ -7,6 +7,10 @@ class Course(models.Model):
     course_number = models.PositiveSmallIntegerField()
     section_id = models.CharField(max_length=2)
 
+    class Meta:
+        db_table = "Course"
+        unique_together = ('curriculum', 'course_number', 'section_id')
+
 
 class CourseOffering(models.Model):
     term = models.ForeignKey(Term,
@@ -18,5 +22,5 @@ class CourseOffering(models.Model):
     canvas_course_url = models.CharField(max_length=2000)
 
     class Meta:
-        db_table = 'CouresOffering'
+        db_table = 'CourseOffering'
         unique_together = ('term', 'course')

@@ -19,6 +19,8 @@ setup(
         'django-templatetag-handlebars',
         'UW-RestClients-SWS',
         'UW-RestClients-PWS',
+        'UW-RestClients-GWS',
+        'UW-RestClients-Canvas',
         'UW-Restclients-Django-Utils'
     ],
     license='Apache License, Version 2.0',  # example license
