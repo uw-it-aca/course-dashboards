@@ -145,47 +145,53 @@ class Command(BaseCommand):
             logger.error("cannot add canvas url: %s" % (ex))
 
     def _instructors_from_section(self, term, course, section):
-        prior_instructors = Instructor.objects.filter(term=term, course=course)
+        prior_instructors = list(Instructor.objects.filter(
+            term=term, course=course).values_list('user_id', flat=True))
         section_instructors = section.get_instructors()
         for section_instructor in section_instructors:
             try:
                 user = self._user_from_person(section_instructor)
-                prior_instructors.get(user=user)
-                prior_instructors = prior_instructors.exclude(user=user)
             except MalformedOrInconsistentUser:
-                pass
-            except Instructor.DoesNotExist:
-                Instructor.objects.create(
-                    user=user, term=term, course=course)
+                continue
+
+            inst_obj, created = Instructor.objects.get_or_create(
+                user=user, course=course, term=term)
+
+            if not created and id in prior_instructors:
+                prior_instructors.remove(id)
+
+            logger.debug('%s registration: netid:%s, course: %s' % (
+                'new' if created else 'update',
+                user.uwnetid, self._offering_string(term, course)))
 
         # remove prior instructors
-        prior_instructors.delete()
+        if len(prior_instructors):
+            Instructor.objects.filter(user_id__in=prior_instructors).delete()
 
     def _registrations_from_section(self, term, course, section):
-        prior_registrations = Registration.objects.filter(
-            term=term, course=course)
+        prior_registrations = list(Registration.objects.filter(
+            term=term, course=course).values_list('user_id', flat=True))
         registrations = get_active_registrations_by_section(section)
         for registration in registrations:
             try:
                 user = self._user_from_person(registration.person)
-                user_reg = prior_registrations.get(user=user)
-                if user_reg.grade != registration.grade:
-                    user_reg.grade = registration.grade
-                    user_reg.save()
-
-                prior_registrations = prior_registrations.exclude(user=user)
-                logger.debug('registration: netid:%s, course: %s' % (
-                    registration.person.uwnetid,
-                    self._offering_string(term, course)))
             except MalformedOrInconsistentUser:
-                pass
-            except Registration.DoesNotExist:
-                Registration.objects.create(
-                    user=user, term=term, course=course,
-                    grade=registration.grade)
+                continue
+
+            reg_obj, created = Registration.objects.update_or_create(
+                user=user, course=course, term=term, grade=registration.grade)
+
+            if not created and id in prior_registrations:
+                prior_registrations.remove(id)
+
+            logger.debug('%s registration: netid:%s, course: %s' % (
+                'new' if created else 'update',
+                user.uwnetid, self._offering_string(term, course)))
 
         # remove dropped registrations
-        prior_registrations.delete()
+        if len(prior_registrations):
+            Registration.objects.filter(
+                user_id__in=prior_registrations).delete()
 
     def _collect_student_majors(self, registrations, sws_term):
         for reg in registrations:
