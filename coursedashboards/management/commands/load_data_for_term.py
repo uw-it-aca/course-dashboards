@@ -50,7 +50,8 @@ class Command(BaseCommand):
 
         instructor = options.get('instructor', '')
         if '_' in instructor:
-            instructors = GWS().get_effective_members(instructor)
+            instructors = [x.name for x in GWS().get_effective_members(
+                instructor) if x.is_uwnetid()]
         else:
             instructors = [instructor]
 
