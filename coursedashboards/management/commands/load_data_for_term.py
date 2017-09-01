@@ -135,18 +135,24 @@ class Command(BaseCommand):
         return user
 
     def _course_offering_from_section(self, term, course, section):
-        offering, created = CourseOffering.objects.update_or_create(
-            term=term, course=course,
-            current_enrollment=section.current_enrollment,
-            limit_estimate_enrollment=section.limit_estimate_enrollment)
+        try:
+            co = CourseOffering.objects.get(term=term, course=course)
+            co.current_enrollment = section.current_enrollment
+            co.limit_estimate_enrollment = section.limit_estimate_enrollment
+            co.save()
+        except CourseOffering.DoesNotExist:
+            co = CourseOffering.objects.create(
+                term=term, course=course,
+                current_enrollment=section.current_enrollment,
+                limit_estimate_enrollment=section.limit_estimate_enrollment)
 
         try:
             canvas_course = CanvasCourses().get_course_by_sis_id(
                 section.canvas_course_sis_id())
-            offering.canvas_course_url = canvas_course.course_url
-            offering.save()
+            co.canvas_course_url = canvas_course.course_url
+            co.save()
         except Exception as ex:
-            logger.error("cannot add canvas url: %s" % (ex))
+            logger.info("cannot add canvas url: %s" % (ex))
 
     def _instructors_from_section(self, term, course, section):
         prior_instructors = list(Instructor.objects.filter(
@@ -182,8 +188,11 @@ class Command(BaseCommand):
             except MalformedOrInconsistentUser:
                 continue
 
-            reg_obj, created = Registration.objects.update_or_create(
-                user=user, course=course, term=term, grade=registration.grade)
+            reg_obj, created = Registration.objects.get_or_create(
+                user=user, course=course, term=term)
+
+            reg_obj.grade = registration.grade
+            reg_obj.save()
 
             if not created and id in prior_registrations:
                 prior_registrations.remove(id)
@@ -214,7 +223,7 @@ class Command(BaseCommand):
     def _remove_course(self, term, course):
         Registration.objects.filter(term=term, course=course).delete()
         Instructor.objects.filter(term=term, course=course).delete()
-        CourseOffering.objects.get(term=term, course=course)
+        CourseOffering.objects.get(term=term, course=course).delete()
 
     def _offering_string(self, term, course):
         return '%s,%s,%s,%s/%s' % (
