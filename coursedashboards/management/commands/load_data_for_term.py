@@ -33,7 +33,7 @@ class Command(BaseCommand):
             '--previous', dest='previous_terms', default=0, type=int,
             help='count of previous terms to include')
         parser.add_argument(
-            '--instructor', dest='instructor', default=None,
+            '--instructor', dest='instructor', default='',
             help='netid or uw group containing instructors to load')
 
     def handle(self, *args, **options):
@@ -48,7 +48,7 @@ class Command(BaseCommand):
         else:
             sws_term = get_current_term()
 
-        instructor = options.get('instructor', '')
+        instructor = options.get('instructor')
         if '_' in instructor:
             instructors = [x.name for x in GWS().get_effective_members(
                 instructor) if x.is_uwnetid()]
@@ -66,16 +66,19 @@ class Command(BaseCommand):
             changed_date = datetime.utcnow().replace(tzinfo=utc)
             for instructor in instructors:
                 logger.debug('loading instructor: %s' % (instructor))
+                params = {
+                    'transcriptable_course': 'yes',
+                    'include_secondaries': False,
+                    'page_size': 500
+                }
 
-                person = PWS().get_person_by_netid(instructor) if (
-                    instructor) else Person(uwregid='')
+                if instructor:
+                    person = PWS().get_person_by_netid(instructor)
+                    params['reg_id'] = person.uwregid
+                    params['search_by'] = 'Instructor'
+
                 section_refs = get_changed_sections_by_term(
-                    changed_since, term,
-                    transcriptable_course='yes',
-                    search_by='Instructor',
-                    reg_id=person.uwregid,
-                    include_secondaries=False,
-                    page_size=500)
+                    changed_since, term, **params)
 
                 for section_ref in section_refs:
                     section = get_section_by_url(section_ref.url)
@@ -198,10 +201,11 @@ class Command(BaseCommand):
         for reg in registrations:
             student_majors = self._get_student_major(reg.user, sws_term)
             for student_major in student_majors:
-                major, created = Major.objects.get_or_create(
-                    major=student_major.major_name)
-                StudentMajor.objects.get_or_create(
-                    user=reg.user, major=major)
+                if student_major.major_name:
+                    major, created = Major.objects.get_or_create(
+                        major=student_major.major_name)
+                    StudentMajor.objects.get_or_create(
+                        user=reg.user, major=major)
 
     def _get_student_major(self, user, sws_term):
         enrollment = get_enrollment_by_regid_and_term(user.uwregid, sws_term)
