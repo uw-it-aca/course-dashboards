@@ -30,10 +30,10 @@ class Command(BaseCommand):
             '--term', dest='term', default=None,
             help='term to load yyyy,quarter')
         parser.add_argument(
-            '--previous', dest='previous', default=0, type=int,
+            '--previous', dest='previous_terms', default=0, type=int,
             help='count of previous terms to include')
         parser.add_argument(
-            '--instructor', dest='instructor', default=None,
+            '--instructor', dest='instructor', default='',
             help='netid or uw group containing instructors to load')
 
     def handle(self, *args, **options):
@@ -43,14 +43,15 @@ class Command(BaseCommand):
                 options.get('previous_terms', 0)))
         term_string = options.get('term')
         if term_string:
-            year, quarter = term_string.split(',', 1)
-            sws_term = get_term_by_year_and_quarter(quarter, year)
+            year, quarter = term_string.split(',')
+            sws_term = get_term_by_year_and_quarter(year, quarter)
         else:
             sws_term = get_current_term()
 
-        instructor = options.get('instructor', '')
+        instructor = options.get('instructor')
         if '_' in instructor:
-            instructors = GWS().get_effective_members(instructor)
+            instructors = [x.name for x in GWS().get_effective_members(
+                instructor) if x.is_uwnetid()]
         else:
             instructors = [instructor]
 
@@ -65,16 +66,19 @@ class Command(BaseCommand):
             changed_date = datetime.utcnow().replace(tzinfo=utc)
             for instructor in instructors:
                 logger.debug('loading instructor: %s' % (instructor))
+                params = {
+                    'transcriptable_course': 'yes',
+                    'include_secondaries': False,
+                    'page_size': 500
+                }
 
-                person = PWS().get_person_by_netid(instructor) if (
-                    instructor) else Person(uwregid='')
+                if instructor:
+                    person = PWS().get_person_by_netid(instructor)
+                    params['reg_id'] = person.uwregid
+                    params['search_by'] = 'Instructor'
+
                 section_refs = get_changed_sections_by_term(
-                    changed_since, term,
-                    transcriptable_course='yes',
-                    search_by='Instructor',
-                    reg_id=person.uwregid,
-                    include_secondaries=False,
-                    page_size=500)
+                    changed_since, term, **params)
 
                 for section_ref in section_refs:
                     section = get_section_by_url(section_ref.url)
@@ -131,71 +135,87 @@ class Command(BaseCommand):
         return user
 
     def _course_offering_from_section(self, term, course, section):
-        offering, created = CourseOffering.objects.update_or_create(
-            term=term, course=course,
-            current_enrollment=section.current_enrollment,
-            limit_estimate_enrollment=section.limit_estimate_enrollment)
+        try:
+            co = CourseOffering.objects.get(term=term, course=course)
+            co.current_enrollment = section.current_enrollment
+            co.limit_estimate_enrollment = section.limit_estimate_enrollment
+            co.save()
+        except CourseOffering.DoesNotExist:
+            co = CourseOffering.objects.create(
+                term=term, course=course,
+                current_enrollment=section.current_enrollment,
+                limit_estimate_enrollment=section.limit_estimate_enrollment)
 
         try:
             canvas_course = CanvasCourses().get_course_by_sis_id(
                 section.canvas_course_sis_id())
-            offering.canvas_course_url = canvas_course.course_url
-            offering.save()
+            co.canvas_course_url = canvas_course.course_url
+            co.save()
         except Exception as ex:
-            logger.error("cannot add canvas url: %s" % (ex))
+            logger.info("cannot add canvas url: %s" % (ex))
 
     def _instructors_from_section(self, term, course, section):
-        prior_instructors = Instructor.objects.filter(term=term, course=course)
+        prior_instructors = list(Instructor.objects.filter(
+            term=term, course=course).values_list('user_id', flat=True))
         section_instructors = section.get_instructors()
         for section_instructor in section_instructors:
             try:
                 user = self._user_from_person(section_instructor)
-                prior_instructors.get(user=user)
-                prior_instructors = prior_instructors.exclude(user=user)
             except MalformedOrInconsistentUser:
-                pass
-            except Instructor.DoesNotExist:
-                Instructor.objects.create(
-                    user=user, term=term, course=course)
+                continue
+
+            inst_obj, created = Instructor.objects.get_or_create(
+                user=user, course=course, term=term)
+
+            if not created and id in prior_instructors:
+                prior_instructors.remove(id)
+
+            logger.debug('%s registration: netid:%s, course: %s' % (
+                'new' if created else 'update',
+                user.uwnetid, self._offering_string(term, course)))
 
         # remove prior instructors
-        prior_instructors.delete()
+        if len(prior_instructors):
+            Instructor.objects.filter(user_id__in=prior_instructors).delete()
 
     def _registrations_from_section(self, term, course, section):
-        prior_registrations = Registration.objects.filter(
-            term=term, course=course)
+        prior_registrations = list(Registration.objects.filter(
+            term=term, course=course).values_list('user_id', flat=True))
         registrations = get_active_registrations_by_section(section)
         for registration in registrations:
             try:
                 user = self._user_from_person(registration.person)
-                user_reg = prior_registrations.get(user=user)
-                if user_reg.grade != registration.grade:
-                    user_reg.grade = registration.grade
-                    user_reg.save()
-
-                prior_registrations = prior_registrations.exclude(user=user)
-                logger.debug('registration: netid:%s, course: %s' % (
-                    registration.person.uwnetid,
-                    self._offering_string(term, course)))
             except MalformedOrInconsistentUser:
-                pass
-            except Registration.DoesNotExist:
-                Registration.objects.create(
-                    user=user, term=term, course=course,
-                    grade=registration.grade,
-                    is_repeat=registration.repeat_course)
+                continue
+
+            reg_obj, created = Registration.objects.get_or_create(
+                user=user, course=course, term=term)
+
+            reg_obj.grade = registration.grade
+            reg_obj.is_repeat=registration.repeat_course
+            reg_obj.save()
+
+            if not created and id in prior_registrations:
+                prior_registrations.remove(id)
+
+            logger.debug('%s registration: netid:%s, course: %s' % (
+                'new' if created else 'update',
+                user.uwnetid, self._offering_string(term, course)))
 
         # remove dropped registrations
-        prior_registrations.delete()
+        if len(prior_registrations):
+            Registration.objects.filter(
+                user_id__in=prior_registrations).delete()
 
     def _collect_student_majors(self, registrations, sws_term):
         for reg in registrations:
             student_majors = self._get_student_major(reg.user, sws_term)
             for student_major in student_majors:
-                major, created = Major.objects.get_or_create(
-                    major=student_major.major_name)
-                StudentMajor.objects.get_or_create(
-                    user=reg.user, major=major)
+                if student_major.major_name:
+                    major, created = Major.objects.get_or_create(
+                        major=student_major.major_name)
+                    StudentMajor.objects.get_or_create(
+                        user=reg.user, major=major)
 
     def _get_student_major(self, user, sws_term):
         enrollment = get_enrollment_by_regid_and_term(user.uwregid, sws_term)
@@ -204,7 +224,7 @@ class Command(BaseCommand):
     def _remove_course(self, term, course):
         Registration.objects.filter(term=term, course=course).delete()
         Instructor.objects.filter(term=term, course=course).delete()
-        CourseOffering.objects.get(term=term, course=course)
+        CourseOffering.objects.get(term=term, course=course).delete()
 
     def _offering_string(self, term, course):
         return '%s,%s,%s,%s/%s' % (
