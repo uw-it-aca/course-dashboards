@@ -140,3 +140,13 @@ def create_sections_context(sections, term):
 
 def get_instructor_current_sections(person, term):
     return get_sections_by_instructor_and_term(person, term)
+
+
+def get_concurrent_courses(section):
+    """
+    For a given section, retrieve all concurrent courses
+    :param section:
+    :return: a list of tuples, with the Course identifier and count
+    """
+
+

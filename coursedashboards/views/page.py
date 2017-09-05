@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 
 from coursedashboards.dao import get_netid_of_current_user
@@ -39,4 +41,5 @@ def page(request,
     # WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
     sections = get_instructor_current_sections(person, cur_term)
     context["sections"] = create_sections_context(sections, cur_term)
+
     return render(request, template, context)
