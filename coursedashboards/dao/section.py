@@ -34,12 +34,12 @@ def get_past_offering_of_course(curriculum, course_number, start_term,
         Can't get grades until sws rest client is updated
         try:
             section = get_section_by_label(str(test_year) + "," +
-             quarter[test_quarter] + "," + curriculum + "," + 
+             quarter[test_quarter] + "," + curriculum + "," +
              str(course_number) + "/A")
             grades = get_all_course_grades(section)
             print grades
         except Exception as ex:
-            msg = ex.args 
+            msg = ex.args
             print msg
         """
         term = Term()

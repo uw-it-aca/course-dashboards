@@ -192,7 +192,7 @@ class Command(BaseCommand):
                 user=user, course=course, term=term)
 
             reg_obj.grade = registration.grade
-            reg_obj.is_repeat=registration.repeat_course
+            reg_obj.is_repeat = registration.repeat_course
             reg_obj.save()
 
             if not created and id in prior_registrations:
