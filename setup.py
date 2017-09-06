@@ -21,7 +21,8 @@ setup(
         'UW-RestClients-PWS',
         'UW-RestClients-GWS',
         'UW-RestClients-Canvas',
-        'UW-Restclients-Django-Utils'
+        'UW-Restclients-Django-Utils',
+        'Django-SupportTools',
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',
