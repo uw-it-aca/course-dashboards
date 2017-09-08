@@ -1,4 +1,6 @@
 from django.db import models
+
+from coursedashboards.models.course import Course
 from user import User
 
 
@@ -17,3 +19,16 @@ class StudentMajor(models.Model):
     class Meta:
         db_table = 'StudentMajor'
         unique_together = ('user', 'major')
+
+
+class CourseMajor(models.Model):
+    major = models.ForeignKey(Major,
+                              on_delete=models.PROTECT)
+    course = models.ForeignKey(Course,
+                               on_delete=models.PROTECT,
+                               db_index=True)
+    count = models.IntegerField()
+
+    class Meta:
+        unique_together = ('major', 'course')
+
