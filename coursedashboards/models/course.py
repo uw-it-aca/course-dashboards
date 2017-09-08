@@ -28,18 +28,15 @@ class CourseOffering(models.Model):
     current_enrollment = models.PositiveSmallIntegerField()
     limit_estimate_enrollment = models.PositiveSmallIntegerField()
     canvas_course_url = models.CharField(max_length=2000)
-    num_repeating = models.IntegerField()
-    median_gpa = models.FloatField()
+    # num_repeating = models.IntegerField()
+    # median_gpa = models.FloatField()
 
-    def __init__(self, course_offering):
+    def calculate(self):
         """
 
         :param course_offering: A CourseOffering object specifying the
         term and Course for which to utilize
         """
-        self.course = course_offering.course
-        self.course_offering = course_offering
-
         self.num_repeating = 0
 
         registrations = Registration.objects.filter(term=self.course.term,
@@ -142,7 +139,6 @@ class CourseOffering(models.Model):
         json_object = {}
 
         return json_object
-
 
     class Meta:
         db_table = 'CourseOffering'
