@@ -10,9 +10,11 @@ from coursedashboards.dao import is_using_file_dao
 from django.utils import timezone
 from restclients_core.exceptions import DataFailureException
 from uw_sws.section import is_a_term, is_b_term
-from uw_sws.term import get_term_by_date, get_specific_term, \
-    get_current_term, get_term_before, get_term_after, get_next_autumn_term, \
-    get_next_non_summer_term
+from uw_sws.term import (
+    get_term_by_date, get_specific_term, get_current_term,
+    get_term_before, get_term_after, get_next_autumn_term,
+    get_next_non_summer_term, get_term_by_year_and_quarter)
+
 
 logger = logging.getLogger(__name__)
 
@@ -152,6 +154,21 @@ def get_current_and_next_quarters(request, num):
         quarters.append(term)
 
     return quarters
+
+
+def get_given_and_previous_quarters(quarter_string, num):
+    """
+    Returns the requested and previous num uw_sws.models.Term objects
+    in a chronologically sorted list
+    """
+    sws_term = get_term_from_quarter_string(quarter_string)\
+        if quarter_string else get_current_term()
+    sws_terms = [sws_term]
+    for x in range(num):
+        sws_term = get_term_before(sws_term)
+        sws_terms.insert(0, sws_term)
+
+    return sws_terms
 
 
 def get_previous_quarter(request):

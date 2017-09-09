@@ -1,6 +1,11 @@
 from userservice.user import UserService
 from django.conf import settings
 from authz_group import Group
+from uw_gws import GWS
+
+
+def get_effective_members(group_name):
+    return GWS().get_effective_members(group_name)
 
 
 def is_in_admin_group(group_key):

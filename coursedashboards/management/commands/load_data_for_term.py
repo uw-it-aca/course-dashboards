@@ -8,11 +8,9 @@ from coursedashboards.models import (
     Registration, Major, StudentMajor)
 from coursedashboards.dao.exceptions import (
     MalformedOrInconsistentUser)
-from uw_gws import GWS
-from uw_pws import PWS
-from uw_pws.models import Person
-from uw_sws.term import (
-    get_current_term, get_term_by_year_and_quarter, get_term_before)
+from coursedashboards.dao.term import get_given_and_previous_quarters
+from coursedashboards.dao.pws import get_person_by_netid
+from coursedashboards.dao.gws import get_effective_members
 from uw_sws.section import get_changed_sections_by_term, get_section_by_url
 from uw_sws.registration import get_active_registrations_by_section
 from uw_sws.enrollment import get_enrollment_by_regid_and_term
@@ -40,22 +38,19 @@ class Command(BaseCommand):
         logger.debug(
             'load_data_for_term: term=%s instructor=%s previous=%s' % (
                 options.get('term', ''), options.get('instructor', ''),
-                options.get('previous_terms', 0)))
+                options.get('previous_terms')))
         term_string = options.get('term')
-        if term_string:
-            year, quarter = term_string.split(',')
-            sws_term = get_term_by_year_and_quarter(year, quarter)
-        else:
-            sws_term = get_current_term()
 
         instructor = options.get('instructor')
         if '_' in instructor:
-            instructors = [x.name for x in GWS().get_effective_members(
+            instructors = [x.name for x in get_effective_members(
                 instructor) if x.is_uwnetid()]
         else:
             instructors = [instructor]
 
-        for i in range(options.get('previous_terms', 0), -1, -1):
+        sws_terms = get_given_and_previous_quarters(
+            term_string, options.get('previous_terms'))
+        for sws_term in sws_terms:
             logger.info('loading term: %s,%s' % (
                 sws_term.quarter, sws_term.year))
 
@@ -73,7 +68,7 @@ class Command(BaseCommand):
                 }
 
                 if instructor:
-                    person = PWS().get_person_by_netid(instructor)
+                    person = get_person_by_netid(instructor)
                     params['reg_id'] = person.uwregid
                     params['search_by'] = 'Instructor'
 
@@ -90,9 +85,6 @@ class Command(BaseCommand):
             # remember the last time we crawled this term
             term.last_queried = changed_date
             term.save()
-
-            if i > 0:
-                sws_term = get_term_before(sws_term)
 
     def _load_section(self, section, term, sws_term):
         course, created = Course.objects.get_or_create(
@@ -121,16 +113,23 @@ class Command(BaseCommand):
 
     def _user_from_person(self, person):
         try:
-            user, created = User.objects.get_or_create(
-                uwnetid=person.uwnetid,
-                uwregid=person.uwregid,
-                display_name=person.display_name,
-                email=person.email1
-            )
-        except IntegrityError as ex:
-            logger.error('user unique violation: %s (%s): %s' % (
-                person.uwnetid, person.uwregid, ex))
-            raise MalformedOrInconsistentUser()
+            user = User.objects.get(uwnetid=person.uwnetid)
+            if user.uwregid != person.uwregid:
+                user.uwregid = person.uwregid
+                user.save()
+        except User.DoesNotExist:
+            try:
+                user = User.objects.get(uwregid=person.uwregid)
+                if user.uwnetid != person.uwnetid:
+                    user.uwnetid = person.uwnetid
+                    user.email = person.email
+                    user.save()
+            except User.DoesNotExist:
+                user = User.objects.create(
+                    uwnetid=person.uwnetid,
+                    uwregid=person.uwregid,
+                    display_name=person.display_name,
+                    email=person.email1)
 
         return user
 
