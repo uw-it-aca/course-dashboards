@@ -95,7 +95,7 @@ class Command(BaseCommand):
         if section.is_withdrawn:
             try:
                 course = Course.objects.get(course=course, term=term)
-                self.remove_course(term, course)
+                self._remove_course(term, course)
                 logger.info('withdrawn: %s' % (
                     self._offering_string(term, course)))
             except Course.DoesNotExist:
