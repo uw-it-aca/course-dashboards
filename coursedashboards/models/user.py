@@ -1,4 +1,6 @@
 from django.db import models
+
+from coursedashboards.dao import get_netid_of_current_user
 from term import Term
 
 
@@ -14,6 +16,11 @@ class User(models.Model):
 
     display_name = models.CharField(max_length=250, null=True)
     email = models.CharField(max_length=255, null=True)
+
+    @staticmethod
+    def get_current_user():
+        # TODO : should this method go in a DAO?
+        return User.objects.get(uwnetid=get_netid_of_current_user())
 
 
 class QuarterGPA(models.Model):

@@ -7,6 +7,7 @@ from coursedashboards.dao.pws import get_person_of_current_user
 from coursedashboards.dao.section import create_sections_context, \
     get_instructor_current_sections
 from coursedashboards.dao.term import get_current_quarter
+from coursedashboards.models import Instructor, User, CourseOffering
 
 
 def page(request,
@@ -39,6 +40,19 @@ def page(request,
     person = get_person_of_current_user()
 
     # WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
+    instructors = Instructor.objects.filter(user=User.get_current_user(),
+                                            term=cur_term)
+    offerings = []
+
+    for instructor in instructors:
+        try:
+            offerings.append(CourseOffering.objects.get(term=instructor.term,
+                                                        course=instructor.course
+                                                        ))
+        except CourseOffering.DoesNotExist:
+            offerings.append(CourseOffering.load(instructor.course,
+                                                 instructor.term))
+
     sections = get_instructor_current_sections(person, cur_term)
     context["sections"] = create_sections_context(sections, cur_term)
 

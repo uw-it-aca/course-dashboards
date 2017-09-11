@@ -39,8 +39,7 @@ class CourseOffering(models.Model):
         """
         self.num_repeating = 0
 
-        registrations = Registration.objects.filter(term=self.course.term,
-                                                    course=self.course)
+        registrations = self.get_registrations()
 
         grades = []
         majors = {}
@@ -135,6 +134,14 @@ class CourseOffering(models.Model):
             concurrent.count = concurrent_courses[course]
             # concurrent.save()
 
+    def get_registrations(self):
+        """
+        Returns a QuerySet of Registration objects matching this course.
+        :return: QuerySet object
+        """
+        return Registration.objects.filter(term=self.term,
+                                           course=self.course)
+
     def json_object(self):
         json_object = {}
 
@@ -143,6 +150,16 @@ class CourseOffering(models.Model):
     class Meta:
         db_table = 'CourseOffering'
         unique_together = ('term', 'course')
+
+    @classmethod
+    def load(cls, course, term):
+        """
+        Retrieves a CourseOffering object from data in the SWS
+        :param course:
+        :param term:
+        :return:
+        """
+        raise CourseOffering.DoesNotExist
 
 
 class ConcurrentCourse(models.Model):

@@ -137,6 +137,8 @@ def create_sections_context(sections, term):
 
     return con_sections
 
+def create_offering_context(course_offerings):
+
 
 def get_instructor_current_sections(person, term):
     return get_sections_by_instructor_and_term(person, term)
