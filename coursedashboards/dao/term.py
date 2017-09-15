@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 import pytz
 from coursedashboards.dao import is_using_file_dao
 from django.utils import timezone
+
+from coursedashboards.models import Term
 from restclients_core.exceptions import DataFailureException
 from uw_sws.section import is_a_term, is_b_term
 from uw_sws.term import (
@@ -94,7 +96,7 @@ def get_comparison_datetime_with_tz(request):
         get_comparison_datetime(request)).astimezone(pytz.utc)
 
 
-def get_current_quarter(request):
+def get_current_sws_quarter(request):
     """
     Return a uw_sws.models.Term object
     for the current quarter refered in the user session.
@@ -112,6 +114,13 @@ def get_current_quarter(request):
 
     request.myuw_current_quarter = term
     return term
+
+
+def get_current_coda_quarter(request):
+    sws_term = get_current_sws_quarter(request)
+
+    return Term.objects.get_or_create(quarter=sws_term.quarter,
+                                      year=sws_term.year)
 
 
 def get_term_from_quarter_string(quarter_string):

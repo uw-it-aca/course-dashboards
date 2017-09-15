@@ -115,9 +115,7 @@ def create_sections_context(sections, term):
         current_majors = get_majors_all_students(students, term)
         section_status = status.json_data()
 
-        past_offerings = get_past_offering_of_course(
-            cur_section['curriculum_abbr'],
-            cur_section['course_number'], term)
+        past_offerings = {}
 
         con_sections.append({
             'curriculum': cur_section['curriculum_abbr'],
@@ -136,6 +134,23 @@ def create_sections_context(sections, term):
     con_sections = json.dumps(list(con_sections), cls=DjangoJSONEncoder)
 
     return con_sections
+
+
+def create_offering_context(course_offerings):
+    """
+
+    :param course_offerings:
+    :return:
+    """
+    offering_contexts = []
+
+    for offering in course_offerings:
+
+        offering.calculate()
+
+        offering_contexts.append(offering.json_object())
+
+    return offering_contexts
 
 
 def get_instructor_current_sections(person, term):
