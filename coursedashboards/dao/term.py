@@ -122,6 +122,7 @@ def get_current_coda_quarter(request):
     return Term.objects.get_or_create(quarter=sws_term.quarter,
                                       year=sws_term.year)
 
+
 def get_term_from_quarter_string(quarter_string):
     """
     Return a uw_sws.models.Term object
