@@ -34,9 +34,10 @@ class CourseMajor(models.Model):
 
     def json_object(self):
 
-        percentage = round(float(self.count) /
-                           float(self.course_offering.current_enrollment) * 100
-                           , 2)
+        percentage = round(
+            float(self.count) /
+            float(self.course_offering.current_enrollment) * 100,
+            2)
         return {
             'major': self.major.major,
             'number_students': self.count,

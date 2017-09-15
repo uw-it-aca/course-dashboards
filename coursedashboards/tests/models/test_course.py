@@ -14,4 +14,3 @@ class TestCourse(TestCase):
 
     def test_str(self):
         self.assertEqual(str(self.course), "PHYS 122 A")
-

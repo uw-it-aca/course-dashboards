@@ -46,9 +46,8 @@ def page(request,
 
     for instructor in instructors:
         try:
-            offerings.append(CourseOffering.objects.get(term=instructor.term,
-                                                        course=instructor.course
-                                                        ))
+            offerings.append(CourseOffering.objects.get(
+                term=instructor.term, course=instructor.course))
         except CourseOffering.DoesNotExist:
             offerings.append(CourseOffering.load(instructor.course,
                                                  instructor.term))

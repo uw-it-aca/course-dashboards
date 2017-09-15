@@ -112,8 +112,8 @@ class CourseOffering(models.Model):
             # save the opposite
 
             concurrent = ConcurrentCourse()
-            concurrent.course_offering = CourseOffering.objects.get(course=
-                                                                    course)
+            concurrent.course_offering = CourseOffering.objects.get(
+                course=course)
             concurrent.concurrent_course = self.course
             concurrent.count = concurrent_courses[course]
             # concurrent.save()
@@ -182,9 +182,10 @@ class ConcurrentCourse(models.Model):
 
         course_str = str(self.concurrent_course)
 
-        percentage = round(float(self.count) /
-                           float(self.course_offering.current_enrollment) * 100,
-                           2)
+        percentage = round(
+            float(self.count) /
+            float(self.course_offering.current_enrollment) * 100,
+            2)
 
         concurrent_json = {
             "course":  course_str,
@@ -193,4 +194,3 @@ class ConcurrentCourse(models.Model):
             }
 
         return concurrent_json
-
