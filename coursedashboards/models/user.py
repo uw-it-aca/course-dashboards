@@ -20,6 +20,7 @@ class User(models.Model):
     @staticmethod
     def get_current_user():
         # TODO : should this method go in a DAO?
+        print get_netid_of_current_user()
         return User.objects.get(uwnetid=get_netid_of_current_user())
 
 

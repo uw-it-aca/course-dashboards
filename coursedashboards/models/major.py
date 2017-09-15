@@ -1,6 +1,6 @@
 from django.db import models
 
-from coursedashboards.models.course import Course
+from coursedashboards.models.course_offering import CourseOffering
 from user import User
 
 
@@ -24,11 +24,21 @@ class StudentMajor(models.Model):
 class CourseMajor(models.Model):
     major = models.ForeignKey(Major,
                               on_delete=models.PROTECT)
-    course = models.ForeignKey(Course,
-                               on_delete=models.PROTECT,
-                               db_index=True)
+    course_offering = models.ForeignKey(CourseOffering,
+                                        on_delete=models.PROTECT,
+                                        db_index=True)
     count = models.IntegerField()
 
     class Meta:
         unique_together = ('major', 'course')
 
+    def json_object(self):
+
+        percentage = round(float(self.count) /
+                           float(self.course_offering.current_enrollment) * 100
+                           , 2)
+        return {
+            'major': self.major.major,
+            'number_students': self.count,
+            'percent_students': percentage
+        }
