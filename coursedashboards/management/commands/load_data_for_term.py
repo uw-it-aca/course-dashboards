@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import IntegrityError
 from django.utils.timezone import utc
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 from coursedashboards.models import (
     Term, User, Instructor, Course, CourseOffering,
@@ -56,7 +56,10 @@ class Command(BaseCommand):
 
             term, created = Term.objects.get_or_create(
                 quarter=sws_term.quarter, year=sws_term.year)
-            changed_since = term.last_queried if term.last_queried else ''
+            changed_since = term.last_queried
+            if not changed_since:
+                delta = timedelta(days=365)
+                changed_since = sws_term.first_day_quarter - delta
 
             changed_date = datetime.utcnow().replace(tzinfo=utc)
             for instructor in instructors:
@@ -94,7 +97,6 @@ class Command(BaseCommand):
 
         if section.is_withdrawn:
             try:
-                course = Course.objects.get(course=course, term=term)
                 self._remove_course(term, course)
                 logger.info('withdrawn: %s' % (
                     self._offering_string(term, course)))
@@ -223,7 +225,7 @@ class Command(BaseCommand):
     def _remove_course(self, term, course):
         Registration.objects.filter(term=term, course=course).delete()
         Instructor.objects.filter(term=term, course=course).delete()
-        CourseOffering.objects.get(term=term, course=course).delete()
+        CourseOffering.objects.filter(term=term, course=course).delete()
 
     def _offering_string(self, term, course):
         return '%s,%s,%s,%s/%s' % (
