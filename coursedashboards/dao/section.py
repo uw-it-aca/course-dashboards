@@ -115,9 +115,7 @@ def create_sections_context(sections, term):
         current_majors = get_majors_all_students(students, term)
         section_status = status.json_data()
 
-        past_offerings = get_past_offering_of_course(
-            cur_section['curriculum_abbr'],
-            cur_section['course_number'], term)
+        past_offerings = {}
 
         con_sections.append({
             'curriculum': cur_section['curriculum_abbr'],
@@ -137,7 +135,22 @@ def create_sections_context(sections, term):
 
     return con_sections
 
+
 def create_offering_context(course_offerings):
+    """
+
+    :param course_offerings:
+    :return:
+    """
+    offering_contexts = []
+
+    for offering in course_offerings:
+
+        offering.calculate()
+
+        offering_contexts.append(offering.json_object())
+
+    return offering_contexts
 
 
 def get_instructor_current_sections(person, term):
@@ -148,7 +161,5 @@ def get_concurrent_courses(section):
     """
     For a given section, retrieve all concurrent courses
     :param section:
-    :return: a list of tuples, with the Course identifier and count
+    :return: a list of ConcurrentCourse models
     """
-
-
