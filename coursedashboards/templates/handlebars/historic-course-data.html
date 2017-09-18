@@ -2,43 +2,41 @@
 {% tplhandlebars "historic-course-data" %}
 {% load staticfiles %}
 <div class="row">
-    <div class="col-sm-4"><span>Median Course Grade: </span><span class="dummy">3.2</span></div>
-    <div class="col-sm-8"><span>% that failed the course: </span><span class="dummy">2%</span></div>
+    <div class="col"><span>Median Course Grade: </span><span class="dummy">3.2</span><span class="dummy">2%</span></div>
+    <div class="col"><span>this is empty</span></div>
 </div>
-<div class="row"><span class="col">Note: it would be great to show historic data for previous times the logged in user was IOR for this course... maybe overlayed on the same visualization with generic historic data for the course.</span></div>
+
 <div class="row">
-    <div class="list col-12">
-        <h3>Grade Distribution</h3>
-        <p class="dummy">[Visualization of grade distribution for selected quarter(s) (include median GPA)]</p>
-    </div>
-</div>
-<div class="row">
-    <div class="list col-md-6">
-        <h3>Common majors (when taking the course):</h3>
+    <div class="list col">
+        <h3>Declared Majors (when taking the course)</h3>
         <ol>
             {{#each common_majors}}
            <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
        </ol> 
     </div>
-    <div class="list col-md-6">
-        <h3>Common majors (upon graduation):</h3>
+    <div class="list col">
+        <h3>Declared Majors (upon graduation)</h3>
         <ol>
            {{#each latest_majors}}
            <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
        </ol> 
     </div>
-    <div class="list col-md-6">
-        <h3>Concurrent Courses:</h3>
+</div>
+<div class="row">
+    <div class="list col">
+        <h3>Concurrent Courses</h3>
         <ol>
             {{#each common_courses}}
            <li>{{percent_students}}% : <span>{{course}} </span></li>
            {{/each}}
        </ol> 
     </div>
-    <div class="previous-instructors col-md-6">	
-       <h3>Previous Instructors for this course:</h3>
+</div>
+<div class="row">
+    <div class="previous-instructors col">	
+       <h3>Previous Instructors for this course</h3>
        <ol>
            {{#each instructors}}
             <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>

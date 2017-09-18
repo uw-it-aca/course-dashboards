@@ -16,19 +16,17 @@
 
 <!-- MAIN CONTENT BELOW THE BANNER -->
   	<main class="container" role="main">
-		<div class="main-content" id="maincontent"> 
-    		 <div class="section-container current-section" id="current-course-target"><!-- handlebars target for current-course-data.html -->
-                 
-            </div>
-            <div class="section-container historic-section">
-                <div id="historic-selector-target"><!-- handlebars target for historic data selectors--></div>
-                
-                
-            	<div class="course_info data-section" id="historic-course-target">
-            	    
-            	</div>
-            </div>
-		</div>	<!-- end of main -->
-
+    		<div class="main-content row" id="maincontent"> 
+                <div class="course-info row">
+                    <div><h2>{{quarter}} {{year}}</h2></div>
+                </div>
+                <div class="row">
+                    <div class="section-container current-section col-6" id="current-course-target"><!-- handlebars target for current-course-data.html --></div>
+                    <div class="section-container historic-section col-6">
+                        <div id="historic-selector-target"><!-- handlebars target for historic data selectors--></div>
+                        <div class="course_info data-section" id="historic-course-target"></div>
+                    </div>
+                </div>
+    		</div>	<!-- end of main -->
 	</main>  <!-- end of main container -->
 {% endblock %}
