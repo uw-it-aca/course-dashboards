@@ -3,7 +3,16 @@
 {% load staticfiles %}
 
 <div class="row">
-    <div class="col">course schedule</div>
+    <div class="col">
+        <table class="table-course-schedule dummy"> 
+            <thead class="sr-only"> 
+                <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr> 
+            </thead> 
+            <tbody class="tbody-course-schedule">
+                <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>  
+            </tbody> 
+        </table> 
+    </div>
 </div>
 <div class="row">
     <div class="col"><span>{{current_median}}</span></div>
