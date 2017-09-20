@@ -138,12 +138,12 @@ class Command(BaseCommand):
             term=term, course=course).values_list('user_id', flat=True))
         section_instructors = section.get_instructors()
         for section_instructor in section_instructors:
-            if not (section_instructor.person and
-                    section_instructor.person.uwnetid and
-                    section_instructor.person.uwregid):
+            if not (section_instructor and
+                    section_instructor.uwnetid and
+                    section_instructor.uwregid):
                 logger.info('incomplete instructor: netid: %s, regid: %s' % (
-                    getattr(section_instructor.person, 'uwnetid', "null"),
-                    getattr(section_instructor.person, 'uwregid', "null")))
+                    getattr(section_instructor, 'uwnetid', "null"),
+                    getattr(section_instructor, 'uwregid', "null")))
                 continue
             try:
                 user = user_from_person(section_instructor)
