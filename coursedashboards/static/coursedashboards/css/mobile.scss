@@ -1,11 +1,15 @@
 
 
-/** Current Course **/
+.course-data {
+    margin-top: 16px;
 
-.table-course-schedule {
-    width:100%;
-    td {
-        padding: 0 8px 8px 0;
-        width: 6em;
+    /** Current Course **/
+    
+    .table-course-schedule {
+        width:100%;
+        td {
+            padding: 0 8px 8px 0;
+            width: 6em;
+        }
     }
 }
