@@ -138,6 +138,13 @@ class Command(BaseCommand):
             term=term, course=course).values_list('user_id', flat=True))
         section_instructors = section.get_instructors()
         for section_instructor in section_instructors:
+            if not (section_instructor.person and
+                    section_instructor.person.uwnetid and
+                    section_instructor.person.uwregid):
+                logger.info('incomplete instructor: netid: %s, regid: %s' % (
+                    getattr(section_instructor.person, 'uwnetid', "null"),
+                    getattr(section_instructor.person, 'uwregid', "null")))
+                continue
             try:
                 user = user_from_person(section_instructor)
             except MalformedOrInconsistentUser:
@@ -162,7 +169,12 @@ class Command(BaseCommand):
             term=term, course=course).values_list('user_id', flat=True))
         registrations = get_active_registrations_by_section(section)
         for registration in registrations:
-            if not registration.person:
+            if not (registration.person and
+                    registration.person.uwnetid and
+                    registration.person.uwregid):
+                logger.info('incomplete registration: netid: %s, regid: %s' % (
+                    getattr(registration.person, 'uwnetid', "null"),
+                    getattr(registration.person, 'uwregid', "null")))
                 continue
             try:
                 user = user_from_person(registration.person)
