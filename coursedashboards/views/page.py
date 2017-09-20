@@ -1,34 +1,32 @@
 import json
-
+from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render
-
-from coursedashboards.dao import get_netid_of_current_user
-from coursedashboards.dao.pws import get_person_of_current_user
-from coursedashboards.dao.section import create_sections_context, \
-    get_instructor_current_sections
-from coursedashboards.dao.term import get_current_quarter
-from coursedashboards.models import Instructor, User, CourseOffering
+from coursedashboards.dao.user import get_current_user
+from coursedashboards.dao.term import get_current_coda_term
+from coursedashboards.dao.exceptions import MissingNetIDException
+from coursedashboards.models import Instructor, CourseOffering
 
 
 def page(request,
          context={},
          template='course-page.html'):
-    netid = get_netid_of_current_user()
-    # below is placeholder if login fails...
-    # should log and return something useful
-    if not netid:
+    try:
+        user = get_current_user()
+        context["user"] = {
+            "netid": user.uwnetid,
+            "session_key": request.session.session_key,
+        }
+    except MissingNetIDException:
+        # below is placeholder if login fails...
+        # should log and return something useful
         # log_invalid_netid_response(logger, timer)
         return "nope"  # insvalid_session()
-    context["user"] = {
-        "netid": netid,
-        "session_key": request.session.session_key,
-     }
 
     context["home_url"] = "/"
     context["err"] = None
     if ('year' not in context or context['year'] is None or
             'quarter' not in context and context['quarter'] is None):
-        cur_term = get_current_quarter(request)
+        cur_term = get_current_coda_term(request)
         if cur_term is None:
             context["err"] = "No current quarter data!"
         else:
@@ -37,22 +35,21 @@ def page(request,
     else:
         pass
 
-    person = get_person_of_current_user()
+    context['sections'] = []
+    try:
+        courses = Instructor.objects.filter(
+            user=user, term=cur_term).values_list('course', flat=True)
+        offerings = CourseOffering.objects.filter(
+            course=courses, term=cur_term)
 
-    # WORKS ONLY WITH bill100 - NEED ERROR HANDLING WHEN NO COURSES
-    instructors = Instructor.objects.filter(user=User.get_current_user(),
-                                            term=cur_term)
-    offerings = []
+        context['no_courses'] = (len(offerings) == 0)
+        sections = []
+        for offering in offerings:
+            sections.append(offering.json_object())
 
-    for instructor in instructors:
-        try:
-            offerings.append(CourseOffering.objects.get(
-                term=instructor.term, course=instructor.course))
-        except CourseOffering.DoesNotExist:
-            offerings.append(CourseOffering.load(instructor.course,
-                                                 instructor.term))
+        context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
 
-    sections = get_instructor_current_sections(person, cur_term)
-    context["sections"] = create_sections_context(sections, cur_term)
+    except Instructor.DoesNotExist:
+        context['no_courses'] = True
 
     return render(request, template, context)

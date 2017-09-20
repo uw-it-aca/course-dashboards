@@ -9,10 +9,10 @@ class Term(models.Model):
     WINTER = 'winter'
 
     QUARTERNAME_CHOICES = (
+        (WINTER, 'Winter'),
         (SPRING, 'Spring'),
         (SUMMER, 'Summer'),
         (AUTUMN, 'Autumn'),
-        (WINTER, 'Winter'),
     )
 
     quarter = models.CharField(max_length=6,
@@ -21,5 +21,5 @@ class Term(models.Model):
 
     last_queried = models.DateTimeField(null=True, blank=True)
 
-    def term_label(self):
+    def __str__(self):
         return "%s,%s" % (self.year, self.quarter)

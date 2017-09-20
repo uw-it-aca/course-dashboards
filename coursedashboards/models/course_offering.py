@@ -1,9 +1,15 @@
 import statistics
+import re
 from django.db import models
-from coursedashboards.dao.section import get_past_offering_of_course
-from coursedashboards.models import Course, Term
-from coursedashboards.models.major import StudentMajor, CourseMajor
+from coursedashboards.models.instructor import Instructor
+from coursedashboards.models.course import Course
+from coursedashboards.models.term import Term
 from coursedashboards.models.registration import Registration
+from coursedashboards.models.major import StudentMajor
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class CourseOffering(models.Model):
@@ -17,180 +23,190 @@ class CourseOffering(models.Model):
     # num_repeating = models.IntegerField()
     # median_gpa = models.FloatField()
 
-    def calculate(self):
+    def get_median_gpa(self):
         """
-        Calculates the course offering metadata for display in the UI
+        Calculates median grade point average for course offering
         """
-        self.num_repeating = 0
-
-        registrations = self.get_registrations()
-
+        students, total = self.get_students()
         grades = []
-        majors = {}
-        concurrent_registrations = []
+        for student in students:
+            if re.match(r'^[0-4]\.\d+$', student.grade):
+                grades.append(float(student.grade))
 
-        for reg in registrations:
-            if reg.is_repeat:
-                self.num_repeating += 1
+        return statistics.median(grades) if len(grades) else None
 
-            student = reg.user
+    def get_repeating_total(self):
+        students, total = self.get_students()
+        return len(students.filter(is_repeat=True))
 
-            # load the grade
-            if reg.grade is not "X":
-                grades.append(float(reg.grade))
+    def get_past_offerings(self):
+        years = 5
+        min_offerings = 2
+        # get past offerings of course up to x years ago,
+        # need to find at least min_offerings in order to display data
 
-            # load the major
-            student_majors = StudentMajor.objects.filter(user=student)
+        start_quarter = next((i for i, v in enumerate(Term.QUARTERNAME_CHOICES)
+                              if v[0] == self.term.quarter))
+        test_quarter = start_quarter + 1 if (start_quarter < 4) else 0
+        test_year = self.term.year - years if (
+            test_quarter > 0) else self.term.year - (years-1)
 
-            for student_major in student_majors:
-                if student_major in majors:
-                    majors[student_major] += 1
-                else:
-                    majors[student_major] = 1
+        # look for past offerings in each quarter
+        # create object containing section term info plus every student grade
 
-            # retrieve any concurrent registrations for concurrent courses
-            concurrent_regs = Registration.objects.filter(user=student,
-                                                          term=reg.term)
-            concurrent_registrations += concurrent_regs
+        past_offerings = []
 
-        # calculate the median GPA
-        self._calculate_grade_distribution(grades)
+        while test_year <= self.term.year:
+            test_quarter_name = Term.QUARTERNAME_CHOICES[test_quarter][0]
+            try:
+                term = Term.objects.get(
+                    year=test_year, quarter=test_quarter_name)
 
-        self.course_majors = []
-        # Save the # of each major
-        for major in majors:
-            course_major = CourseMajor(major=major, count=majors[major],
-                                       course=self.course)
-            # TODO : ask Mike if we should save this or add to self
-            self.course_majors.append(course_major)
+                section = CourseOffering.objects.get(
+                    course=self.course, term=term)
 
-    def _calculate_grade_distribution(self, grades):
-        """
-        Performs the processing to generate the distribution data about
-        GPA for a given section
-        :param grades: a list of grades. floats
-        """
-        if not len(grades):
-            return
+                past_offerings.append({
+                    "year": test_year,
+                    "quarter": test_quarter_name,
+                    "instructors": section.get_instructors(),
+                    "majors": section.get_majors(),
+                    "concurrent_courses": self.concurrent_courses(),
+                    "latest_majors": self.get_recent_majors()
+                })
+            except Term.DoesNotExist:
+                logger.error('No Data For term: %s,%s' % (
+                    test_year, test_quarter_name))
+            except CourseOffering.DoesNotExist:
+                pass
 
-        self.median_gpa = statistics.median(grades)
-
-    def _calculate_concurrent_courses(self, concurrent_registrations):
-        """
-        Takes in a dict of the concurrent courses being taken and
-        :param concurrent_registrations: a dict of Course : num_taking (int)
-        """
-
-        concurrent_courses = {}
-        self.concurrent_courses = []
-
-        for reg in concurrent_registrations:
-
-            if reg.course in concurrent_courses:
-                concurrent_courses[reg.course] += 1
+            if test_quarter == 3:
+                test_year += 1
+                test_quarter = 0
             else:
-                concurrent_courses[reg.course] = 1
+                test_quarter += 1
 
-        for course in concurrent_courses:
-            # Check if we've loaded this already in the DB on the other course
-            if ConcurrentCourse.objects.exists(course_info=self.course,
-                                               course=course):
-                model = ConcurrentCourse.objects.get(course_info=self.course,
-                                                     course=course)
-                self.concurrent_courses.append(model)
-                continue
+            if (test_year == self.term.year and
+                    test_quarter == start_quarter):
+                break
 
-            concurrent = ConcurrentCourse()
-            concurrent.course_offering = self
-            concurrent.concurrent_course = course
-            concurrent.count = concurrent_courses[course]
+        return past_offerings if len(past_offerings) >= min_offerings else []
 
-            # concurrent.save()
-
-            self.concurrent_courses.append(concurrent)
-
-            # save the opposite
-
-            concurrent = ConcurrentCourse()
-            concurrent.course_offering = CourseOffering.objects.get(
-                course=course)
-            concurrent.concurrent_course = self.course
-            concurrent.count = concurrent_courses[course]
-            # concurrent.save()
-
-    def get_registrations(self):
+    def get_instructors(self):
         """
-        Returns a QuerySet of Registration objects matching this course.
-        :return: QuerySet object
+        Return Instructor queryset for this course offering
         """
-        return Registration.objects.filter(term=self.term,
-                                           course=self.course)
+        instructor_list = []
+        instructors = Instructor.objects.filter(
+            course=self.course, term=self.term)
+        for instructor in instructors:
+            instructor_list.append({
+                'display_name': instructor.user.display_name,
+                'uwnetid': instructor.user.uwnetid,
+                'email': instructor.user.email
+            })
+
+        return instructor_list
+
+    def get_students(self):
+        """
+        Return Registration queryset for this course offering
+        """
+        if not hasattr(self, 'students'):
+            self.students = Registration.objects.filter(
+                course=self.course, term=self.term)
+            self.student_count = len(self.students)
+
+        return (self.students, self.student_count)
+
+    def courses_for_student(self, student):
+        """
+        Return given user's Courses for this term
+        """
+        return Registration.objects.filter(
+            user=student.user, term=self.term).values_list(
+                'course_id', flat=True)
+
+    def concurrent_courses(self):
+        course_dict = {}
+        students, total_students = self.get_students()
+        for student in students:
+            for course_id in self.courses_for_student(student):
+                if course_id != self.course.id:
+                    course_name = "%s" % Course.objects.get(id=course_id)
+                    if course_name in course_dict:
+                        course_dict[course_name] += 1
+                    else:
+                        course_dict[course_name] = 1
+
+        sorted_courses = sorted(course_dict, reverse=True, key=course_dict.get)
+        top_courses = []
+        for sort in sorted_courses:
+            top_courses.append({
+                "course": sort,
+                "number_students": course_dict[sort],
+                "percent_students": round(
+                    (float(course_dict[sort]) / float(total_students)) *
+                    100.0, 2)
+            })
+
+        return top_courses
+
+    def student_majors_for_term(self, student):
+        return StudentMajor.objects.filter(
+            user=student.user, term=self.term)
+
+    def last_student_major(self, student):
+        return StudentMajor.objects.filter(
+            user=student.user, term=student.user.last_enrolled)
+
+    def get_recent_majors(self):
+        return self._get_majors(self.last_student_major)
+
+    def get_majors(self):
+        return self._get_majors(self.student_majors_for_term)
+
+    def _get_majors(self, student_majors):
+        majors_dict = {}
+        students, total_students = self.get_students()
+        for student in students:
+            majors = student_majors(student)
+            for major in majors:
+                if major.major.major in majors_dict:
+                    majors_dict[major.major.major] += 1
+                else:
+                    majors_dict[major.major.major] = 1
+
+        top_majors = []
+        sorted_majors = sorted(majors_dict, reverse=True, key=majors_dict.get)
+        for sort in sorted_majors:
+            top_majors.append({
+                "major": sort,
+                "number_students": majors_dict[sort],
+                "percent_students":
+                round(
+                    (float(majors_dict[sort]) / float(total_students)) *
+                    100.0, 2)
+            })
+
+        return top_majors
 
     def json_object(self):
-        offering_json = {}
-        offering_json['curriculum'] = self.course.curriculum
-        offering_json['course_number'] = self.course.course_number
-        offering_json['section_id'] = self.course.section_id
-        offering_json['current_enrollment'] = self.current_enrollment
-        offering_json['limit_estimate_enrollment'] = (
-            self.limit_estimate_enrollment)
-        offering_json['current_median'] = self.median
-
-        concurrent_courses = []
-
-        for course in self.concurrent_courses:
-            concurrent_courses.append(course.json_object())
-
-        offering_json['concurrent_courses'] = concurrent_courses
-
-        current_student_majors = {}
-
-        for major in current_student_majors:
-            current_student_majors.append(major.json_object())
-
-        offering_json['current_student_majors'] = current_student_majors
-
-        offering_json['past_offerings'] = get_past_offering_of_course(
-            self.course.curriculum,
-            self.course.course_number, self.term)
-
-        return offering_json
+        return {
+            'curriculum': self.course.curriculum,
+            'course_number': self.course.course_number,
+            'section_id': self.course.section_id,
+            'current_enrollment': self.current_enrollment,
+            'limit_estimate_enrollment': self.limit_estimate_enrollment,
+            'num_repeating': self.get_repeating_total(),
+            'current_median': self.get_median_gpa(),
+            'concurrent_courses': self.concurrent_courses(),
+            'current_student_majors': self.get_majors(),
+            'past_offerings': self.get_past_offerings(),
+        }
 
     class Meta:
         db_table = 'CourseOffering'
         unique_together = ('term', 'course')
 
-    @classmethod
-    def load(cls, course, term):
-        """
-        Retrieves a CourseOffering object from data in the SWS
-        :param course:
-        :param term:
-        :return:
-        """
-        raise CourseOffering.DoesNotExist
-
-
-class ConcurrentCourse(models.Model):
-    course_offering = models.ForeignKey(CourseOffering,
-                                        on_delete=models.PROTECT)
-    concurrent_course = models.ForeignKey(Course,
-                                          on_delete=models.PROTECT)
-    count = models.IntegerField()
-
-    def json_object(self):
-
-        course_str = str(self.concurrent_course)
-
-        percentage = round(
-            float(self.count) /
-            float(self.course_offering.current_enrollment) * 100,
-            2)
-
-        concurrent_json = {
-            "course":  course_str,
-            "number_students": self.course_offering.current_enrollment,
-            "percent_students": percentage
-            }
-
-        return concurrent_json
+    def __str__(self):
+        return "%s,%s" % (self.term, self.course)

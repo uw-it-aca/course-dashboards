@@ -1,17 +1,18 @@
 from django.core.management.base import BaseCommand
-from django.db import IntegrityError
 from django.utils.timezone import utc
 from datetime import datetime, timedelta
 import logging
 from coursedashboards.models import (
-    Term, User, Instructor, Course, CourseOffering,
+    Term, Instructor, Course, CourseOffering,
     Registration, Major, StudentMajor)
 from coursedashboards.dao.exceptions import (
     MalformedOrInconsistentUser)
 from coursedashboards.dao.term import get_given_and_previous_quarters
 from coursedashboards.dao.pws import get_person_by_netid
 from coursedashboards.dao.gws import get_effective_members
+from coursedashboards.dao.user import user_from_person
 from uw_sws.section import get_changed_sections_by_term, get_section_by_url
+from uw_sws.person import get_person_by_regid
 from uw_sws.registration import get_active_registrations_by_section
 from uw_sws.enrollment import get_enrollment_by_regid_and_term
 from uw_canvas.courses import Courses as CanvasCourses
@@ -98,42 +99,19 @@ class Command(BaseCommand):
         if section.is_withdrawn:
             try:
                 self._remove_course(term, course)
-                logger.info('withdrawn: %s' % (
-                    self._offering_string(term, course)))
             except Course.DoesNotExist:
                 pass
 
             return
 
-        logger.info('loading: %s' % (self._offering_string(term, course)))
+        logger.info('load: %s' % (
+            self._offering_string(term, course)))
         self._course_offering_from_section(term, course, section)
         self._instructors_from_section(term, course, section)
         self._registrations_from_section(term, course, section)
 
         registrations = Registration.objects.filter(term=term, course=course)
-        self._collect_student_majors(registrations, sws_term)
-
-    def _user_from_person(self, person):
-        try:
-            user = User.objects.get(uwnetid=person.uwnetid)
-            if user.uwregid != person.uwregid:
-                user.uwregid = person.uwregid
-                user.save()
-        except User.DoesNotExist:
-            try:
-                user = User.objects.get(uwregid=person.uwregid)
-                if user.uwnetid != person.uwnetid:
-                    user.uwnetid = person.uwnetid
-                    user.email = person.email
-                    user.save()
-            except User.DoesNotExist:
-                user = User.objects.create(
-                    uwnetid=person.uwnetid,
-                    uwregid=person.uwregid,
-                    display_name=person.display_name,
-                    email=person.email1)
-
-        return user
+        self._collect_majors(registrations, course, term, sws_term)
 
     def _course_offering_from_section(self, term, course, section):
         try:
@@ -161,7 +139,7 @@ class Command(BaseCommand):
         section_instructors = section.get_instructors()
         for section_instructor in section_instructors:
             try:
-                user = self._user_from_person(section_instructor)
+                user = user_from_person(section_instructor)
             except MalformedOrInconsistentUser:
                 continue
 
@@ -185,7 +163,7 @@ class Command(BaseCommand):
         registrations = get_active_registrations_by_section(section)
         for registration in registrations:
             try:
-                user = self._user_from_person(registration.person)
+                user = user_from_person(registration.person)
             except MalformedOrInconsistentUser:
                 continue
 
@@ -195,6 +173,14 @@ class Command(BaseCommand):
             reg_obj.grade = registration.grade
             reg_obj.is_repeat = registration.repeat_course
             reg_obj.save()
+
+            sws_person = get_person_by_regid(user.uwregid)
+            if sws_person.last_enrolled:
+                last_term, created = Term.objects.get_or_create(
+                    year=sws_person.last_enrolled.year,
+                    quarter=sws_person.last_enrolled.quarter)
+                user.last_enrolled = last_term
+                user.save()
 
             if not created and id in prior_registrations:
                 prior_registrations.remove(id)
@@ -208,7 +194,8 @@ class Command(BaseCommand):
             Registration.objects.filter(
                 user_id__in=prior_registrations).delete()
 
-    def _collect_student_majors(self, registrations, sws_term):
+    def _collect_majors(self, registrations, course, term, sws_term):
+        majors = {}
         for reg in registrations:
             student_majors = self._get_student_major(reg.user, sws_term)
             for student_major in student_majors:
@@ -216,18 +203,23 @@ class Command(BaseCommand):
                     major, created = Major.objects.get_or_create(
                         major=student_major.major_name)
                     StudentMajor.objects.get_or_create(
-                        user=reg.user, major=major)
+                        user=reg.user, major=major, term=term)
+
+                if major in majors:
+                    majors[major] += 1
+                else:
+                    majors[major] = 1
 
     def _get_student_major(self, user, sws_term):
         enrollment = get_enrollment_by_regid_and_term(user.uwregid, sws_term)
         return enrollment.majors
 
     def _remove_course(self, term, course):
+        logger.info('remove: %s' % (
+            self._offering_string(term, course)))
         Registration.objects.filter(term=term, course=course).delete()
         Instructor.objects.filter(term=term, course=course).delete()
         CourseOffering.objects.filter(term=term, course=course).delete()
 
     def _offering_string(self, term, course):
-        return '%s,%s,%s,%s/%s' % (
-                term.year, term.quarter, course.curriculum,
-                course.course_number, course.section_id)
+        return '%s,%s' % (term, course)

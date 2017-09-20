@@ -13,4 +13,4 @@ class TestCourse(TestCase):
         self.course.section_id = "A"
 
     def test_str(self):
-        self.assertEqual(str(self.course), "PHYS 122 A")
+        self.assertEqual(str(self.course), "PHYS,122/A")

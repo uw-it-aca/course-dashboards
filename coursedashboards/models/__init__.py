@@ -1,8 +1,8 @@
-from course_median_gpa import CourseMedianGPA
-from user import User
-from major import Major, StudentMajor
-from term import Term
-from course import Course
-from course_offering import CourseOffering
-from registration import Registration
-from instructor import Instructor
+from coursedashboards.models.course_median_gpa import CourseMedianGPA
+from coursedashboards.models.user import User
+from coursedashboards.models.major import Major, StudentMajor
+from coursedashboards.models.term import Term
+from coursedashboards.models.course import Course
+from coursedashboards.models.course_offering import CourseOffering
+from coursedashboards.models.registration import Registration
+from coursedashboards.models.instructor import Instructor

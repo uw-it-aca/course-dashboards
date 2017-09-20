@@ -1,7 +1,6 @@
 from django.db import models
 
-from coursedashboards.dao import get_netid_of_current_user
-from term import Term
+from coursedashboards.models.term import Term
 
 
 class User(models.Model):
@@ -13,15 +12,12 @@ class User(models.Model):
                                null=True,
                                db_index=True,
                                unique=True)
+    last_enrolled = models.ForeignKey(Term,
+                                      null=True,
+                                      on_delete=models.PROTECT)
 
     display_name = models.CharField(max_length=250, null=True)
     email = models.CharField(max_length=255, null=True)
-
-    @staticmethod
-    def get_current_user():
-        # TODO : should this method go in a DAO?
-        print get_netid_of_current_user()
-        return User.objects.get(uwnetid=get_netid_of_current_user())
 
 
 class QuarterGPA(models.Model):

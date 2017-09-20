@@ -116,11 +116,15 @@ def get_current_sws_quarter(request):
     return term
 
 
-def get_current_coda_quarter(request):
+def get_current_coda_term(request):
+    """
+    Return a coursedashboards.models.Term object
+    for the current quarter refered in the user session.
+    """
     sws_term = get_current_sws_quarter(request)
-
-    return Term.objects.get_or_create(quarter=sws_term.quarter,
-                                      year=sws_term.year)
+    term, created = Term.objects.get_or_create(
+        year=sws_term.year, quarter=sws_term.quarter)
+    return term
 
 
 def get_term_from_quarter_string(quarter_string):
@@ -143,7 +147,7 @@ def get_next_quarter(request):
     if hasattr(request, 'myuw_next_quarter'):
         return request.myuw_next_quarter
 
-    term = get_term_after(get_current_quarter(request))
+    term = get_term_after(get_current_sws_quarter(request))
     request.myuw_next_quarter = term
 
     return term
@@ -155,7 +159,7 @@ def get_current_and_next_quarters(request, num):
     for the current quarter refered in the user session. Returns the next
     num -1 quarters along with the current one.
     """
-    term = get_current_quarter(request)
+    term = get_current_sws_quarter(request)
     quarters = [term]
 
     for x in range(1, num):
@@ -187,7 +191,7 @@ def get_previous_quarter(request):
     if hasattr(request, "myuw_previous_quarter"):
         return request.myuw_previous_quarter
 
-    term = get_term_before(get_current_quarter(request))
+    term = get_term_before(get_current_sws_quarter(request))
     request.myuw_previous_quarter = term
     return term
 
@@ -197,7 +201,7 @@ def get_previous_number_quarters(request, num):
     for previous quarters prior to current quarter
     refered in the user session.
     """
-    term = get_current_quarter(request)
+    term = get_current_sws_quarter(request)
     return get_prev_num_terms(term, num)
 
 
@@ -206,7 +210,7 @@ def get_future_number_quarters(request, num):
     for future quarters prior to current quarter
     refered in the user session.
     """
-    term = get_current_quarter(request)
+    term = get_current_sws_quarter(request)
     return get_future_num_terms(term, num)
 
 
@@ -260,7 +264,7 @@ def is_in_summer_quarter(request):
     """
     Return True if the user session is currently in a summer quarter
     """
-    return get_current_quarter(request).is_summer_quarter()
+    return get_current_sws_quarter(request).is_summer_quarter()
 
 
 def get_current_summer_term(request):
@@ -270,7 +274,7 @@ def get_current_summer_term(request):
     """
     if not is_in_summer_quarter(request):
         return None
-    eod_aterm = get_current_quarter(request).get_eod_summer_aterm()
+    eod_aterm = get_current_sws_quarter(request).get_eod_summer_aterm()
     if get_comparison_datetime(request) > eod_aterm:
         return "b-term"
     else:
@@ -296,14 +300,14 @@ def get_next_non_summer_quarter(request):
     Return the Term object for the non-summer quarter after the quarter
     refered in the current user sesssion.
     """
-    return get_next_non_summer_term(get_current_quarter(request))
+    return get_next_non_summer_term(get_current_sws_quarter(request))
 
 
 def get_next_autumn_quarter(request):
     """
     Return the Term object for the next autumn quarter in the same year.
     """
-    return get_next_autumn_term(get_current_quarter(request))
+    return get_next_autumn_term(get_current_sws_quarter(request))
 
 
 def get_eod_current_summer_aterm(request):
@@ -313,7 +317,7 @@ def get_eod_current_summer_aterm(request):
     If it is currently not a summer term, return None.
     """
     if is_in_summer_a_term(request):
-        return get_current_quarter(request).get_eod_summer_aterm()
+        return get_current_sws_quarter(request).get_eod_summer_aterm()
     return None
 
 
@@ -334,7 +338,7 @@ def get_bod_current_term_class_start(request, break_at_a_term=False):
     or the beginning of summer B-term if applicable
     """
     return _get_correspond_eod(
-            get_current_quarter(request).get_bod_first_day(),
+            get_current_sws_quarter(request).get_bod_first_day(),
             request, break_at_a_term)
 
 
@@ -365,7 +369,7 @@ def get_eod_current_term(request, break_at_a_term=False):
     deadline or the end of summer a-term if applicable
     """
     return _get_correspond_eod(
-            get_current_quarter(request).get_eod_grade_submission(),
+            get_current_sws_quarter(request).get_eod_grade_submission(),
             request, break_at_a_term)
 
 
@@ -375,7 +379,7 @@ def get_eod_current_term_last_instruction(request, break_at_a_term=False):
     for current quarter and current summer A-term if applicable
     """
     return _get_correspond_eod(
-            get_current_quarter(request).get_eod_last_instruction(),
+            get_current_sws_quarter(request).get_eod_last_instruction(),
             request, break_at_a_term)
 
 
@@ -396,7 +400,7 @@ def get_eod_current_term_last_final_exam(request, break_at_a_term=False):
     the end of the last final exam day
     """
     return _get_correspond_eod(
-        get_current_quarter(request).get_eod_last_final_exam(),
+        get_current_sws_quarter(request).get_eod_last_final_exam(),
         request, break_at_a_term)
 
 

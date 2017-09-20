@@ -21,4 +21,8 @@ def get_person_of_current_user():
     """
     Retrieve the person data using the netid of the current user
     """
-    return get_person_by_netid(get_netid_of_current_user())
+    netid = get_netid_of_current_user()
+    if not netid:
+        raise MissingNetIDException()
+
+    return get_person_by_netid(netid)
