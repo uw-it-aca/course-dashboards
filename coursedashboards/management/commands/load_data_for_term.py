@@ -162,6 +162,8 @@ class Command(BaseCommand):
             term=term, course=course).values_list('user_id', flat=True))
         registrations = get_active_registrations_by_section(section)
         for registration in registrations:
+            if not registration.person:
+                continue
             try:
                 user = user_from_person(registration.person)
             except MalformedOrInconsistentUser:
