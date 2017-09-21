@@ -162,6 +162,8 @@ class Command(BaseCommand):
 
         # remove prior instructors
         if len(prior_instructors):
+            logger.debug('drop instructor: %s for course: %s' % (
+                prior_instructors, self._offering_string(term, course)))
             Instructor.objects.filter(
                 user_id__in=prior_instructors,
                 term=term, course=course).delete()
@@ -207,8 +209,11 @@ class Command(BaseCommand):
 
         # remove dropped registrations
         if len(prior_registrations):
+            logger.debug('drop registrations: %s for course: %s' % (
+                prior_registrations, self._offering_string(term, course)))
             Registration.objects.filter(
-                user_id__in=prior_registrations).delete()
+                user_id__in=prior_registrations,
+                term=term, course=course).delete()
 
     def _collect_majors(self, registrations, course, term, sws_term):
         majors = {}
