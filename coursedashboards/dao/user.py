@@ -15,12 +15,15 @@ def user_from_person(person):
             user = User.objects.get(uwregid=person.uwregid)
             if user.uwnetid != person.uwnetid:
                 user.uwnetid = person.uwnetid
-                user.email = person.email
+                user.email = getattr(
+                    person, 'email1', '%s@uw.edu' % person.uwnetid)
                 user.save()
         except User.DoesNotExist:
             user = User.objects.create(
                 uwnetid=person.uwnetid, uwregid=person.uwregid,
-                display_name=person.display_name, email=person.email1)
+                display_name=person.display_name,
+                email=getattr(
+                    person, 'email1', '%s@uw.edu' % person.uwnetid))
 
     return user
 
