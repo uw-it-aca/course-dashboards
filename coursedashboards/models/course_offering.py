@@ -144,7 +144,7 @@ class CourseOffering(models.Model):
             'section_id': self.course.section_id,
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
-            'num_repeating': self.get_repeating_total(),
+            'current_repeating': self.get_repeating_total(),
             'current_median': self.get_median_gpa(),
             'concurrent_courses': self.concurrent_courses(),
             'current_student_majors': self.get_majors(),
