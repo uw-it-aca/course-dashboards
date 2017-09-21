@@ -47,7 +47,7 @@ class CourseOffering(models.Model):
 
         start_quarter = next((i for i, v in enumerate(Term.QUARTERNAME_CHOICES)
                               if v[0] == self.term.quarter))
-        test_quarter = start_quarter + 1 if (start_quarter < 4) else 0
+        test_quarter = start_quarter + 1 if (start_quarter < 3) else 0
         test_year = self.term.year - years if (
             test_quarter > 0) else self.term.year - (years-1)
 
