@@ -156,13 +156,15 @@ class Command(BaseCommand):
             if not created and id in prior_instructors:
                 prior_instructors.remove(id)
 
-            logger.debug('%s registration: netid:%s, course: %s' % (
+            logger.debug('%s instructor: netid:%s, course: %s' % (
                 'new' if created else 'update',
                 user.uwnetid, self._offering_string(term, course)))
 
         # remove prior instructors
         if len(prior_instructors):
-            Instructor.objects.filter(user_id__in=prior_instructors).delete()
+            Instructor.objects.filter(
+                user_id__in=prior_instructors,
+                term=term, course=course).delete()
 
     def _registrations_from_section(self, term, course, section):
         prior_registrations = list(Registration.objects.filter(
