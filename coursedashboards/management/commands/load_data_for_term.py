@@ -11,11 +11,12 @@ from coursedashboards.dao.term import get_given_and_previous_quarters
 from coursedashboards.dao.pws import get_person_by_netid
 from coursedashboards.dao.gws import get_effective_members
 from coursedashboards.dao.user import user_from_person
-from uw_sws.section import get_changed_sections_by_term, get_section_by_url
-from uw_sws.person import get_person_by_regid
+from coursedashboards.dao.section import (
+    get_changed_sections, get_section_from_url)
+from coursedashboards.dao.person import get_person_from_regid
+from coursedashboards.dao.canvas import canvas_course_url_from_section
 from uw_sws.registration import get_active_registrations_by_section
 from uw_sws.enrollment import get_enrollment_by_regid_and_term
-from uw_canvas.courses import Courses as CanvasCourses
 
 
 logger = logging.getLogger(__name__)
@@ -76,14 +77,14 @@ class Command(BaseCommand):
                     params['reg_id'] = person.uwregid
                     params['search_by'] = 'Instructor'
 
-                section_refs = get_changed_sections_by_term(
+                section_refs = get_changed_sections(
                     changed_since, term, **params)
 
                 for section_ref in section_refs:
-                    section = get_section_by_url(section_ref.url)
+                    section = get_section_from_url(section_ref.url)
                     self._load_section(section, term, sws_term)
                     for joint_section_url in section.joint_section_urls:
-                        joint_section = get_section_by_url(joint_section_url)
+                        joint_section = get_section_from_url(joint_section_url)
                         self._load_section(joint_section, term, sws_term)
 
             # remember the last time we crawled this term
@@ -123,15 +124,8 @@ class Command(BaseCommand):
             co = CourseOffering.objects.create(
                 term=term, course=course,
                 current_enrollment=section.current_enrollment,
-                limit_estimate_enrollment=section.limit_estimate_enrollment)
-
-        try:
-            canvas_course = CanvasCourses().get_course_by_sis_id(
-                section.canvas_course_sis_id())
-            co.canvas_course_url = canvas_course.course_url
-            co.save()
-        except Exception as ex:
-            logger.info("cannot add canvas url: %s" % (ex))
+                limit_estimate_enrollment=section.limit_estimate_enrollment,
+                canvas_course_url=canvas_course_url_from_section(section))
 
     def _instructors_from_section(self, term, course, section):
         prior_instructors = list(Instructor.objects.filter(
@@ -192,7 +186,7 @@ class Command(BaseCommand):
             reg_obj.is_repeat = registration.repeat_course
             reg_obj.save()
 
-            sws_person = get_person_by_regid(user.uwregid)
+            sws_person = get_person_from_regid(user.uwregid)
             if sws_person.last_enrolled:
                 last_term, created = Term.objects.get_or_create(
                     year=sws_person.last_enrolled.year,
