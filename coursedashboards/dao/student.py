@@ -74,23 +74,6 @@ def get_concurrent_sections_by_student(student, term):
     return concurrent_courses
 
 
-def order_majors(majors, total_students):
-    sorted_majors = sorted(majors, reverse=True, key=majors.get)
-    top_majors = []
-
-    for sort in sorted_majors:
-        top_majors.append({
-            "major": sort,
-            "number_students": majors[sort],
-            "percent_students":
-                round(
-                    (float(majors[sort]) / float(total_students)) *
-                    100.0, 2)
-        })
-
-    return top_majors
-
-
 def get_majors_all_students(students, term):
     majors_dict = {}
     total_students = len(students)

@@ -1,0 +1,18 @@
+{% load coda_admin_filters %}
+
+{% if is_overrider|default_if_none:True %}
+{% include 'supporttools/default_sidelinks.html' %}
+{% endif %}
+
+<h3>Testing Tools</h3>
+<ul>
+    {% if is_overrider %}
+    <li><a href="{% url 'myuw_date_override' %}">Date testing</a></li>
+    {% endif %}
+    {% if is_rest_browser %}
+    {% url 'restclients_errors' as url %}
+    {% if url %}
+    <li><a href="{% url 'restclients_errors' %}">Webservice errors</a></li>
+    {% endif %}
+    {% endif %}
+</ul>

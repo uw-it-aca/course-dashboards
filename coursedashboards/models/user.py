@@ -1,10 +1,6 @@
-import hashlib
-from datetime import timedelta
-from datetime import datetime
-from dateutil.parser import parse
-from django.utils import timezone
 from django.db import models
-from django.utils import timezone
+
+from coursedashboards.models.term import Term
 
 
 class User(models.Model):
@@ -16,5 +12,18 @@ class User(models.Model):
                                null=True,
                                db_index=True,
                                unique=True)
+    last_enrolled = models.ForeignKey(Term,
+                                      null=True,
+                                      on_delete=models.PROTECT)
 
-    last_visit = models.DateTimeField(default=timezone.now)
+    display_name = models.CharField(max_length=250, null=True)
+    email = models.CharField(max_length=255, null=True)
+
+
+class QuarterGPA(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.PROTECT)
+    term = models.ForeignKey(Term,
+                             on_delete=models.PROTECT)
+    gpa = models.FloatField()
+    credits = models.IntegerField()

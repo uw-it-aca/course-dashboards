@@ -19,7 +19,11 @@ setup(
         'django-templatetag-handlebars',
         'UW-RestClients-SWS',
         'UW-RestClients-PWS',
-        'UW-Restclients-Django-Utils'
+        'UW-RestClients-GWS',
+        'UW-RestClients-Canvas',
+        'UW-Restclients-Django-Utils',
+        'Django-SupportTools',
+        'statistics'
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',

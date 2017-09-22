@@ -30,7 +30,7 @@ function showCurrentCourseData(index) {
         current_median: window.section_data[index].current_median,
         current_num_registered: window.section_data[index].current_enrollment,
         current_capacity:window.section_data[index].limit_estimate_enrollment,
-        current_repeat_students:3,
+        current_repeat_students:section_data[index].current_repeating,
         concurrent_courses:window.section_data[index].concurrent_courses,
         current_majors:window.section_data[index].current_student_majors
     }));
