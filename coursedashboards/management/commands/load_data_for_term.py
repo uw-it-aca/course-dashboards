@@ -149,7 +149,7 @@ class Command(BaseCommand):
             inst_obj, created = Instructor.objects.get_or_create(
                 user=user, course=course, term=term)
 
-            if not created and id in prior_instructors:
+            if id in prior_instructors:
                 prior_instructors.remove(id)
 
             logger.debug('%s instructor: netid:%s, course: %s' % (
@@ -195,7 +195,7 @@ class Command(BaseCommand):
                 user.last_enrolled = last_term
                 user.save()
 
-            if not created and id in prior_registrations:
+            if id in prior_registrations:
                 prior_registrations.remove(id)
 
             logger.debug('%s registration: netid:%s, course: %s' % (
@@ -214,7 +214,7 @@ class Command(BaseCommand):
         majors = {}
         for reg in registrations:
             for student_major in get_student_majors_for_regid_and_term(
-                    reg.user, sws_term):
+                    reg.user.uwregid, sws_term):
                 if student_major.major_name:
                     major, created = Major.objects.get_or_create(
                         major=student_major.major_name)
