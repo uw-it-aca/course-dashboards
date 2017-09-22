@@ -90,8 +90,8 @@ elif os.environ['DB'] == "mysql":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'myuw',
-            'USER': 'myuw',
+            'NAME': 'coda',
+            'USER': 'coda',
             'PASSWORD': 'my_pass',
         }
     }
