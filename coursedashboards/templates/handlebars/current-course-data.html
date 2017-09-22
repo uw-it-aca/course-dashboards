@@ -1,17 +1,25 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "current-course-data" %}
 {% load staticfiles %}
-
+<div class="row">
+    <div class="col">
+        <span style="font-size:1.3em;font-weight:bold;">Current Quarter Data for <span class="dummy">PHYS 122 A {{curriculum}} {{course_number}} {{section_id}} </span></span>
+    </div>
+</div>
 <div class="current-schedule-row row">
     <div class="col">
-        <table class="table-course-schedule dummy"> 
-            <thead class="sr-only"> 
-                <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr> 
-            </thead> 
-            <tbody class="tbody-course-schedule">
-                <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>  
-            </tbody> 
-        </table> 
+        <div class="card" style="border:none;">
+            <div class="card-body" style="padding:1rem;">
+                <table class="table-course-schedule dummy"> 
+                    <thead class="sr-only"> 
+                        <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr> 
+                    </thead> 
+                    <tbody class="tbody-course-schedule">
+                        <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>  
+                    </tbody> 
+                </table> 
+            </div>
+        </div>
     </div>
 </div>
 <div class="current-data-row row">
@@ -55,7 +63,7 @@
 </div>-->
 <div class="row ">
     <div class="list col">
-        <h3>Concurrent Courses</h3>
+        <h3 class="list-header">Concurrent Courses</h3>
         <ol>
            {{#each concurrent_courses}}
                 <li>{{percent_students}}% : <span>{{course}}</span></li>  
@@ -63,7 +71,7 @@
        </ol> 
     </div>
     <div class="list col">
-        <h3>Declared Majors</h3>
+        <h3 class="list-header">Declared Majors</h3>
         <ol>
             {{#each current_majors}}
                 <li>{{percent_students}}% : <span>{{major}}</span></li>
