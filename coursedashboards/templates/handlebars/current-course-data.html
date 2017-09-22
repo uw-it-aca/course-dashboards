@@ -2,7 +2,7 @@
 {% tplhandlebars "current-course-data" %}
 {% load staticfiles %}
 
-<div class="row">
+<div class="current-schedule-row row">
     <div class="col">
         <table class="table-course-schedule dummy"> 
             <thead class="sr-only"> 
@@ -14,12 +14,36 @@
         </table> 
     </div>
 </div>
-<div class="row">
-    <div class="col"><span>{{current_median}}</span></div>
-    <div class="col"><span>{{current_num_registered}} / {{current_capacity}}</span></div>
+<div class="current-data-row row">
+    <div class="current-median course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="fa fa-edit" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{current_median}}</div>
+            <span class="course-data-description">Cumulative GPA</span>
+        </div>
+    </div>
+    <div class="current-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{current_num_registered}}/{{current_capacity}}</div>
+            <span class="course-data-description">Currently Registered</span>
+        </div>
+    </div>
 </div>
 <div class="row">
-    <div class="col"><span class="dummy">{{current_repeat_students}}</span></div>
+    <div class="current-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-icon red">
+            <span><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{current_repeat_students}}</div>
+            <span class="course-data-description">Repeating Students</span>
+        </div>
+    </div>
 </div>
 
 <!--<div class="row">

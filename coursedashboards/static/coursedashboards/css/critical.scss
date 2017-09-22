@@ -14,6 +14,7 @@ $link_focus: #b5754d;
 
 /*********** Development Style (clear out before production deploy ***********/
 
+
 .dummy {
     color: red;
     font-weight: bold;
@@ -34,6 +35,8 @@ html, body {
     height: 100%;
     color:#333;
 }
+
+.col { flex: 1 0 50%; }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section {
   display: block;
