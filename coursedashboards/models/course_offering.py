@@ -73,7 +73,7 @@ class CourseOffering(models.Model):
         } for inst in Instructor.objects.filter(course=self.course,
                                                 term=self.term)]
 
-    def student_registrations(self):
+    def all_student_registrations(self):
         """
         Return given user's Courses for this term
         """
@@ -83,7 +83,7 @@ class CourseOffering(models.Model):
 
     def concurrent_courses(self):
         course_dict = {}
-        for reg in self.student_registrations():
+        for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
                 name = "%s" % reg.course
                 if name in course_dict:

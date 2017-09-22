@@ -14,9 +14,11 @@ from coursedashboards.dao.user import user_from_person
 from coursedashboards.dao.section import (
     get_changed_sections, get_section_from_url)
 from coursedashboards.dao.person import get_person_from_regid
+from coursedashboards.dao.enrollment import (
+    get_student_majors_for_regid_and_term)
+from coursedashboards.dao.registration import (
+    get_active_registrations_for_section)
 from coursedashboards.dao.canvas import canvas_course_url_from_section
-from uw_sws.registration import get_active_registrations_by_section
-from uw_sws.enrollment import get_enrollment_by_regid_and_term
 
 
 logger = logging.getLogger(__name__)
@@ -165,8 +167,7 @@ class Command(BaseCommand):
     def _registrations_from_section(self, term, course, section):
         prior_registrations = list(Registration.objects.filter(
             term=term, course=course).values_list('user_id', flat=True))
-        registrations = get_active_registrations_by_section(section)
-        for registration in registrations:
+        for registration in get_active_registrations_for_section(section):
             if not (registration.person and
                     registration.person.uwnetid and
                     registration.person.uwregid):
@@ -212,8 +213,8 @@ class Command(BaseCommand):
     def _collect_majors(self, registrations, course, term, sws_term):
         majors = {}
         for reg in registrations:
-            student_majors = self._get_student_major(reg.user, sws_term)
-            for student_major in student_majors:
+            for student_major in get_student_majors_for_regid_and_term(
+                    reg.user, sws_term):
                 if student_major.major_name:
                     major, created = Major.objects.get_or_create(
                         major=student_major.major_name)
@@ -224,10 +225,6 @@ class Command(BaseCommand):
                     majors[major] += 1
                 else:
                     majors[major] = 1
-
-    def _get_student_major(self, user, sws_term):
-        enrollment = get_enrollment_by_regid_and_term(user.uwregid, sws_term)
-        return enrollment.majors
 
     def _remove_course(self, term, course):
         logger.info('remove: %s' % (
