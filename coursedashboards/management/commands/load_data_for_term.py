@@ -149,8 +149,8 @@ class Command(BaseCommand):
             inst_obj, created = Instructor.objects.get_or_create(
                 user=user, course=course, term=term)
 
-            if id in prior_instructors:
-                prior_instructors.remove(id)
+            if inst_obj.user_id in prior_instructors:
+                prior_instructors.remove(inst_obj.user_id)
 
             logger.debug('%s instructor: netid:%s, course: %s' % (
                 'new' if created else 'update',
@@ -195,8 +195,8 @@ class Command(BaseCommand):
                 user.last_enrolled = last_term
                 user.save()
 
-            if id in prior_registrations:
-                prior_registrations.remove(id)
+            if reg_obj.user_id in prior_registrations:
+                prior_registrations.remove(reg_obj.user_id)
 
             logger.debug('%s registration: netid:%s, course: %s' % (
                 'new' if created else 'update',
