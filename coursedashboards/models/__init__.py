@@ -1,4 +1,3 @@
-from coursedashboards.models.course_median_gpa import CourseMedianGPA
 from coursedashboards.models.user import User
 from coursedashboards.models.major import Major, StudentMajor
 from coursedashboards.models.term import Term
