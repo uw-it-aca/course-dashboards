@@ -2,6 +2,13 @@ $green: #5cb85c;
 $red: #d9534f;
 $data_desctext: #898989;
 
+.course-info {
+    .course-select {
+        vertical-align:top;
+        margin-left: 8px;
+    }
+}
+
 .course-data {
     margin-top: 16px;
 
@@ -37,7 +44,7 @@ $data_desctext: #898989;
         .course-data-items {
             padding-left: 8px;
             .course-data-number {
-                font-size: 3em;
+                font-size: 2.6em;
                 margin-top: -15px;
             }
             .course-data-description {
