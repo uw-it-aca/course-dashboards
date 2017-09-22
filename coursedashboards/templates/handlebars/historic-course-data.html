@@ -1,13 +1,29 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "historic-course-data" %}
 {% load staticfiles %}
-<div class="row">
-    <div class="col"><span>Median Course Grade: </span><span class="dummy">3.2</span></div>
-    <div class="col"><span>this is empty</span></div>
+<div class="historic-data-row row">
+    <div class="historic-median course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">3.2</div>
+            <span class="course-data-description">Median Course Grade</span>
+        </div>
+    </div>
+    <div class="col"><span></span></div>
 </div>
-<div class="row">
-    <div class="col"><span>Percent Failure: </span><span class="dummy">2%</span></div>
-    <div class="col"><span>this is empty</span></div>
+<div class="historic-data-row row">
+    <div class="historic-failure course-data-widget col">
+        <div class="d-inline-block course-data-icon red">
+            <span><i class="fa fa-user" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">2%</div>
+            <span class="course-data-description">Percent Failure</span>
+        </div>
+    </div>
+    <div class="col"><span></span></div>
 </div>
 
 <div class="row">
