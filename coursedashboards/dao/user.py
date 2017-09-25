@@ -32,7 +32,12 @@ def user_from_person(person):
 
 
 def _person_email(person):
-    return getattr(person, 'email1', '%s@uw.edu' % person.uwnetid)
+    try:                        # PWS person
+        email = person.email1
+    except AttributeError:
+        email = person.email    # SWS person
+
+    return email if email else '%s@uw.edu' % person.uwnetid
 
 
 def get_current_user():
