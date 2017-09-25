@@ -94,6 +94,11 @@ class Command(BaseCommand):
             term.save()
 
     def _load_section(self, section, term, sws_term):
+        if not section.is_primary_section:
+            logger.info('skip non-primary: %s' % (
+                section.section_label()))
+            return
+
         course, created = Course.objects.get_or_create(
             curriculum=section.curriculum_abbr,
             course_number=section.course_number,
