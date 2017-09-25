@@ -221,10 +221,10 @@ class Command(BaseCommand):
                     StudentMajor.objects.get_or_create(
                         user=reg.user, major=major, term=term)
 
-                if major in majors:
-                    majors[major] += 1
+                if student_major.major_name in majors:
+                    majors[student_major.major_name] += 1
                 else:
-                    majors[major] = 1
+                    majors[student_major.major_name] = 1
 
     def _remove_course(self, term, course):
         logger.info('remove: %s' % (
