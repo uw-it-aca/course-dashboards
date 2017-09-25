@@ -183,17 +183,21 @@ class Command(BaseCommand):
             reg_obj, created = Registration.objects.get_or_create(
                 user=user, course=course, term=term)
 
-            reg_obj.grade = registration.grade
-            reg_obj.is_repeat = registration.repeat_course
-            reg_obj.save()
+            if (reg_obj.grade != registration.grade or
+                    reg_obj.is_repeat != registration.repeat_course):
+                reg_obj.grade = registration.grade
+                reg_obj.is_repeat = registration.repeat_course
+                reg_obj.save()
 
-            sws_person = get_person_from_regid(user.uwregid)
-            if sws_person.last_enrolled:
-                last_term, created = Term.objects.get_or_create(
-                    year=sws_person.last_enrolled.year,
-                    quarter=sws_person.last_enrolled.quarter)
-                user.last_enrolled = last_term
-                user.save()
+            if created:
+                sws_person = get_person_from_regid(user.uwregid)
+                if sws_person.last_enrolled:
+                    last_term, created = Term.objects.get_or_create(
+                        year=sws_person.last_enrolled.year,
+                        quarter=sws_person.last_enrolled.quarter)
+                    if user.last_enrolled != last_term:
+                        user.last_enrolled = last_term
+                        user.save()
 
             if reg_obj.user_id in prior_registrations:
                 prior_registrations.remove(reg_obj.user_id)
