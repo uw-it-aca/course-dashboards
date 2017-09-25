@@ -18,7 +18,7 @@
         <div class="form-group historic-filters">
             <div class="d-inline-block dummy">
                <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
-               <select class="form-control historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
+               <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
                    {{#each past_quarters}}
                        <option data-label="{{name}}" {{selected}}>{{name}}</option>
                    {{/each}}
@@ -26,7 +26,7 @@
            </div> 
            <div class="d-inline-block dummy">
                <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
-               <select class="form-control historic-filter" name="historic_filter_year" id="historic_filter_year">
+               <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year">
                      {{#each past_years}}
                        <option data-label="{{name}}" {{selected}}>{{name}}</option>
                    {{/each}}
@@ -35,7 +35,7 @@
            <span>OR</span>
            <div class="d-inline-block dummy">
                <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
-               <select class="form-control historic-filter" name="historic_filter_taught" id="historic_filter_taught">
+               <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught">
                    
                        <option data-label="{{name}}" {{selected}}>Only My Courses</option>
                    

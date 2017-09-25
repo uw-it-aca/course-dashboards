@@ -4,7 +4,7 @@ $data_desctext: #898989;
 
 .course-info {
     .course-select {
-        vertical-align:top;
+        vertical-align:middle;
         margin-left: 8px;
     }
 }
@@ -16,6 +16,7 @@ $data_desctext: #898989;
     
     .table-course-schedule {
         width:100%;
+        font-size:1.3rem;
         td {
             padding: 0 8px 8px 0;
             width: 6em;
