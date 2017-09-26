@@ -189,9 +189,11 @@ class Command(BaseCommand):
                 user=user, course=course, term=term)
 
             if (reg_obj.grade != registration.grade or
+                    reg_obj.credits != registration.credits or
                     reg_obj.is_repeat != registration.repeat_course):
                 reg_obj.grade = registration.grade
                 reg_obj.is_repeat = registration.repeat_course
+                reg_obj.credits = registration.credits
                 reg_obj.save()
 
             if created:

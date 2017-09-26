@@ -31,13 +31,30 @@ class CourseOffering(models.Model):
 
         return self.students
 
-    def get_median_gpa(self):
+    def get_cumulative_median_gpa(self):
+        cumulative = []
+        for student in self.get_students():
+            points = 0.0
+            credits = 0
+            n = 0
+            registrations = Registration.objects.filter(user=student.user_id)
+            for reg in registrations:
+                if re.match(r'^[0-4]\.\d+$', reg.grade):
+                    points += float(reg.grade)
+                    credits += float(reg.credits)
+                    n += 1
+
+            if credits:
+                cumulative.append(points/credits if n > 1 else points)
+
+        return statistics.median(cumulative) if len(cumulative) else None
+
+    def get_grades(self):
         """
-        Calculates median grade point average for course offering
+        Returns grade array for course offering
         """
-        grades = [float(s.grade) for s in self.get_students()
-                  if re.match(r'^[0-4]\.\d+$', s.grade)]
-        return statistics.median(grades) if len(grades) else None
+        return [float(s.grade) for s in self.get_students()
+                if re.match(r'^[0-4]\.\d+$', s.grade)]
 
     def get_repeating_total(self):
         """
@@ -57,8 +74,9 @@ class CourseOffering(models.Model):
             "quarter": co.term.quarter,
             "instructors": co.get_instructors(),
             "majors": co.get_majors(),
-            "concurrent_courses": self.concurrent_courses(),
-            "latest_majors": self.get_recent_majors()
+            "concurrent_courses": co.concurrent_courses(),
+            "latest_majors": co.get_recent_majors(),
+            "course_grades": co.get_grades()
         } for co in CourseOffering.objects.filter(
             course=self.course).select_related('course', 'term')
                      if co.id != self.id][:quarters]
@@ -145,7 +163,7 @@ class CourseOffering(models.Model):
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'current_repeating': self.get_repeating_total(),
-            'current_median': self.get_median_gpa(),
+            'current_median': self.get_cumulative_median_gpa(),
             'concurrent_courses': self.concurrent_courses(),
             'current_student_majors': self.get_majors(),
             'past_offerings': self.get_past_offerings(),
