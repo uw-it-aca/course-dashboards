@@ -5,6 +5,7 @@ class Course(models.Model):
     curriculum = models.CharField(max_length=20)
     course_number = models.PositiveSmallIntegerField()
     section_id = models.CharField(max_length=2)
+    course_title = models.CharField(max_length=64, default='')
 
     class Meta:
         db_table = "Course"

@@ -3,7 +3,7 @@
 {% load staticfiles %}
 <div class="row">
     <div class="col">
-        <span style="font-size:1.3em;font-weight:bold;">Historical Student Data for <span class="dummy">PHYS 122 A {{curriculum}} {{course_number}} {{section_id}} </span></span>
+        <span style="font-size:1.3em;font-weight:bold;">Historical Student Data for {{curriculum}} {{course_number}} {{section_id}}</span>
     </div>
 </div>
 <!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
@@ -41,7 +41,7 @@
                    
                </select>
            </div>
-           <small><p>Viewing data for <strong>{3,245} students</strong> in {all quarters} for {the past 5 years}</p></small>
+           <small><p>Viewing data for <strong>{{student_total}}</span> students</strong> in {{section_count}} quarter{{pluralize section_count '' 's'}} for the past {{year_count}} year{{pluralize year_count '' 's'}}</p></small>
         </div>
     </div>
 </div>

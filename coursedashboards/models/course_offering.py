@@ -161,6 +161,7 @@ class CourseOffering(models.Model):
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
             'section_id': self.course.section_id,
+            'course_title': self.course.course_title,
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'current_repeating': self.get_repeating_total(),
