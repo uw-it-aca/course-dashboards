@@ -1,0 +1,251 @@
+
+
+/* ==========================================================================
+   MAIN STYLE
+   ========================================================================== */
+
+/* ++++++++++++++++++++++++++ Mixins ++++++++++++++++++++++++++ */
+$uwpurple: #4b2e83;
+$gold: #b7a57a;
+$lightgold: #e8e3d3;
+$metgold: #85754d;
+$link_focus: #b5754d;
+
+
+/*********** Development Style (clear out before production deploy ***********/
+
+
+.dummy {
+    //color: red;
+    //font-weight: bold;
+}
+
+a.dummy {
+    text-decoration: underline;
+}
+
+
+
+/*********** Global Reset ***********/
+
+html, body {
+    font-family: 'Open Sans', Helvetica, arial, san-serif;
+    padding:0;
+    margin:0;
+    height: 100%;
+    color:#333;
+}
+
+.col { flex: 1 0 50%; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section {
+  display: block;
+} 
+img {
+   border: 0;
+   max-width: 100%;
+   height: auto;
+}
+
+.visually-hidden{
+	position: absolute;
+	left:-999px;
+	top:-999px;	
+}
+
+/*********** Spacing ***********/
+
+.clear {
+    clear:both;
+}
+
+.pull-left {
+    float:left;
+}
+
+.pull-right {
+    float:right;
+}
+
+/* align center */
+.center {
+	margin: auto;
+	text-align: center;
+}
+
+.no-btm-margin {
+	margin-bottom: 0px;
+}
+
+.inline {display:inline;}
+/* Text structure */
+
+h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; /*color: $uwpurple;*/ }   
+
+h3 {
+    padding-top: 20px;
+    font-size: 1.2em; 
+    &.list-header {
+        border-bottom: 1px solid;
+        padding-bottom: 4px;
+    }
+}
+
+/* Hyperlink style:*/
+a {
+	color:#0077c2;
+	&:focus, &:hover {
+        color: $link_focus;
+        border: 1px dotted ;
+	}
+}
+
+.sitename{
+	font-size: 2em;
+	margin: 38px 10px 0 110px;
+	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
+	font-weight: 400;
+	color: white;
+}
+
+
+
+/**************** Main stuff *************/
+.no-wrap {white-space: nowrap;}
+
+
+.topbanner-bg {background-color: $uwpurple; height: 76px; color: white;
+    .uw-logo {
+      display: block;
+      text-indent: -9999px;
+      width: 80px;
+      height: 60px;
+      position: absolute;
+      top: 19px;
+      left: 0;
+      z-index: 1;
+    }
+    select {
+        font-size:.8em;
+    }
+}
+
+.userinfo {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.main-content {
+	margin: 40px 0px;
+	min-height: 100%;
+}
+
+.page-title {
+	padding-bottom:20px;
+}
+
+.data-section {
+    margin-top:25px;
+}
+
+.page-wrap {
+	content: "";
+	display: block;
+	width: 100%;
+	/* min-width: 500px;  prevent the nav menu wrapping */
+}
+
+.site-footer, .page-wrap:after {
+  /* .push must be the same height as footer */
+	height: 160px;
+}
+
+
+
+/* footer  Stuff*/
+
+footer {
+	border-top: #eee 1px solid;
+	padding-top: 20px;
+	margin-top: 50px;
+}
+
+.site-footer {
+	background: #eee;
+}
+
+
+.footer-links ul {
+    list-style: outside none none;
+    margin-bottom: 0.5em;
+    padding: 0;
+}
+
+.footer-links ul li {
+    border-right: 1px solid #bdc3c7;
+    display: inline-block;
+    margin-right: 5px;
+    padding-right: 10px;
+
+}
+
+footer .footer-links ul li:last-child {
+	    border: 0px;
+    margin-right:0px;
+    padding-right:0px;
+}
+
+
+/***** EVERYTHING ELSE *****/
+
+
+/* may not be needed once Bootstrap is in use */
+#boxplots {
+    clear:both;
+}
+
+/* modify Bootstrap grid styles */
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+
+ /* ==========================================================================
+   SMALL SCREEN: need to revisit for SCSS
+   ========================================================================== */
+
+ /* Small devices (tablets, 768px and up) */
+ 
+@media (max-width: 768px) {
+	.hide-sm {
+	position: absolute;
+	left:-999px;
+	top:-999px;	
+	}
+	.sitename{
+	font-size: 1.5em;}
+}
+  /* Selelected: Active & hover  */
+/* 
+.underline > li.active > a, .underline > li.active > a:hover, .underline > li > a:hover, .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.active>a:hover  {
+	border-left:5px solid #b46100;
+	color:white;
+	border-bottom: 0px;
+	}
+*/
+
+/* 
+ .underline > li.active > a:focus,  .underline > li > a:focus, .navbar-default .navbar-nav>li>a:focus {
+	border-left:5px solid #b46100;
+	color:white;
+	}
+
+}
+*/

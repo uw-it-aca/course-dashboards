@@ -1,0 +1,48 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "historic-data-selectors" %}
+{% load staticfiles %}
+<div class="row">
+    <div class="col">
+        <span style="font-size:1.3em;font-weight:bold;">Historical Student Data for {{curriculum}} {{course_number}} {{section_id}}</span>
+    </div>
+</div>
+<!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
+1. 2+ course sections were offered  OR
+2. The logged in user was IOR for the single section offered that term.
+-->
+<div class="row">
+    <div class="col">
+        <small id="select_helpblock" class="form-text text-muted">
+      Select combination of quarters and years, or view only your courses.
+        </small>
+        <div class="form-group historic-filters">
+            <div class="d-inline-block dummy">
+               <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
+               <select class="form-control historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
+                   {{#each past_quarters}}
+                       <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                   {{/each}}
+               </select>
+           </div> 
+           <div class="d-inline-block dummy">
+               <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
+               <select class="form-control historic-filter" name="historic_filter_year" id="historic_filter_year">
+                     {{#each past_years}}
+                       <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                   {{/each}}
+               </select>
+           </div> 
+           <span>OR</span>
+           <div class="d-inline-block dummy">
+               <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
+               <select class="form-control historic-filter" name="historic_filter_taught" id="historic_filter_taught">
+                   
+                       <option data-label="{{name}}" {{selected}}>Only My Courses</option>
+                   
+               </select>
+           </div>
+           <small><p>Viewing data for <strong>{{student_total}}</span> students</strong> in {{section_count}} quarter{{pluralize section_count '' 's'}} for the past {{year_count}} year{{pluralize year_count '' 's'}}</p></small>
+        </div>
+    </div>
+</div>
+{% endtplhandlebars %}

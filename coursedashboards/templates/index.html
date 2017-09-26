@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block web_content %}
+
+<script>
+    window.user = {
+        "netid": "{{ user.netid }}"
+    };
+    window.term = {
+        "year": "{{year}}",
+        "quarter": "{{quarter}}"
+    };
+    window.section_data = {{sections | safe | escape}};
+
+</script>
+
+<!-- MAIN CONTENT BELOW THE BANNER -->
+  	<main class="container" role="main">
+    		<div class="main-content row" id="maincontent"> 
+                <div class="course-info col-12" style="padding-left: 0;">
+                    <div class="course-quarter-year text-capitalize"><h2>{{quarter}} {{year}} 
+                        <div class="d-inline-block course-select">
+                        </div></h2>
+                    </div>
+                    <div class="course-title"><span style="font-size: 1.6em;">{{course_title}}</div>
+                </div>
+                <div class="course-data row">
+                    <div class="section-container current-section col-md-6" id="current-course-target"><!-- handlebars target for current-course-data.html --></div>
+                    <div class="section-container historic-section col-md-6" style="border-left:1px solid #ccc;">
+                        <div id="historic-selector-target"><!-- handlebars target for historic data selectors--></div>
+                        <div class="course_info data-section" id="historic-course-target"></div>
+                    </div>
+                </div>
+    		</div>	<!-- end of main -->
+	</main>  <!-- end of main container -->
+{% endblock %}

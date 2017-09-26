@@ -1,0 +1,57 @@
+$green: #5cb85c;
+$red: #d9534f;
+$data_desctext: #898989;
+
+.course-info {
+    .course-select {
+        vertical-align:top;
+        margin-left: 8px;
+    }
+}
+
+.course-data {
+    margin-top: 16px;
+
+    /** Current Course **/
+    
+    .table-course-schedule {
+        width:100%;
+        td {
+            padding: 0 8px 8px 0;
+            width: 6em;
+        }
+    }
+    .current-data-row, .historic-data-row {
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+
+    .course-data-widget {
+        .course-data-icon {
+            border: 1px solid;
+            vertical-align: top;
+            font-size: 2.6rem;
+            border-radius: 6px;
+            width:60px;
+            height:60px;
+            text-align: center;
+            //.fa {
+              //  color: $green;
+            //}
+            &.green {border-color: $green;color:$green;}
+            &.red {border-color: $red; color:$red;}
+        }
+        .course-data-items {
+            padding-left: 8px;
+            .course-data-number {
+                font-size: 2.6em;
+                margin-top: -15px;
+            }
+            .course-data-description {
+                font-size:1em;
+                color:$data_desctext;
+            }
+        }
+    }
+
+}
