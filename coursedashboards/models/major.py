@@ -1,5 +1,7 @@
 from django.db import models
-from user import User
+
+from coursedashboards.models.term import Term
+from coursedashboards.models.user import User
 
 
 class Major(models.Model):
@@ -13,7 +15,10 @@ class StudentMajor(models.Model):
                              on_delete=models.PROTECT)
     major = models.ForeignKey(Major,
                               on_delete=models.PROTECT)
+    term = models.ForeignKey(Term,
+                             null=True,
+                             on_delete=models.PROTECT)
 
     class Meta:
         db_table = 'StudentMajor'
-        unique_together = ('user', 'major')
+        unique_together = ('user', 'major', 'term')
