@@ -163,7 +163,7 @@ function calculateCourseGrade(index, quarter, year) {
         }
     }
 
-    return math.median(grades);
+    return (grades.length) ? math.median(grades) : 'None';
 }
 
 
