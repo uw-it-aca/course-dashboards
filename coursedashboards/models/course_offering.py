@@ -39,13 +39,14 @@ class CourseOffering(models.Model):
             n = 0
             registrations = Registration.objects.filter(user=student.user_id)
             for reg in registrations:
-                if re.match(r'^[0-4]\.\d+$', reg.grade):
+                if (re.match(r'^[0-4]\.\d+$', reg.grade) and
+                        re.match(r'^[\d]+$', reg.credits)):
                     points += float(reg.grade)
                     credits += float(reg.credits)
                     n += 1
 
             if credits:
-                cumulative.append(points/credits if n > 1 else points)
+                cumulative.append((points / credits) if n > 1 else points)
 
         return statistics.median(cumulative) if len(cumulative) else None
 
