@@ -106,7 +106,8 @@ class Command(BaseCommand):
             section_id=section.section_id)
 
         # update course title
-        if course.course_title != section.course_title_long:
+        if (section.course_title_long and
+                course.course_title != section.course_title_long):
             course.course_title = section.course_title_long
             course.save()
 
