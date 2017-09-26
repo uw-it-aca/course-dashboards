@@ -2,28 +2,47 @@
 {% tplhandlebars "historic-data-selectors" %}
 {% load staticfiles %}
 <div class="row">
-    <h2 class="col-md-6">Historic Student Data </h2>
+    <div class="col">
+        <span style="font-size:1.3em;font-weight:bold;">Historical Student Data for <span class="dummy">PHYS 122 A {{curriculum}} {{course_number}} {{section_id}} </span></span>
+    </div>
+</div>
 <!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
 1. 2+ course sections were offered  OR
 2. The logged in user was IOR for the single section offered that term.
 -->
-    <span class="col-md-6 historic-filters">
-        <span class="dummy">
-           <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
-           <select class="historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
-               {{#each past_quarters}}
-                   <option data-label="{{name}}" {{selected}}>{{name}}</option>
-               {{/each}}
-           </select>
-       </span> 
-       <span class="dummy">
-           <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
-           <select class="historic-filter" name="historic_filter_year" id="historic_filter_year">
-                 {{#each past_years}}
-                   <option data-label="{{name}}" {{selected}}>{{name}}</option>
-               {{/each}}
-           </select>
-       </span> 
-    </span>
+<div class="row">
+    <div class="col">
+        <small id="select_helpblock" class="form-text text-muted">
+      Select combination of quarters and years, or view only your courses.
+        </small>
+        <div class="form-group historic-filters">
+            <div class="d-inline-block dummy">
+               <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
+               <select class="form-control historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
+                   {{#each past_quarters}}
+                       <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                   {{/each}}
+               </select>
+           </div> 
+           <div class="d-inline-block dummy">
+               <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
+               <select class="form-control historic-filter" name="historic_filter_year" id="historic_filter_year">
+                     {{#each past_years}}
+                       <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                   {{/each}}
+               </select>
+           </div> 
+           <span>OR</span>
+           <div class="d-inline-block dummy">
+               <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
+               <select class="form-control historic-filter" name="historic_filter_taught" id="historic_filter_taught">
+                   
+                       <option data-label="{{name}}" {{selected}}>Only My Courses</option>
+                   
+               </select>
+           </div>
+           <small><p>Viewing data for <strong>{3,245} students</strong> in {all quarters} for {the past 5 years}</p></small>
+        </div>
+    </div>
 </div>
 {% endtplhandlebars %}

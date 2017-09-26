@@ -2,23 +2,76 @@
 {% tplhandlebars "current-course-data" %}
 {% load staticfiles %}
 <div class="row">
+    <div class="col">
+        <span style="font-size:1.3em;font-weight:bold;">Current Quarter Data for <span class="dummy">PHYS 122 A {{curriculum}} {{course_number}} {{section_id}} </span></span>
+    </div>
+</div>
+<div class="current-schedule-row row">
+    <div class="col">
+        <div class="card" style="border:none;">
+            <div class="card-body" style="padding:1rem;">
+                <table class="table-course-schedule dummy"> 
+                    <thead class="sr-only"> 
+                        <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr> 
+                    </thead> 
+                    <tbody class="tbody-course-schedule">
+                        <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>  
+                    </tbody> 
+                </table> 
+            </div>
+        </div>
+    </div>
+</div>
+<div class="current-data-row row">
+    <div class="current-median course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{current_median}}</div>
+            <span class="course-data-description">Cumulative GPA</span>
+        </div>
+    </div>
+    <div class="current-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="ion-ios-people" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{current_num_registered}}/{{current_capacity}}</div>
+            <span class="course-data-description">Currently Registered</span>
+        </div>
+    </div>
+</div>
+<div class="current-data-row row">
+    <div class="current-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-icon red">
+            <span><i class="ion-android-refresh" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{current_repeat_students}}</div>
+            <span class="course-data-description">Repeating Students</span>
+        </div>
+    </div>
+</div>
+
+<!--<div class="row">
     <div class="col-md-6"><h2 class="inline">Your Students</h2></div>
     <div class="col-md-6"><a class="dummy" href="#">Time Schedule Entry</a></div>
     <div class="col-12">Median cumulative GPA: <span>{{current_median}}</span></div>
     <div class="col-md-6">Students Registered: <span>{{current_num_registered}} / {{current_capacity}}</span></div>
     <div class="col-md-6"><span class="dummy">{{current_repeat_students}}</span> students are repeating this course.</div>
-</div>
+</div>-->
 <div class="row ">
-    <div class="list col-md-6">
-        <h3>Concurrent Courses:</h3>
+    <div class="list col">
+        <h3 class="list-header">Concurrent Courses</h3>
         <ol>
            {{#each concurrent_courses}}
                 <li>{{percent_students}}% : <span>{{course}}</span></li>  
            {{/each}}
        </ol> 
     </div>
-    <div class="list col-md-6">
-        <h3>Declared Majors:</h3>
+    <div class="list col">
+        <h3 class="list-header">Declared Majors</h3>
         <ol>
             {{#each current_majors}}
                 <li>{{percent_students}}% : <span>{{major}}</span></li>
