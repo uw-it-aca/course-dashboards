@@ -12,6 +12,7 @@ class Registration(models.Model):
     course = models.ForeignKey(Course,
                                on_delete=models.PROTECT)
     grade = models.CharField(max_length=5, null=True)
+    credits = models.CharField(max_length=5, null=True)
     is_repeat = models.NullBooleanField()
 
     class Meta:
