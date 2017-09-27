@@ -84,11 +84,21 @@ class Command(BaseCommand):
                     changed_since, term, **params)
 
                 for section_ref in section_refs:
-                    section = get_section_from_url(section_ref.url)
-                    self._load_section(section, term, sws_term)
+                    try:
+                        section = get_section_from_url(section_ref.url)
+                        self._load_section(section, term, sws_term)
+                    except DataFailureException as ex:
+                        logger.error("section fetch: %s: %s" % (
+                            section_ref.url, ex))
+                        continue
                     for joint_section_url in section.joint_section_urls:
-                        joint_section = get_section_from_url(joint_section_url)
-                        self._load_section(joint_section, term, sws_term)
+                        try:
+                            joint_section = get_section_from_url(joint_section_url)
+                            self._load_section(joint_section, term, sws_term)
+                        except DataFailureException as ex:
+                            logger.error("section fetch: %s: %s" % (
+                                section_ref.url, ex))
+                            continue
 
             # remember the last time we crawled this term
             term.last_queried = changed_date
