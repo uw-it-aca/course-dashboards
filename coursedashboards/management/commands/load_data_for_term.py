@@ -94,7 +94,8 @@ class Command(BaseCommand):
                         continue
                     for joint_section_url in section.joint_section_urls:
                         try:
-                            joint_section = get_section_from_url(joint_section_url)
+                            joint_section = get_section_from_url(
+                                joint_section_url)
                             self._load_section(joint_section, term, sws_term)
                         except DataFailureException as ex:
                             logger.error("section fetch: %s: %s" % (
@@ -105,6 +106,7 @@ class Command(BaseCommand):
             term.last_queried = changed_date
             term.save()
 
+    @transaction.atomic
     def _load_section(self, section, term, sws_term):
         if not section.is_primary_section:
             logger.info('skip non-primary: %s' % (
@@ -187,7 +189,6 @@ class Command(BaseCommand):
                 user_id__in=prior_instructors,
                 term=term, course=course).delete()
 
-    @transaction.atomic
     def _registrations_from_section(self, term, course, section):
         prior_registrations = list(Registration.objects.filter(
             term=term, course=course).values_list('user_id', flat=True))
