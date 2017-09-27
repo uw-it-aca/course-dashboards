@@ -118,7 +118,7 @@ class Command(BaseCommand):
         # update course title
         if (section.course_title_long and
                 course.course_title != section.course_title_long):
-            course.course_title = section.course_title_long
+            course.course_title = section.course_title_long[:64]
             course.save()
 
         if section.is_withdrawn:
