@@ -44,7 +44,7 @@ function showCurrentCourseData(index) {
         course_number:window.section_data[index].course_number,
         section_id:window.section_data[index].section_id
     }));
-    $('.course-title').html(window.section_data[index].course_title);
+    $('.course-title span').html(window.section_data[index].course_title);
 }
 
 //Populate the historic data selectors for the currently selected course
