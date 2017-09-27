@@ -42,9 +42,9 @@ function showCurrentCourseData(index) {
         current_majors:window.section_data[index].current_student_majors,
         curriculum:window.section_data[index].curriculum,
         course_number:window.section_data[index].course_number,
-        section_id:window.section_data[index].section_id,
-        course_title:window.section_data[index].course_title
+        section_id:window.section_data[index].section_id
     }));
+    $('.course-title span').html(window.section_data[index].course_title);
 }
 
 //Populate the historic data selectors for the currently selected course
