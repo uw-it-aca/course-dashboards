@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from django.utils.timezone import utc
 from datetime import datetime, timedelta
 import logging
@@ -186,6 +187,7 @@ class Command(BaseCommand):
                 user_id__in=prior_instructors,
                 term=term, course=course).delete()
 
+    @transaction.atomic
     def _registrations_from_section(self, term, course, section):
         prior_registrations = list(Registration.objects.filter(
             term=term, course=course).values_list('user_id', flat=True))
