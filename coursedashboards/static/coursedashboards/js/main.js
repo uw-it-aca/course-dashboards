@@ -31,10 +31,10 @@ function displayPageHeader() {
         quarter: firstLetterUppercase(window.term.quarter),
         year: window.term.year
     }));
-};
+}
 
 function coursePath() {
-    return decodeURIComponent(window.location.pathname.substr(1))
+    return decodeURIComponent(window.location.pathname.substr(1));
 }
 
 function displayCourseSelector() {
@@ -45,14 +45,14 @@ function displayCourseSelector() {
         year: window.term.year,
         sections: window.section_data
     }));
-};
+}
 
 function displaySelectedCourse() {
     var index = $("select[name='my_courses'] option:selected").index();
     showCurrentCourseData(index);
     showHistoricDataSelectors(index, "All Quarters", "All Years");
     showHistoricCourseData(index, "All Quarters", "All Years");
-};
+}
 
 function displayErrorPage() {
     var current = $("#cannot-display-course").html();
@@ -77,7 +77,7 @@ $(window).bind('popstate', function (e, o) {
 
 function loadCourse(course) {
     var found = false;
-    var m = course.match(/^([0-9]{4})-(winter|spring|summer|autumn)-([^-]+)-([0-9]{3})-([a-z]+)$/i)
+    var m = course.match(/^([0-9]{4})-(winter|spring|summer|autumn)-([^-]+)-([0-9]{3})-([a-z]+)$/i);
     if (m && window.term.year === m[1] && window.term.quarter === m[2]) {
         var label = m[3] + ' ' + m[4] + ' ' + m[5];
         var return_val = false;
@@ -296,7 +296,7 @@ function calculateCourseMedian(index, quarter, year) {
         }
     }
 
-    return (grades.length) ? math.median(grades) : 'None';
+    return (grades.length) ? (Math.round(math.median(grades) * 100) / 100).toFixed(2) : 'None';
 }
 
 
