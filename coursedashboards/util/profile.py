@@ -3,7 +3,6 @@ from django.conf import settings
 from functools import wraps
 
 
-
 PROF_DATA = {}
 
 
