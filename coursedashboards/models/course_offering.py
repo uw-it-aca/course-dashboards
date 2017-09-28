@@ -6,6 +6,8 @@ from coursedashboards.models.course import Course
 from coursedashboards.models.term import Term
 from coursedashboards.models.registration import Registration
 from coursedashboards.models.major import StudentMajor
+from coursedashboards.util.profile import (
+    profile, log_profile_data, clear_prof_data)
 import logging
 
 
@@ -21,6 +23,7 @@ class CourseOffering(models.Model):
     limit_estimate_enrollment = models.PositiveSmallIntegerField()
     canvas_course_url = models.CharField(max_length=2000)
 
+    @profile
     def get_students(self):
         """
         Return Registration queryset for this course offering
@@ -31,6 +34,7 @@ class CourseOffering(models.Model):
 
         return self.students
 
+    @profile
     def get_cumulative_median_gpa(self):
         cumulative = []
         for student in self.get_students():
@@ -50,6 +54,7 @@ class CourseOffering(models.Model):
         return round(statistics.median(cumulative), 2) if len(cumulative)\
             else None
 
+    @profile
     def get_grades(self):
         """
         Returns grade array for course offering
@@ -57,12 +62,14 @@ class CourseOffering(models.Model):
         return [float(s.grade) for s in self.get_students()
                 if re.match(r'^[0-4]\.\d+$', s.grade)]
 
+    @profile
     def get_repeating_total(self):
         """
         Number of students repeating this course offering
         """
         return len(self.get_students().filter(is_repeat=True))
 
+    @profile
     def get_past_offerings(self):
         """
         List of past course offerings
@@ -84,6 +91,7 @@ class CourseOffering(models.Model):
 
         return offerings if len(offerings) >= min_offerings else []
 
+    @profile
     def get_instructors(self):
         return [{
             'display_name': inst.user.display_name,
@@ -92,6 +100,7 @@ class CourseOffering(models.Model):
         } for inst in Instructor.objects.filter(course=self.course,
                                                 term=self.term)]
 
+    @profile
     def all_student_registrations(self):
         """
         Return given user's Courses for this term
@@ -100,6 +109,7 @@ class CourseOffering(models.Model):
         return Registration.objects.filter(
             user_id__in=students, term=self.term).select_related('course')
 
+    @profile
     def concurrent_courses(self):
         course_dict = {}
         for reg in self.all_student_registrations():
@@ -118,17 +128,21 @@ class CourseOffering(models.Model):
                 (float(course_dict[sort]) / total_students) * 100.0, 2)
         } for sort in sorted(course_dict, reverse=True, key=course_dict.get)]
 
+    @profile
     def student_majors_for_term(self, student):
         return StudentMajor.objects.filter(
             user=student.user, term=self.term)
 
+    @profile
     def last_student_major(self, student):
         return StudentMajor.objects.filter(
             user=student.user, term=student.user.last_enrolled)
 
+    @profile
     def get_recent_majors(self):
         return self._get_majors(self.last_student_major)
 
+    @profile
     def get_majors(self):
         return self._get_majors(self.student_majors_for_term)
 
@@ -157,7 +171,8 @@ class CourseOffering(models.Model):
         return top_majors
 
     def json_object(self):
-        return {
+        logger.debug('HERE HERE HERE')
+        json_obj = {
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
             'section_id': self.course.section_id,
@@ -170,6 +185,11 @@ class CourseOffering(models.Model):
             'current_student_majors': self.get_majors(),
             'past_offerings': self.get_past_offerings(),
         }
+
+        log_profile_data('%s,%s' % (self.term, self.course), logger)
+        clear_prof_data()
+
+        return json_obj
 
     class Meta:
         db_table = 'CourseOffering'

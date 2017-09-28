@@ -296,7 +296,7 @@ function calculateCourseMedian(index, quarter, year) {
         }
     }
 
-    return (grades.length) ? math.median(grades) : 'None';
+    return (grades.length) ? (Math.round(math.median(grades) * 100) / 100).toFixed(2) : 'None';
 }
 
 
