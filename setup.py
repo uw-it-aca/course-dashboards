@@ -23,6 +23,7 @@ setup(
         'UW-RestClients-Canvas',
         'UW-Restclients-Django-Utils',
         'Django-SupportTools',
+        'statistics'
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',

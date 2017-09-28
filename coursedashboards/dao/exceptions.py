@@ -31,3 +31,8 @@ class IndeterminateCampusException(Exception):
 class MalformedOrInconsistentUser(Exception):
     """Cannot determine campus from registrations or PWS"""
     pass
+
+
+class MissingNetIDException(Exception):
+    """Missing or Invalid NetID"""
+    pass

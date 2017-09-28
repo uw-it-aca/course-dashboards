@@ -1,7 +1,7 @@
 from django.db import models
-from user import User
-from term import Term
-from course import Course
+from coursedashboards.models.user import User
+from coursedashboards.models.term import Term
+from coursedashboards.models.course import Course
 
 
 class Registration(models.Model):
@@ -12,6 +12,7 @@ class Registration(models.Model):
     course = models.ForeignKey(Course,
                                on_delete=models.PROTECT)
     grade = models.CharField(max_length=5, null=True)
+    credits = models.CharField(max_length=5, null=True)
     is_repeat = models.NullBooleanField()
 
     class Meta:

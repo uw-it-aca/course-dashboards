@@ -1,19 +1,32 @@
 sudo: false
 language: python
+services:
+  - mysql
 python:
 - '2.7'
-- '3.4'
-- '3.5'
-- '3.6'
+env:
+  matrix:
+    - DB=sqlite3
+    - DB=mysql
+  global:
+    - TRAVIS_NODE_VERSION="6"
+install:
+  - pip install -r requirements.txt
 before_script:
-- pip install -e .
-- pip install pep8
-- pip install nose2
-- pip install coverage
-- pip install commonconf
-- pip install python-coveralls
+  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
+  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create user "coda" identified by "my_pass"'; fi
+  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'grant all on *.* to coda'; fi
+  - pip install -e .
+  - pip install pep8
+  - pip install nose2
+  - pip install coverage
+  - pip install commonconf
+  - pip install python-coveralls
+  - pip install MySQL-python
+  - cp travis-ci/manage.py manage.py
+  - python manage.py migrate
 script:
-- pep8 --exclude=coursedashboards/tests coursedashboards --exclude coursedashboards/migrations
-- coverage run coursedashboards/test.py -v
+  - pep8 coursedashboards --exclude=migrations,static
+  - coverage run --source=coursedashboards/ --omit=coursedashboards/migrations/* manage.py test coursedashboards
 after_script:
-- coveralls
+  - coveralls
