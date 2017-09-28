@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from django.utils.timezone import utc
 from datetime import datetime, timedelta
 import logging
@@ -93,7 +94,8 @@ class Command(BaseCommand):
                         continue
                     for joint_section_url in section.joint_section_urls:
                         try:
-                            joint_section = get_section_from_url(joint_section_url)
+                            joint_section = get_section_from_url(
+                                joint_section_url)
                             self._load_section(joint_section, term, sws_term)
                         except DataFailureException as ex:
                             logger.error("section fetch: %s: %s" % (
@@ -104,6 +106,7 @@ class Command(BaseCommand):
             term.last_queried = changed_date
             term.save()
 
+    @transaction.atomic
     def _load_section(self, section, term, sws_term):
         if not section.is_primary_section:
             logger.info('skip non-primary: %s' % (

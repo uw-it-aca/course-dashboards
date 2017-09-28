@@ -1,50 +1,120 @@
-//Display the top bar: netid and course dropdown
-var source = $("#page-top").html();
-var template = Handlebars.compile(source);
-$("#top_banner").html(template({
-    netid: window.user.netid,
-    quarter: firstLetterUppercase(window.term.quarter),
-    year: window.term.year
-}));
+//
+//
+//
 
-source = $("#course-select").html();
-template = Handlebars.compile(source);
-$(".course-select").html(template({
-    quarter: firstLetterUppercase(window.term.quarter),
-    year: window.term.year,
-    sections: window.section_data
-}));
 
-//Listed for course dropdown selection change
-$("#my_courses").change(function() {
+$(document).ready(function () {
+    displayPageHeader();
+    displayCourseSelector();
+    if (window.location.pathname.length > 1) {
+        if (loadCourse(coursePath())) {
+        } else {
+            displayErrorPage();
+        }
+    } else {
+        displaySelectedCourse();
+    }
+
+    //Listed for course dropdown selection change
+    $("#my_courses").change(function() {
+        displaySelectedCourse();
+    });
+});
+
+
+function displayPageHeader() {
+    //Display the top bar: netid and course dropdown
+    var source = $("#page-top").html();
+    var template = Handlebars.compile(source);
+    $("#top_banner").html(template({
+        netid: window.user.netid,
+        quarter: firstLetterUppercase(window.term.quarter),
+        year: window.term.year
+    }));
+};
+
+function coursePath() {
+    return decodeURIComponent(window.location.pathname.substr(1))
+}
+
+function displayCourseSelector() {
+    source = $("#course-select").html();
+    template = Handlebars.compile(source);
+    $(".course-select").html(template({
+        quarter: firstLetterUppercase(window.term.quarter),
+        year: window.term.year,
+        sections: window.section_data
+    }));
+};
+
+function displaySelectedCourse() {
     var index = $("select[name='my_courses'] option:selected").index();
     showCurrentCourseData(index);
     showHistoricDataSelectors(index, "All Quarters", "All Years");
     showHistoricCourseData(index, "All Quarters", "All Years");
+};
+
+function displayErrorPage() {
+    var current = $("#cannot-display-course").html();
+    var currentTemplate = Handlebars.compile(current);
+    $('.main-content').html(currentTemplate({
+        course: coursePath()
+    }));
+    
+}
+
+function updateURL(page, url) {
+    if (coursePath() !== url) {
+        history.pushState({ page: page, url: url }, page, url);
+    }
+}
+
+$(window).bind('popstate', function (e, o) {
+    if (history.state && history.state.url) {
+        loadCourse(history.state.url);
+    }
 });
 
+function loadCourse(course) {
+    var found = false;
+    var m = course.match(/^([0-9]{4})-(winter|spring|summer|autumn)-([^-]+)-([0-9]{3})-([a-z]+)$/i)
+    if (m && window.term.year === m[1] && window.term.quarter === m[2]) {
+        var label = m[3] + ' ' + m[4] + ' ' + m[5];
+        var return_val = false;
+        $('select#my_courses option').each(function () {
+            var $option = $(this);
+            if (label === $option.text()) {
+                $option.prop('selected', true);
+                displaySelectedCourse();
+                found = true;
+                return false;
+            }
+        });
+    }
 
-var index = $("select[name='my_courses'] option:selected").index();
-showCurrentCourseData(index);
-showHistoricDataSelectors(index, "All Quarters", "All Years");
-showHistoricCourseData(index, "All Quarters", "All Years");
+    return found;
+}
 
 //Display data about the currently selected course - called whenever selection changes
 function showCurrentCourseData(index) {
     var current = $("#current-course-data").html();
     var currentTemplate = Handlebars.compile(current);
+    section = window.section_data[index];
     $("#current-course-target").html(currentTemplate({
-        current_median: window.section_data[index].current_median,
-        current_num_registered: window.section_data[index].current_enrollment,
-        current_capacity:window.section_data[index].limit_estimate_enrollment,
-        current_repeat_students:section_data[index].current_repeating,
-        concurrent_courses:window.section_data[index].concurrent_courses,
-        current_majors:window.section_data[index].current_student_majors,
-        curriculum:window.section_data[index].curriculum,
-        course_number:window.section_data[index].course_number,
-        section_id:window.section_data[index].section_id
+        current_median: section.current_median,
+        current_num_registered: section.current_enrollment,
+        current_capacity:section.limit_estimate_enrollment,
+        current_repeat_students:section.current_repeating,
+        concurrent_courses:section.concurrent_courses,
+        current_majors:section.current_student_majors,
+        curriculum:section.curriculum,
+        course_number:section.course_number,
+        section_id:section.section_id
     }));
     $('.course-title span').html(window.section_data[index].course_title);
+    updateURL(section.curriculum + '-' + section.course_number + '-' + section.section_id, 
+              window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
+              section.course_number + '-' + section.section_id);
 }
 
 //Populate the historic data selectors for the currently selected course
@@ -101,7 +171,6 @@ function showHistoricDataSelectors(index, quarter, year) {
     
     //Historic data selection
     $(".historic-filter").change(function() {
-        console.log("selection change ");
         index = $("select[name='my_courses'] option:selected").index();
         var newQuarter = $("select[name='historic_filter_quarter'] option:selected").val();
         var newYear = $("select[name='historic_filter_year'] option:selected").val();
