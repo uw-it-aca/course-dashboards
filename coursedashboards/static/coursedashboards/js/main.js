@@ -6,8 +6,8 @@
 $(document).ready(function () {
     displayPageHeader();
     displayCourseSelector();
-    if (window.location.pathname.length > 1) {
-        if (loadCourse(coursePath())) {
+    if (courseHash()) {
+        if (loadCourse(courseHash())) {
         } else {
             displayErrorPage();
         }
@@ -33,8 +33,8 @@ function displayPageHeader() {
     }));
 }
 
-function coursePath() {
-    return decodeURIComponent(window.location.pathname.substr(1));
+function courseHash() {
+    return decodeURIComponent(window.location.hash.slice(1));
 }
 
 function displayCourseSelector() {
@@ -58,20 +58,20 @@ function displayErrorPage() {
     var current = $("#cannot-display-course").html();
     var currentTemplate = Handlebars.compile(current);
     $('.main-content').html(currentTemplate({
-        course: coursePath()
+        course: courseHash()
     }));
     
 }
 
-function updateURL(page, url) {
-    if (coursePath() !== url) {
-        history.pushState({ page: page, url: url }, page, url);
+function updateCourseURL(page, course) {
+    if (courseHash() !== course) {
+        history.pushState({ page: page, course: course }, page, '#' + course);
     }
 }
 
 $(window).bind('popstate', function (e, o) {
-    if (history.state && history.state.url) {
-        loadCourse(history.state.url);
+    if (history.state && history.state.course) {
+        loadCourse(history.state.course);
     }
 });
 
@@ -112,7 +112,7 @@ function showCurrentCourseData(index) {
         section_id:section.section_id
     }));
     $('.course-title span').html(window.section_data[index].course_title);
-    updateURL(section.curriculum + '-' + section.course_number + '-' + section.section_id, 
+    updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id, 
               window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
               section.course_number + '-' + section.section_id);
 }
