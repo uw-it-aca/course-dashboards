@@ -16,7 +16,7 @@
       Select combination of quarters and years, or view only your courses.
         </small>
         <div class="form-group historic-filters">
-            <div class="d-inline-block dummy">
+            <div class="d-inline-block">
                <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
                <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
                    {{#each past_quarters}}
@@ -24,7 +24,7 @@
                    {{/each}}
                </select>
            </div> 
-           <div class="d-inline-block dummy">
+           <div class="d-inline-block">
                <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
                <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year">
                      {{#each past_years}}
@@ -33,7 +33,7 @@
                </select>
            </div> 
            <span>OR</span>
-           <div class="d-inline-block dummy">
+           <div class="d-inline-block">
                <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
                <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught">
                    
@@ -41,8 +41,8 @@
                    
                </select>
            </div>
-           <small><p>Viewing data for <strong>{{student_total}}</span> students</strong> in {{section_count}} quarter{{pluralize section_count '' 's'}} for the past {{year_count}} year{{pluralize year_count '' 's'}}</p></small>
         </div>
+        <span>Viewing data for <strong>{{student_total}}</span> students</strong> in {{section_count}} quarter{{pluralize section_count '' 's'}} for the past {{year_count}} year{{pluralize year_count '' 's'}}</span>
     </div>
 </div>
 {% endtplhandlebars %}

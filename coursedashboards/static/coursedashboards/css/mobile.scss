@@ -23,11 +23,12 @@ $data_desctext: #898989;
         }
     }
     .current-data-row, .historic-data-row {
-        margin-top: 24px;
+        //margin-top: 24px;
         margin-bottom: 24px;
     }
 
     .course-data-widget {
+        margin-top: 24px;
         .course-data-icon {
             border: 1px solid;
             vertical-align: top;
@@ -51,7 +52,13 @@ $data_desctext: #898989;
             .course-data-description {
                 font-size:1em;
                 color:$data_desctext;
+                margin-top:-5px;
             }
+        }
+    }
+    .historic-section {
+        .historic-filters {
+            margin-top: .5rem;
         }
     }
 

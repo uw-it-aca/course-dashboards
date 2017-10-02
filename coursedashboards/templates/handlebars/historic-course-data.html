@@ -8,7 +8,7 @@
         </div>
         <div class="d-inline-block course-data-items">
             <div class="course-data-number">{{median_course_grade}}</div>
-            <span class="course-data-description">Median Course GPA</span>
+            <div class="course-data-description">Median Course GPA</div>
         </div>
     </div>
     <div class="col"><span></span></div>
@@ -20,7 +20,7 @@
         </div>
         <div class="d-inline-block course-data-items">
             <div class="course-data-number">{{failed_percent}}%</div>
-            <span class="course-data-description">Percent Failure</span>
+            <div class="course-data-description">Percent Failure</div>
         </div>
     </div>
     <div class="col"><span></span></div>
@@ -28,36 +28,39 @@
 
 <div class="row">
     <div class="list col">
-        <h3 class="list-header">Declared Majors (when taking the course)</h3>
-        <ol>
+        <h3 class="list-header">Declared Majors <br><small>(when taking the course)</small></h3>
+        <ul class="list-unstyled">
             {{#each common_majors}}
            <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
-       </ol> 
+       </ul> 
+       <div><a href="#">Load remaining majors...</a></div>
     </div>
     <div class="list col">
-        <h3 class="list-header">Declared Majors (upon graduation)</h3>
-        <ol>
+        <h3 class="list-header">Declared Majors<br><small>(upon graduation)</small></h3>
+        <ul class="list-unstyled">
            {{#each latest_majors}}
            <li>{{percent_students}}% : <span>{{major}} </span></li>
            {{/each}}
-       </ol> 
+       </ul>
+       <div><a href="#">Load remaining majors...</a></div>
     </div>
 </div>
 <div class="row">
     <div class="list col">
         <h3 class="list-header">Concurrent Courses</h3>
-        <ol>
+        <ul class="list-unstyled">
             {{#each common_courses}}
            <li>{{percent_students}}% : <span>{{course}} </span></li>
            {{/each}}
-       </ol> 
+       </ul>
+       <div><a href="#">Load remaining courses...</a></div>
     </div>
 </div>
 <div class="row">
     <div class="previous-instructors col">	
        <h3 class="list-header">Previous Instructors for this course</h3>
-       <ol>
+       <ul class="list-unstyled">
            {{#each instructors}}
             <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
            {{/each}}
@@ -67,7 +70,7 @@
                 <li><a href="mailto:{{uwnetid}}@uw.edu">{{display_name}}</a>, {{../quarter}} {{../year}}</li>
             {{/each}}
            {{/each}}
-       </ol>   
+       </ul>   
     </div>   
 
 </div>
