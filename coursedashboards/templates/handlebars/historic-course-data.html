@@ -31,7 +31,7 @@
         <h3 class="list-header">Declared Majors <br><small>(when taking the course)</small></h3>
         <ul class="list-unstyled">
             {{#each common_majors}}
-           <li>{{percent_students}}% : <span>{{major}} </span></li>
+           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ul> 
        <div><a href="#">Load remaining majors...</a></div>
@@ -40,7 +40,7 @@
         <h3 class="list-header">Declared Majors<br><small>(upon graduation)</small></h3>
         <ul class="list-unstyled">
            {{#each latest_majors}}
-           <li>{{percent_students}}% : <span>{{major}} </span></li>
+           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ul>
        <div><a href="#">Load remaining majors...</a></div>
@@ -51,14 +51,14 @@
         <h3 class="list-header">Concurrent Courses</h3>
         <ul class="list-unstyled">
             {{#each common_courses}}
-           <li>{{percent_students}}% : <span>{{course}} </span></li>
+           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{course}}</span></li>
            {{/each}}
        </ul>
        <div><a href="#">Load remaining courses...</a></div>
     </div>
 </div>
 <div class="row">
-    <div class="previous-instructors col">	
+    <div class="list previous-instructors col">	
        <h3 class="list-header">Previous Instructors for this course</h3>
        <ul class="list-unstyled">
            {{#each instructors}}

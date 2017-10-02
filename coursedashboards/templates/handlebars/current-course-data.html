@@ -66,7 +66,7 @@
         <h3 class="list-header">Concurrent Courses</h3>
         <ul class="list-unstyled">
            {{#each concurrent_courses}}
-                <li>{{percent_students}}% : <span>{{course}}</span></li>  
+                <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>  
            {{/each}}
        </ul> 
        <div><a href="#">Load remaining majors...</a></div>
@@ -75,7 +75,7 @@
         <h3 class="list-header">Declared Majors</h3>
         <ul class="list-unstyled">
             {{#each current_majors}}
-                <li>{{percent_students}}% : <span>{{major}}</span></li>
+                <li><strong>{{percent_students}}%</strong> <span>{{major}}</span></li>
             {{/each}}
        </ul> 
        <div><a href="#">Load remaining majors...</a></div>
