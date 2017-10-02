@@ -1,5 +1,6 @@
-import statistics
-import re
+from statistics import median
+from statistics import StatisticsError
+from collections import defaultdict
 from django.db import models
 from coursedashboards.models.instructor import Instructor
 from coursedashboards.models.course import Course
@@ -35,32 +36,49 @@ class CourseOffering(models.Model):
         return self.students
 
     @profile
-    def get_cumulative_median_gpa(self):
-        cumulative = []
-        for student in self.get_students():
+    def get_student_gpa(self, student):
+        """
+        Return current gpa for given student
+        (assumption: all student registrations are modelled)
+        """
+        try:
             points = 0.0
-            credits = 0.0
-            registrations = Registration.objects.filter(user=student.user_id)
-            for reg in registrations:
-                if (reg.grade and re.match(r'^[0-4]\.\d+$', reg.grade) and
-                        reg.credits and re.match(r'^[\d]+$', reg.credits)):
-                    course_credits = float(reg.credits)
+            credits = 0
+            for reg in Registration.objects.filter(user=student.user):
+                try:
+                    course_credits = int(reg.credits)
                     points += (float(reg.grade) * course_credits)
                     credits += course_credits
+                except ValueError:
+                    pass
 
-            if credits > 0:
-                cumulative.append(round(points / credits, 2))
+            return round(points / credits, 2)
+        except ZeroDivisionError:
+            return None
 
-        return round(statistics.median(cumulative), 2) if len(cumulative)\
-            else None
+    @profile
+    def get_cumulative_median_gpa(self):
+        """
+        Return median gpa for this course offering
+        """
+        try:
+            cumulative = []
+            for student in self.get_students():
+                gpa = self.get_student_gpa(student)
+                if gpa:
+                    cumulative.append(gpa)
+
+            return round(median(cumulative), 2)
+        except StatisticsError:
+            return None
 
     @profile
     def get_grades(self):
         """
-        Returns grade array for course offering
+        Return grade array for course offering
         """
         return [float(s.grade) for s in self.get_students()
-                if re.match(r'^[0-4]\.\d+$', s.grade)]
+                if s.grade[0] in '01234']
 
     @profile
     def get_repeating_total(self):
@@ -115,6 +133,7 @@ class CourseOffering(models.Model):
         for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
                 name = "%s" % reg.course
+                name = name[:name.index('/')]
                 if name in course_dict:
                     course_dict[name] += 1
                 else:
@@ -129,14 +148,25 @@ class CourseOffering(models.Model):
         } for sort in sorted(course_dict, reverse=True, key=course_dict.get)]
 
     @profile
-    def student_majors_for_term(self, student):
+    def student_majors_for_term(self, students):
         return StudentMajor.objects.filter(
-            user=student.user, term=self.term)
+            user_id__in=students.values_list('user_id', flat=True),
+            term=self.term).select_related('major')
 
     @profile
-    def last_student_major(self, student):
-        return StudentMajor.objects.filter(
-            user=student.user, term=student.user.last_enrolled)
+    def last_student_major(self, students):
+        m = [StudentMajor.objects.filter(
+            user=student.user, term=student.user.last_enrolled).select_related(
+                'major')
+                for student in students]
+        if len(m):
+            q = m[0]
+            for sm in m[1:]:
+                q |= sm
+
+            return q
+
+        return m
 
     @profile
     def get_recent_majors(self):
@@ -148,30 +178,22 @@ class CourseOffering(models.Model):
 
     def _get_majors(self, student_majors):
         majors_dict = {}
-        total_students = 0.0
-        for student in self.get_students():
-            total_students += 1
-            majors = student_majors(student)
-            for major in majors:
-                if major.major.major in majors_dict:
-                    majors_dict[major.major.major] += 1
-                else:
-                    majors_dict[major.major.major] = 1
+        students = self.get_students().select_related('user')
+        total_students = float(len(students))
+        majors = student_majors(students)
+        majors_dict = defaultdict(int)
+        for major in majors:
+            majors_dict[major.major.major] += 1
 
-        top_majors = []
-        sorted_majors = sorted(majors_dict, reverse=True, key=majors_dict.get)
-        for sort in sorted_majors:
-            top_majors.append({
-                "major": sort,
-                "number_students": majors_dict[sort],
-                "percent_students": round(
-                    (float(majors_dict[sort]) / total_students) * 100.0, 2)
-            })
-
-        return top_majors
+        return [{
+            "major": sort,
+            "number_students": majors_dict[sort],
+            "percent_students": round(
+                (float(majors_dict[sort]) / total_students) * 100.0, 2)
+            } for sort in sorted(
+                majors_dict, reverse=True, key=majors_dict.get)]
 
     def json_object(self):
-        logger.debug('HERE HERE HERE')
         json_obj = {
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
