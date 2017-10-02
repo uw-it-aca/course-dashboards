@@ -1,0 +1,7 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "cannot-display-course" %}
+{% load staticfiles %}
+<div class="row">
+  We're very sorry.  The course referred to, {{course}}, does not exist or is not available for view.
+</div> 
+{% endtplhandlebars %}
