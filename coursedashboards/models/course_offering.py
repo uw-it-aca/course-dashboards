@@ -159,11 +159,14 @@ class CourseOffering(models.Model):
             user=student.user, term=student.user.last_enrolled).select_related(
                 'major')
                 for student in students]
-        q = m[0]
-        for sm in m[1:]:
-            q |= sm
+        if len(m):
+            q = m[0]
+            for sm in m[1:]:
+                q |= sm
 
-        return q
+            return q
+
+        return m
 
     @profile
     def get_recent_majors(self):
