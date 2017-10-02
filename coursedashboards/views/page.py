@@ -4,7 +4,7 @@ from django.shortcuts import render
 from coursedashboards.dao.user import get_current_user
 from coursedashboards.dao.term import get_current_coda_term
 from coursedashboards.dao.exceptions import MissingNetIDException
-from coursedashboards.models import Instructor, CourseOffering
+from coursedashboards.models import Term, Instructor, CourseOffering
 
 
 def page(request,
@@ -24,16 +24,17 @@ def page(request,
 
     context["home_url"] = "/"
     context["err"] = None
-    if ('year' not in context or context['year'] is None or
-            'quarter' not in context and context['quarter'] is None):
+    if ('year' in context and context['year'] and
+            'quarter' in context and context['quarter']):
+        cur_term, created = Term.objects.get_or_create(
+            year=context['year'], quarter=context['quarter'])
+    else:
         cur_term = get_current_coda_term(request)
         if cur_term is None:
             context["err"] = "No current quarter data!"
         else:
             context["year"] = cur_term.year
             context["quarter"] = cur_term.quarter
-    else:
-        pass
 
     context['sections'] = []
     try:
