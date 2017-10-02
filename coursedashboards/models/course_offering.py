@@ -133,7 +133,7 @@ class CourseOffering(models.Model):
         for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
                 name = "%s" % reg.course
-                name = name[:name.index('/')]
+                name = name[:name.rindex('-')]
                 if name in course_dict:
                     course_dict[name] += 1
                 else:
@@ -193,24 +193,42 @@ class CourseOffering(models.Model):
             } for sort in sorted(
                 majors_dict, reverse=True, key=majors_dict.get)]
 
+    def brief_json_object(self):
+        json_obj = {
+            'section_label': '%s' % self,
+            'curriculum': self.course.curriculum,
+            'course_number': self.course.course_number,
+            'section_id': self.course.section_id
+        }
+
+        return json_obj
+
     def json_object(self):
         json_obj = {
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
             'section_id': self.course.section_id,
             'course_title': self.course.course_title,
+            'section_label': '%s' % self,
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'current_repeating': self.get_repeating_total(),
             'current_median': self.get_cumulative_median_gpa(),
             'concurrent_courses': self.concurrent_courses(),
-            'current_student_majors': self.get_majors(),
-            'past_offerings': self.get_past_offerings(),
+            'current_student_majors': self.get_majors()
         }
 
         log_profile_data('%s,%s' % (self.term, self.course), logger)
         clear_prof_data()
+        return json_obj
 
+    def past_offerings_json_object(self):
+        json_obj = {
+            'past_offerings': self.get_past_offerings(),
+        }
+
+        log_profile_data('%s,%s: PAST: ' % (self.term, self.course), logger)
+        clear_prof_data()
         return json_obj
 
     class Meta:
@@ -219,4 +237,4 @@ class CourseOffering(models.Model):
         ordering = ['-term__year', '-term__quarter']
 
     def __str__(self):
-        return "%s,%s" % (self.term, self.course)
+        return "%s-%s" % (self.term, self.course)

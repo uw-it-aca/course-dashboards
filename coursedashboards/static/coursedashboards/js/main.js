@@ -1,14 +1,14 @@
 //
-//
+//  main.js - data/functions to support course dashboards
 //
 
 
 $(document).ready(function () {
     displayPageHeader();
     displayCourseSelector();
+
     if (courseHash()) {
-        if (loadCourse(courseHash())) {
-        } else {
+        if (!loadCourse(courseHash())) {
             displayErrorPage();
         }
     } else {
@@ -48,10 +48,21 @@ function displayCourseSelector() {
 }
 
 function displaySelectedCourse() {
-    var index = $("select[name='my_courses'] option:selected").index();
-    showCurrentCourseData(index);
-    showHistoricDataSelectors(index, "All Quarters", "All Years");
-    showHistoricCourseData(index, "All Quarters", "All Years");
+    var $option = $("select[name='my_courses'] option:selected");
+    var index = $option.index();
+
+    if (window.section_data[index].loaded) {
+        showCurrentCourseData(index);
+    } else {
+        fetchCurrentCourseData(index);
+    }
+
+    if (window.section_historic_data[index].loaded){
+        showHistoricDataSelectors(index, "All Quarters", "All Years");
+        showHistoricCourseData(index, "All Quarters", "All Years");
+    } else {
+        fetchHistoricCourseData(index);
+    }
 }
 
 function displayErrorPage() {
@@ -117,22 +128,58 @@ function showCurrentCourseData(index) {
               section.course_number + '-' + section.section_id);
 }
 
+function fetchCurrentCourseData(index) {
+    $.ajax({
+        url: "/api/v1/course/" + window.section_data[index].section_label,
+        dataType: "JSON",
+        type: "GET",
+        accepts: {html: "text/html"},
+        success: function(results) {
+            window.section_data[index] = results;
+            window.section_data[index].loaded = true;
+            showCurrentCourseData(index);
+        },
+        error: function(xhr, status, error) {
+            console.log('ERROR (' + status + '): ' + error);
+        }
+    });
+}
+
+function fetchHistoricCourseData(index) {
+    $.ajax({
+        url: "/api/v1/course/past/" + window.section_data[index].section_label,
+        dataType: "JSON",
+        type: "GET",
+        accepts: {html: "text/html"},
+        success: function(results) {
+            window.section_historic_data[index] = results.past_offerings;
+            window.section_historic_data[index].loaded = true;
+            showHistoricDataSelectors(index, "All Quarters", "All Years");
+            showHistoricCourseData(index, "All Quarters", "All Years");
+        },
+        error: function(xhr, status, error) {
+            console.log('ERROR (' + status + '): ' + error);
+        }
+    });
+}
+
 //Populate the historic data selectors for the currently selected course
 function showHistoricDataSelectors(index, quarter, year) {
     //Fix case of past quarters and create arrays without duplicate quarters/years
     var valid_quarters = [];
     var valid_years = [];
     var combined = [];//stores quarter + year so that when a quarter is selected, can only select years where the course was offered in that quarter & vice versa
-    var past_offerings = window.section_data[index].past_offerings;
-    for (var o in past_offerings) {
-        past_offerings[o].quarter = firstLetterUppercase(past_offerings[o].quarter);
-        if (combined.indexOf(past_offerings[o].quarter + past_offerings[o].year) == -1)
-            combined.push(past_offerings[o].quarter + past_offerings[o].year);
-        if (valid_quarters.indexOf(past_offerings[o].quarter) == -1)
-            valid_quarters.push(past_offerings[o].quarter);
-        if (valid_years.indexOf(past_offerings[o].year) == -1)
-            valid_years.push(past_offerings[o].year);
-    }
+    $.each(window.section_historic_data[index], function () {
+        past_offering = this;
+        past_offering.quarter = firstLetterUppercase(past_offering.quarter);
+        if (combined.indexOf(past_offering.quarter + past_offering.year) == -1)
+            combined.push(past_offering.quarter + past_offering.year);
+        if (valid_quarters.indexOf(past_offering.quarter) == -1)
+            valid_quarters.push(past_offering.quarter);
+        if (valid_years.indexOf(past_offering.year) == -1)
+            valid_years.push(past_offering.year);
+    });
+
     //Remove any invalid combinations of quarter and year based on current selection
     if (quarter != "All Quarters") {
         var remove_years = [];
@@ -198,7 +245,7 @@ function prepOptions(selected, valid, all) {
 
 //Display data about the past offerings of selected course - called whenever selection changes
 function showHistoricCourseData(index, quarter, year) {
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     for (var i = 0; i < past_offerings.length; i++)
         past_offerings[i].quarter = firstLetterUppercase(past_offerings[i].quarter);
     var historic = $("#historic-course-data").html();
@@ -220,7 +267,7 @@ function showHistoricCourseData(index, quarter, year) {
 function getInstructors(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var instructors = [];
     for (var o = 0; o < past_offerings.length; o++) {
         if (quarterIsInRange(past_offerings[o], year, all_years, quarter, all_quarters)) {
@@ -241,7 +288,7 @@ function getInstructors(index, quarter, year) {
 function calculateTotalStudents(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var total_students = 0;
     for (var o = 0; o < past_offerings.length; o++) {
         var offering = past_offerings[o];
@@ -256,7 +303,7 @@ function calculateTotalStudents(index, quarter, year) {
 function calculateSectionCount(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var total = 0;
     for (var o = 0; o < past_offerings.length; o++) {
         var offering = past_offerings[o];
@@ -271,7 +318,7 @@ function calculateSectionCount(index, quarter, year) {
 function calculatePastYearCount(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var start_year = window.term.year;
     for (var o = 0; o < past_offerings.length; o++) {
         var offering = past_offerings[o];
@@ -287,7 +334,7 @@ function calculatePastYearCount(index, quarter, year) {
 function calculateCourseMedian(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var grades = [];
     for (var o = 0; o < past_offerings.length; o++) {
         var offering = past_offerings[o];
@@ -303,7 +350,7 @@ function calculateCourseMedian(index, quarter, year) {
 function calculateFailedPercentage(index, quarter, year) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var n = 0;
     var failed = 0;
     for (var o = 0; o < past_offerings.length; o++) {
@@ -325,7 +372,7 @@ function calculateFailedPercentage(index, quarter, year) {
 function calculateCommon(index, quarter, year, list_type, name_type) {
     var all_quarters = "All Quarters";
     var all_years = "All Years";
-    var past_offerings = window.section_data[index].past_offerings;
+    var past_offerings = window.section_historic_data[index];
     var obj = {};
     var total_students = 0;
     for (var o = 0; o < past_offerings.length; o++) {
