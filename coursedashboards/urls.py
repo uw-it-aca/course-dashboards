@@ -5,5 +5,5 @@ from coursedashboards.views.index import index
 
 urlpatterns = [
     # Home
-    url(r'^$', index, name='home')
+    url(r'^$', index, name='home'),
 ]
