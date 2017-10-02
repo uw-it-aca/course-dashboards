@@ -35,19 +35,20 @@ class CourseOffering(models.Model):
         cumulative = []
         for student in self.get_students():
             points = 0.0
-            credits = 0
-            n = 0
+            credits = 0.0
             registrations = Registration.objects.filter(user=student.user_id)
             for reg in registrations:
-                if re.match(r'^[0-4]\.\d+$', reg.grade):
-                    points += float(reg.grade)
-                    credits += float(reg.credits)
-                    n += 1
+                if (reg.grade and re.match(r'^[0-4]\.\d+$', reg.grade) and
+                        reg.credits and re.match(r'^[\d]+$', reg.credits)):
+                    course_credits = float(reg.credits)
+                    points += (float(reg.grade) * course_credits)
+                    credits += course_credits
 
-            if credits:
-                cumulative.append(points/credits if n > 1 else points)
+            if credits > 0:
+                cumulative.append(round(points / credits, 2))
 
-        return statistics.median(cumulative) if len(cumulative) else None
+        return round(statistics.median(cumulative), 2) if len(cumulative)\
+            else None
 
     def get_grades(self):
         """
@@ -160,6 +161,7 @@ class CourseOffering(models.Model):
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
             'section_id': self.course.section_id,
+            'course_title': self.course.course_title,
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'current_repeating': self.get_repeating_total(),

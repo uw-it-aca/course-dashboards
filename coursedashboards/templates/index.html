@@ -19,18 +19,10 @@
     		<div class="main-content row" id="maincontent"> 
                 <div class="course-info col-12" style="padding-left: 0;">
                     <div class="course-quarter-year text-capitalize"><h2>{{quarter}} {{year}} 
-                        <div class="d-inline-block course-select dummy">
-                            <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
-                            <select class="form-control form-control-lg" name="my_courses" id="my_courses">
-                            <optgroup label="{{quarter}} {{year}}">
-                               
-                                   <option data-label="section_label">PHYS 122 A</option>
-                               
-                           </optgroup>
-    	                    </select>
+                        <div class="d-inline-block course-select">
                         </div></h2>
                     </div>
-                    <div class="course-title dummy"><span style="font-size: 1.6em;">Electromagnetism and Oscillatory Motion</div>
+                    <div class="course-title"><span style="font-size: 1.6em;">{{course_title}}</div>
                 </div>
                 <div class="course-data row">
                     <div class="section-container current-section col-md-6" id="current-course-target"><!-- handlebars target for current-course-data.html --></div>

@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from django.utils.timezone import utc
 from datetime import datetime, timedelta
 import logging
@@ -19,6 +20,7 @@ from coursedashboards.dao.enrollment import (
 from coursedashboards.dao.registration import (
     get_active_registrations_for_section)
 from coursedashboards.dao.canvas import canvas_course_url_from_section
+from restclients_core.exceptions import DataFailureException
 
 
 logger = logging.getLogger(__name__)
@@ -83,16 +85,28 @@ class Command(BaseCommand):
                     changed_since, term, **params)
 
                 for section_ref in section_refs:
-                    section = get_section_from_url(section_ref.url)
-                    self._load_section(section, term, sws_term)
+                    try:
+                        section = get_section_from_url(section_ref.url)
+                        self._load_section(section, term, sws_term)
+                    except DataFailureException as ex:
+                        logger.error("section fetch: %s: %s" % (
+                            section_ref.url, ex))
+                        continue
                     for joint_section_url in section.joint_section_urls:
-                        joint_section = get_section_from_url(joint_section_url)
-                        self._load_section(joint_section, term, sws_term)
+                        try:
+                            joint_section = get_section_from_url(
+                                joint_section_url)
+                            self._load_section(joint_section, term, sws_term)
+                        except DataFailureException as ex:
+                            logger.error("section fetch: %s: %s" % (
+                                section_ref.url, ex))
+                            continue
 
             # remember the last time we crawled this term
             term.last_queried = changed_date
             term.save()
 
+    @transaction.atomic
     def _load_section(self, section, term, sws_term):
         if not section.is_primary_section:
             logger.info('skip non-primary: %s' % (
@@ -103,6 +117,12 @@ class Command(BaseCommand):
             curriculum=section.curriculum_abbr,
             course_number=section.course_number,
             section_id=section.section_id)
+
+        # update course title
+        if (section.course_title_long and
+                course.course_title != section.course_title_long):
+            course.course_title = section.course_title_long[:64]
+            course.save()
 
         if section.is_withdrawn:
             try:
@@ -188,6 +208,7 @@ class Command(BaseCommand):
             reg_obj, created = Registration.objects.get_or_create(
                 user=user, course=course, term=term)
 
+            # update grade/credits
             if (reg_obj.grade != registration.grade or
                     reg_obj.credits != registration.credits or
                     reg_obj.is_repeat != registration.repeat_course):
@@ -196,15 +217,18 @@ class Command(BaseCommand):
                 reg_obj.credits = registration.credits
                 reg_obj.save()
 
-            if created:
-                sws_person = get_person_from_regid(user.uwregid)
-                if sws_person.last_enrolled:
-                    last_term, created = Term.objects.get_or_create(
-                        year=sws_person.last_enrolled.year,
-                        quarter=sws_person.last_enrolled.quarter)
-                    if user.last_enrolled != last_term:
-                        user.last_enrolled = last_term
-                        user.save()
+            try:
+                if created:
+                    sws_person = get_person_from_regid(user.uwregid)
+                    if sws_person.last_enrolled:
+                        last_term, created = Term.objects.get_or_create(
+                            year=sws_person.last_enrolled.year,
+                            quarter=sws_person.last_enrolled.quarter)
+                        if user.last_enrolled != last_term:
+                            user.last_enrolled = last_term
+                            user.save()
+            except DataFailureException:
+                pass
 
             if reg_obj.user_id in prior_registrations:
                 prior_registrations.remove(reg_obj.user_id)
