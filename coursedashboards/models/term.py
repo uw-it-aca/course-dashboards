@@ -22,4 +22,4 @@ class Term(models.Model):
     last_queried = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return "%s,%s" % (self.year, self.quarter)
+        return "%s-%s" % (self.year, self.quarter)

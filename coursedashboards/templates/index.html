@@ -11,6 +11,7 @@
         "quarter": "{{quarter}}"
     };
     window.section_data = {{sections | safe | escape}};
+    window.section_historic_data = {{historic_sections | safe | escape}};
 
 </script>
 
@@ -24,7 +25,7 @@
                     </div>
                     <div class="course-title"><span style="font-size: 1.6em;">{{course_title}}</div>
                 </div>
-                <div class="course-data row">
+                <div class="course-data row col-12">
                     <div class="section-container current-section col-md-6" id="current-course-target"><!-- handlebars target for current-course-data.html --></div>
                     <div class="section-container historic-section col-md-6" style="border-left:1px solid #ccc;">
                         <div id="historic-selector-target"><!-- handlebars target for historic data selectors--></div>
