@@ -133,6 +133,7 @@ class CourseOffering(models.Model):
         for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
                 name = "%s" % reg.course
+                name = name[:name.index('/')]
                 if name in course_dict:
                     course_dict[name] += 1
                 else:
