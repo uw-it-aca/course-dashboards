@@ -9,6 +9,7 @@ from coursedashboards.models.registration import Registration
 from coursedashboards.models.major import StudentMajor
 from coursedashboards.util.profile import (
     profile, log_profile_data, clear_prof_data)
+from threading import Thread
 import logging
 
 
@@ -86,28 +87,6 @@ class CourseOffering(models.Model):
         Number of students repeating this course offering
         """
         return len(self.get_students().filter(is_repeat=True))
-
-    @profile
-    def get_past_offerings(self):
-        """
-        List of past course offerings
-        """
-        min_offerings = 1
-        quarters = 20
-
-        offerings = [{
-            "year": co.term.year,
-            "quarter": co.term.quarter,
-            "instructors": co.get_instructors(),
-            "majors": co.get_majors(),
-            "concurrent_courses": co.concurrent_courses(),
-            "latest_majors": co.get_recent_majors(),
-            "course_grades": co.get_grades()
-        } for co in CourseOffering.objects.filter(
-            course=self.course).select_related('course', 'term')
-                     if co.id != self.id][:quarters]
-
-        return offerings if len(offerings) >= min_offerings else []
 
     @profile
     def get_instructors(self):
@@ -203,6 +182,43 @@ class CourseOffering(models.Model):
 
         return json_obj
 
+    def set_json_repeating_total(self, json_obj):
+        json_obj['current_repeating'] = self.get_repeating_total()
+
+    def set_json_cumulative_median(self, json_obj):
+        json_obj['current_median'] = self.get_cumulative_median_gpa()
+
+    def set_json_concurrent_courses(self, json_obj):
+        json_obj['concurrent_courses'] = self.concurrent_courses()
+
+    def set_json_curren_student_majors(self, json_obj):
+        json_obj['current_student_majors'] = self.get_majors()
+
+    def set_course_data(self, json_obj):
+        threads = []
+        t = Thread(target=self.set_json_repeating_total,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_json_cumulative_median,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_json_concurrent_courses,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_json_curren_student_majors,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        for t in threads:
+            t.join()
+
     def json_object(self):
         json_obj = {
             'curriculum': self.course.curriculum,
@@ -212,15 +228,93 @@ class CourseOffering(models.Model):
             'section_label': '%s' % self,
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
-            'current_repeating': self.get_repeating_total(),
-            'current_median': self.get_cumulative_median_gpa(),
-            'concurrent_courses': self.concurrent_courses(),
-            'current_student_majors': self.get_majors()
         }
+
+        self.set_course_data(json_obj)
 
         log_profile_data('%s,%s' % (self.term, self.course), logger)
         clear_prof_data()
         return json_obj
+
+    def set_past_offering_instructors(self, past_obj):
+        past_obj['instructors'] = self.get_instructors()
+
+    def set_past_offering_majors(self, past_obj):
+        past_obj['majors'] = self.get_majors()
+
+    def set_past_concurrent_courses(self, past_obj):
+        past_obj['concurrent_courses'] = self.concurrent_courses()
+
+    def set_past_latest_majors(self, past_obj):
+        past_obj['latest_majors'] = self.get_recent_majors()
+
+    def set_past_course_grades(self, past_obj):
+        past_obj['course_grades'] = self.get_grades()
+
+    def set_past_offering_data(self, past_obj):
+        threads = []
+        t = Thread(target=self.set_past_offering_instructors,
+                   args=(past_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_past_offering_majors,
+                   args=(past_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_past_concurrent_courses,
+                   args=(past_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_past_latest_majors,
+                   args=(past_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_past_course_grades,
+                   args=(past_obj,))
+        threads.append(t)
+        t.start()
+
+        for t in threads:
+            t.join()
+
+    def set_past_offering(self, course_offering, offerings):
+        off_obj = {
+            "year": course_offering.term.year,
+            "quarter": course_offering.term.quarter,
+        }
+
+        course_offering.set_past_offering_data(off_obj)
+        offerings.append(off_obj)
+
+    @profile
+    def get_past_offerings(self):
+        """
+        List of past course offerings
+        """
+        min_offerings = 1
+        quarters = 20
+
+        threads = []
+        offerings = []
+        for co in CourseOffering.objects.filter(
+                course=self.course).select_related('course', 'term'):
+            if co.id != self.id:
+                t = Thread(target=self.set_past_offering,
+                           args=(co, offerings,))
+                threads.append(t)
+                t.start()
+
+                if len(threads) >= quarters:
+                    break
+
+        for t in threads:
+            t.join()
+
+        return offerings if len(offerings) >= min_offerings else []
 
     def past_offerings_json_object(self):
         json_obj = {
