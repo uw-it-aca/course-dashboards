@@ -129,6 +129,7 @@ function showCurrentCourseData(index) {
 }
 
 function fetchCurrentCourseData(index) {
+    startLoadingCourseData();
     $.ajax({
         url: "/api/v1/course/" + window.section_data[index].section_label,
         dataType: "JSON",
@@ -141,11 +142,23 @@ function fetchCurrentCourseData(index) {
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);
+        },
+        complete: function () {
+            stopLoadingCourseData();
         }
     });
 }
 
+function startLoadingCourseData() {
+    $(".section-container.current-section").addClass('loading');
+}
+
+function stopLoadingCourseData() {
+    $(".section-container.current-section").removeClass('loading');
+}
+
 function fetchHistoricCourseData(index) {
+    startLoadingHistoricCourseData()
     $.ajax({
         url: "/api/v1/course/past/" + window.section_data[index].section_label,
         dataType: "JSON",
@@ -159,8 +172,19 @@ function fetchHistoricCourseData(index) {
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);
+        },
+        complete: function () {
+            stopLoadingHistoricCourseData();
         }
     });
+}
+
+function startLoadingHistoricCourseData() {
+    $(".section-container.historic-section").addClass('loading');
+}
+
+function stopLoadingHistoricCourseData() {
+    $(".section-container.historic-section").removeClass('loading');
 }
 
 //Populate the historic data selectors for the currently selected course

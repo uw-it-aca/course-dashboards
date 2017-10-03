@@ -26,6 +26,11 @@ $data_desctext: #898989;
         margin-bottom: 24px;
     }
 
+    .loading {
+        min-height: 200px;
+        background-color: #f8f8f8;
+    }
+
     .course-data-widget {
         .course-data-icon {
             border: 1px solid;
