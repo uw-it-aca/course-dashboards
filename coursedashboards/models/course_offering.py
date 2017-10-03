@@ -57,6 +57,11 @@ class CourseOffering(models.Model):
         except ZeroDivisionError:
             return None
 
+    def set_student_gpa(self, student, cumulative):
+        gpa = self.get_student_gpa(student)
+        if gpa:
+            cumulative.append(gpa)
+
     @profile
     def get_cumulative_median_gpa(self):
         """
@@ -64,10 +69,15 @@ class CourseOffering(models.Model):
         """
         try:
             cumulative = []
+            threads = []
             for student in self.get_students():
-                gpa = self.get_student_gpa(student)
-                if gpa:
-                    cumulative.append(gpa)
+                t = Thread(target=self.set_student_gpa,
+                           args=(student, cumulative,))
+                threads.append(t)
+                t.start()
+
+            for t in threads:
+                t.join()
 
             return round(median(cumulative), 2)
         except StatisticsError:
