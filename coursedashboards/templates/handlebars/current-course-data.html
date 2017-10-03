@@ -9,8 +9,17 @@
 <div class="current-schedule-row row">
     <div class="col">
         <div class="card" style="border:none;">
-            <div class="card-body" style="padding:1rem;">
-                <table class="table-course-schedule dummy"> 
+            <div class="card-body" style="padding-top:1rem;">
+                <dl class="row">
+  <dt class="col-sm-3">Meeting</dt>
+  <dd class="col-sm-9"><span class="course-days"><abbr title="Friday">F</abbr></span><span class="course-time">8:00 - 5:20PM</span><span class="course-location">DEM 012</span></dd>
+                <dt class="col-sm-3">MyUW</dt>
+                <dt class="col-sm-9"><a href="#">Course Details for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                <dt class="col-sm-3">Canvas</dt>
+                <dt class="col-sm-9"><a href="#">Canvas Course for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                </dl>
+
+                <!--<table class="table-course-schedule dummy"> 
                     <thead class="sr-only"> 
                         <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr> 
                     </thead> 
@@ -18,6 +27,12 @@
                         <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>  
                     </tbody> 
                 </table> 
+                <div class="course-links">
+                <ul class="unstyled-list">
+                    <li><a href="#">{{curriculum}} {{course_number}} {{section_id}} on MyUW</a></li>
+                    <li><a href="#">{{curriculum}} {{course_number}} {{section_id}} on Canvas</a></li>
+                </ul>
+                </div>-->
             </div>
         </div>
     </div>
@@ -53,14 +68,6 @@
         </div>
     </div>
 </div>
-
-<!--<div class="row">
-    <div class="col-md-6"><h2 class="inline">Your Students</h2></div>
-    <div class="col-md-6"><a class="dummy" href="#">Time Schedule Entry</a></div>
-    <div class="col-12">Median cumulative GPA: <span>{{current_median}}</span></div>
-    <div class="col-md-6">Students Registered: <span>{{current_num_registered}} / {{current_capacity}}</span></div>
-    <div class="col-md-6"><span class="dummy">{{current_repeat_students}}</span> students are repeating this course.</div>
-</div>-->
 <div class="row ">
     <div class="list col">
         <h3 class="list-header">Concurrent Courses</h3>

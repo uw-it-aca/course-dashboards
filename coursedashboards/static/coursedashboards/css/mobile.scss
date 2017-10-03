@@ -13,6 +13,12 @@ $data_desctext: #898989;
     margin-top: 16px;
 
     /** Current Course **/
+
+    .current-schedule-row {
+        .course-days, .course-time, .course-location {
+            margin-right:1rem;
+        }
+    }
     
     .table-course-schedule {
         width:100%;
