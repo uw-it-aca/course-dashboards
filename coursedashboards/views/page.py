@@ -45,10 +45,14 @@ def page(request,
 
         context['no_courses'] = (len(offerings) == 0)
         sections = []
+        historical = []
         for offering in offerings:
-            sections.append(offering.json_object())
+            sections.append(offering.brief_json_object())
+            historical.append({})
 
         context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
+        context['historic_sections'] = json.dumps(
+            historical, cls=DjangoJSONEncoder)
 
     except Instructor.DoesNotExist:
         context['no_courses'] = True
