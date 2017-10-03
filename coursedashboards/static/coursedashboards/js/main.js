@@ -158,7 +158,7 @@ function stopLoadingCourseData() {
 }
 
 function fetchHistoricCourseData(index) {
-    startLoadingHistoricCourseData()
+    startLoadingHistoricCourseData();
     $.ajax({
         url: "/api/v1/course/past/" + window.section_data[index].section_label,
         dataType: "JSON",
