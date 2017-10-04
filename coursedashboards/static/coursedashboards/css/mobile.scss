@@ -36,6 +36,20 @@ $data_desctext: #898989;
     .loading {
         min-height: 200px;
         background-color: #f8f8f8;
+        opacity: .4;
+    }
+
+    .loading:before {
+        z-index: 100;
+        color: black;
+        content: "\f110";
+        font-family: FontAwesome;
+        font-size:40px;
+        position: absolute;
+        top: 80px;
+        left: 250px;
+        -webkit-animation: fa-spin 2s infinite linear;
+        animation: fa-spin 2s infinite linear;
     }
 
     .course-data-widget {
