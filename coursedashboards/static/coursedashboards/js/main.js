@@ -120,7 +120,10 @@ function showCurrentCourseData(index) {
         current_majors:section.current_student_majors,
         curriculum:section.curriculum,
         course_number:section.course_number,
-        section_id:section.section_id
+        section_id:section.section_id,
+        quarter: window.term.quarter,
+        year: window.term.year,
+        canvas_course_url:section.canvas_course_url,
     }));
     $('.course-title span').html(window.section_data[index].course_title);
     updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id, 

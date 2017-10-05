@@ -14,9 +14,11 @@
   <dt class="col-sm-3">Meeting</dt>
   <dd class="col-sm-9"><span class="course-days"><abbr title="Friday">F</abbr></span><span class="course-time">8:00 - 5:20PM</span><span class="course-location">DEM 012</span></dd>
                 <dt class="col-sm-3">MyUW</dt>
-                <dt class="col-sm-9"><a href="#">MyUW course details for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                <dt class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course details for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                {{#if canvas_course_url}}
                 <dt class="col-sm-3">Canvas</dt>
-                <dt class="col-sm-9"><a href="#">Canvas course site for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                <dt class="col-sm-9"><a href="{{canvas_course_url}}">Canvas course site for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                {{/if}}
                 </dl>
 
                 <!--<table class="table-course-schedule dummy"> 
