@@ -4,7 +4,7 @@ $data_desctext: #898989;
 
 .course-info {
     .course-select {
-        vertical-align:top;
+        vertical-align:middle;
         margin-left: 8px;
     }
 }
@@ -13,16 +13,23 @@ $data_desctext: #898989;
     margin-top: 16px;
 
     /** Current Course **/
+
+    .current-schedule-row {
+        .course-days, .course-time, .course-location {
+            margin-right:1rem;
+        }
+    }
     
     .table-course-schedule {
         width:100%;
+        font-size:1.3rem;
         td {
             padding: 0 8px 8px 0;
             width: 6em;
         }
     }
     .current-data-row, .historic-data-row {
-        margin-top: 24px;
+        //margin-top: 24px;
         margin-bottom: 24px;
     }
 
@@ -46,10 +53,11 @@ $data_desctext: #898989;
     }
 
     .course-data-widget {
+        margin-top: 24px;
         .course-data-icon {
             border: 1px solid;
             vertical-align: top;
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             border-radius: 6px;
             width:60px;
             height:60px;
@@ -69,7 +77,18 @@ $data_desctext: #898989;
             .course-data-description {
                 font-size:1em;
                 color:$data_desctext;
+                margin-top:-5px;
             }
+        }
+    }
+    .historic-section {
+        .historic-filters {
+            margin-top: .5rem;
+        }
+    }
+    .list {
+        li {
+            line-height: 1.8rem;
         }
     }
 
