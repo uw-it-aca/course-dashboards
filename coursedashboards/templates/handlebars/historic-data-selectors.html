@@ -25,14 +25,14 @@
                </select>
            </div> 
            <div class="d-inline-block">
-               <label for="historic_filter_year" class="visually-hidden">Filter historic data by year:</label>
+               <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
                <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year">
                      {{#each past_years}}
                        <option data-label="{{name}}" {{selected}}>{{name}}</option>
                    {{/each}}
                </select>
            </div> 
-           <span>OR</span>
+           <span style="padding: 0 1rem;">OR</span>
            <div class="d-inline-block">
                <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
                <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught">
@@ -42,7 +42,7 @@
                </select>
            </div>
         </div>
-        <span>Viewing data for <strong>{{student_total}}</span> students</strong> in {{section_count}} quarter{{pluralize section_count '' 's'}} for the past {{year_count}} year{{pluralize year_count '' 's'}}</span>
+        <span class="help-tooltip">Viewing data for <strong>{{student_total}}</span> students</strong> in {{section_count}} quarter{{pluralize section_count '' 's'}} for the past {{year_count}} year{{pluralize year_count '' 's'}}</span>
     </div>
 </div>
 {% endtplhandlebars %}

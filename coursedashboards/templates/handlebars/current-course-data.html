@@ -14,9 +14,9 @@
   <dt class="col-sm-3">Meeting</dt>
   <dd class="col-sm-9"><span class="course-days"><abbr title="Friday">F</abbr></span><span class="course-time">8:00 - 5:20PM</span><span class="course-location">DEM 012</span></dd>
                 <dt class="col-sm-3">MyUW</dt>
-                <dt class="col-sm-9"><a href="#">Course Details for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                <dt class="col-sm-9"><a href="#">MyUW course details for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
                 <dt class="col-sm-3">Canvas</dt>
-                <dt class="col-sm-9"><a href="#">Canvas Course for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
+                <dt class="col-sm-9"><a href="#">Canvas course site for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
                 </dl>
 
                 <!--<table class="table-course-schedule dummy"> 
@@ -43,7 +43,7 @@
             <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
         </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number">{{current_median}}</div>
+            <div class="course-data-number" title="{{current_median}} cumulative GPA">{{current_median}}</div>
             <div class="course-data-description">Cumulative GPA</div>
         </div>
     </div>
@@ -52,7 +52,7 @@
             <span><i class="ion-ios-people" aria-hidden="true"></i></span>
         </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number">{{current_num_registered}}/{{current_capacity}}</div>
+            <div class="course-data-number" title="{{current_num_registered}} of {{current_capacity}} registered students">{{current_num_registered}}/{{current_capacity}}</div>
             <div class="course-data-description">Currently Registered</div>
         </div>
     </div>
@@ -63,7 +63,7 @@
             <span><i class="ion-android-refresh" aria-hidden="true"></i></span>
         </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number">{{current_repeat_students}}</div>
+            <div class="course-data-number" title="{{current_repeat_students}} repeating students">{{current_repeat_students}}</div>
             <div class="course-data-description">Repeating Students</div>
         </div>
     </div>
@@ -73,10 +73,10 @@
         <h3 class="list-header">Concurrent Courses</h3>
         <ul class="list-unstyled">
            {{#each concurrent_courses}}
-                <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{course}}</span></li>  
+                <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>  
            {{/each}}
        </ul> 
-       <div><a href="#">Load remaining majors...</a></div>
+       <div><a href="#">Show more...</a></div>
     </div>
     <div class="list col">
         <h3 class="list-header">Declared Majors</h3>
@@ -85,7 +85,7 @@
                 <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
             {{/each}}
        </ul> 
-       <div><a href="#">Load remaining majors...</a></div>
+       <div><a href="#">Show more...</a></div>
     </div> 
 </div> 
 {% endtplhandlebars %}

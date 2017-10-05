@@ -7,11 +7,21 @@
             <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
         </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number">{{median_course_grade}}</div>
+            <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}</div>
             <div class="course-data-description">Median Course GPA</div>
         </div>
     </div>
     <div class="col"><span></span></div>
+    <!-- consider adding a data widget for total number of student in selected time span 
+    <div class="historic-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="ion-ios-people" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{student_total}}</div>
+            <div class="course-data-description">Past Students</div>
+        </div>
+    </div>-->
 </div>
 <div class="historic-data-row row">
     <div class="historic-failure course-data-widget col">
@@ -19,7 +29,7 @@
             <span><i class="ion-ios-flag" aria-hidden="true"></i></span>
         </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number">{{failed_percent}}%</div>
+            <div class="course-data-number" title="{{failed_percent}}% Failure">{{failed_percent}}%</div>
             <div class="course-data-description">Percent Failure</div>
         </div>
     </div>
@@ -34,7 +44,7 @@
            <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ul> 
-       <div><a href="#">Load remaining majors...</a></div>
+       <div><a href="#">Show more...</a></div>
     </div>
     <div class="list col">
         <h3 class="list-header">Declared Majors<br><small>(upon graduation)</small></h3>
@@ -43,7 +53,7 @@
            <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ul>
-       <div><a href="#">Load remaining majors...</a></div>
+       <div><a href="#">Show more...</a></div>
     </div>
 </div>
 <div class="row">
@@ -51,10 +61,10 @@
         <h3 class="list-header">Concurrent Courses</h3>
         <ul class="list-unstyled">
             {{#each common_courses}}
-           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{course}}</span></li>
+           <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
        </ul>
-       <div><a href="#">Load remaining courses...</a></div>
+       <div><a href="#">Show more...</a></div>
     </div>
 </div>
 <div class="row">
