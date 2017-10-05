@@ -138,24 +138,20 @@ class CourseOffering(models.Model):
 
     @profile
     def student_majors_for_term(self, students):
-        return StudentMajor.objects.filter(
+        return [sm.major.major for sm in StudentMajor.objects.filter(
             user_id__in=students.values_list('user_id', flat=True),
-            term=self.term).select_related('major')
+            term=self.term).select_related('major')]
 
     @profile
     def last_student_major(self, students):
-        m = [StudentMajor.objects.filter(
-            user=student.user, term=student.user.last_enrolled).select_related(
-                'major')
-                for student in students]
-        if len(m):
-            q = m[0]
-            for sm in m[1:]:
-                q |= sm
+        major_list = []
+        for student in students:
+            majors = StudentMajor.objects.filter(
+                user=student.user,
+                term=student.user.last_enrolled).select_related('major')
+            major_list += [sm.major.major for sm in majors]
 
-            return q
-
-        return m
+        return major_list
 
     @profile
     def get_recent_majors(self):
@@ -172,7 +168,7 @@ class CourseOffering(models.Model):
         majors = student_majors(students)
         majors_dict = defaultdict(int)
         for major in majors:
-            majors_dict[major.major.major] += 1
+            majors_dict[major] += 1
 
         return [{
             "major": sort,
@@ -229,6 +225,7 @@ class CourseOffering(models.Model):
         for t in threads:
             t.join()
 
+    @profile
     def json_object(self):
         json_obj = {
             'curriculum': self.course.curriculum,
