@@ -235,6 +235,7 @@ class CourseOffering(models.Model):
             'section_label': '%s' % self,
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
+            'canvas_course_url': self.canvas_course_url,
         }
 
         self.set_course_data(json_obj)
