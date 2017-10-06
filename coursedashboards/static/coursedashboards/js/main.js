@@ -129,6 +129,7 @@ function showCurrentCourseData(index) {
     updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id, 
               window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
               section.course_number + '-' + section.section_id);
+    setup_exposures($("#current-course-target"));
 }
 
 function fetchCurrentCourseData(index) {
@@ -277,7 +278,6 @@ function showHistoricCourseData(index, quarter, year) {
         past_offerings[i].quarter = firstLetterUppercase(past_offerings[i].quarter);
     var historic = $("#historic-course-data").html();
     var historicTemplate = Handlebars.compile(historic);
-    console.log("show historic data for " + quarter + " " + year);
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(index, quarter, year, "majors","major"),
         latest_majors:calculateCommon(index, quarter, year, "latest_majors","major"),
@@ -289,6 +289,25 @@ function showHistoricCourseData(index, quarter, year) {
         instructors: getInstructors(index, quarter, year)
         //past_terms:window.section_data[index].past_offerings
     }));
+
+    setup_exposures($("#historic-course-target"));
+}
+
+function setup_exposures($container) {
+    $container.find(".show-more").each(function () {
+        if ($(this).closest('.list').find('ul.list-unstyled li').length <= 10) {
+            $(this).parent().hide();
+        }
+    });
+    $container.find(".show-more").on('click', function () {
+        var $hidden = $(this).closest('.list').find('ul.list-unstyled li:hidden');
+        // show next ten, then hide control
+        $hidden.slice(0,10).show();
+//        if ($hidden.length <= 0) {
+            $(this).parent().hide();
+//        }
+        return false;
+    });
 }
 
 function getInstructors(index, quarter, year) {
