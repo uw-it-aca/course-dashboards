@@ -19,7 +19,7 @@ $data_desctext: #898989;
             margin-right:1rem;
         }
     }
-    
+
     .table-course-schedule {
         width:100%;
         font-size:1.3rem;
@@ -90,6 +90,10 @@ $data_desctext: #898989;
         li {
             line-height: 1.8rem;
         }
+    }
+
+    ul.list-unstyled li:nth-child(n+11) {
+        display: none;
     }
 
 }
