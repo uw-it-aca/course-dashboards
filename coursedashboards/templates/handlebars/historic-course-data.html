@@ -3,11 +3,8 @@
 {% load staticfiles %}
 <div class="historic-data-row row">
     <div class="historic-median course-data-widget col">
-        <div class="d-inline-block course-data-icon green">
-            <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}</div>
+            <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}<i class="ion-arrow-graph-up-right" aria-hidden="true"></i></div>
             <div class="course-data-description">Median Course GPA</div>
         </div>
     </div>
@@ -25,11 +22,8 @@
 </div>
 <div class="historic-data-row row">
     <div class="historic-failure course-data-widget col">
-        <div class="d-inline-block course-data-icon red">
-            <span><i class="ion-ios-flag" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{failed_percent}}% Failure">{{failed_percent}}%</div>
+            <div class="course-data-number" title="{{failed_percent}}% Failure">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
             <div class="course-data-description">Percent Failure</div>
         </div>
     </div>

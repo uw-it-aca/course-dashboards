@@ -1,6 +1,6 @@
 $green: #5cb85c;
 $red: #d9534f;
-$data_desctext: #898989;
+$data_desctext: #787878;
 
 .course-info {
     .course-select {
@@ -54,19 +54,8 @@ $data_desctext: #898989;
 
     .course-data-widget {
         margin-top: 24px;
-        .course-data-icon {
-            border: 1px solid;
-            vertical-align: top;
-            font-size: 2.4rem;
-            border-radius: 6px;
-            width:60px;
-            height:60px;
-            text-align: center;
-            //.fa {
-              //  color: $green;
-            //}
-            &.green {border-color: $green;color:$green;}
-            &.red {border-color: $red; color:$red;}
+        i { 
+            font-size: 85%;padding-left:1rem;color:$data_desctext;   
         }
         .course-data-items {
             padding-left: 8px;
