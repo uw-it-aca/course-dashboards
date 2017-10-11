@@ -1,0 +1,87 @@
+{% load templatetag_handlebars %}
+{% tplhandlebars "historic-course-data" %}
+{% load staticfiles %}
+<div class="historic-data-row row">
+    <div class="historic-median course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}</div>
+            <div class="course-data-description">Median Course GPA</div>
+        </div>
+    </div>
+    <div class="col"><span></span></div>
+    <!-- consider adding a data widget for total number of student in selected time span 
+    <div class="historic-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-icon green">
+            <span><i class="ion-ios-people" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number">{{student_total}}</div>
+            <div class="course-data-description">Past Students</div>
+        </div>
+    </div>-->
+</div>
+<div class="historic-data-row row">
+    <div class="historic-failure course-data-widget col">
+        <div class="d-inline-block course-data-icon red">
+            <span><i class="ion-ios-flag" aria-hidden="true"></i></span>
+        </div>
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number" title="{{failed_percent}}% Failure">{{failed_percent}}%</div>
+            <div class="course-data-description">Percent Failure</div>
+        </div>
+    </div>
+    <div class="col"><span></span></div>
+</div>
+
+<div class="row">
+    <div class="list col">
+        <h3 class="list-header">Declared Majors <br><small>(when taking the course)</small></h3>
+        <ul class="list-unstyled">
+            {{#each common_majors}}
+           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
+           {{/each}}
+       </ul> 
+       <div><a href="#" class='show-more'>Show more...</a></div>
+    </div>
+    <div class="list col">
+        <h3 class="list-header">Declared Majors<br><small>(upon graduation)</small></h3>
+        <ul class="list-unstyled">
+           {{#each latest_majors}}
+           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
+           {{/each}}
+       </ul>
+       <div><a href="#" class='show-more'>Show more...</a></div>
+    </div>
+</div>
+<div class="row">
+    <div class="list col">
+        <h3 class="list-header">Concurrent Courses</h3>
+        <ul class="list-unstyled">
+            {{#each common_courses}}
+           <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
+           {{/each}}
+       </ul>
+       <div><a href="#" class='show-more'>Show more...</a></div>
+    </div>
+</div>
+<div class="row">
+    <div class="list previous-instructors col">	
+       <h3 class="list-header">Previous Instructors for this course</h3>
+       <ul class="list-unstyled">
+           {{#each instructors}}
+            <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
+           {{/each}}
+           
+           {{#each past_terms}}
+            {{#each instructors}}
+                <li><a href="mailto:{{uwnetid}}@uw.edu">{{display_name}}</a>, {{../quarter}} {{../year}}</li>
+            {{/each}}
+           {{/each}}
+       </ul>   
+    </div>   
+
+</div>
+{% endtplhandlebars %}

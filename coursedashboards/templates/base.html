@@ -1,0 +1,60 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+    <head>
+        {% include "include/head.html" %}
+    </head>
+
+<body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
+    <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
+        <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
+        </div>
+    
+    {% block web_content %}{% endblock %}
+
+    </div> <!-- end of .page-wrap  -->
+    
+    <!-- FOOTER STUFF -->
+
+<div>
+	<footer class="site-footer" role="contentinfo">
+		<div class="container center">
+				<div class="footer-links">
+	                <ul>
+	                    <li><a href="http://www.washington.edu/online/terms/" target="_blank" title="Go to the University of Washington Website Terms and Conditions of Use">Terms </a></li>
+	                    <li><a href="http://www.washington.edu/online/privacy/" target="_blank" title="Go to the University of Washington Online Privacy Statement">Privacy</a></li>
+	                    <li><a href="mailto:help@uw.edu" title="Get Help and send us feedback">Help</a></li>
+	                </ul>
+	            </div><!-- end of footer links -->
+	            <p class="credit">©2017 University of Washington Information Technology </p>
+	            <!--<div><img src="{% static "pivot/img/InfoTech_UW_vsml.footer.png" %}"  class="uw-it-logo" alt="UW-IT logo"></div>-->
+		</div><!-- end of footer content -->
+	</footer>
+
+    
+
+</div><!-- footer role -->
+{% include "handlebars/page-top.html" %}
+{% include "handlebars/course-select.html" %}
+{% include "handlebars/current-course-data.html" %}
+{% include "handlebars/historic-data-selectors.html" %}
+{% include "handlebars/historic-course-data.html" %}
+{% include "handlebars/cannot-display-course.html" %}
+<script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
+<script src="{% static "coursedashboards/js/main.js" %}"></script>
+    <p>device is:</p>
+    {% if is_desktop %}
+    <p>DESKTOP</p>
+    {% else %}
+    <p>not desktop</p>
+    {% endif %}
+    {% if request.is_tablet %}
+    <p>TABLET</p>
+    {% endif %}
+    {% if request.is_mobile %}
+    <p>MOBILE</p>
+    {% endif %}
+</body>
+</html>
