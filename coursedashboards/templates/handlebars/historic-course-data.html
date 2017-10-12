@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="col"><span></span></div>
-    <!-- consider adding a data widget for total number of student in selected time span 
+    <!-- consider adding a data widget for total number of student in selected time span
     <div class="historic-enrollment course-data-widget col">
         <div class="d-inline-block course-data-icon green">
             <span><i class="ion-ios-people" aria-hidden="true"></i></span>
@@ -37,8 +37,8 @@
             {{#each common_majors}}
            <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
-       </ul> 
-       <div><a href="#" class='show-more'>Show more...</a></div>
+       </ul>
+       <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
     <div class="list col">
         <h3 class="list-header">Declared Majors<br><small>(upon graduation)</small></h3>
@@ -47,7 +47,7 @@
            <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ul>
-       <div><a href="#" class='show-more'>Show more...</a></div>
+       <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
 </div>
 <div class="row">
@@ -58,24 +58,24 @@
            <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
        </ul>
-       <div><a href="#" class='show-more'>Show more...</a></div>
+       <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
 </div>
 <div class="row">
-    <div class="list previous-instructors col">	
+    <div class="list previous-instructors col">
        <h3 class="list-header">Previous Instructors for this course</h3>
        <ul class="list-unstyled">
            {{#each instructors}}
             <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
            {{/each}}
-           
+
            {{#each past_terms}}
             {{#each instructors}}
                 <li><a href="mailto:{{uwnetid}}@uw.edu">{{display_name}}</a>, {{../quarter}} {{../year}}</li>
             {{/each}}
            {{/each}}
-       </ul>   
-    </div>   
+       </ul>
+    </div>
 
 </div>
 {% endtplhandlebars %}
