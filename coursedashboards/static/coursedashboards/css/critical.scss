@@ -113,7 +113,7 @@ a {
 .no-wrap {white-space: nowrap;}
 
 
-.topbanner-bg {background-color: $uwpurple; height: 76px; color: white;
+.topbanner-bg {background-color: $uwpurple; /*height: 76px;*/ color: white;
     .uw-logo {
       display: block;
       text-indent: -9999px;
@@ -126,6 +126,59 @@ a {
     }
     select {
         font-size:.8em;
+    }
+}
+
+
+.coda-thin-bar {
+    background: #452a78;
+    line-height: 40px;
+    height: 40px;
+    font-size: 14px;
+    a {
+        color: #fff;
+        display: inline-block;
+        min-width: 30px;
+        height: 40px;
+        background: none;
+        border: none;
+        i {padding-right: 4px;}
+    }
+    .coda-netid {
+        display: inline-block;
+        span {
+            font-size: 16px;
+            //padding-left: 4px;
+        }
+    }
+    .coda-search-links {
+        display: inline-block;
+        float: right;
+        color: #fff;
+        margin-right: -3px;
+        font-size: 16px;
+    }
+}
+
+.coda-navigation {
+    background: #4b2e83;
+    height: 65px;
+    .coda-wrapper {
+        background-repeat: no-repeat;
+        background-size: 45px;
+        background-position: right 20px bottom;
+        height: 65px;
+        .coda-title {
+            display: inline-block;
+            color: #fff;
+            font-size: 26px;
+            font-weight: 400;
+            line-height: 65px;
+            height: 65px;
+            a, .coda-navigation .coda-title a:hover, .coda-navigation .coda-title a:focus, .coda-navigation .coda-title a:visited {
+                color: #fff;
+            }
+        }
     }
 }
 
