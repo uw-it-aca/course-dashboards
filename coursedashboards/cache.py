@@ -4,14 +4,14 @@ import re
 
 
 class RestClientsCache(TimedCache):
-    """ A custom cache implementation for Panopto Scheduler """
+    """ A custom cache implementation for Course Dashboards """
 
     url_policies = {}
     url_policies["sws"] = (
-        (re.compile(r"^/student/v4/term/current"), 60 * 60),
-        (re.compile(r"^/student/v4/term/"), 60 * 60 * 10),
-        (re.compile(r"^/student/v4/course/"), 60 * 60),
-        (re.compile(r"^/student/v4/section"), 60 * 60),
+        (re.compile(r"^/student/v5/term/current"), 60 * 60),
+        (re.compile(r"^/student/v5/term/"), 60 * 60 * 10),
+        (re.compile(r"^/student/v5/course/"), 60 * 60),
+        (re.compile(r"^/student/v5/section"), 60 * 60),
     )
     url_policies["pws"] = (
         (re.compile(r"^/identity/v1/person/"), 60 * 60 * 10),
