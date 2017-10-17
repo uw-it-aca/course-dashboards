@@ -215,6 +215,25 @@ a {
 
 /* footer  Stuff*/
 
+
+#app_footer {
+    .footer-bar {
+        padding: 16px 0 !important;
+    }
+}
+
+// footer bar
+.footer-bar { background:#333; padding: 10px 0;
+    .footer-links { color: #aaa; font-size: 11px;
+    	a, button {color: #fff}
+        .footer-links-list { padding: 0; margin-bottom: .5em; line-height: 11px; list-style: none;
+            .footer-links-list-item { display: inline-block; padding-right: 5px; margin-right: 3px; border-right: solid 1px #aaa; color: #222;
+			}
+        }
+    }
+}
+
+/*
 footer {
 	border-top: #eee 1px solid;
 	padding-top: 20px;
@@ -244,7 +263,7 @@ footer .footer-links ul li:last-child {
 	    border: 0px;
     margin-right:0px;
     padding-right:0px;
-}
+}*/
 
 
 /***** EVERYTHING ELSE *****/
