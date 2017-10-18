@@ -299,26 +299,26 @@ function setup_exposures($container) {
             $(this).parent().hide();
         }
     });
+    
     $container.find(".toggle-show").on('click', function () {
         var expanded = $(this).attr("expanded");
-        console.log(expanded)
 
         if (expanded === "true") {
-
             $(this).html("Show more...");
             $(this).attr("expanded", false);
+
             var $hidden = $(this).closest('.list').find('ul.list-unstyled li:visible');
             $hidden.slice(10, 20).hide();
+
             return false;
         } else{
             var $hidden = $(this).closest('.list').find('ul.list-unstyled li:hidden');
-            // show next ten, then hide control
+            // show next ten
             $hidden.slice(0, 10).show();
-//        if ($hidden.length <= 0) {
-            //$(this).parent().hide();
-//        }
+
             $(this).html("Show less...");
             $(this).attr("expanded", true);
+
             return false;
         }
     });
