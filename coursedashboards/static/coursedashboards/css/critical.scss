@@ -142,12 +142,12 @@ a {
         height: 40px;
         background: none;
         border: none;
-        i {padding-right: 4px;}
+        i {padding-right: 4px;font-size:15px;}
     }
     .coda-netid {
         display: inline-block;
         span {
-            font-size: 16px;
+            //font-size: 16px;
             //padding-left: 4px;
         }
     }
@@ -156,7 +156,7 @@ a {
         float: right;
         color: #fff;
         margin-right: -3px;
-        font-size: 16px;
+        //font-size: 16px;
     }
 }
 
