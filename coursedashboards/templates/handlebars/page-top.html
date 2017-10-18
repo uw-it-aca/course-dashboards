@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
         <header class="topbanner-bg" role="banner">
-            <div>
+            <div aria-labelledby="coda_banner">
                 <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
                 <div class="coda-thin-bar">
                     <div class="coda-wrapper container">
@@ -16,8 +16,8 @@
                     </div>
                 </div>
                 <div class="coda-navigation container">
-                    <div class="coda-wrapper" style="background-image: url({% static 'coursedashboards/img/w-logo-white.png' %})" aria-labelledby="coda_banner_label">
-                        <h1 id="coda_banner_label"><div class="coda-title"><a href="/"><span class="hide-sm">Course</span> Dashboard</a></div></h1>
+                    <div class="coda-wrapper" style="background-image: url({% static 'coursedashboards/img/w-logo-white.png' %})">
+                        <h1 id="coda_banner"><div class="coda-title"><a href="/"><span class="hide-sm">Course</span> Dashboard</a></div></h1>
                     </div>
                 </div>
             </div>      

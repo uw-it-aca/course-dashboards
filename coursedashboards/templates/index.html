@@ -18,16 +18,16 @@
 <!-- MAIN CONTENT BELOW THE BANNER -->
   	<main class="container" role="main">
     		<div class="main-content row" id="maincontent"> 
-                <div class="course-info col-12" style="padding-left: 0;">
-                    <div class="course-quarter-year text-capitalize"><h2>{{quarter}} {{year}} <span class="visually-hidden">{{course_title}}</span>
+                <div class="course-info col-12" aria-labelledby="course_title" style="padding-left: 0;">
+                    <div class="course-quarter-year text-capitalize"><h2 id="course_title">{{quarter}} {{year}} <span class="visually-hidden">{{course_title}}</span>
                         <div class="d-inline-block course-select">
                         </div></h2>
                     </div>
-                    <div class="course-title"><span style="font-size: 1.6em;">{{course_title}}</div>
+                    <div class="course-title"><span style="font-size: 1.6em;">{{course_title}}</span></div>
                 </div>
                 <div class="course-data row col-12">
-                    <div class="section-container current-section col-md-6" id="current-course-target"><!-- handlebars target for current-course-data.html --></div>
-                    <div class="section-container historic-section col-md-6" style="border-left:1px solid #ccc;">
+                    <div class="section-container current-section col-md-6" id="current-course-target" aria-labelledby="current_section_data"><!-- handlebars target for current-course-data.html --></div>
+                    <div class="section-container historic-section col-md-6" aria-labelledby="historic_section_data" style="border-left:1px solid #ccc;">
                         <div id="historic-selector-target"><!-- handlebars target for historic data selectors--></div>
                         <div class="course_info data-section" id="historic-course-target"></div>
                     </div>
