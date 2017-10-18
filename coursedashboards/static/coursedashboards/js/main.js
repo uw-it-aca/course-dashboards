@@ -294,12 +294,12 @@ function showHistoricCourseData(index, quarter, year) {
 }
 
 function setup_exposures($container) {
-    $container.find(".show-more").each(function () {
+    $container.find(".toggle-show").each(function () {
         if ($(this).closest('.list').find('ul.list-unstyled li').length <= 10) {
             $(this).parent().hide();
         }
     });
-    
+
     $container.find(".toggle-show").on('click', function () {
         var expanded = $(this).attr("expanded");
 
