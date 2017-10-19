@@ -71,7 +71,7 @@ function displayErrorPage() {
     $('.main-content').html(currentTemplate({
         course: courseHash()
     }));
-    
+
 }
 
 function updateCourseURL(page, course) {
@@ -126,7 +126,7 @@ function showCurrentCourseData(index) {
         canvas_course_url:section.canvas_course_url,
     }));
     $('.course-title span').html(window.section_data[index].course_title);
-    updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id, 
+    updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id,
               window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
               section.course_number + '-' + section.section_id);
     setup_exposures($("#current-course-target"));
@@ -229,7 +229,7 @@ function showHistoricDataSelectors(index, quarter, year) {
             remove_quarters.splice(0,1);
         }
     }
-    
+
     //Load template
     var selectors = $("#historic-data-selectors").html();
     var selectorsTemplate = Handlebars.compile(selectors);
@@ -243,7 +243,7 @@ function showHistoricDataSelectors(index, quarter, year) {
         course_number:window.section_data[index].course_number,
         section_id:window.section_data[index].section_id,
     }));
-    
+
     //Historic data selection
     $(".historic-filter").change(function() {
         index = $("select[name='my_courses'] option:selected").index();
@@ -294,19 +294,33 @@ function showHistoricCourseData(index, quarter, year) {
 }
 
 function setup_exposures($container) {
-    $container.find(".show-more").each(function () {
+    $container.find(".toggle-show").each(function () {
         if ($(this).closest('.list').find('ul.list-unstyled li').length <= 10) {
             $(this).parent().hide();
         }
     });
-    $container.find(".show-more").on('click', function () {
-        var $hidden = $(this).closest('.list').find('ul.list-unstyled li:hidden');
-        // show next ten, then hide control
-        $hidden.slice(0,10).show();
-//        if ($hidden.length <= 0) {
-            $(this).parent().hide();
-//        }
-        return false;
+
+    $container.find(".toggle-show").on('click', function () {
+        var expanded = $(this).attr("expanded");
+
+        if (expanded === "true") {
+            $(this).html("Show more...");
+            $(this).attr("expanded", false);
+
+            var $hidden = $(this).closest('.list').find('ul.list-unstyled li:visible');
+            $hidden.slice(10, 20).hide();
+
+            return false;
+        } else{
+            var $hidden = $(this).closest('.list').find('ul.list-unstyled li:hidden');
+            // show next ten
+            $hidden.slice(0, 10).show();
+
+            $(this).html("Show less...");
+            $(this).attr("expanded", true);
+
+            return false;
+        }
     });
 }
 
@@ -465,7 +479,7 @@ function reverseSortByNumStudents(arr) {
 
 
 //Capitalize the first letter of a word
-function firstLetterUppercase(word) 
+function firstLetterUppercase(word)
 {
     return word.charAt(0).toUpperCase() + word.slice(1);
 }

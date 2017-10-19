@@ -13,22 +13,18 @@
                 <dl class="row">
   <dt class="col-sm-3">Meeting</dt>
   <dd class="col-sm-9"><span class="course-days"><abbr title="Friday">F</abbr></span><span class="course-time">8:00 - 5:20PM</span><span class="course-location">DEM 012</span></dd>
-                <dt class="col-sm-3">MyUW</dt>
-                <dt class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course details for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
-                {{#if canvas_course_url}}
-                <dt class="col-sm-3">Canvas</dt>
-                <dt class="col-sm-9"><a href="{{canvas_course_url}}">Canvas course site for {{curriculum}} {{course_number}} {{section_id}}</a></dt>
-                {{/if}}
+                <dt class="col-sm-3">Details</dt>
+                <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info</a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site</a>{{/if}}</dd>
                 </dl>
 
-                <!--<table class="table-course-schedule dummy"> 
-                    <thead class="sr-only"> 
-                        <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr> 
-                    </thead> 
+                <!--<table class="table-course-schedule dummy">
+                    <thead class="sr-only">
+                        <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr>
+                    </thead>
                     <tbody class="tbody-course-schedule">
-                        <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>  
-                    </tbody> 
-                </table> 
+                        <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>
+                    </tbody>
+                </table>
                 <div class="course-links">
                 <ul class="unstyled-list">
                     <li><a href="#">{{curriculum}} {{course_number}} {{section_id}} on MyUW</a></li>
@@ -41,31 +37,22 @@
 </div>
 <div class="current-data-row row">
     <div class="current-median course-data-widget col">
-        <div class="d-inline-block course-data-icon green">
-            <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{current_median}} cumulative GPA">{{current_median}}</div>
+            <div class="course-data-number" title="{{current_median}} cumulative GPA">{{current_median}}<i class="ion-arrow-graph-up-right" aria-hidden="true"></i></div>
             <div class="course-data-description">Cumulative GPA</div>
         </div>
     </div>
     <div class="current-enrollment course-data-widget col">
-        <div class="d-inline-block course-data-icon green">
-            <span><i class="ion-ios-people" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{current_num_registered}} of {{current_capacity}} registered students">{{current_num_registered}}/{{current_capacity}}</div>
+            <div class="course-data-number" title="{{current_num_registered}} of {{current_capacity}} registered students">{{current_num_registered}}/{{current_capacity}}<i class="ion-ios-people" aria-hidden="true"></i></div>
             <div class="course-data-description">Currently Registered</div>
         </div>
     </div>
 </div>
 <div class="current-data-row row">
     <div class="current-enrollment course-data-widget col">
-        <div class="d-inline-block course-data-icon red">
-            <span><i class="ion-android-refresh" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{current_repeat_students}} repeating students">{{current_repeat_students}}</div>
+            <div class="course-data-number" title="{{current_repeat_students}} repeating students">{{current_repeat_students}}<i class="ion-android-refresh" aria-hidden="true"></i></div>
             <div class="course-data-description">Repeating Students</div>
         </div>
     </div>
@@ -75,10 +62,10 @@
         <h3 class="list-header">Concurrent Courses</h3>
         <ul class="list-unstyled">
            {{#each concurrent_courses}}
-                <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>  
+                <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
-       </ul> 
-       <div><a href="#" class="show-more">Show more...</a></div>
+       </ul>
+       <div><a href="#" class="toggle-show">Show more...</a></div>
     </div>
     <div class="list col">
         <h3 class="list-header">Declared Majors</h3>
@@ -86,8 +73,8 @@
             {{#each current_majors}}
                 <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
             {{/each}}
-       </ul> 
-       <div><a href="#" class="show-more">Show more...</a></div>
-    </div> 
-</div> 
+       </ul>
+       <div><a href="#" class="toggle-show">Show more...</a></div>
+    </div>
+</div>
 {% endtplhandlebars %}
