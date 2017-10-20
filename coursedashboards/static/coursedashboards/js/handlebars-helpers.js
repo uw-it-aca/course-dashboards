@@ -6,5 +6,8 @@ Handlebars.registerHelper('pluralize', function(number, single, plural) {
 });
 
 Handlebars.registerHelper('roundPercentage', function(percentage) {
+    if(percentage < 1){
+        return "<1";
+    }
     return Math.round(percentage);
 });
