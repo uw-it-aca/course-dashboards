@@ -30,16 +30,16 @@
         <h4 id="historic_declared_majors_course" class="list-header">Declared Majors <br><small>(when taking the course)</small></h4>
         <ol class="list-unstyled">
             {{#each common_majors}}
-           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
+           <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
-       </ol> 
+       </ol>
        <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
     <div class="list col" aria-labelledby="historic_declared_majors_graduation">
         <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<br><small>(upon graduation)</small></h4>
         <ol class="list-unstyled">
            {{#each latest_majors}}
-           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
+           <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ol>
        <div><a href="#" class='toggle-show'>Show more...</a></div>
@@ -57,7 +57,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="list previous-instructors col" aria-labelledby="previous_instructors">	
+    <div class="list previous-instructors col" aria-labelledby="previous_instructors">
        <h4 id="previous_instructors" class="list-header">Previous Instructors for this course</h4>
        <ul class="list-unstyled">
            {{#each instructors}}

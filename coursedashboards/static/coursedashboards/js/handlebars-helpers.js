@@ -4,3 +4,7 @@ Handlebars.registerHelper('pluralize', function(number, single, plural) {
     }
     return plural;
 });
+
+Handlebars.registerHelper('roundPercentage', function(percentage) {
+    return Math.round(percentage);
+});
