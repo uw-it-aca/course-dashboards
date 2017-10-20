@@ -8,7 +8,12 @@
             <div class="course-data-description">Median Course GPA</div>
         </div>
     </div>
-    <div class="col"><span></span></div>
+    <div class="historic-enrollment course-data-widget col">
+        <div class="d-inline-block course-data-items">
+            <div class="course-data-number" title="{{student_total}} students enrolled">{{student_total}}<i class="ion-ios-people" aria-hidden="true"></i></div>
+            <div class="course-data-description">Currently Registered</div>
+        </div>
+    </div>
 </div>
 <div class="historic-data-row row">
     <div class="historic-failure course-data-widget col">
@@ -61,7 +66,7 @@
 
            {{#each past_terms}}
             {{#each instructors}}
-                <li><a href="mailto:{{uwnetid}}@uw.edu">{{display_name}}</a>, {{../quarter}} {{../year}}</li>
+                <li><a href="mailto:{{uwnetid}}@uw.edu"><span class="sr-only">Email </span>{{display_name}}</a>, {{../quarter}} {{../year}}</li>
             {{/each}}
            {{/each}}
        </ul>

@@ -43,22 +43,22 @@
     </div>
 </div>
 <div class="row ">
-    <div class="list col">
-        <h4 class="list-header">Concurrent Courses</h4>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="current_concurrent_courses">
+        <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses</h4>
+        <ol class="list-unstyled">
            {{#each concurrent_courses}}
                 <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
-       </ul>
+       </ol>
        <div><a href="#" class="toggle-show">Show more...</a></div>
     </div>
-    <div class="list col">
-        <h4 class="list-header">Declared Majors</h4>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="current_declared_majors">
+        <h4 id="current_declared_majors" class="list-header">Declared Majors</h4>
+        <ol class="list-unstyled">
             {{#each current_majors}}
                 <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
             {{/each}}
-       </ul>
+       </ol>
        <div><a href="#" class="toggle-show">Show more...</a></div>
     </div>
 </div>
