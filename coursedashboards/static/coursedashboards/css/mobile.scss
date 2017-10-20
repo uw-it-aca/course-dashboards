@@ -6,11 +6,12 @@ $data_desctext: #787878;
     margin-top:1rem;
 }
 
-.course-info {
+.course-info { padding-left: 0;
     .course-select {
         vertical-align:middle;
         margin-left: 8px;
     }
+    .course-title { font-size: 1.6em; }
 }
 
 .course-data {
@@ -19,6 +20,10 @@ $data_desctext: #787878;
     /** Current Course **/
 
     .current-schedule-row {
+        .card {border:none;
+            .card-body { padding-top:1rem;
+            }
+        }
         .course-days, .course-time, .course-location {
             margin-right:1rem;
         }
