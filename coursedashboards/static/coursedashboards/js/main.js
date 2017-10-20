@@ -295,9 +295,14 @@ function showHistoricCourseData(index, quarter, year) {
 
 function setup_exposures($container) {
     $container.find(".toggle-show").each(function () {
-        if ($(this).closest('.list').find('ul.list-unstyled li').length <= 10) {
+        var $hidden = $(this).closest('.list').find('ol.list-unstyled li');
+
+        if ($hidden.length <= 10) {
             $(this).parent().hide();
+        } else {
+            $hidden.slice(10, $hidden.length).hide();
         }
+
     });
 
     $container.find(".toggle-show").on('click', function () {
@@ -307,12 +312,12 @@ function setup_exposures($container) {
             $(this).html("Show more...");
             $(this).attr("expanded", false);
 
-            var $hidden = $(this).closest('.list').find('ul.list-unstyled li:visible');
+            var $hidden = $(this).closest('.list').find('ol.list-unstyled li:visible');
             $hidden.slice(10, 20).hide();
 
             return false;
         } else{
-            var $hidden = $(this).closest('.list').find('ul.list-unstyled li:hidden');
+            var $hidden = $(this).closest('.list').find('ol.list-unstyled li:hidden');
             // show next ten
             $hidden.slice(0, 10).show();
 
