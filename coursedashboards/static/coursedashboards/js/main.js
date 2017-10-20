@@ -295,9 +295,14 @@ function showHistoricCourseData(index, quarter, year) {
 
 function setup_exposures($container) {
     $container.find(".toggle-show").each(function () {
-        if ($(this).closest('.list').find('ol.list-unstyled li').length <= 10) {
+        var $hidden = $(this).closest('.list').find('ol.list-unstyled li');
+
+        if ($hidden.length <= 10) {
             $(this).parent().hide();
+        } else {
+            $hidden.slice(10, $hidden.length).hide();
         }
+
     });
 
     $container.find(".toggle-show").on('click', function () {
