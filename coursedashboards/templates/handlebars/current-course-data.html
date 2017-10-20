@@ -16,6 +16,24 @@
                 <dt class="col-sm-3">Details</dt>
                 <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info</a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site</a>{{/if}}</dd>
                 </dl>
+<<<<<<< HEAD
+=======
+
+                <!--<table class="table-course-schedule dummy">
+                    <thead class="sr-only">
+                        <tr><th>Day(s)</th><th>Time</th><th>Location</th></tr>
+                    </thead>
+                    <tbody class="tbody-course-schedule">
+                        <tr class="course-schedule-row"><td class="course-days"><abbr title="Friday">F</abbr></td><td class="course-time">8:00 - 5:20PM</td><td class="course-location">DEM 012</td></tr>
+                    </tbody>
+                </table>
+                <div class="course-links">
+                <ul class="unstyled-list">
+                    <li><a href="#">{{curriculum}} {{course_number}} {{section_id}} on MyUW</a></li>
+                    <li><a href="#">{{curriculum}} {{course_number}} {{section_id}} on Canvas</a></li>
+                </ul>
+                </div>-->
+>>>>>>> develop
             </div>
         </div>
     </div>
@@ -47,10 +65,10 @@
         <h4 class="list-header">Concurrent Courses</h4>
         <ul class="list-unstyled">
            {{#each concurrent_courses}}
-                <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>  
+                <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
-       </ul> 
-       <div><a href="#" class="show-more">Show more...</a></div>
+       </ul>
+       <div><a href="#" class="toggle-show">Show more...</a></div>
     </div>
     <div class="list col">
         <h4 class="list-header">Declared Majors</h4>
@@ -58,8 +76,8 @@
             {{#each current_majors}}
                 <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
             {{/each}}
-       </ul> 
-       <div><a href="#" class="show-more">Show more...</a></div>
-    </div> 
-</div> 
+       </ul>
+       <div><a href="#" class="toggle-show">Show more...</a></div>
+    </div>
+</div>
 {% endtplhandlebars %}
