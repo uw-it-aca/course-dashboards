@@ -3,33 +3,17 @@
 {% load staticfiles %}
 <div class="historic-data-row row">
     <div class="historic-median course-data-widget col">
-        <div class="d-inline-block course-data-icon green">
-            <span><i class="ion-arrow-graph-up-right" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}</div>
+            <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
             <div class="course-data-description">Median Course GPA</div>
         </div>
     </div>
     <div class="col"><span></span></div>
-    <!-- consider adding a data widget for total number of student in selected time span
-    <div class="historic-enrollment course-data-widget col">
-        <div class="d-inline-block course-data-icon green">
-            <span><i class="ion-ios-people" aria-hidden="true"></i></span>
-        </div>
-        <div class="d-inline-block course-data-items">
-            <div class="course-data-number">{{student_total}}</div>
-            <div class="course-data-description">Past Students</div>
-        </div>
-    </div>-->
 </div>
 <div class="historic-data-row row">
     <div class="historic-failure course-data-widget col">
-        <div class="d-inline-block course-data-icon red">
-            <span><i class="ion-ios-flag" aria-hidden="true"></i></span>
-        </div>
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{failed_percent}}% Failure">{{failed_percent}}%</div>
+            <div class="course-data-number" title="{{failed_percent}}% Failure">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
             <div class="course-data-description">Percent Failure</div>
         </div>
     </div>
@@ -37,39 +21,39 @@
 </div>
 
 <div class="row">
-    <div class="list col">
-        <h3 class="list-header">Declared Majors <br><small>(when taking the course)</small></h3>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="historic_declared_majors_course">
+        <h4 id="historic_declared_majors_course" class="list-header">Declared Majors <br><small>(when taking the course)</small></h4>
+        <ol class="list-unstyled">
             {{#each common_majors}}
            <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
-       </ul>
-       <div><a href="#" class='show-more'>Show more...</a></div>
+       </ol>
+       <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
-    <div class="list col">
-        <h3 class="list-header">Declared Majors<br><small>(upon graduation)</small></h3>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="historic_declared_majors_graduation">
+        <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<br><small>(upon graduation)</small></h4>
+        <ol class="list-unstyled">
            {{#each latest_majors}}
            <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
-       </ul>
-       <div><a href="#" class='show-more'>Show more...</a></div>
+       </ol>
+       <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
 </div>
 <div class="row">
-    <div class="list col">
-        <h3 class="list-header">Concurrent Courses</h3>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="historic_common_courses">
+        <h4 id="historic_common_courses" class="list-header">Concurrent Courses</h4>
+        <ol class="list-unstyled">
             {{#each common_courses}}
            <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
-       </ul>
-       <div><a href="#" class='show-more'>Show more...</a></div>
+       </ol>
+       <div><a href="#" class='toggle-show'>Show more...</a></div>
     </div>
 </div>
 <div class="row">
-    <div class="list previous-instructors col">
-       <h3 class="list-header">Previous Instructors for this course</h3>
+    <div class="list previous-instructors col" aria-labelledby="previous_instructors">
+       <h4 id="previous_instructors" class="list-header">Previous Instructors for this course</h4>
        <ul class="list-unstyled">
            {{#each instructors}}
             <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
