@@ -3,15 +3,11 @@
 {% load staticfiles %}
 <div class="row">
     <div class="col">
-        <span style="font-size:1.3em;font-weight:bold;">Historical Student Data for {{curriculum}} {{course_number}} {{section_id}}</span>
+        <h3 id="historic_section_data">Historical Student Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
     </div>
 </div>
-<!-- Filters for historic class data that is limited to periods when 2+ sections were offered OR the user was IOR for the single section on a given term.  When a year or quarter are selected, then when user opens the other selector, it updates to only show options that result in:
-1. 2+ course sections were offered  OR
-2. The logged in user was IOR for the single section offered that term.
--->
 <div class="row">
-    <div class="col" style="padding-top: 1rem;">
+    <div class="col">
         <small id="select_helpblock" class="form-text text-muted">
       Select combination of quarters and years, or view only your courses.
         </small>

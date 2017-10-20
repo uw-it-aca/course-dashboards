@@ -19,17 +19,17 @@
     <!-- FOOTER STUFF -->
 
 <div>
-	<footer class="site-footer" role="contentinfo">
-		<div class="container center">
-				<div class="footer-links">
-	                <ul>
-	                    <li><a href="http://www.washington.edu/online/terms/" target="_blank" title="Go to the University of Washington Website Terms and Conditions of Use">Terms </a></li>
-	                    <li><a href="http://www.washington.edu/online/privacy/" target="_blank" title="Go to the University of Washington Online Privacy Statement">Privacy</a></li>
-	                    <li><a href="mailto:help@uw.edu" title="Get Help and send us feedback">Help</a></li>
-	                </ul>
-	            </div><!-- end of footer links -->
-	            <p class="credit">©2017 University of Washington Information Technology </p>
-	            <!--<div><img src="{% static "pivot/img/InfoTech_UW_vsml.footer.png" %}"  class="uw-it-logo" alt="UW-IT logo"></div>-->
+	<footer id="app_footer" role="contentinfo">
+		<div class="footer-bar"> 
+            <div class="container footer-links" style="position:relative;">
+                <ul class="footer-links-list">
+                    <li class="footer-links-list-item"><a href="//myuw.washington.edu/cgi-bin/contactmyuw.cgi" title="Contact help@uwe.edu"><i class="ion-android-mail" role="presentation"></i> Contact</a></li>
+                    <li class="footer-links-list-item"><a href="//www.washington.edu/online/terms/" title="University of Washington Website Terms and Conditions of Use">Terms</a></li>
+                    <li class="footer-links-list-item"><a href="//www.washington.edu/online/privacy/" title="University of Washington Online Privacy Statement">Privacy</a></li>
+               </ul>
+                <div style="clear:both;">&copy; {% now "Y" %} University of Washington</div>
+            </div>
+            
 		</div><!-- end of footer content -->
 	</footer>
 

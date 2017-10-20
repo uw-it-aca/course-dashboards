@@ -3,7 +3,7 @@
 {% load staticfiles %}
 <div class="row">
     <div class="col">
-        <span style="font-size:1.3em;font-weight:bold;">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</span>
+        <h3 id="current_section_data">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
     </div>
 </div>
 <div class="current-schedule-row row">
@@ -16,6 +16,8 @@
                 <dt class="col-sm-3">Details</dt>
                 <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info</a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site</a>{{/if}}</dd>
                 </dl>
+<<<<<<< HEAD
+=======
 
                 <!--<table class="table-course-schedule dummy">
                     <thead class="sr-only">
@@ -31,6 +33,7 @@
                     <li><a href="#">{{curriculum}} {{course_number}} {{section_id}} on Canvas</a></li>
                 </ul>
                 </div>-->
+>>>>>>> develop
             </div>
         </div>
     </div>
@@ -38,7 +41,7 @@
 <div class="current-data-row row">
     <div class="current-median course-data-widget col">
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{current_median}} cumulative GPA">{{current_median}}<i class="ion-arrow-graph-up-right" aria-hidden="true"></i></div>
+            <div class="course-data-number" title="{{current_median}} cumulative GPA">{{current_median}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
             <div class="course-data-description">Cumulative GPA</div>
         </div>
     </div>
@@ -59,7 +62,7 @@
 </div>
 <div class="row ">
     <div class="list col">
-        <h3 class="list-header">Concurrent Courses</h3>
+        <h4 class="list-header">Concurrent Courses</h4>
         <ul class="list-unstyled">
            {{#each concurrent_courses}}
                 <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
@@ -68,7 +71,7 @@
        <div><a href="#" class="toggle-show">Show more...</a></div>
     </div>
     <div class="list col">
-        <h3 class="list-header">Declared Majors</h3>
+        <h4 class="list-header">Declared Majors</h4>
         <ul class="list-unstyled">
             {{#each current_majors}}
                 <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
