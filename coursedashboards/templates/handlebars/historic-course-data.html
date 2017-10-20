@@ -18,7 +18,7 @@
 <div class="historic-data-row row">
     <div class="historic-failure course-data-widget col">
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{failed_percent}}% student failure">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
+            <div class="course-data-number" title="{{failed_percent}}% of students failed this course">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
             <div class="course-data-description">Percent Failure</div>
         </div>
     </div>
@@ -26,40 +26,40 @@
 </div>
 
 <div class="row">
-    <div class="list col" aria-labelledby="historic_declared_majors_course">
+    <div class="list col">
         <h4 id="historic_declared_majors_course" class="list-header">Declared Majors <br><small>(when taking the course)</small></h4>
-        <ol class="list-unstyled">
+        <ol class="list-unstyled" aria-labelledby="historic_declared_majors_course">
             {{#each common_majors}}
-           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
+           <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ol> 
-       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors</span>...</a></div>
+       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors while taking the course</span>...</a></div>
     </div>
-    <div class="list col" aria-labelledby="historic_declared_majors_graduation">
+    <div class="list col">
         <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<br><small>(upon graduation)</small></h4>
-        <ol class="list-unstyled">
+        <ol class="list-unstyled" aria-labelledby="historic_declared_majors_graduation">
            {{#each latest_majors}}
-           <li><strong>{{percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
+           <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ol>
-       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors</span>...</a></div>
+       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors upon graduation</span>...</a></div>
     </div>
 </div>
 <div class="row">
-    <div class="list col" aria-labelledby="historic_common_courses">
+    <div class="list col">
         <h4 id="historic_common_courses" class="list-header">Concurrent Courses</h4>
-        <ol class="list-unstyled">
+        <ol class="list-unstyled" aria-labelledby="historic_common_courses">
             {{#each common_courses}}
-           <li><strong>{{percent_students}}%</strong> <span>{{course}}</span></li>
+           <li><strong>{{roundPercentage percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
        </ol>
-       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> concurrent courses</span>...</a></div>
+       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> historic concurrent courses taken</span>...</a></div>
     </div>
 </div>
 <div class="row">
-    <div class="list previous-instructors col" aria-labelledby="previous_instructors">	
+    <div class="list previous-instructors col">	
        <h4 id="previous_instructors" class="list-header">Previous Instructors for this course</h4>
-       <ul class="list-unstyled">
+       <ol class="list-unstyled" aria-labelledby="previous_instructors">
            {{#each instructors}}
             <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
            {{/each}}
@@ -69,7 +69,7 @@
                 <li><a href="mailto:{{uwnetid}}@uw.edu"><span class="sr-only">Email </span>{{display_name}}</a>, {{../quarter}} {{../year}}</li>
             {{/each}}
            {{/each}}
-       </ul>
+       </ol>
     </div>
 
 </div>
