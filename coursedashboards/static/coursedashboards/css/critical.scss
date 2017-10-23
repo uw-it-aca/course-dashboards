@@ -182,6 +182,7 @@ a {
             a, .coda-navigation .coda-title a:hover, .coda-navigation .coda-title a:focus, .coda-navigation .coda-title a:visited {
                 color: #fff;
             }
+            i {font-size: 1.4rem;}
         }
     }
 }
@@ -228,7 +229,7 @@ a {
 
 // footer bar
 .footer-bar { background:#333; padding: 10px 0;
-    .footer-links { color: #aaa; font-size: 11px;
+    .footer-links { position:relative; color: #aaa; font-size: 11px; 
     	a, button {color: #fff}
         .footer-links-list { padding: 0; margin-bottom: .5em; line-height: 11px; list-style: none;
             .footer-links-list-item { display: inline-block; padding-right: 5px; margin-right: 3px; border-right: solid 1px #aaa; color: #222;

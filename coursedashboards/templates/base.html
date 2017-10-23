@@ -21,7 +21,7 @@
 <div>
 	<footer id="app_footer" role="contentinfo">
 		<div class="footer-bar"> 
-            <div class="container footer-links" style="position:relative;">
+            <div class="container footer-links">
                 <ul class="footer-links-list">
                     <li class="footer-links-list-item"><a href="//myuw.washington.edu/cgi-bin/contactmyuw.cgi" title="Contact help@uwe.edu"><i class="ion-android-mail" role="presentation"></i> Contact</a></li>
                     <li class="footer-links-list-item"><a href="//www.washington.edu/online/terms/" title="University of Washington Website Terms and Conditions of Use">Terms</a></li>
@@ -44,17 +44,5 @@
 {% include "handlebars/cannot-display-course.html" %}
 <script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
-    <p>device is:</p>
-    {% if is_desktop %}
-    <p>DESKTOP</p>
-    {% else %}
-    <p>not desktop</p>
-    {% endif %}
-    {% if request.is_tablet %}
-    <p>TABLET</p>
-    {% endif %}
-    {% if request.is_mobile %}
-    <p>MOBILE</p>
-    {% endif %}
 </body>
 </html>

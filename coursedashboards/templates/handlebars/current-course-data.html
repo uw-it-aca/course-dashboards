@@ -8,13 +8,13 @@
 </div>
 <div class="current-schedule-row row">
     <div class="col">
-        <div class="card" style="border:none;">
-            <div class="card-body" style="padding-top:1rem;">
+        <div class="card">
+            <div class="card-body">
                 <dl class="row">
   <dt class="col-sm-3">Meeting</dt>
   <dd class="col-sm-9"><span class="course-days"><abbr title="Friday">F</abbr></span><span class="course-time">8:00 - 5:20PM</span><span class="course-location">DEM 012</span></dd>
                 <dt class="col-sm-3">Details</dt>
-                <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info</a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site</a>{{/if}}</dd>
+                <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a>{{/if}}</dd>
                 </dl>
             </div>
         </div>
@@ -43,23 +43,23 @@
     </div>
 </div>
 <div class="row ">
-    <div class="list col">
-        <h4 class="list-header">Concurrent Courses</h4>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="current_concurrent_courses">
+        <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses</h4>
+        <ol class="list-unstyled">
            {{#each concurrent_courses}}
                 <li><strong>{{ roundPercentage percent_students}}%</strong> <span>{{course}}</span></li>
            {{/each}}
-       </ul>
-       <div><a href="#" class="toggle-show">Show more...</a></div>
+       </ol>
+       <div><a href="#" class="toggle-show">Show more<span class="sr-only"> concurrent courses taken this quarter</span>...</a></div>
     </div>
-    <div class="list col">
-        <h4 class="list-header">Declared Majors</h4>
-        <ul class="list-unstyled">
+    <div class="list col" aria-labelledby="current_declared_majors">
+        <h4 id="current_declared_majors" class="list-header">Declared Majors</h4>
+        <ol class="list-unstyled">
             {{#each current_majors}}
                 <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
             {{/each}}
-       </ul>
-       <div><a href="#" class="toggle-show">Show more...</a></div>
+       </ol>
+       <div><a href="#" class="toggle-show">Show more<span class="sr-only"> current majors</span>...</a></div>
     </div>
 </div>
 {% endtplhandlebars %}
