@@ -61,12 +61,12 @@
        <h4 id="previous_instructors" class="list-header">Previous Instructors for this course</h4>
        <ol class="list-unstyled" aria-labelledby="previous_instructors">
            {{#each instructors}}
-            <li><a href="mailto:{{uw_email}}">{{display_name}}</a>, {{quarter}} {{year}} </li>
+            <li><a href="mailto:{{uw_email}}">{{ formatName display_name }}</a>, {{quarter}} {{year}} </li>
            {{/each}}
 
            {{#each past_terms}}
             {{#each instructors}}
-                <li><a href="mailto:{{uwnetid}}@uw.edu"><span class="sr-only">Email </span>{{display_name}}</a>, {{../quarter}} {{../year}}</li>
+                <li><a href="mailto:{{uwnetid}}@uw.edu"><span class="sr-only">Email </span>{{ formatName display_name }}</a>, {{../quarter}} {{../year}}</li>
             {{/each}}
            {{/each}}
        </ol>
