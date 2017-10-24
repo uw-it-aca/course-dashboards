@@ -78,6 +78,16 @@ $data_desctext: #787878;
     .historic-section {
         .historic-filters {
             margin-top: .5rem;
+            .nav { padding-bottom: 1rem;
+                .nav-item {
+                    a {padding: 0 .5em;}
+                    &.active a { pointer-events: none; cursor: default; color:#333; 
+                    }
+                }
+            }
+            .tab-content {
+                .tab-pane {padding: .5rem 0;}
+            }
         }
     }
     .list {
