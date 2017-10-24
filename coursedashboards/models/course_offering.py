@@ -148,7 +148,8 @@ class CourseOffering(models.Model):
         for student in students:
             majors = StudentMajor.objects.filter(
                 user=student.user,
-                term=student.user.last_enrolled).select_related('major')
+                term=student.user.last_enrolled,
+                degree_level=1).select_related('major')
             major_list += [sm.major.major for sm in majors]
 
         return major_list
