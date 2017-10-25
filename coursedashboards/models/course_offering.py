@@ -146,25 +146,26 @@ class CourseOffering(models.Model):
     def last_student_undergraduate_major(self, students):
         major_list = []
         for student in students:
-            majors = StudentMajor.objects.filter(
-                user=student.user,
-                major__degree_level=1)
+            if student.user.is_alum:
+                majors = StudentMajor.objects.filter(
+                    user=student.user,
+                    major__degree_level=1)
 
-            majors = sorted(majors, cmp=StudentMajor.sort_by_term,
-                            reverse=True)
+                majors = sorted(majors, cmp=StudentMajor.sort_by_term,
+                                reverse=True)
 
-            graduated_term = None
-            # get most recent undergrad but not pre-x term
-            for major in majors:
-                if major.major.degree_level == 1:
-                    graduated_term = major.term
-                    break
+                graduated_term = None
+                # get most recent undergrad but not pre-x term
+                for major in majors:
+                    if major.major.degree_level == 1:
+                        graduated_term = major.term
+                        break
 
-            if graduated_term is not None:
-                majors = [major for major in majors
-                          if major.term == graduated_term]
+                if graduated_term is not None:
+                    majors = [major for major in majors
+                              if major.term == graduated_term]
 
-                major_list += [sm.major.major for sm in majors]
+                    major_list += [sm.major.major for sm in majors]
 
         return major_list
 
