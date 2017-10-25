@@ -6,8 +6,8 @@ from coursedashboards.models.user import User
 
 class Major(models.Model):
     major = models.CharField(max_length=128,
-                             db_index=True,
-                             unique=True)
+                             db_index=True)
+    degree_level = models.IntegerField(default=0)
 
 
 class StudentMajor(models.Model):
@@ -22,3 +22,7 @@ class StudentMajor(models.Model):
     class Meta:
         db_table = 'StudentMajor'
         unique_together = ('user', 'major', 'term')
+
+    @staticmethod
+    def sort_by_term(first, other):
+        return first.term.compare_terms(first.term, other.term)

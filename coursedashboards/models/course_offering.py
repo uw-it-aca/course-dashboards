@@ -143,20 +143,34 @@ class CourseOffering(models.Model):
             term=self.term).select_related('major')]
 
     @profile
-    def last_student_major(self, students):
+    def last_student_undergraduate_major(self, students):
         major_list = []
         for student in students:
             majors = StudentMajor.objects.filter(
                 user=student.user,
-                term=student.user.last_enrolled,
-                degree_level=1).select_related('major')
-            major_list += [sm.major.major for sm in majors]
+                major__degree_level=1)
+
+            majors = sorted(majors, cmp=StudentMajor.sort_by_term,
+                            reverse=True)
+
+            graduated_term = None
+            # get most recent undergrad but not pre-x term
+            for major in majors:
+                if major.major.degree_level == 1:
+                    graduated_term = major.term
+                    break
+
+            if graduated_term is not None:
+                majors = [major for major in majors
+                          if major.term == graduated_term]
+
+                major_list += [sm.major.major for sm in majors]
 
         return major_list
 
     @profile
-    def get_recent_majors(self):
-        return self._get_majors(self.last_student_major)
+    def get_graduated_majors(self):
+        return self._get_majors(self.last_student_undergraduate_major)
 
     @profile
     def get_majors(self):
@@ -255,7 +269,7 @@ class CourseOffering(models.Model):
         past_obj['concurrent_courses'] = self.concurrent_courses()
 
     def set_past_latest_majors(self, past_obj):
-        past_obj['latest_majors'] = self.get_recent_majors()
+        past_obj['latest_majors'] = self.get_graduated_majors()
 
     def set_past_course_grades(self, past_obj):
         past_obj['course_grades'] = self.get_grades()
