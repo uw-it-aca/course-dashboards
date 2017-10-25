@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.utils.timezone import utc
 from datetime import datetime, timedelta
 import logging
@@ -252,7 +252,8 @@ class Command(BaseCommand):
                     reg.user.uwregid, sws_term):
                 if student_major.major_name:
                     major, created = Major.objects.get_or_create(
-                        major=student_major.major_name)
+                        major=student_major.major_name,
+                        degree_level=student_major.degree_level)
                     StudentMajor.objects.get_or_create(
                         user=reg.user, major=major, term=term)
 
