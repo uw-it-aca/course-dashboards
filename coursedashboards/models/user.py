@@ -18,6 +18,7 @@ class User(models.Model):
 
     display_name = models.CharField(max_length=250, null=True)
     email = models.CharField(max_length=255, null=True)
+    is_alum = models.BooleanField(default=False)
 
 
 class QuarterGPA(models.Model):
