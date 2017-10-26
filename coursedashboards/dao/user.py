@@ -1,19 +1,21 @@
+import uw_pws
 from coursedashboards.models.user import User
-from coursedashboards.models.term import Term
-from coursedashboards.dao.pws import get_person_of_current_user
+from coursedashboards.dao.pws import get_person_of_current_user, \
+    get_person_by_netid
 
 
 def user_from_person(person):
+
+    if type(person) is not uw_pws.models.Person:
+        person = get_person_by_netid(person.uwnetid)
+
     try:
         user = User.objects.get(uwnetid=person.uwnetid)
     except User.DoesNotExist:
         try:
             user = User.objects.get(uwregid=person.uwregid)
         except User.DoesNotExist:
-            return User.objects.create(
-                uwnetid=person.uwnetid, uwregid=person.uwregid,
-                display_name=person.display_name,
-                email=_person_email(person))
+            return _user_from_person(person)
 
     save = False
     if user.uwnetid != person.uwnetid:
@@ -29,6 +31,14 @@ def user_from_person(person):
         user.save()
 
     return user
+
+
+def _user_from_person(person):
+    return User.objects.create(
+        uwnetid=person.uwnetid, uwregid=person.uwregid,
+        display_name=person.display_name,
+        email=_person_email(person),
+        is_alum=False if person.is_alum is None else person.is_alum)
 
 
 def _person_email(person):
