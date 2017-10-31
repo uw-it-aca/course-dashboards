@@ -1,10 +1,14 @@
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from coursedashboards.dao.user import get_current_user
 from coursedashboards.dao.term import get_current_coda_term
 from coursedashboards.dao.exceptions import MissingNetIDException
 from coursedashboards.models import Term, Instructor, CourseOffering
+from django.contrib.auth import logout as django_logout
+
+LOGOUT_URL = "/user_logout"
 
 
 def page(request,
@@ -58,3 +62,11 @@ def page(request,
         context['no_courses'] = True
 
     return render(request, template, context)
+
+
+def logout(request):
+    # Expires current myuw session
+    django_logout(request)
+
+    # Redirects to weblogin logout page
+    return HttpResponseRedirect(LOGOUT_URL)

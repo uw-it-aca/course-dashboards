@@ -83,9 +83,13 @@ img {
 h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; /*color: $uwpurple;*/ }   
 
 h3 {
-    padding-top: 20px;
-    font-size: 1.2em; 
-    &.list-header {
+    font-size: 1.4rem; 
+}
+
+h4 {
+    padding-top:16px;
+    font-size:1.2rem;
+     &.list-header {
         border-bottom: 1px solid;
         padding-bottom: 4px;
     }
@@ -113,7 +117,7 @@ a {
 .no-wrap {white-space: nowrap;}
 
 
-.topbanner-bg {background-color: $uwpurple; height: 76px; color: white;
+.topbanner-bg {background-color: $uwpurple; /*height: 76px;*/ color: white;
     .uw-logo {
       display: block;
       text-indent: -9999px;
@@ -129,10 +133,64 @@ a {
     }
 }
 
+
+.coda-thin-bar {
+    background: #452a78;
+    line-height: 40px;
+    height: 40px;
+    font-size: 14px;
+    a {
+        color: #fff;
+        display: inline-block;
+        min-width: 30px;
+        height: 40px;
+        background: none;
+        border: none;
+        i {padding-right: 4px;font-size:15px;}
+    }
+    .coda-netid {
+        display: inline-block;
+        span {
+            //font-size: 16px;
+            //padding-left: 4px;
+        }
+    }
+    .coda-search-links {
+        display: inline-block;
+        float: right;
+        color: #fff;
+        margin-right: -3px;
+        //font-size: 16px;
+    }
+}
+
+.coda-navigation {
+    background: #4b2e83;
+    height: 65px;
+    .coda-wrapper {
+        background-repeat: no-repeat;
+        background-size: 45px;
+        background-position: right 20px bottom;
+        height: 65px;
+        .coda-title {
+            display: inline-block;
+            color: #fff;
+            font-size: 26px;
+            font-weight: 400;
+            line-height: 65px;
+            height: 65px;
+            a, .coda-navigation .coda-title a:hover, .coda-navigation .coda-title a:focus, .coda-navigation .coda-title a:visited {
+                color: #fff;
+            }
+            i {font-size: 1.4rem;}
+        }
+    }
+}
+
 .userinfo {
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: .5rem;
+    right: 1rem;
 }
 
 .main-content {
@@ -162,6 +220,25 @@ a {
 
 /* footer  Stuff*/
 
+
+#app_footer {
+    .footer-bar {
+        padding: 16px 0 !important;
+    }
+}
+
+// footer bar
+.footer-bar { background:#333; padding: 10px 0;
+    .footer-links { position:relative; color: #aaa; font-size: 11px; 
+    	a, button {color: #fff}
+        .footer-links-list { padding: 0; margin-bottom: .5em; line-height: 11px; list-style: none;
+            .footer-links-list-item { display: inline-block; padding-right: 5px; margin-right: 3px; border-right: solid 1px #aaa; color: #222;
+			}
+        }
+    }
+}
+
+/*
 footer {
 	border-top: #eee 1px solid;
 	padding-top: 20px;
@@ -191,7 +268,7 @@ footer .footer-links ul li:last-child {
 	    border: 0px;
     margin-right:0px;
     padding-right:0px;
-}
+}*/
 
 
 /***** EVERYTHING ELSE *****/

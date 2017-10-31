@@ -3,19 +3,25 @@
 {% load staticfiles %}
 
         <header class="topbanner-bg" role="banner">
-            <div class="container">
-            <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
-            <a href="http://www.uw.edu" class="uw-logo" style="background: transparent url('{% static "coursedashboards/img/uw-sprite-mini.png" %}') no-repeat;">University of Washington</a>
-            <div class="userinfo">
-                <span class="visually-hidden logout">Logged in as: </span><span><i class="ion-ios-person" aria-hidden="true"></i> {{netid}}</span> <a href="#">logout</a>
+            <div aria-labelledby="coda_banner">
+                <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
+                <div class="coda-thin-bar">
+                    <div class="coda-wrapper container">
+                        <div class="coda-netid">
+                            <i class="ion-person" aria-hidden="true"></i><span><span class="visually-hidden">Logged in as: </span> {{netid}}</span>
+                        </div>
+                        <div class="coda-search-links">
+                            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Sign Out</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="coda-navigation container">
+                    <div class="coda-wrapper" style="background-image: url({% static 'coursedashboards/img/w-logo-white.png' %})">
+                        <h1 id="coda_banner"><div class="coda-title"><a href="https://my.uw.edu">MyUW</a> <i class="ion-chevron-right" aria-hidden="true"></i> <span class="hide-sm">Course</span> Dashboard</div></h1>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <h1 class="sitename"><span class="hide-sm">Course</span> Dashboard 
-                </h1>
-            </div> 
-            <div class="clear"></div>
-            </div>      
         </header>
 
-        
+
 {% endtplhandlebars %}

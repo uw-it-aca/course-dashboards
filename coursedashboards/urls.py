@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from coursedashboards.views.index import index
 from coursedashboards.views.api.course import CourseData
 from coursedashboards.views.api.historical import HistoricalCourseData
-
+from coursedashboards.views.page import logout
 
 urlpatterns = [
     # Home
@@ -23,4 +23,5 @@ urlpatterns = [
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)$',
         login_required(CourseData().run),
         name='course_data_for_term'),
+    url(r'^logout', logout, name="coda_logout")
 ]

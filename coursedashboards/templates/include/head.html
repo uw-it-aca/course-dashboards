@@ -3,7 +3,7 @@
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title>Course Dashboard</title>
 
@@ -63,6 +63,8 @@
 <!-- Google Fonts -->
 <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
+<link rel="shortcut icon" href="{% static 'coursedashboards/img/favicon.ico' %}" type="image/x-icon">
+
 <!-- javascript -->
 {% compress js %}
 <script src="{% static "vendor/js/jquery-3.1.1.min.js" %}"></script>
@@ -76,16 +78,3 @@
 {% endcompress %}
 
 
-
-
-<!-- static paths -->
-<!--<script>
-    var images_paths = {
-            'capacity-constrained': "{% static "pivot/img/major_capacity-constrained.gif" %}",
-            'mixed': "{% static "pivot/img/major_mixed.gif" %}",
-            'minimum': "{% static "pivot/img/major_minimum.gif" %}",
-            'open': "{% static "pivot/img/major_open.gif" %}",
-            'boxplot': "{% static "pivot/img/Boxplot-key_V4-crop.png" %}"
-
-    };
-</script>-->

@@ -23,3 +23,33 @@ class Term(models.Model):
 
     def __str__(self):
         return "%s-%s" % (self.year, self.quarter)
+
+    @staticmethod
+    def compare_terms(first, other):
+        if first.year < other.year:
+            return -1
+        elif other.year < first.year:
+            return 1
+
+        if (Term._quarter_to_int(first.quarter) <
+                Term._quarter_to_int(other.quarter)):
+            return -1
+
+        return 1
+
+    @staticmethod
+    def _quarter_to_int(quarter):
+        if quarter == 'winter':
+            return 0
+        elif quarter == 'spring':
+            return 1
+        elif quarter == 'summer':
+            return 2
+        elif quarter == 'autumn':
+            return 3
+
+    def __eq__(self, other):
+        return (other is not None and
+                type(self) == type(other) and
+                self.year == other.year and
+                self.quarter == other.quarter)
