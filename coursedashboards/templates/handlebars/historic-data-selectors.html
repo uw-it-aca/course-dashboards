@@ -7,38 +7,47 @@
     </div>
 </div>
 <div class="row">
-    <div class="col">
-        <small id="select_helpblock" class="form-text text-muted">
-      Select combination of quarters and years, or view only your courses.
-        </small>
-        <div class="form-group historic-filters">
-            <div class="d-inline-block">
-               <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
-               <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter">
-                   {{#each past_quarters}}
-                       <option data-label="{{name}}" {{selected}}>{{name}}</option>
-                   {{/each}}
-               </select>
-           </div> 
-           <div class="d-inline-block">
-               <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
-               <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year">
-                     {{#each past_years}}
-                       <option data-label="{{name}}" {{selected}}>{{name}}</option>
-                   {{/each}}
-               </select>
-           </div> 
-           <span style="padding: 0 1rem;">OR</span>
-           <div class="d-inline-block">
-               <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
-               <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught">
-                   
-                       <option data-label="{{name}}" {{selected}}>Only My Courses</option>
-                   
-               </select>
-           </div>
+    <div class="historic-filters col">
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link" id="allcourses-tab" data-toggle="pill" href="#allcourses" role="tab" aria-controls="allcourses" aria-selected="true">All Courses</a>
+            </li> |
+            <li class="nav-item">
+                <a class="nav-link" id="mycourses-tab" data-toggle="pill" href="#mycourses" role="tab" aria-controls="mycourses" aria-selected="false">Only My Courses</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="allcourses" role="tabpanel">
+                <div class="d-inline-block">
+                   <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
+                   <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter" aria-controls="historic-course-target">
+                       {{#each past_quarters}}
+                           <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                       {{/each}}
+                   </select>
+                </div> 
+                <div class="d-inline-block">
+                    <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
+                    <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year" aria-controls="historic-course-target">
+                         {{#each past_years}}
+                           <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                       {{/each}}
+                    </select>
+                </div>
+            </div>
+            <div class="tab-pane" id="mycourses" role="tabpanel">
+                <div class="d-inline-block">
+                    <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
+                    <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught" aria-controls="historic-course-target">
+                       
+                        <option data-label="{{name}}" {{selected}}>All My Courses</option>
+                       
+                    </select>
+               </div>
+            </div>
         </div>
-        <span class="help-tooltip">Viewing data for {{section_count}} quarter{{pluralize section_count '' 's'}} in the past {{year_count}} year{{pluralize year_count '' 's'}}</span>
     </div>
 </div>
 {% endtplhandlebars %}
