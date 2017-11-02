@@ -10,7 +10,7 @@
     </div>
     <div class="historic-enrollment course-data-widget col">
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{student_total}} students enrolled">{{student_total}}<i class="ion-ios-people" aria-hidden="true"></i></div>
+            <div class="course-data-number" title="{{total_students}} students enrolled">{{total_students}}<i class="ion-ios-people" aria-hidden="true"></i></div>
             <div class="course-data-description">Students / {{section_count}} Offering{{pluralize section_count '' 's'}}</div>
         </div>
     </div>
@@ -32,7 +32,7 @@
             {{#each common_majors}}
            <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
-       </ol> 
+       </ol>
        <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors while taking the course</span>...</a></div>
     </div>
     <div class="list col">
@@ -57,7 +57,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="list previous-instructors col">	
+    <div class="list previous-instructors col">
        <h4 id="previous_instructors" class="list-header">Previous Instructors for this course</h4>
        <ol class="list-unstyled" aria-labelledby="previous_instructors">
            {{#each instructors}}

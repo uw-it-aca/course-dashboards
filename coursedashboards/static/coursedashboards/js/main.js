@@ -242,6 +242,8 @@ function showHistoricDataSelectors(index, quarter, year) {
         curriculum:window.section_data[index].curriculum,
         course_number:window.section_data[index].course_number,
         section_id:window.section_data[index].section_id,
+        total_students: calculateTotalStudents(index, quarter, year),
+        section_count: calculateSectionCount(index, quarter, year)
     }));
 
     //Historic data selection
@@ -286,6 +288,8 @@ function showHistoricCourseData(index, quarter, year) {
         selected_year:year,
         median_course_grade: calculateCourseMedian(index, quarter, year),
         failed_percent: calculateFailedPercentage(index, quarter, year),
+        total_students: calculateTotalStudents(index, quarter, year),
+        section_count: calculateSectionCount(index, quarter, year),
         instructors: getInstructors(index, quarter, year)
         //past_terms:window.section_data[index].past_offerings
     }));
