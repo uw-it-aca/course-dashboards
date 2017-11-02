@@ -45,7 +45,7 @@ def page(request,
         courses = Instructor.objects.filter(
             user=user, term=cur_term).values_list('course_id', flat=True)
         offerings = CourseOffering.objects.filter(
-            course_id__in=list(courses), term=cur_term)
+            course_id__in=list(courses), term=cur_term, is_primary=True)
 
         context['no_courses'] = (len(offerings) == 0)
         sections = []
