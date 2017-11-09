@@ -17,6 +17,10 @@ class CourseData(RESTDispatch):
                                         course_number=course_number,
                                         section_id=section_id.upper())
             offering = CourseOffering.objects.get(term=term, course=course)
+
+            if offering.current_enrollment <= 5:
+                return HttpResponse(json.dumps(offering.privacy_json()))
+
             return HttpResponse(json.dumps(offering.json_object()))
 
         except (Term.DoesNotExist, Course.DoesNotExist,

@@ -243,6 +243,17 @@ class CourseOffering(models.Model):
 
     @profile
     def json_object(self):
+        json_obj = self.privacy_json_object()
+
+        json_obj['display_course'] = True
+
+        self.set_course_data(json_obj)
+
+        log_profile_data('%s,%s' % (self.term, self.course), logger)
+        clear_prof_data()
+        return json_obj
+
+    def privacy_json_object(self):
         json_obj = {
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
@@ -252,12 +263,9 @@ class CourseOffering(models.Model):
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'canvas_course_url': self.canvas_course_url,
+            'display_course': False
         }
 
-        self.set_course_data(json_obj)
-
-        log_profile_data('%s,%s' % (self.term, self.course), logger)
-        clear_prof_data()
         return json_obj
 
     def set_past_offering_instructors(self, past_obj):

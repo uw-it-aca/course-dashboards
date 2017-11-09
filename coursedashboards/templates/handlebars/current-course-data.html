@@ -1,6 +1,7 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "current-course-data" %}
 {% load staticfiles %}
+{{#if display_course}}
 <div class="row">
     <div class="col">
         <h3 id="current_section_data">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
@@ -60,4 +61,7 @@
        <div><a href="#" class="toggle-show">Show more<span class="sr-only"> current majors</span>...</a></div>
     </div>
 </div>
+{{else}}
+Course information not shown due to insufficient data.
+{{/if}}
 {% endtplhandlebars %}

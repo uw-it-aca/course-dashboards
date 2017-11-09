@@ -1,6 +1,7 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "historic-course-data" %}
 {% load staticfiles %}
+{{#if display_course}}
 <div class="historic-data-row row">
     <div class="historic-median course-data-widget col">
         <div class="d-inline-block course-data-items">
@@ -73,4 +74,7 @@
     </div>
 
 </div>
+{{else}}
+Course information not shown due to insufficient data.
+{{/if}}
 {% endtplhandlebars %}
