@@ -19,7 +19,7 @@ class CourseData(RESTDispatch):
             offering = CourseOffering.objects.get(term=term, course=course)
 
             if offering.current_enrollment <= 5:
-                return HttpResponse(json.dumps(offering.privacy_json()))
+                return HttpResponse(json.dumps(offering.base_json_object()))
 
             return HttpResponse(json.dumps(offering.json_object()))
 

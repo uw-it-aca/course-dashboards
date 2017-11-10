@@ -243,7 +243,7 @@ class CourseOffering(models.Model):
 
     @profile
     def json_object(self):
-        json_obj = self.privacy_json_object()
+        json_obj = self.base_json_object()
 
         json_obj['display_course'] = True
 
@@ -253,7 +253,7 @@ class CourseOffering(models.Model):
         clear_prof_data()
         return json_obj
 
-    def privacy_json_object(self):
+    def base_json_object(self):
         json_obj = {
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
