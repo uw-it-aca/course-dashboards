@@ -22,4 +22,3 @@ class Command(BaseCommand):
         for offering in offerings:
             offering.current_enrollment = 3
             offering.save()
-
