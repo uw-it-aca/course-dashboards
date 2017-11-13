@@ -460,10 +460,16 @@ function calculateCommon(index, quarter, year, list_type, name_type) {
 
 //check if past offering was in the range selected in the dropdowns
 function quarterIsInRange(past_offering, year, all_years, quarter, all_quarters) {
-    return ((past_offering.year == year && quarter == all_quarters) ||
-            (year == all_years && past_offering.quarter == quarter) ||
-            (year == all_years && quarter == all_quarters) ||
-            (year != all_years && quarter != all_quarters));
+    if(year === all_years && quarter == all_quarters)
+        return true;
+
+    if(year === all_years)
+        return quarter == past_offering.quarter
+
+    if(quarter === all_quarters)
+        return year == past_offering.year
+
+    return (past_offering.year == year && quarter == past_offering.quarter)
 }
 
 //order majors/courses by number of students
