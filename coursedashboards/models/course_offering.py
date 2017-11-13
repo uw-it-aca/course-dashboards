@@ -24,7 +24,6 @@ class CourseOffering(models.Model):
     current_enrollment = models.PositiveSmallIntegerField()
     limit_estimate_enrollment = models.PositiveSmallIntegerField()
     canvas_course_url = models.CharField(max_length=2000)
-    is_primary = models.BooleanField(default=False)
 
     @profile
     def get_students(self):

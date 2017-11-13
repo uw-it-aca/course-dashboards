@@ -152,8 +152,7 @@ class Command(BaseCommand):
                 term=term, course=course,
                 current_enrollment=section.current_enrollment,
                 limit_estimate_enrollment=section.limit_estimate_enrollment,
-                canvas_course_url=canvas_course_url_from_section(section),
-                is_primary=section.is_primary_section)
+                canvas_course_url=canvas_course_url_from_section(section))
 
     def _instructors_from_section(self, term, course, section):
         prior_instructors = list(Instructor.objects.filter(
