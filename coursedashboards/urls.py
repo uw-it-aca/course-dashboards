@@ -23,5 +23,33 @@ urlpatterns = [
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)$',
         login_required(CourseData().run),
         name='course_data_for_term'),
-    url(r'^logout', logout, name="coda_logout")
+    url(r'^logout', logout, name="coda_logout"),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/majors$',
+        course_majors,
+        name="course_majors"),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/majors$',
+        course_majors,
+        name="course_majors"),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/fail_rate$',
+        course_fail_rate,
+        name="course_majors"),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/cgpa$',
+        course_cgpa,
+        name="course_majors")
 ]
