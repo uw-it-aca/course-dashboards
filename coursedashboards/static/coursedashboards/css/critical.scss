@@ -296,6 +296,9 @@ footer .footer-links ul li:last-child {
    ========================================================================== */
 
  /* Small devices (tablets, 768px and up) */
+
+
+
  
 @media (max-width: 768px) {
 	.hide-sm {
@@ -306,20 +309,3 @@ footer .footer-links ul li:last-child {
 	.sitename{
 	font-size: 1.5em;}
 }
-  /* Selelected: Active & hover  */
-/* 
-.underline > li.active > a, .underline > li.active > a:hover, .underline > li > a:hover, .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>.active>a:hover  {
-	border-left:5px solid #b46100;
-	color:white;
-	border-bottom: 0px;
-	}
-*/
-
-/* 
- .underline > li.active > a:focus,  .underline > li > a:focus, .navbar-default .navbar-nav>li>a:focus {
-	border-left:5px solid #b46100;
-	color:white;
-	}
-
-}
-*/

@@ -124,6 +124,7 @@ function showCurrentCourseData(index) {
         quarter: window.term.quarter,
         year: window.term.year,
         canvas_course_url:section.canvas_course_url,
+        display_course: section.display_course
     }));
     $('.course-title span').html(window.section_data[index].course_title);
     updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id,
@@ -242,6 +243,8 @@ function showHistoricDataSelectors(index, quarter, year) {
         curriculum:window.section_data[index].curriculum,
         course_number:window.section_data[index].course_number,
         section_id:window.section_data[index].section_id,
+        total_students: calculateTotalStudents(index, quarter, year),
+        section_count: calculateSectionCount(index, quarter, year)
     }));
 
     //Historic data selection
@@ -278,6 +281,8 @@ function showHistoricCourseData(index, quarter, year) {
         past_offerings[i].quarter = firstLetterUppercase(past_offerings[i].quarter);
     var historic = $("#historic-course-data").html();
     var historicTemplate = Handlebars.compile(historic);
+    var section_count = calculateSectionCount(index, quarter, year);
+    var display_historic_course = section_count >= 2;
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(index, quarter, year, "majors","major"),
         latest_majors:calculateCommon(index, quarter, year, "latest_majors","major"),
@@ -286,7 +291,10 @@ function showHistoricCourseData(index, quarter, year) {
         selected_year:year,
         median_course_grade: calculateCourseMedian(index, quarter, year),
         failed_percent: calculateFailedPercentage(index, quarter, year),
-        instructors: getInstructors(index, quarter, year)
+        total_students: calculateTotalStudents(index, quarter, year),
+        section_count: section_count,
+        instructors: getInstructors(index, quarter, year),
+        display_course: display_historic_course
         //past_terms:window.section_data[index].past_offerings
     }));
 
@@ -456,10 +464,16 @@ function calculateCommon(index, quarter, year, list_type, name_type) {
 
 //check if past offering was in the range selected in the dropdowns
 function quarterIsInRange(past_offering, year, all_years, quarter, all_quarters) {
-    return ((past_offering.year == year && quarter == all_quarters) ||
-            (year == all_years && past_offering.quarter == quarter) ||
-            (year == all_years && quarter == all_quarters) ||
-            (year != all_years && quarter != all_quarters));
+    if(year === all_years && quarter == all_quarters)
+        return true;
+
+    if(year === all_years)
+        return quarter == past_offering.quarter
+
+    if(quarter === all_quarters)
+        return year == past_offering.year
+
+    return (past_offering.year == year && quarter == past_offering.quarter)
 }
 
 //order majors/courses by number of students
