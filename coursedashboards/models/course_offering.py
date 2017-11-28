@@ -194,6 +194,32 @@ class CourseOffering(models.Model):
             } for sort in sorted(
                 majors_dict, reverse=True, key=majors_dict.get)]
 
+    def get_fail_rate(self):
+        past_objs = []
+        threads = []
+
+        for co in CourseOffering.objects.filter(
+                course=self.course).select_related('course', 'term'):
+            past_obj = {}
+            past_objs.append(past_obj)
+
+            t = Thread(target=self.set_past_course_grades,
+                       args=(past_obj,))
+            threads.append(t)
+            t.start()
+
+        for t in threads:
+            t.join()
+
+        total = 0.0
+        failed = 0.0
+        for past_obj in past_objs:
+            total += len(past_obj['course_grades'])
+            failed += len([grade for grade in past_obj['course_grades']
+                          if grade < 2.0])
+
+        return failed / total
+
     def brief_json_object(self):
         json_obj = {
             'section_label': '%s' % self,
@@ -206,6 +232,9 @@ class CourseOffering(models.Model):
 
     def set_json_repeating_total(self, json_obj):
         json_obj['current_repeating'] = self.get_repeating_total()
+
+    def set_fail_rate(self, json_obj):
+        json_obj['failure_rate'] = self.get_fail_rate()
 
     def set_json_cumulative_median(self, json_obj):
         json_obj['current_median'] = self.get_cumulative_median_gpa()

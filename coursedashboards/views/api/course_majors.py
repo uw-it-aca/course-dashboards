@@ -30,14 +30,8 @@ class CourseMajors(CourseInfoView):
     def get_data(self, offering, num_majors):
         json_obj = {}
 
-        threads = []
+        offering.set_json_current_student_majors(json_obj)
 
-        t = Thread(target=offering.set_json_current_student_majors,
-                   args=(json_obj,))
-        threads.append(t)
-        t.start()
-
-        t.join()
         response = {}
         majors = []
         for x in range(0, num_majors):
