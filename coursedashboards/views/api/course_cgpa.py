@@ -5,18 +5,12 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
 from coursedashboards.models import CourseOffering
+from coursedashboards.views.api.course_info import CourseInfoView
 
 
-class CourseSummary(APIView):
+class CourseMedianCGPA(CourseInfoView):
 
-    def get(self, request):
-
-
-        course_offering = CourseOffering()
-
-        summary = self.course_summary(course_offering)
-
-    def course_summary(self, offering):
+    def get_data(self, offering):
         json_obj = {}
 
         threads = []

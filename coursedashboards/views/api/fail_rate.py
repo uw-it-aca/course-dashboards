@@ -5,18 +5,12 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
 from coursedashboards.models import CourseOffering
+from coursedashboards.views.api.course_info import CourseInfoView
 
 
-class CourseSummary(APIView):
+class CourseFailRate(CourseInfoView):
 
-    def get(self, request):
-
-
-        course_offering = CourseOffering()
-
-        summary = self.fail_rate(course_offering)
-
-    def fail_rate(self, offering):
+    def get_data(self, offering):
 
         threads = []
 
