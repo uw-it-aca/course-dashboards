@@ -14,11 +14,21 @@ class CourseSummary(APIView):
 
         course_offering = CourseOffering()
 
-        summary = self.fail_rate(course_offering)
+        summary = self.course_summary(course_offering)
 
-    def fail_rate(self, offering):
+    def course_summary(self, offering):
+        json_obj = {}
 
         threads = []
+        t = Thread(target=offering.set_json_cumulative_median,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=offering.set_json_current_student_majors,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
 
         past_objs = []
 
@@ -44,7 +54,11 @@ class CourseSummary(APIView):
 
         fail_rate = failed / total
 
-        response = {'failure_rate':  round(fail_rate * 1000) / 10.0}
+        response = {}
+
+        response['failure_rate'] = round(fail_rate * 1000) / 10.0
+        response['most_common_major'] = json_obj['current_student_majors'][0]
+        response['median_cgpa'] = json_obj['current_median']
 
         return response
 

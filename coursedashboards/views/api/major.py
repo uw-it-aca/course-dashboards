@@ -14,19 +14,24 @@ class CourseSummary(APIView):
 
         course_offering = CourseOffering()
 
-        summary = self.course_summary(course_offering)
+        summary = self.majors(course_offering)
 
-    def course_summary(self, offering):
+    def majors(self, offering, num_majors):
         json_obj = {}
 
         threads = []
-        t = Thread(target=offering.set_json_cumulative_median,
+
+        t = Thread(target=offering.set_json_current_student_majors,
                    args=(json_obj,))
         threads.append(t)
         t.start()
 
         t.join()
+        response = {}
+        majors = []
+        for x in range(0, num_majors):
+            majors.append(json_obj['current_student_majors'][x])
 
-        return json_obj
+        response['current_student_majors'] = majors
 
-
+        return response
