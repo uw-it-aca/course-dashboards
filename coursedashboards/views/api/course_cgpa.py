@@ -1,7 +1,7 @@
 from coursedashboards.views.api.course_info import CourseInfoView
 
 
-class CourseMedianCGPA(CourseInfoView):
+class CourseCGPA(CourseInfoView):
 
     def get_data(self, offering):
         json_obj = {}

@@ -1,5 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib.auth.decorators import login_required
+
+from coursedashboards.views.api.course_cgpa import CourseCGPA
+from coursedashboards.views.api.course_fail_rate import CourseFailRate
+from coursedashboards.views.api.course_majors import CourseMajors
 from coursedashboards.views.index import index
 from coursedashboards.views.api.course import CourseData
 from coursedashboards.views.api.historical import HistoricalCourseData
@@ -23,4 +27,28 @@ urlpatterns = [
         login_required(CourseData().run),
         name='course_data_for_term'),
     url(r'^logout', logout, name="coda_logout"),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
+        r'majors/(?P<num_majors>\d)$',
+        login_required(CourseMajors().run),
+        name='course_majors'),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
+        r'fail_rate$',
+        login_required(CourseFailRate().run),
+        name='course_fail_rate'),
+    url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
+        r'cgpa',
+        login_required(CourseCGPA().run),
+        name='course_cgpa'),
 ]
