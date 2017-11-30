@@ -242,7 +242,7 @@ class CourseOffering(models.Model):
     def set_json_concurrent_courses(self, json_obj):
         json_obj['concurrent_courses'] = self.concurrent_courses()
 
-    def set_json_curren_student_majors(self, json_obj):
+    def set_json_current_student_majors(self, json_obj):
         json_obj['current_student_majors'] = self.get_majors()
 
     def set_course_data(self, json_obj):
@@ -262,7 +262,7 @@ class CourseOffering(models.Model):
         threads.append(t)
         t.start()
 
-        t = Thread(target=self.set_json_curren_student_majors,
+        t = Thread(target=self.set_json_current_student_majors,
                    args=(json_obj,))
         threads.append(t)
         t.start()

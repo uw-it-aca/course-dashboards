@@ -1,5 +1,7 @@
 import json
 from django.http import HttpResponse
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from coursedashboards.models import CourseOffering, Term, Course
 from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
@@ -10,21 +12,8 @@ class CourseInfoView(APIView):
     A superclass for handling individual data point/series retrievals about
     courses
     """
-
-    def get(self, request, year, quarter, curriculum, course_number,
-            section_id):
-        try:
-            offering = self.get_offering(year, quarter, curriculum,
-                                         course_number, section_id)
-        except Term.DoesNotExist:
-            return self.term_not_found()
-        except Course.DoesNotExist:
-            return self.course_not_found()
-        except CourseOffering.DoesNotExist:
-            return self.course_offering_not_found()
-
-        json_response = self.get_data(offering)
-        return HttpResponse(json.dumps(json_response))
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get_offering(self, year, quarter, curriculum, course_number,
                      section_id):

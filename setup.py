@@ -23,6 +23,7 @@ setup(
         'UW-RestClients-Canvas',
         'UW-Restclients-Django-Utils',
         'Django-SupportTools',
+        'djangorestframework>=3.6.4',
         'statistics'
     ],
     license='Apache License, Version 2.0',  # example license

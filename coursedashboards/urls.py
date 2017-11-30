@@ -33,7 +33,7 @@ urlpatterns = [
         r'(?P<course_number>\d{3})-'
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
         r'majors/(?P<num_majors>\d)$',
-        login_required(CourseMajors().run),
+        login_required(CourseMajors.as_view()),
         name='course_majors'),
     url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
         r'(?P<quarter>[A-Za-z]+)-'
@@ -41,7 +41,7 @@ urlpatterns = [
         r'(?P<course_number>\d{3})-'
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
         r'fail_rate$',
-        login_required(CourseFailRate().run),
+        login_required(CourseFailRate.as_view()),
         name='course_fail_rate'),
     url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
         r'(?P<quarter>[A-Za-z]+)-'
@@ -49,6 +49,6 @@ urlpatterns = [
         r'(?P<course_number>\d{3})-'
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
         r'cgpa',
-        login_required(CourseCGPA().run),
+        login_required(CourseCGPA.as_view()),
         name='course_cgpa'),
 ]
