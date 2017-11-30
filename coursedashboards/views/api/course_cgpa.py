@@ -29,5 +29,3 @@ class CourseCGPA(CourseInfoView):
         offering.set_json_cumulative_median(json_obj)
 
         return json_obj
-
-

@@ -40,5 +40,3 @@ class CourseInfoView(APIView):
 
     def course_offering_not_found(self):
         return HttpResponse(content="Course Offering not found!", status=543)
-
-

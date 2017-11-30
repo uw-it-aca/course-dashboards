@@ -34,5 +34,3 @@ class CourseFailRate(CourseInfoView):
         offering.set_fail_rate(response)
 
         return response
-
-

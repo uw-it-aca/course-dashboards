@@ -178,7 +178,6 @@ class CourseOffering(models.Model):
         return self._get_majors(self.student_majors_for_term)
 
     def _get_majors(self, student_majors):
-        majors_dict = {}
         students = self.get_students().select_related('user')
         total_students = float(len(students))
         majors = student_majors(students)
@@ -203,7 +202,7 @@ class CourseOffering(models.Model):
             past_obj = {}
             past_objs.append(past_obj)
 
-            t = Thread(target=self.set_past_course_grades,
+            t = Thread(target=co.set_past_course_grades,
                        args=(past_obj,))
             threads.append(t)
             t.start()
