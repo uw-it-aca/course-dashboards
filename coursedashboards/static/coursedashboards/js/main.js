@@ -432,7 +432,7 @@ function calculateFailedPercentage(index, quarter, year) {
             var grades = offering.course_grades;
             for (var g = 0; g < grades.length; g++){
                 n += 1;
-                if (grades[g] <= 0.0) { failed += 1; }
+                if (grades[g] < 2.0) { failed += 1; }
             }
         }
     }
