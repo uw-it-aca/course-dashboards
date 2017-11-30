@@ -215,7 +215,7 @@ class CourseOffering(models.Model):
         for past_obj in past_objs:
             total += len(past_obj['course_grades'])
             failed += len([grade for grade in past_obj['course_grades']
-                          if grade < 2.0])
+                          if grade < 0.7])
 
         return failed / total
 
