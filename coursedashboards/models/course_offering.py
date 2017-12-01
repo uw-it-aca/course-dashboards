@@ -217,6 +217,9 @@ class CourseOffering(models.Model):
             failed += len([grade for grade in past_obj['course_grades']
                           if grade < 0.7])
 
+        if total == 0:
+            return 0
+
         return failed / total
 
     def brief_json_object(self):
