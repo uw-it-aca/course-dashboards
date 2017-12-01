@@ -1,16 +1,13 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand, CommandError
 from rest_framework.authtoken.models import Token
-
-
-UserModel = get_user_model()
 
 
 class Command(BaseCommand):
     help = 'Create DRF Token for a given user'
 
     def create_user_token(self, username, reset_token):
-        user = UserModel._default_manager.get_by_natural_key(username[0])
+        user = User.objects.get_or_create(username[0])
 
         if reset_token:
             Token.objects.filter(user=user).delete()
@@ -34,12 +31,6 @@ class Command(BaseCommand):
         username = options['username']
         reset_token = options['reset_token']
 
-        try:
-            token = self.create_user_token(username, reset_token)
-        except UserModel.DoesNotExist:
-            raise CommandError(
-                'Cannot create the Token: user {0} does not exist'.format(
-                    username)
-            )
+        token = self.create_user_token(username, reset_token)
         self.stdout.write(
             'Generated token {0} for user {1}'.format(token.key, username))
