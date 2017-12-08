@@ -200,7 +200,7 @@ function stopLoadingHistoricCourseData() {
 }
 
 //Populate the historic data selectors for the currently selected course
-function showHistoricDataSelectors(sections, quarter, year) {
+function showHistoricDataSelectors(index, quarter, year) {
     //Fix case of past quarters and create arrays without duplicate quarters/years
     var valid_quarters = [];
     var valid_years = [];
@@ -241,18 +241,17 @@ function showHistoricDataSelectors(sections, quarter, year) {
     //Load template
     var selectors = $("#historic-data-selectors").html();
     var selectorsTemplate = Handlebars.compile(selectors);
-    var sections =
+    var sections = window.section_historic_data[index];
     $("#historic-selector-target").html(selectorsTemplate({
         past_quarters:prepOptions(quarter, valid_quarters, "All Quarters"),
         past_years:prepOptions(year, valid_years, "All Years"),
-        student_total:calculateTotalStudents(sections, quarter, year),
-        section_count:calculateSectionCount(sections, quarter, year),
-        year_count:calculatePastYearCount(sections, quarter, year),
+        student_total:calculateTotalStudents(sections),
+        year_count:calculatePastYearCount(sections),
         curriculum:window.section_data[index].curriculum,
         course_number:window.section_data[index].course_number,
         section_id:window.section_data[index].section_id,
-        total_students: calculateTotalStudents(sections, quarter, year),
-        section_count: calculateSectionCount(sections, quarter, year)
+        total_students: calculateTotalStudents(sections),
+        section_count: calculateSectionCount(sections)
     }));
 
     //Historic data selection
@@ -260,8 +259,8 @@ function showHistoricDataSelectors(sections, quarter, year) {
         index = $("select[name='my_courses'] option:selected").index();
         var newQuarter = $("select[name='historic_filter_quarter'] option:selected").val();
         var newYear = $("select[name='historic_filter_year'] option:selected").val();
-        showHistoricDataSelectors(index, newQuarter, newYear);
-        showHistoricCourseData(index, newQuarter, newYear);
+        showHistoricDataSelectors(index, newQuarter, parseInt(newYear));
+        showHistoricCourseData(index, newQuarter, parseInt(newYear));
     });
 }
 
@@ -283,26 +282,31 @@ function prepOptions(selected, valid, all) {
 }
 
 //Display data about the past offerings of selected course - called whenever selection changes
-function showHistoricCourseData(sections, quarter, year) {
-    for (var i = 0; i < sections.length; i++)
-        past_offerings[i].quarter = firstLetterUppercase(past_offerings[i].quarter);
+function showHistoricCourseData(index, quarter, year) {
+    var past_offerings = window.section_historic_data[index];
+    var offerings = filterOfferings(past_offerings, quarter, year, only_my_courses);
+
+    for (var i = 0; i < offerings.length; i++) {
+        offerings[i].quarter = firstLetterUppercase(offerings[i].quarter);
+    }
+
     var historic = $("#historic-course-data").html();
     var historicTemplate = Handlebars.compile(historic);
-    var section_count = calculateSectionCount(sections, quarter, year);
-    var display_historic_course = section_count >= 2;
-    var offerings = filterOfferings(index, quarter, year, only_my_courses);
+    var section_count = calculateSectionCount(offerings, quarter, year);
+
+
     $("#historic-course-target").html(historicTemplate({
-        common_majors:calculateCommon(offerings, quarter, year, "majors","major"),
-        latest_majors:calculateCommon(offerings, quarter, year, "latest_majors","major"),
-        common_courses:calculateCommon(offerings, quarter, year, "concurrent_courses","course"),
+        common_majors:calculateCommon(offerings, "majors","major"),
+        latest_majors:calculateCommon(offerings, "latest_majors","major"),
+        common_courses:calculateCommon(offerings, "concurrent_courses","course"),
         selected_quarter:quarter,
         selected_year:year,
-        median_course_grade: calculateCourseMedian(offerings, quarter, year),
-        failed_percent: calculateFailedPercentage(offerings, quarter, year),
-        total_students: calculateTotalStudents(offerings, quarter, year),
+        median_course_grade: calculateCourseMedian(offerings),
+        failed_percent: calculateFailedPercentage(offerings),
+        total_students: calculateTotalStudents(offerings),
         section_count: section_count,
-        instructors: getInstructors(offerings, quarter, year),
-        display_course: display_historic_course
+        instructors: getInstructors(offerings),
+        display_course: section_count >= 2
         //past_terms:window.section_data[index].past_offerings
     }));
 
@@ -347,16 +351,19 @@ function setup_exposures($container) {
 
 function filterOfferings(sections, quarter, year, only_my_courses){
     var filtered_sections = [];
+
     for(var i = 0; i < sections.length; i++){
         if (quarterIsInRange(sections[i], quarter, year)){
             if(!only_my_courses || only_my_courses && isInstructor(sections[i])){
-                filtered_sections.append(sections[i])
+                filtered_sections.push(sections[i])
             }
         }
     }
+
+    return filtered_sections;
 }
 
-function getInstructors(sections, quarter, year) {
+function getInstructors(sections) {
     var instructors = [];
     for (var o = 0; o < sections.length; o++) {
         for (var i in sections[o].instructors) {
@@ -372,21 +379,20 @@ function getInstructors(sections, quarter, year) {
 }
 
 
-function calculateTotalStudents(sections, quarter, year) {
+function calculateTotalStudents(sections) {
     var total_students = 0;
     for (var o = 0; o < sections.length; o++) {
-        var offering = sections[o];
-            total_students += offering.course_grades.length;
+        total_students += sections[o].course_grades.length;
     }
 
     return total_students;
 }
 
-function calculateSectionCount(sections, quarter, year) {
+function calculateSectionCount(sections) {
     return sections.length;
 }
 
-function calculatePastYearCount(sections, quarter, year) {
+function calculatePastYearCount(sections) {
     var start_year = window.term.year;
     for (var o = 0; o < sections.length; o++) {
         if (sections[o].year < start_year) { start_year = sections[o].year; }
@@ -396,7 +402,7 @@ function calculatePastYearCount(sections, quarter, year) {
 }
 
 
-function calculateCourseMedian(sections, quarter, year) {
+function calculateCourseMedian(sections) {
     var grades = [];
     for (var o = 0; o < sections.length; o++) {
         grades = grades.concat(sections[o].course_grades);
@@ -406,7 +412,7 @@ function calculateCourseMedian(sections, quarter, year) {
 }
 
 
-function calculateFailedPercentage(sections, quarter, year) {
+function calculateFailedPercentage(sections) {
     var n = 0;
     var failed = 0;
     for (var o = 0; o < sections.length; o++) {
@@ -424,7 +430,7 @@ function calculateFailedPercentage(sections, quarter, year) {
 
 
 //Calculates all of the common major/course lists based on historic selections
-function calculateCommon(index, quarter, year, list_type, name_type) {
+function calculateCommon(sections, list_type, name_type) {
     var obj = {};
     var total_students = 0;
     for (var o = 0; o < sections.length; o++) {
