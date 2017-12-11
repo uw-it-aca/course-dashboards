@@ -1,7 +1,7 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "current-course-data" %}
 {% load staticfiles %}
-{{#if display_course}}
+
 <div class="row">
     <div class="col">
         <h3 id="current_section_data">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
@@ -19,6 +19,7 @@
         </div>
     </div>
 </div>
+{{#if display_course}}
 <div class="current-data-row row">
     <div class="current-median course-data-widget col">
         <div class="d-inline-block course-data-items">
