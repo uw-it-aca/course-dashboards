@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Create DRF Token for a given user'
 
     def create_user_token(self, username, reset_token):
-        user = User.objects.get_or_create(username[0])
+        user = User.objects.get_or_create(username=username[0])[0]
 
         if reset_token:
             Token.objects.filter(user=user).delete()

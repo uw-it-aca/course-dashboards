@@ -1,7 +1,7 @@
 {% load templatetag_handlebars %}
 {% tplhandlebars "current-course-data" %}
 {% load staticfiles %}
-{{#if display_course}}
+
 <div class="row">
     <div class="col">
         <h3 id="current_section_data">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
@@ -19,6 +19,7 @@
         </div>
     </div>
 </div>
+{{#if display_course}}
 <div class="current-data-row row">
     <div class="current-median course-data-widget col">
         <div class="d-inline-block course-data-items">
@@ -62,8 +63,12 @@
     </div>
 </div>
 {{else}}
-<div class="alert alert-info" role="alert">
-    Course information not shown due to insufficient data.
+<div class="coda-alert alert alert-info" role="alert">
+    <p>The query you requested will not generate data for one of the following reasons:
+
+<ul><li>The course you've selected has fewer than 5 students. To protect students' privacy, we do not show data on courses with fewer than 5 students enrolled.</li>
+
+<li>To protect you and your colleagues' privacy, we do not show data for a single course, unless it's a course you've taught.</li></ul></p>
 </div>
 {{/if}}
 {% endtplhandlebars %}
