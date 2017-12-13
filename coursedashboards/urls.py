@@ -7,7 +7,7 @@ from coursedashboards.views.api.course_majors import CourseMajors
 from coursedashboards.views.index import index
 from coursedashboards.views.api.course import CourseData
 from coursedashboards.views.api.historical import HistoricalCourseData
-from coursedashboards.views.page import logout
+from coursedashboards.views.page import user_login, logout
 
 urlpatterns = [
     # Home
@@ -26,7 +26,6 @@ urlpatterns = [
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)$',
         login_required(CourseData().run),
         name='course_data_for_term'),
-    url(r'^logout', logout, name="coda_logout"),
     url(r'^api/v1/course/(?i)(?P<year>\d{4})-'
         r'(?P<quarter>[A-Za-z]+)-'
         r'(?P<curriculum>[&% 0-9a-z]+)-'
@@ -51,4 +50,6 @@ urlpatterns = [
         r'cgpa$',
         CourseCGPA.as_view(),
         name='course_cgpa'),
+    url(r'^login', user_login),
+    url(r'^logout', logout, name="coda_logout")
 ]
