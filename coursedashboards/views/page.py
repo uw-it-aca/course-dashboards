@@ -64,6 +64,10 @@ def page(request,
     return render(request, template, context)
 
 
+def user_login(request):
+    return HttpResponseRedirect(request.GET.get('next', '/'))
+
+
 def logout(request):
     # Expires current myuw session
     django_logout(request)
