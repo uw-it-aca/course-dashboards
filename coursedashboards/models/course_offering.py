@@ -24,7 +24,6 @@ class CourseOffering(models.Model):
     current_enrollment = models.PositiveSmallIntegerField()
     limit_estimate_enrollment = models.PositiveSmallIntegerField()
     canvas_course_url = models.CharField(max_length=2000)
-    is_primary = models.BooleanField(default=False)
 
     @profile
     def get_students(self):
@@ -179,7 +178,6 @@ class CourseOffering(models.Model):
         return self._get_majors(self.student_majors_for_term)
 
     def _get_majors(self, student_majors):
-        majors_dict = {}
         students = self.get_students().select_related('user')
         total_students = float(len(students))
         majors = student_majors(students)
@@ -195,6 +193,35 @@ class CourseOffering(models.Model):
             } for sort in sorted(
                 majors_dict, reverse=True, key=majors_dict.get)]
 
+    def get_fail_rate(self):
+        past_objs = []
+        threads = []
+
+        for co in CourseOffering.objects.filter(
+                course=self.course).select_related('course', 'term'):
+            past_obj = {}
+            past_objs.append(past_obj)
+
+            t = Thread(target=co.set_past_course_grades,
+                       args=(past_obj,))
+            threads.append(t)
+            t.start()
+
+        for t in threads:
+            t.join()
+
+        total = 0.0
+        failed = 0.0
+        for past_obj in past_objs:
+            total += len(past_obj['course_grades'])
+            failed += len([grade for grade in past_obj['course_grades']
+                          if grade < 0.7])
+
+        if total == 0:
+            return 0
+
+        return failed / total
+
     def brief_json_object(self):
         json_obj = {
             'section_label': '%s' % self,
@@ -208,13 +235,16 @@ class CourseOffering(models.Model):
     def set_json_repeating_total(self, json_obj):
         json_obj['current_repeating'] = self.get_repeating_total()
 
+    def set_fail_rate(self, json_obj):
+        json_obj['failure_rate'] = self.get_fail_rate()
+
     def set_json_cumulative_median(self, json_obj):
         json_obj['current_median'] = self.get_cumulative_median_gpa()
 
     def set_json_concurrent_courses(self, json_obj):
         json_obj['concurrent_courses'] = self.concurrent_courses()
 
-    def set_json_curren_student_majors(self, json_obj):
+    def set_json_current_student_majors(self, json_obj):
         json_obj['current_student_majors'] = self.get_majors()
 
     def set_course_data(self, json_obj):
@@ -234,7 +264,7 @@ class CourseOffering(models.Model):
         threads.append(t)
         t.start()
 
-        t = Thread(target=self.set_json_curren_student_majors,
+        t = Thread(target=self.set_json_current_student_majors,
                    args=(json_obj,))
         threads.append(t)
         t.start()
@@ -244,6 +274,17 @@ class CourseOffering(models.Model):
 
     @profile
     def json_object(self):
+        json_obj = self.base_json_object()
+
+        json_obj['display_course'] = True
+
+        self.set_course_data(json_obj)
+
+        log_profile_data('%s,%s' % (self.term, self.course), logger)
+        clear_prof_data()
+        return json_obj
+
+    def base_json_object(self):
         json_obj = {
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
@@ -253,12 +294,9 @@ class CourseOffering(models.Model):
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'canvas_course_url': self.canvas_course_url,
+            'display_course': False
         }
 
-        self.set_course_data(json_obj)
-
-        log_profile_data('%s,%s' % (self.term, self.course), logger)
-        clear_prof_data()
         return json_obj
 
     def set_past_offering_instructors(self, past_obj):
