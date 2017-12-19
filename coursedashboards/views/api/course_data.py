@@ -12,7 +12,7 @@ from coursedashboards.models import CourseOffering, Course, Term
 from coursedashboards.views.api.course_info import CourseInfoView
 
 
-class CourseData(CourseInfoView):
+class TokenCourseData(CourseInfoView):
 
     def get(self, request, year, quarter, curriculum, course_number,
             section_id):
