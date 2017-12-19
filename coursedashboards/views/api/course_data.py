@@ -31,7 +31,7 @@ class TokenCourseData(CourseInfoView):
 
     def get_data(self, offering):
         if offering.current_enrollment <= 5:
-            return json.dumps(offering.base_json_object())
+            return offering.base_json_object()
 
-        return json.dumps(offering.json_object())
+        return offering.json_object()
 

@@ -27,8 +27,8 @@ class TokenHistoricalCourseData(CourseInfoView):
             return self.course_offering_not_found()
 
         json_response = self.get_data(offering)
-        return HttpResponse(json.dumps(json_response))
+        return HttpResponse(json_response)
 
     def get_data(self, offering):
-        return HttpResponse(json.dumps(offering.past_offerings_json_object()))
+        return json.dumps(offering.past_offerings_json_object())
 
