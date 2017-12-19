@@ -9,7 +9,6 @@ from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
 
 class CoDaAPI(APIView):
 
-    authentication_classes = (RemoteUserAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get_offering(self, year, quarter, curriculum, course_number,
