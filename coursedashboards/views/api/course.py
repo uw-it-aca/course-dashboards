@@ -1,30 +1,33 @@
 import json
 from django.http import HttpResponse
 from coursedashboards.models import Term, Course, CourseOffering
+from coursedashboards.views.api import CoDaAPI
 from coursedashboards.views.rest_dispatch import RESTDispatch
 from coursedashboards.views.error import data_not_found, data_error
 
 
-class CourseData(RESTDispatch):
+class CourseData(CoDaAPI):
     """
     Performs actions on /api/v1/course/yyyy-quarter-curric-course-section
     """
-    def GET(self, request, year, quarter,
-            curriculum, course_number, section_id):
+
+    def get(self, request, year, quarter, curriculum, course_number,
+            section_id):
         try:
-            term = Term.objects.get(year=year, quarter=quarter.lower())
-            course = Course.objects.get(curriculum=curriculum.upper(),
-                                        course_number=course_number,
-                                        section_id=section_id.upper())
-            offering = CourseOffering.objects.get(term=term, course=course)
+            offering = self.get_offering(year, quarter, curriculum,
+                                         course_number, section_id)
+        except Term.DoesNotExist:
+            return self.term_not_found()
+        except Course.DoesNotExist:
+            return self.course_not_found()
+        except CourseOffering.DoesNotExist:
+            return self.course_offering_not_found()
 
-            if offering.current_enrollment <= 5:
-                return HttpResponse(json.dumps(offering.base_json_object()))
+        json_response = self.get_data(offering)
+        return HttpResponse(json.dumps(json_response))
 
-            return HttpResponse(json.dumps(offering.json_object()))
+    def get_data(self, offering):
+        if offering.current_enrollment <= 5:
+            return offering.base_json_object()
 
-        except (Term.DoesNotExist, Course.DoesNotExist,
-                CourseOffering.DoesNotExist):
-            return data_not_found()
-
-        return data_error()
+        return offering.json_object()
