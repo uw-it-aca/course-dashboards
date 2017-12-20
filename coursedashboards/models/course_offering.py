@@ -144,46 +144,36 @@ class CourseOffering(models.Model):
 
     @profile
     def last_student_undergraduate_major(self, students):
+
         users = [student.user for student in students if student.user.is_alum]
 
         class_majors = StudentMajor.objects.filter(user__in=users,
-                                                   major__degree_level=1) \
+                                                   major__degree_level=1)\
             .select_related('major', 'term')
 
-        students_majors = {}
-
         for major in class_majors:
-            if major.user.pk in students_majors:
-                tmp = students_majors[major.user.pk]
-            else:
-                tmp = []
-                students_majors[major.user.pk] = tmp
-
-            tmp.append(major)
+            pass
 
         major_list = []
-
         for student in students:
+            if student.user.is_alum:
 
-            if student.pk not in students_majors:
-                continue
+                majors = class_majors.filter(user=student.user)
+                majors = sorted(majors, cmp=StudentMajor.sort_by_term,
+                                reverse=True)
 
-            majors = students_majors[student.pk]
-            majors = sorted(majors, cmp=StudentMajor.sort_by_term,
-                            reverse=True)
+                graduated_term = None
+                # get most recent undergrad but not pre-x term
+                for major in majors:
+                    if major.major.degree_level == 1:
+                        graduated_term = major.term
+                        break
 
-            graduated_term = None
-            # get most recent undergrad but not pre-x term
-            for major in majors:
-                if major.major.degree_level == 1:
-                    graduated_term = major.term
-                    break
+                if graduated_term is not None:
+                    majors = [major for major in majors
+                              if major.term == graduated_term]
 
-            if graduated_term is not None:
-                majors = [major for major in majors
-                          if major.term == graduated_term]
-
-                major_list += [sm.major.major for sm in majors]
+                    major_list += [sm.major.major for sm in majors]
 
         return major_list
 
