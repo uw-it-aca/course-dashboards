@@ -171,7 +171,7 @@ class CourseOffering(models.Model):
 
         queryset = StudentMajor.objects.filter(user__in=users,
                                            major__degree_level=1) \
-            .select_related('major', 'term')
+            .select_related('major', 'term', 'user')
         # trigger query for profiling:
         repr(queryset)
 
