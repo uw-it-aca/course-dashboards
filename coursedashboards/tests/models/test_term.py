@@ -43,3 +43,7 @@ class TestTerm(TestCase):
                                         self.summer2016, self.autumn2016,
                                         self.winter2017, self.spring2017,
                                         self.summer2017, self.autumn2017])
+
+    def test_term_key(self):
+        self.assertEquals(self.spring2016.term_key, 20162)
+        self.assertEquals(self.autumn2017.term_key, 20173)

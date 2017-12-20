@@ -3,7 +3,7 @@ from unittest import TestCase
 from coursedashboards.models import Term, StudentMajor
 
 
-class TestTerm(TestCase):
+class TestStudentMajors(TestCase):
 
     def setUp(self):
         # create terms
