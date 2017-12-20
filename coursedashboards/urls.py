@@ -5,6 +5,7 @@ from coursedashboards.views.api.course_cgpa import CourseCGPA
 from coursedashboards.views.api.course_data import TokenCourseData
 from coursedashboards.views.api.course_fail_rate import CourseFailRate
 from coursedashboards.views.api.course_majors import CourseMajors
+from coursedashboards.views.api.graduated_majors import GraduatedMajors
 from coursedashboards.views.api.historical_data import \
     TokenHistoricalCourseData
 from coursedashboards.views.index import index
@@ -68,6 +69,14 @@ urlpatterns = [
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
         r'token',
         TokenHistoricalCourseData.as_view(),
+        name='course_cgpa'),
+    url(r'^api/v1/course/past/(?i)(?P<year>\d{4})-'
+        r'(?P<quarter>[A-Za-z]+)-'
+        r'(?P<curriculum>[&% 0-9a-z]+)-'
+        r'(?P<course_number>\d{3})-'
+        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
+        r'graudated',
+        GraduatedMajors.as_view(),
         name='course_cgpa'),
     url(r'^login', user_login),
     url(r'^logout', logout, name="coda_logout")
