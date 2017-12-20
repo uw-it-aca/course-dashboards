@@ -145,12 +145,13 @@ class CourseOffering(models.Model):
     @profile
     def last_student_undergraduate_major(self, students):
 
-        users = [student.user for student in students if student.user.is_alum]
+        class_majors = self.retrieve_course_majors(students)
+        student_majors = self.sort_major_by_user(class_majors)
 
-        class_majors = StudentMajor.objects.filter(user__in=users,
-                                                   major__degree_level=1)\
-            .select_related('major', 'term')
+        return self.process_individual_majors(students, student_majors)
 
+    @profile
+    def sort_major_by_user(self, class_majors):
         student_majors = {}
 
         for major in class_majors:
@@ -162,8 +163,19 @@ class CourseOffering(models.Model):
 
             majors.append(major)
 
-        major_list = []
+        return student_majors
 
+    @profile
+    def retrieve_course_majors(self, students):
+        users = [student.user for student in students if student.user.is_alum]
+
+        return StudentMajor.objects.filter(user__in=users,
+                                           major__degree_level=1) \
+            .select_related('major', 'term')
+
+    @profile
+    def process_individual_majors(self, students, student_majors):
+        major_list = []
         for student in students:
 
             if student.user not in student_majors:
@@ -175,11 +187,10 @@ class CourseOffering(models.Model):
 
             graduated_term = majors[0].term
 
-            if graduated_term is not None:
-                majors = [major for major in majors
-                          if major.term == graduated_term]
+            majors = [major for major in majors
+                      if major.term == graduated_term]
 
-                major_list += [sm.major.major for sm in majors]
+            major_list += [sm.major.major for sm in majors]
 
         return major_list
 
