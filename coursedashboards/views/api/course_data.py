@@ -34,4 +34,3 @@ class TokenCourseData(CourseInfoView):
             return offering.base_json_object()
 
         return offering.json_object()
-

@@ -31,4 +31,3 @@ class TokenHistoricalCourseData(CourseInfoView):
 
     def get_data(self, offering):
         return json.dumps(offering.past_offerings_json_object())
-

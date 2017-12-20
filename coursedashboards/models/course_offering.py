@@ -151,19 +151,28 @@ class CourseOffering(models.Model):
                                                    major__degree_level=1)\
             .select_related('major', 'term')
 
+        student_majors = {}
+
         for major in class_majors:
-            pass
+            if major.user not in student_majors:
+                majors = []
+                student_majors[major.user] = majors
+            else:
+                majors = student_majors[major.user]
+
+            majors.append(major)
 
         major_list = []
+
         for student in students:
 
-            majors = class_majors.filter(user=student.user)
+            if student.user not in student_majors:
+                continue
+
+            majors = student_majors[student.user]
             majors = sorted(majors, cmp=StudentMajor.sort_by_term,
                             reverse=True)
 
-            if len(majors) == 0:
-                continue
-                
             graduated_term = majors[0].term
 
             if graduated_term is not None:
