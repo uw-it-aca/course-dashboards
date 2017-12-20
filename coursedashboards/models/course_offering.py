@@ -148,7 +148,7 @@ class CourseOffering(models.Model):
         class_majors = self.retrieve_course_majors(students)
         student_majors = self.sort_major_by_user(class_majors)
 
-        return self.process_individual_majors(students, student_majors)
+        return self.process_individual_majors(student_majors)
 
     @profile
     def sort_major_by_user(self, class_majors):
@@ -169,17 +169,18 @@ class CourseOffering(models.Model):
     def retrieve_course_majors(self, students):
         users = [student.user for student in students if student.user.is_alum]
 
-        return StudentMajor.objects.filter(user__in=users,
+        queryset = StudentMajor.objects.filter(user__in=users,
                                            major__degree_level=1) \
             .select_related('major', 'term')
+        # trigger query for profiling:
+        queryset[0].major.major
+
+        return queryset
 
     @profile
-    def process_individual_majors(self, students, student_majors):
+    def process_individual_majors(self, student_majors):
         major_list = []
-        for student in students:
-
-            if student.user not in student_majors:
-                continue
+        for student in student_majors:
 
             majors = student_majors[student.user]
             majors = sorted(majors, cmp=StudentMajor.sort_by_term,
