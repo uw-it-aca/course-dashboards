@@ -173,7 +173,7 @@ class CourseOffering(models.Model):
                                            major__degree_level=1) \
             .select_related('major', 'term')
         # trigger query for profiling:
-        queryset[0].major.major
+        repr(queryset)
 
         return queryset
 
@@ -182,7 +182,7 @@ class CourseOffering(models.Model):
         major_list = []
         for student in student_majors:
 
-            majors = student_majors[student.user]
+            majors = student_majors[student]
             majors = sorted(majors, cmp=StudentMajor.sort_by_term,
                             reverse=True)
 
