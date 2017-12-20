@@ -155,11 +155,11 @@ class CourseOffering(models.Model):
         student_majors = {}
 
         for major in class_majors:
-            if major.user not in student_majors:
+            if major.user.pk not in student_majors:
                 majors = []
-                student_majors[major.user] = majors
+                student_majors[major.user.pk] = majors
             else:
-                majors = student_majors[major.user]
+                majors = student_majors[major.user.pk]
 
             majors.append(major)
 
