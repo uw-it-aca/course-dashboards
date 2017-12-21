@@ -299,6 +299,10 @@ class CourseOffering(models.Model):
             t.join()
 
     @profile
+    def retrieve_db_objects(self):
+        pass
+
+    @profile
     def json_object(self):
         json_obj = self.base_json_object()
 
@@ -385,7 +389,7 @@ class CourseOffering(models.Model):
         List of past course offerings
         """
         min_offerings = 1
-        quarters = 20
+        quarters = 40
 
         threads = []
         offerings = []
