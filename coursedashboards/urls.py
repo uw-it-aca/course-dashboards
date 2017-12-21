@@ -61,7 +61,7 @@ urlpatterns = [
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
         r'token',
         TokenCourseData.as_view(),
-        name='course_cgpa'),
+        name='token_course'),
     url(r'^api/v1/course/past/(?i)(?P<year>\d{4})-'
         r'(?P<quarter>[A-Za-z]+)-'
         r'(?P<curriculum>[&% 0-9a-z]+)-'
@@ -69,15 +69,7 @@ urlpatterns = [
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
         r'token',
         TokenHistoricalCourseData.as_view(),
-        name='course_cgpa'),
-    url(r'^api/v1/course/past/(?i)(?P<year>\d{4})-'
-        r'(?P<quarter>[A-Za-z]+)-'
-        r'(?P<curriculum>[&% 0-9a-z]+)-'
-        r'(?P<course_number>\d{3})-'
-        r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
-        r'graduated',
-        GraduatedMajors.as_view(),
-        name='course_cgpa'),
+        name='token_historical'),
     url(r'^login', user_login),
     url(r'^logout', logout, name="coda_logout")
 ]

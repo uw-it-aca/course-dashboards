@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from rest_framework.authentication import RemoteUserAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
 from coursedashboards.models import Term, Course, CourseOffering
 from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
 
