@@ -155,11 +155,11 @@ class CourseOffering(models.Model):
         student_majors = {}
 
         for major in class_majors:
-            if major.user.id not in student_majors:
+            if major.user_id not in student_majors:
                 majors = []
-                student_majors[major.user.id] = majors
+                student_majors[major.user_id] = majors
             else:
-                majors = student_majors[major.user.id]
+                majors = student_majors[major.user_id]
 
             majors.append(major)
 
@@ -171,7 +171,7 @@ class CourseOffering(models.Model):
 
         queryset = StudentMajor.objects.filter(user__in=users,
                                                major__degree_level=1) \
-            .select_related('major', 'term', 'user')
+            .select_related('major', 'term')
         # trigger query for profiling:
         repr(queryset)
 

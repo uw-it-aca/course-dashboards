@@ -75,7 +75,7 @@ urlpatterns = [
         r'(?P<curriculum>[&% 0-9a-z]+)-'
         r'(?P<course_number>\d{3})-'
         r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)/'
-        r'graudated',
+        r'graduated',
         GraduatedMajors.as_view(),
         name='course_cgpa'),
     url(r'^login', user_login),
