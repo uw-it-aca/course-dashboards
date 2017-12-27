@@ -171,13 +171,12 @@ class TestCourseOffering(TransactionTestCase):
             self.assertNotEqual(major.degree_level, 0)
 
     def test_student_cgpa(self):
-        pass
-        # cgpa = self.winter_ess.get_cumulative_median_gpa()
+        cgpa = self.winter_ess.get_cumulative_median_gpa()
+        self.assertEquals(cgpa, 3.23)
 
     def test_historic_fail_rate(self):
-        pass
-        # fail_rate = self.spring_ess.get_fail_rate()
-        # self.assertEqual(fail_rate, 1 / 7)
+        fail_rate = self.spring_ess.get_fail_rate()
+        self.assertEqual(fail_rate, 1 / 7)
 
     def tearDown(self):
         for stumaj in self.student_majors:
