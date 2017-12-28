@@ -47,14 +47,10 @@ class CourseOffering(models.Model):
 
             points = 0.0
             credits = 0
-            registrations = Registration.objects.filter(user=student.user_id)\
-                .annotate(Count('grade', distinct=True))\
-                .annotate(Count('credits', distinct=True)).values_list('grade', 'credits')
-
-            for reg in registrations:
+            for reg in Registration.objects.filter(user=student.user_id):
                 try:
-                    course_credits = int(reg[1])
-                    points += (float(reg[0]) * course_credits)
+                    course_credits = int(reg.credits)
+                    points += (float(reg.grade) * course_credits)
                     credits += course_credits
                 except ValueError:
                     pass
@@ -85,9 +81,13 @@ class CourseOffering(models.Model):
             for t in threads:
                 t.join()
 
-            return round(median(cumulative), 2)
+            return self.calc_med(cumulative)
         except StatisticsError:
             return None
+
+    @profile
+    def calc_med(self, cumulative):
+        return round(median(cumulative), 2)
 
     @profile
     def get_grades(self):
