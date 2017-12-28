@@ -1,7 +1,5 @@
 from unittest import TestCase
-
 from django.test import TransactionTestCase
-
 from coursedashboards.models import Course, Term, CourseOffering, User, \
     Registration, Major, StudentMajor
 
@@ -69,6 +67,9 @@ class TestCourseOffering(TransactionTestCase):
             user.uwnetid = "netid" + str(x)
             user.save()
             self.students.append(user)
+
+        self.students[3].is_alum = True
+        self.students[3].save()
 
         for x in range(0, 2):
             reg = Registration()
@@ -167,8 +168,8 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_graduated_majors(self):
         graduated_majors = self.winter_ess.get_graduated_majors()
-        for major in graduated_majors:
-            self.assertNotEqual(major.degree_level, 0)
+        self.assertEquals(len(graduated_majors), 1)
+        self.assertEquals(graduated_majors[0]['number_students'], 1)
 
     def test_student_cgpa(self):
         cgpa = self.winter_ess.get_cumulative_median_gpa()

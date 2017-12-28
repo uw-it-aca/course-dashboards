@@ -37,7 +37,33 @@ class CourseOffering(models.Model):
         return self.students
 
     @profile
-    def get_student_gpa(self, student):
+    def retrieve_course_info(self):
+        """
+        Retrieves all relevant Django models from the database
+        :return:
+        """
+        threads = []
+        targets = [self.retrieve_registrations, self.set_instructors]
+        for target in targets:
+            t = Thread(target=self.retrieve_registrations,
+                       args=())
+            threads.append(t)
+            t.start()
+
+        for t in threads:
+            t.join()
+
+    @profile
+    def retrieve_registrations(self):
+        # retrieve all registrations for this CourseOffering
+        self.students = self.get_students()
+
+        # retrieve all student Registrations for concurrent course and GPA
+        self.student_registrations = self.get_all_student_registrations()
+        repr(self.student_registrations)
+
+    @profile
+    def get_student_gpa(self, registrations):
         """
         Return current gpa for given student
         (assumption: all student registrations are modelled)
@@ -45,7 +71,7 @@ class CourseOffering(models.Model):
         try:
             points = 0.0
             credits = 0
-            for reg in Registration.objects.filter(user=student.user):
+            for reg in registrations:
                 try:
                     course_credits = int(reg.credits)
                     points += (float(reg.grade) * course_credits)
@@ -69,15 +95,21 @@ class CourseOffering(models.Model):
         """
         try:
             cumulative = []
-            threads = []
-            for student in self.get_students():
-                t = Thread(target=self.set_student_gpa,
-                           args=(student, cumulative,))
-                threads.append(t)
-                t.start()
 
-            for t in threads:
-                t.join()
+            user_registrations = {}
+            for registration in self.get_all_student_registrations():
+                id = registration.user_id
+
+                if id not in user_registrations:
+                    user_registrations[id] = []
+
+                user_registrations[id].append(registration)
+
+            for user in user_registrations:
+                gpa = self.get_student_gpa(user_registrations[user])
+
+                if gpa is not None:
+                    cumulative.append(gpa)
 
             return round(median(cumulative), 2)
         except StatisticsError:
@@ -98,14 +130,32 @@ class CourseOffering(models.Model):
         """
         return len(self.get_students().filter(is_repeat=True))
 
+    def set_instructors(self):
+        self.instructors = self.get_instructors()
+
     @profile
     def get_instructors(self):
-        return [{
-            'display_name': inst.user.display_name,
-            'uwnetid': inst.user.uwnetid,
-            'email': inst.user.email
-        } for inst in Instructor.objects.filter(course=self.course,
-                                                term=self.term)]
+        if not hasattr(self, 'instructors'):
+            self.instructors = [{
+                'display_name': inst.user.display_name,
+                'uwnetid': inst.user.uwnetid,
+                'email': inst.user.email
+            } for inst in Instructor.objects.filter(course=self.course,
+                                                    term=self.term)]
+        else:
+            return self.instructors
+
+    def get_all_student_registrations(self):
+        """
+        Returns all students' registrations
+        :return:
+        """
+        students = self.get_students().values_list('user_id', flat=True)
+        if not hasattr(self, 'student_registrations'):
+            self.student_registrations = Registration.objects.filter(
+                user_id__in=students).select_related('course', 'term')
+
+        return self.student_registrations
 
     @profile
     def all_student_registrations(self):
@@ -119,8 +169,8 @@ class CourseOffering(models.Model):
     @profile
     def concurrent_courses(self):
         course_dict = {}
-        for reg in self.all_student_registrations():
-            if reg.course.id != self.course.id:
+        for reg in self.all_student_registrations:
+            if reg.course.id != self.course.id and reg.term == self.term:
                 name = "%s" % reg.course
                 name = name[:name.rindex('-')]
                 if name in course_dict:
@@ -138,6 +188,7 @@ class CourseOffering(models.Model):
 
     @profile
     def student_majors_for_term(self, students):
+        # TODO: use Aggregator API here
         return [sm.major.major for sm in StudentMajor.objects.filter(
             user_id__in=students.values_list('user_id', flat=True),
             term=self.term).select_related('major')]
@@ -220,6 +271,7 @@ class CourseOffering(models.Model):
                 majors_dict, reverse=True, key=majors_dict.get)]
 
     def get_fail_rate(self):
+        # TODO: use Aggregator API here
         past_objs = []
         threads = []
 
@@ -274,6 +326,10 @@ class CourseOffering(models.Model):
         json_obj['current_student_majors'] = self.get_majors()
 
     def set_course_data(self, json_obj):
+
+        # retrieve info used by multiple threads
+        self.retrieve_course_info()
+
         threads = []
         t = Thread(target=self.set_json_repeating_total,
                    args=(json_obj,))
@@ -297,10 +353,6 @@ class CourseOffering(models.Model):
 
         for t in threads:
             t.join()
-
-    @profile
-    def retrieve_db_objects(self):
-        pass
 
     @profile
     def json_object(self):
@@ -345,6 +397,10 @@ class CourseOffering(models.Model):
         past_obj['course_grades'] = self.get_grades()
 
     def set_past_offering_data(self, past_obj):
+
+        # retrieve info used by multiple threads
+        self.retrieve_course_info()
+
         threads = []
         t = Thread(target=self.set_past_offering_instructors,
                    args=(past_obj,))
