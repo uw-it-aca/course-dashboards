@@ -179,8 +179,9 @@ class TestCourseOffering(TransactionTestCase):
         major.save()
 
     def test_get_concurrent_courses(self):
-
-
+        concurrent = self.spring_ess.concurrent_courses()
+        self.assertEquals(len(concurrent), 1)
+        self.assertEquals(concurrent[0]['number_students'], 2)
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
@@ -219,6 +220,8 @@ class TestCourseOffering(TransactionTestCase):
         for major in self.majors:
             major.delete()
 
+        self.spring_cse.delete()
+        self.cse_142.delete()
         self.spring_ess.delete()
         self.winter_ess.delete()
         self.course.delete()
