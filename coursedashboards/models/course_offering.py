@@ -43,9 +43,10 @@ class CourseOffering(models.Model):
         (assumption: all student registrations are modelled)
         """
         try:
+
             points = 0.0
             credits = 0
-            for reg in Registration.objects.filter(user=student.user):
+            for reg in Registration.objects.filter(user=student.user_id):
                 try:
                     course_credits = int(reg.credits)
                     points += (float(reg.grade) * course_credits)
@@ -138,6 +139,7 @@ class CourseOffering(models.Model):
 
     @profile
     def student_majors_for_term(self, students):
+        # TODO: use aggregator API here
         return [sm.major.major for sm in StudentMajor.objects.filter(
             user_id__in=students.values_list('user_id', flat=True),
             term=self.term).select_related('major')]
