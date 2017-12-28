@@ -109,7 +109,8 @@ class CourseOffering(models.Model):
                 cumulative.append(round(results[1] / results[0], 2))
 
             return round(median(cumulative), 2)
-        except StatisticsError:
+        except StatisticsError as ex:
+            logger.error(ex)
             return None
 
     @profile
