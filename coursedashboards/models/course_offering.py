@@ -83,7 +83,8 @@ class CourseOffering(models.Model):
                     except ValueError:
                         pass
 
-                cumulative.append(round(points / credits, 2))
+                if credits != 0:
+                    cumulative.append(round(points / credits, 2))
 
             return round(median(cumulative), 2)
         except StatisticsError:
