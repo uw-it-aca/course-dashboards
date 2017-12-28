@@ -169,7 +169,7 @@ class CourseOffering(models.Model):
     @profile
     def concurrent_courses(self):
         course_dict = {}
-        for reg in self.all_student_registrations:
+        for reg in self.get_all_student_registrations():
             if reg.course.id != self.course.id and reg.term == self.term:
                 name = "%s" % reg.course
                 name = name[:name.rindex('-')]

@@ -14,6 +14,13 @@ class TestCourseOffering(TransactionTestCase):
         self.course.course_title = "Course Title"
         self.course.save()
 
+        self.cse_142 = Course()
+        self.cse_142.curriculum = "CSE"
+        self.cse_142.section_id = "A"
+        self.cse_142.course_number = 142
+        self.cse_142.course_title = "COMPUTER PROGRAMMING I"
+        self.cse_142.save()
+
         self.spring = Term()
         self.spring.quarter = Term.SPRING
         self.spring.year = 2016
@@ -30,6 +37,13 @@ class TestCourseOffering(TransactionTestCase):
         self.spring_ess.current_enrollment = 24
         self.spring_ess.limit_estimate_enrollment = 25
         self.spring_ess.save()
+
+        self.spring_cse = CourseOffering()
+        self.spring_cse.course = self.cse_142
+        self.spring_cse.term = self.spring
+        self.spring_cse.current_enrollment = 3
+        self.spring_cse.limit_estimate_enrollment = 25
+        self.spring_cse.save()
 
         self.winter_ess = CourseOffering()
         self.winter_ess.course = self.course
@@ -78,6 +92,15 @@ class TestCourseOffering(TransactionTestCase):
             reg.term = self.spring
             reg.user = self.students[x]
             reg.grade = 3.5
+            self.registrations.append(reg)
+            reg.save()
+
+            reg = Registration()
+            reg.credits = 5
+            reg.course = self.cse_142
+            reg.term = self.spring
+            reg.user = self.students[x]
+            reg.grade = 3.1
             self.registrations.append(reg)
             reg.save()
 
@@ -154,6 +177,10 @@ class TestCourseOffering(TransactionTestCase):
         major.term = self.spring
         self.student_majors.append(major)
         major.save()
+
+    def test_get_concurrent_courses(self):
+
+
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
