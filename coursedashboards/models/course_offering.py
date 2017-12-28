@@ -47,7 +47,13 @@ class CourseOffering(models.Model):
 
             points = 0.0
             credits = 0
-            for reg in Registration.objects.filter(user=student.user_id):
+            registrations = Registration.objects.filter(user=student.user_id)\
+                .annotate(Count('grade', distinct=True))\
+                .annotate(Count('credits', distinct=True)).values_list(
+                                                                    'grades',
+                                                                    'credits')
+
+            for reg in registrations:
                 try:
                     course_credits = int(reg.credits)
                     points += (float(reg.grade) * course_credits)
@@ -71,23 +77,40 @@ class CourseOffering(models.Model):
         """
         try:
             cumulative = []
-            threads = []
+
+            userids = []
+            user_regs = {}
             for student in self.get_students():
-                t = Thread(target=self.set_student_gpa,
-                           args=(student, cumulative,))
-                threads.append(t)
-                t.start()
+                userids.append(student.user_id)
+                # Credits, grade points
+                user_regs[student.user_id] = ([0, 0])
 
-            for t in threads:
-                t.join()
+            registrations = Registration.objects.filter(user_id__in=userids) \
+                .annotate(Count('grade', distinct=True)) \
+                .annotate(Count('credits', distinct=True)) \
+                .annotate(Count('user', distinct=True)).values_list('user',
+                                                                    'credits',
+                                                                    'grade')
 
-            return self.calc_med(cumulative)
+            for reg in registrations:
+                try:
+                    userid = int(reg[0])
+
+                    course_credits = int(reg[1])
+                    user_regs[userid][0] += course_credits
+
+                    points = (float(reg[2]) * course_credits)
+                    user_regs[userid][1] += points
+                except ValueError:
+                    pass
+
+            for grades in user_regs:
+                results = user_regs[grades]
+                cumulative.append(round(results[1] / results[0], 2))
+
+            return round(median(cumulative), 2)
         except StatisticsError:
             return None
-
-    @profile
-    def calc_med(self, cumulative):
-        return round(median(cumulative), 2)
 
     @profile
     def get_grades(self):
