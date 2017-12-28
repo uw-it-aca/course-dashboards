@@ -32,7 +32,8 @@ class CourseOffering(models.Model):
         """
         if not hasattr(self, 'students'):
             self.students = Registration.objects.filter(
-                course=self.course, term=self.term)
+                course=self.course, term=self.term).select_related('user')
+            repr(self.students)
 
         return self.students
 
@@ -206,7 +207,7 @@ class CourseOffering(models.Model):
         return self._get_majors(self.student_majors_for_term)
 
     def _get_majors(self, student_majors):
-        students = self.get_students().select_related('user')
+        students = self.get_students()
         total_students = float(len(students))
         majors = student_majors(students)
         majors_dict = defaultdict(int)
@@ -276,6 +277,8 @@ class CourseOffering(models.Model):
         json_obj['current_student_majors'] = self.get_majors()
 
     def set_course_data(self, json_obj):
+        self.get_students()
+
         threads = []
         t = Thread(target=self.set_json_repeating_total,
                    args=(json_obj,))
@@ -347,6 +350,8 @@ class CourseOffering(models.Model):
         past_obj['course_grades'] = self.get_grades()
 
     def set_past_offering_data(self, past_obj):
+        self.get_students()
+
         threads = []
         t = Thread(target=self.set_past_offering_instructors,
                    args=(past_obj,))
