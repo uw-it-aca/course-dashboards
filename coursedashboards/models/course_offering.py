@@ -71,11 +71,18 @@ class CourseOffering(models.Model):
         """
         try:
             cumulative = []
+            userids = []
+
+            for student in self.get_students():
+                userids.append(student.user_id)
+
+            all_registrations = Registration.objects.filter(user_id__in=
+                                                            userids)
 
             for student in self.get_students():
                 points = 0.0
                 credits = 0
-                for reg in Registration.objects.filter(user=student.user_id):
+                for reg in all_registrations.filter(user=student.user_id):
                     try:
                         course_credits = int(reg.credits)
                         points += (float(reg.grade) * course_credits)
