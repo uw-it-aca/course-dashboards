@@ -1,3 +1,4 @@
+from django.db.models import Count
 from statistics import median
 from statistics import StatisticsError
 from collections import defaultdict
@@ -33,7 +34,6 @@ class CourseOffering(models.Model):
         if not hasattr(self, 'students'):
             self.students = Registration.objects.filter(
                 course=self.course, term=self.term).select_related('user')
-            repr(self.students)
 
         return self.students
 
@@ -47,10 +47,14 @@ class CourseOffering(models.Model):
 
             points = 0.0
             credits = 0
-            for reg in Registration.objects.filter(user=student.user_id):
+            registrations = Registration.objects.filter(user=student.user_id)\
+                .annotate(Count('grade', distinct=True))\
+                .annotate(Count('credits', distinct=True)).values_list('grade', 'credits')
+
+            for reg in registrations:
                 try:
-                    course_credits = int(reg.credits)
-                    points += (float(reg.grade) * course_credits)
+                    course_credits = int(reg[1])
+                    points += (float(reg[0]) * course_credits)
                     credits += course_credits
                 except ValueError:
                     pass
@@ -277,8 +281,6 @@ class CourseOffering(models.Model):
         json_obj['current_student_majors'] = self.get_majors()
 
     def set_course_data(self, json_obj):
-        self.get_students()
-
         threads = []
         t = Thread(target=self.set_json_repeating_total,
                    args=(json_obj,))
@@ -350,8 +352,6 @@ class CourseOffering(models.Model):
         past_obj['course_grades'] = self.get_grades()
 
     def set_past_offering_data(self, past_obj):
-        self.get_students()
-
         threads = []
         t = Thread(target=self.set_past_offering_instructors,
                    args=(past_obj,))
