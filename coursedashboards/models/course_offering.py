@@ -71,17 +71,23 @@ class CourseOffering(models.Model):
         """
         try:
             cumulative = []
-            threads = []
-            for student in self.get_students():
-                t = Thread(target=self.set_student_gpa,
-                           args=(student, cumulative,))
-                threads.append(t)
-                t.start()
 
-            for t in threads:
-                t.join()
+            for student in self.get_students():
+                points = 0.0
+                credits = 0
+                for reg in Registration.objects.filter(user=student.user_id):
+                    try:
+                        course_credits = int(reg.credits)
+                        points += (float(reg.grade) * course_credits)
+                        credits += course_credits
+                    except ValueError:
+                        pass
+
+                cumulative.append(round(points / credits, 2))
 
             return round(median(cumulative), 2)
+        except StatisticsError:
+            return None
 
     @profile
     def get_grades(self):
