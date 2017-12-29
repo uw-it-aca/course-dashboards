@@ -6,7 +6,8 @@ from coursedashboards.models.course import Course
 
 class Registration(models.Model):
     user = models.ForeignKey(User,
-                             on_delete=models.PROTECT)
+                             on_delete=models.PROTECT,
+                             db_index=True)
     term = models.ForeignKey(Term,
                              on_delete=models.PROTECT)
     course = models.ForeignKey(Course,

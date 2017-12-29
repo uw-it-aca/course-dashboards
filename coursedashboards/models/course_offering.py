@@ -1,3 +1,6 @@
+from multiprocessing.pool import ThreadPool, Pool
+
+import math
 from django.db.models import Count
 from statistics import median
 from statistics import StatisticsError
@@ -78,20 +81,32 @@ class CourseOffering(models.Model):
 
             all_registrations = Registration.objects.filter(user_id__in=
                                                             userids)
+            repr(all_registrations)
 
+            processes = math.ceil(len(self.get_students()) / 20)
+            processes = int(processes) if processes > 0 else 1
+
+            pool = Pool(processes=processes)
+            results = []
+
+            user_regs = {}
             for student in self.get_students():
-                points = 0.0
-                credits = 0
-                for reg in all_registrations.filter(user=student.user_id):
-                    try:
-                        course_credits = int(reg.credits)
-                        points += (float(reg.grade) * course_credits)
-                        credits += course_credits
-                    except ValueError:
-                        pass
+                regs = all_registrations.filter(user=student.user_id)
+                user_regs[student.user_id] = regs
+                if len(user_regs) >= 20:
+                    results.append(pool.apply_async(_calculate_student_gpa,
+                                                    (user_regs,)))
+                    user_regs = {}
 
-                if credits != 0:
-                    cumulative.append(round(points / credits, 2))
+            if len(user_regs) > 0:
+                results.append(pool.apply_async(_calculate_student_gpa,
+                                                (user_regs,)))
+
+            for result in results:
+                gpa = result.get()
+
+                if gpa is not None:
+                    cumulative += gpa
 
             return round(median(cumulative), 2)
         except StatisticsError:
@@ -440,3 +455,25 @@ class CourseOffering(models.Model):
 
     def __str__(self):
         return "%s-%s" % (self.term, self.course)
+
+@profile
+def _calculate_student_gpa(user_registrations):
+    gpas = []
+
+    for user in user_registrations:
+        try:
+            points = 0.0
+            credits = 0
+            for reg in user_registrations[user]:
+                try:
+                    course_credits = int(reg.credits)
+                    points += (float(reg.grade) * course_credits)
+                    credits += course_credits
+                except ValueError:
+                    pass
+
+            gpas.append(round(points / credits, 2))
+        except ZeroDivisionError:
+            pass
+
+    return gpas
