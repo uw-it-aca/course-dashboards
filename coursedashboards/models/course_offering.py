@@ -148,7 +148,6 @@ class CourseOffering(models.Model):
 
     @profile
     def student_majors_for_term(self, students):
-        # TODO: use aggregator API here
         return [sm.major.major for sm in StudentMajor.objects.filter(
             user_id__in=students.values_list('user_id', flat=True),
             term=self.term).select_related('major')]
