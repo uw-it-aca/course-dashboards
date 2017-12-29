@@ -38,7 +38,7 @@ class CourseOffering(models.Model):
         return self.students
 
     @profile
-    def get_student_gpa(self, student):
+    def get_student_gpa(self, registrations):
         """
         Return current gpa for given student
         (assumption: all student registrations are modelled)
@@ -47,7 +47,7 @@ class CourseOffering(models.Model):
 
             points = 0.0
             credits = 0
-            for reg in Registration.objects.filter(user=student.user_id):
+            for reg in registrations:
                 try:
                     course_credits = int(reg.credits)
                     points += (float(reg.grade) * course_credits)
@@ -67,7 +67,7 @@ class CourseOffering(models.Model):
     @profile
     def get_cumulative_median_gpa(self):
         """
-        Return median gpa for this course offering
+        Return median gpa for this course offering at the time it was offered
         """
         try:
             cumulative = []
@@ -77,21 +77,16 @@ class CourseOffering(models.Model):
                 userids.append(student.user_id)
 
             all_registrations = Registration.objects.filter(user_id__in=
-                                                            userids)
+                                                            userids)\
+                .select_related('term')
 
             for student in self.get_students():
-                points = 0.0
-                credits = 0
-                for reg in all_registrations.filter(user=student.user_id):
-                    try:
-                        course_credits = int(reg.credits)
-                        points += (float(reg.grade) * course_credits)
-                        credits += course_credits
-                    except ValueError:
-                        pass
+                regs = all_registrations.filter(user=student.user_id)\
+                            .filter(term__term_key__lt=self.term.term_key)
+                gpa = self.get_student_gpa(regs)
 
-                if credits != 0:
-                    cumulative.append(round(points / credits, 2))
+                if gpa is not None:
+                    cumulative.append()
 
             return round(median(cumulative), 2)
         except StatisticsError:
