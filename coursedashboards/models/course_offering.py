@@ -77,8 +77,8 @@ class CourseOffering(models.Model):
             for student in self.get_students():
                 userids.append(student.user_id)
 
-            all_registrations = Registration.objects.filter(user_id__in=
-                                                            userids)\
+            all_registrations = Registration.objects.\
+                filter(user_id__in=userids)\
                 .filter(term__term_key__lt=self.term.term_key)\
                 .select_related('term')
 
