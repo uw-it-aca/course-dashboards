@@ -31,6 +31,11 @@ class TestCourseOffering(TransactionTestCase):
         self.winter.year = 2016
         self.winter.save()
 
+        self.autumn = Term()
+        self.autumn.quarter = Term.AUTUMN
+        self.autumn.year = 2015
+        self.autumn.save()
+
         self.spring_ess = CourseOffering()
         self.spring_ess.course = self.course
         self.spring_ess.term = self.spring
@@ -129,6 +134,33 @@ class TestCourseOffering(TransactionTestCase):
             major.save()
 
         reg = Registration()
+        reg.grade = 2.8
+        reg.course = self.course
+        reg.term = self.autumn
+        reg.credits = 5
+        reg.user = self.students[3]
+        reg.save()
+        self.registrations.append(reg)
+
+        reg = Registration()
+        reg.grade = 0.0
+        reg.course = self.cse_142
+        reg.term = self.autumn
+        reg.credits = 5
+        reg.user = self.students[4]
+        reg.save()
+        self.registrations.append(reg)
+
+        reg = Registration()
+        reg.grade = 3.7
+        reg.course = self.course
+        reg.term = self.autumn
+        reg.credits = 5
+        reg.user = self.students[5]
+        reg.save()
+        self.registrations.append(reg)
+
+        reg = Registration()
         reg.credits = 5
         reg.course = self.course
         reg.term = self.winter
@@ -201,7 +233,7 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_student_cgpa(self):
         cgpa = self.winter_ess.get_cumulative_median_gpa()
-        self.assertEquals(cgpa, 3.23)
+        self.assertEquals(cgpa, 2.8)
 
     def test_historic_fail_rate(self):
         fail_rate = self.spring_ess.get_fail_rate()

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models import Count
 from statistics import median
 from statistics import StatisticsError
@@ -78,15 +79,15 @@ class CourseOffering(models.Model):
 
             all_registrations = Registration.objects.filter(user_id__in=
                                                             userids)\
+                .filter(term__term_key__lt=self.term.term_key)\
                 .select_related('term')
 
             for student in self.get_students():
-                regs = all_registrations.filter(user=student.user_id)\
-                            .filter(term__term_key__lt=self.term.term_key)
+                regs = all_registrations.filter(user=student.user_id)
                 gpa = self.get_student_gpa(regs)
 
                 if gpa is not None:
-                    cumulative.append()
+                    cumulative.append(gpa)
 
             return round(median(cumulative), 2)
         except StatisticsError:
@@ -354,12 +355,21 @@ class CourseOffering(models.Model):
     def set_past_course_grades(self, past_obj):
         past_obj['course_grades'] = self.get_grades()
 
+    def set_past_median_gpa(self, past_obj):
+        past_obj['past_median_gpa'] = self.get_cumulative_median_gpa()
+
     def set_past_offering_data(self, past_obj):
         threads = []
         t = Thread(target=self.set_past_offering_instructors,
                    args=(past_obj,))
         threads.append(t)
         t.start()
+
+        if getattr(settings, "HISTORIC_CGPA_ENABLED", False):
+            t = Thread(target=self.set_past_median_gpa,
+                       args=(past_obj,))
+            threads.append(t)
+            t.start()
 
         t = Thread(target=self.set_past_offering_majors,
                    args=(past_obj,))
