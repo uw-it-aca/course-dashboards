@@ -4,11 +4,10 @@ This module direct interfaces with restclient for the term data
 
 import logging
 from datetime import datetime, timedelta
-
 import pytz
+import coursedashboards
 from coursedashboards.dao import is_using_file_dao
 from django.utils import timezone
-
 from coursedashboards.models import Term
 from restclients_core.exceptions import DataFailureException
 from uw_sws.section import is_a_term, is_b_term
@@ -121,9 +120,13 @@ def get_current_coda_term(request):
     Return a coursedashboards.models.Term object
     for the current quarter refered in the user session.
     """
+
+    # overriding this for continued testing
+
     sws_term = get_current_sws_quarter(request)
     term, created = Term.objects.get_or_create(
         year=sws_term.year, quarter=sws_term.quarter)
+
     return term
 
 

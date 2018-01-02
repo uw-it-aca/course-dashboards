@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.db.models import Count
 from statistics import median
 from statistics import StatisticsError
 from collections import defaultdict
@@ -32,20 +34,21 @@ class CourseOffering(models.Model):
         """
         if not hasattr(self, 'students'):
             self.students = Registration.objects.filter(
-                course=self.course, term=self.term)
+                course=self.course, term=self.term).select_related('user')
 
         return self.students
 
     @profile
-    def get_student_gpa(self, student):
+    def get_student_gpa(self, registrations):
         """
         Return current gpa for given student
         (assumption: all student registrations are modelled)
         """
         try:
+
             points = 0.0
             credits = 0
-            for reg in Registration.objects.filter(user=student.user):
+            for reg in registrations:
                 try:
                     course_credits = int(reg.credits)
                     points += (float(reg.grade) * course_credits)
@@ -65,19 +68,26 @@ class CourseOffering(models.Model):
     @profile
     def get_cumulative_median_gpa(self):
         """
-        Return median gpa for this course offering
+        Return median gpa for this course offering at the time it was offered
         """
         try:
             cumulative = []
-            threads = []
-            for student in self.get_students():
-                t = Thread(target=self.set_student_gpa,
-                           args=(student, cumulative,))
-                threads.append(t)
-                t.start()
+            userids = []
 
-            for t in threads:
-                t.join()
+            for student in self.get_students():
+                userids.append(student.user_id)
+
+            all_registrations = Registration.objects.\
+                filter(user_id__in=userids)\
+                .filter(term__term_key__lt=self.term.term_key)\
+                .select_related('term')
+
+            for student in self.get_students():
+                regs = all_registrations.filter(user=student.user_id)
+                gpa = self.get_student_gpa(regs)
+
+                if gpa is not None:
+                    cumulative.append(gpa)
 
             return round(median(cumulative), 2)
         except StatisticsError:
@@ -144,28 +154,54 @@ class CourseOffering(models.Model):
 
     @profile
     def last_student_undergraduate_major(self, students):
+
+        class_majors = self.retrieve_course_majors(students)
+        student_majors = self.sort_major_by_user(class_majors)
+
+        return self.process_individual_majors(student_majors)
+
+    @profile
+    def sort_major_by_user(self, class_majors):
+        student_majors = {}
+
+        for major in class_majors:
+            if major.user_id not in student_majors:
+                majors = []
+                student_majors[major.user_id] = majors
+            else:
+                majors = student_majors[major.user_id]
+
+            majors.append(major)
+
+        return student_majors
+
+    @profile
+    def retrieve_course_majors(self, students):
+        users = [student.user for student in students if student.user.is_alum]
+
+        queryset = StudentMajor.objects.filter(user__in=users,
+                                               major__degree_level=1) \
+            .select_related('major', 'term')
+        # trigger query for profiling:
+        repr(queryset)
+
+        return queryset
+
+    @profile
+    def process_individual_majors(self, student_majors):
         major_list = []
-        for student in students:
-            if student.user.is_alum:
-                majors = StudentMajor.objects.filter(
-                    user=student.user,
-                    major__degree_level=1)
+        for student in student_majors:
 
-                majors = sorted(majors, cmp=StudentMajor.sort_by_term,
-                                reverse=True)
+            majors = student_majors[student]
+            majors = sorted(majors, cmp=StudentMajor.sort_by_term,
+                            reverse=True)
 
-                graduated_term = None
-                # get most recent undergrad but not pre-x term
-                for major in majors:
-                    if major.major.degree_level == 1:
-                        graduated_term = major.term
-                        break
+            graduated_term = majors[0].term
 
-                if graduated_term is not None:
-                    majors = [major for major in majors
-                              if major.term == graduated_term]
+            majors = [major for major in majors
+                      if major.term == graduated_term]
 
-                    major_list += [sm.major.major for sm in majors]
+            major_list += [sm.major.major for sm in majors]
 
         return major_list
 
@@ -178,7 +214,7 @@ class CourseOffering(models.Model):
         return self._get_majors(self.student_majors_for_term)
 
     def _get_majors(self, student_majors):
-        students = self.get_students().select_related('user')
+        students = self.get_students()
         total_students = float(len(students))
         majors = student_majors(students)
         majors_dict = defaultdict(int)
@@ -273,6 +309,10 @@ class CourseOffering(models.Model):
             t.join()
 
     @profile
+    def retrieve_db_objects(self):
+        pass
+
+    @profile
     def json_object(self):
         json_obj = self.base_json_object()
 
@@ -314,12 +354,21 @@ class CourseOffering(models.Model):
     def set_past_course_grades(self, past_obj):
         past_obj['course_grades'] = self.get_grades()
 
+    def set_past_median_gpa(self, past_obj):
+        past_obj['past_median_gpa'] = self.get_cumulative_median_gpa()
+
     def set_past_offering_data(self, past_obj):
         threads = []
         t = Thread(target=self.set_past_offering_instructors,
                    args=(past_obj,))
         threads.append(t)
         t.start()
+
+        if getattr(settings, "HISTORIC_CGPA_ENABLED", False):
+            t = Thread(target=self.set_past_median_gpa,
+                       args=(past_obj,))
+            threads.append(t)
+            t.start()
 
         t = Thread(target=self.set_past_offering_majors,
                    args=(past_obj,))

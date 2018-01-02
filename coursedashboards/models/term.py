@@ -20,9 +20,19 @@ class Term(models.Model):
     year = models.PositiveSmallIntegerField()
 
     last_queried = models.DateTimeField(null=True, blank=True)
+    term_key = models.PositiveSmallIntegerField(db_index=True, default=0)
 
     def __str__(self):
         return "%s-%s" % (self.year, self.quarter)
+
+    def get_term_key(self):
+        return self.year * 10 + self._quarter_to_int(self.quarter)
+
+    def save(self, *args, **kwargs):
+        if self.term_key is 0:
+            self.term_key = self.get_term_key()
+
+        super(Term, self).save(*args, **kwargs)
 
     @staticmethod
     def compare_terms(first, other):
@@ -39,14 +49,14 @@ class Term(models.Model):
 
     @staticmethod
     def _quarter_to_int(quarter):
-        if quarter == 'winter':
-            return 0
-        elif quarter == 'spring':
+        if quarter.lower() == Term.WINTER:
             return 1
-        elif quarter == 'summer':
+        elif quarter.lower() == Term.SPRING:
             return 2
-        elif quarter == 'autumn':
+        elif quarter.lower() == Term.SUMMER:
             return 3
+        elif quarter.lower() == Term.AUTUMN:
+            return 4
 
     def __eq__(self, other):
         return (other is not None and

@@ -36,6 +36,9 @@ class TestTerm(TestCase):
                       self.autumn2017, self.spring2016, self.summer2017,
                       self.spring2017, self.winter2016]
 
+        for term in self.terms:
+            term.save()
+
     def test_term_sort(self):
         sorted_terms = sorted(self.terms, cmp=Term.compare_terms)
 
@@ -43,3 +46,15 @@ class TestTerm(TestCase):
                                         self.summer2016, self.autumn2016,
                                         self.winter2017, self.spring2017,
                                         self.summer2017, self.autumn2017])
+
+    def test_term_key(self):
+        self.assertEquals(Term.objects.get(year=2016,
+                                           quarter="spring").term_key,
+                          20162)
+        self.assertEquals(Term.objects.get(year=2017,
+                                           quarter="autumn").term_key,
+                          20174)
+
+    def tearDown(self):
+        for term in self.terms:
+            term.delete()

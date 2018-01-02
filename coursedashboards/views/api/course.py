@@ -1,3 +1,4 @@
+
 import json
 from django.http import HttpResponse
 from coursedashboards.models import Term, Course, CourseOffering
