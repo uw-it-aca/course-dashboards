@@ -124,12 +124,8 @@ def get_current_coda_term(request):
     # overriding this for continued testing
 
     sws_term = get_current_sws_quarter(request)
-    if not coursedashboards.dao.is_using_file_dao():
-        term, created = Term.objects.get_or_create(
-            year=2017, quarter="autumn")
-    else:
-        term, created = Term.objects.get_or_create(
-            year=sws_term.year, quarter=sws_term.quarter)
+    term, created = Term.objects.get_or_create(
+        year=sws_term.year, quarter=sws_term.quarter)
 
     return term
 
