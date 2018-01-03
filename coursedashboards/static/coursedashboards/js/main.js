@@ -512,11 +512,11 @@ function quarterIsInRange(past_offering, quarter, year) {
 }
 
 function getInstructedSections(past_offerings){
-    var instructed = []
+    var instructed = [];
 
     for(var i = 0; i < past_offerings.length; i++){
         if(isInstructor(past_offerings[i])){
-            instructed.push(past_offering);
+            instructed.push(past_offerings[i]);
         }
     }
 
