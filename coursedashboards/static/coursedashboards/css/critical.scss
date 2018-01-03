@@ -134,15 +134,30 @@ h2.heading-page, h2.coda-heading-page {
 }
 
 h3 {
-    font-size: 1.4rem; 
+    font-size: $font-header-large; 
+    font-family: 'encode_sans_normalbold', sans-serif;
+    font-weight: 600;
+    color:$uw-dark-gray;
+
 }
 
 h4 {
     padding-top:16px;
     font-size:1.2rem;
      &.list-header {
+        font-family: 'Open Sans Condesed', 'Encode Sans Compressed', Helvetica, arial, san-serif;
         border-bottom: 1px solid;
         padding-bottom: 4px;
+    }
+}
+
+.course-info {
+    .course-title {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        color: #444 !important;
+        font-size: 18px !important;
+        margin-top: 4px;
     }
 }
 
@@ -152,14 +167,6 @@ a {
 	&:focus, &:hover {
         color: $link_focus;
 	}
-}
-
-.sitename{
-	font-size: 2em;
-	margin: 38px 10px 0 110px;
-	font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif;
-	font-weight: 400;
-	color: white;
 }
 
 
