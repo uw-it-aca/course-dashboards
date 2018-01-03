@@ -11,6 +11,53 @@ $lightgold: #e8e3d3;
 $metgold: #85754d;
 $link_focus: #b5754d;
 
+/*** colors ***/
+$uw-purple: #4b2e83;
+$uw-purple-dark: darken($uw-purple, 3%);
+$uw-purple-light: #7b59b3;
+
+$uw-light-gray: #f5f5f5;
+$uw-dark-gray: #444444;
+
+$uw-gold: #e8e3d3; //lightgold
+$uw-metalic-gold: #85754d; //metgold
+$status-green: #27ae60;
+$status-red: #e74c3c;
+
+/*** heights ***/
+$nav-height: 65px;
+$bar-height: 40px;
+
+/*** widths ***/
+$tablet-width: 768px;
+$tablet-max: 1023px;
+$desktop-width: 1024px;
+$large-desktop-width: 1280px;
+
+$retina: "only screen and (-webkit-min-device-pixel-ratio: 2)";
+$print: "print";
+
+$tablet: "(min-width: #{$tablet-width} ) and (max-width: #{$tablet-max} )";
+$desktop:  "(min-width: #{$desktop-width} )";
+$large-desktop: "(min-width: #{$large-desktop-width} )"; 
+
+/***** Type *******/
+
+$fontface-card-title: 'encode_sans_normalbold', sans-serif;
+$fontface-card-heading: 'Roboto', sans-serif;
+$fontface-body: 'Open Sans', sans-serif;
+
+$fontsize-small: 12px;
+$fontsize-base: 14px;
+$fontsize-large: 18px;
+
+$font-header-larger: 26px;
+$font-header-large: 22px;
+$font-header-medium: 20px;
+$font-header-small: 18px;
+$font-header-smaller: 16px;
+$font-header-smallest: 14px;
+
 
 /*********** Development Style (clear out before production deploy ***********/
 
@@ -29,11 +76,7 @@ a.dummy {
 /*********** Global Reset ***********/
 
 html, body {
-    font-family: 'Open Sans', Helvetica, arial, san-serif;
-    padding:0;
-    margin:0;
-    height: 100%;
-    color:#333;
+    color:#000; padding: 0; margin: 0; font-family: "Open Sans",Helvetica,Arial,Verdana,sans-serif; min-width: 320px;font-size: $fontsize-base;
 }
 
 .col { flex: 1 0 50%; }
@@ -82,6 +125,14 @@ img {
 
 h1, h2, h3, h4 { font-family: 'Encode Sans Compressed', 'Open Sans Condensed', Helvetica, arial, san-serif; font-weight: bold; /*color: $uwpurple;*/ }   
 
+h2.heading-page, h2.coda-heading-page {
+    font-family: 'encode_sans_normalbold', sans-serif;
+    font-weight: 600;
+    color: #444;
+    margin: 0 0 8px 0;
+    font-size: $font-header-larger;
+}
+
 h3 {
     font-size: 1.4rem; 
 }
@@ -117,7 +168,7 @@ a {
 .no-wrap {white-space: nowrap;}
 
 
-.topbanner-bg {background-color: $uwpurple; /*height: 76px;*/ color: white;
+/*.topbanner-bg {background-color: $uw-purple; color: white;
     .uw-logo {
       display: block;
       text-indent: -9999px;
@@ -131,28 +182,63 @@ a {
     select {
         font-size:.8em;
     }
+}*/
+
+.coda-wrapper { margin: 0 auto; padding: 0 16px;
+    @media #{$desktop} { max-width: 1200px; };
+}
+
+.coda-body { background: $uw-light-gray; padding-bottom: 16px;
+
+    @media #{$desktop}  { padding: 32px 0; position: relative; }
+
+    .coda-wrapper {
+
+        @media #{$desktop}  {
+
+            display: flex;
+            flex-wrap:wrap;
+            flex-direction:row;
+            justify-content:flex-start;
+            align-items:stretch;
+
+            .coda-nav-col { order:1; flex-basis:200px; height:100%; margin: 0 16px 0 0;}
+            .coda-content { order:2; flex:1; height:100%; }
+        }
+
+        .coda-content {
+            // override bootstrap container class
+            .container { width: auto !important; padding: 0 !important; }
+        }
+    }
 }
 
 
+
 .coda-thin-bar {
-    background: #452a78;
-    line-height: 40px;
-    height: 40px;
+    background: $uw-purple-dark;
+    line-height: $bar-height;
+    height: $bar-height;
     font-size: 14px;
-    a {
+    a, button {
         color: #fff;
         display: inline-block;
         min-width: 30px;
-        height: 40px;
+        font-size: 13px;
+        height: $bar-height;
         background: none;
         border: none;
-        i {padding-right: 4px;font-size:15px;}
+        //i {padding-right: 4px;font-size:15px;}
+        
+        &:hover, &:focus { color: #fff;
+            span {  text-decoration: underline; }
+
+        }
     }
     .coda-netid {
         display: inline-block;
         span {
-            //font-size: 16px;
-            //padding-left: 4px;
+            margin-left: 3px;
         }
     }
     .coda-search-links {
@@ -162,23 +248,25 @@ a {
         margin-right: -3px;
         //font-size: 16px;
     }
+    
 }
 
 .coda-navigation {
-    background: #4b2e83;
-    height: 65px;
+    background: $uw-purple; 
+    height: $nav-height;
+
     .coda-wrapper {
         background-repeat: no-repeat;
         background-size: 45px;
         background-position: right 20px bottom;
-        height: 65px;
+        height: $nav-height;
         .coda-title {
             display: inline-block;
             color: #fff;
             font-size: 26px;
             font-weight: 400;
-            line-height: 65px;
-            height: 65px;
+            line-height: $nav-height;
+            height: $nav-height;
             a, .coda-navigation .coda-title a:hover, .coda-navigation .coda-title a:focus, .coda-navigation .coda-title a:visited {
                 color: #fff;
             }
@@ -186,6 +274,7 @@ a {
         }
     }
 }
+
 
 .userinfo {
     position: absolute;
