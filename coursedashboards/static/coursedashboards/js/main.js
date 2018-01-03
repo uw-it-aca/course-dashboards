@@ -536,7 +536,6 @@ function shouldDisplayCourse(offerings){
     if(offerings.length > 1 || offerings.length === 0) {
         return true;
     } else{
-        console.log(offerings);
         return isInstructor(offerings[0]);
     }
 }
