@@ -7,6 +7,7 @@
 
 var ALL_QUARTERS = "All Quarters";
 var ALL_YEARS = "All Years";
+var ALL_MY_COURSES = "All My Courses";
 var only_my_courses = false;
 
 $(document).ready(function () {
@@ -59,8 +60,8 @@ function displaySelectedCourse() {
     }
 
     if (window.section_historic_data[index].loaded){
-        showHistoricDataSelectors(index, "All Quarters", "All Years");
-        showHistoricCourseData(index, "All Quarters", "All Years");
+        showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
+        showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
     } else {
         fetchHistoricCourseData(index);
     }
@@ -111,7 +112,9 @@ function loadCourse(course) {
 function showCurrentCourseData(index) {
     var current = $("#current-course-data").html();
     var currentTemplate = Handlebars.compile(current);
+
     section = window.section_data[index];
+
     $("#current-course-target").html(currentTemplate({
         current_median: section.current_median,
         current_num_registered: section.current_enrollment,
@@ -127,10 +130,13 @@ function showCurrentCourseData(index) {
         canvas_course_url:section.canvas_course_url,
         display_course: section.display_course
     }));
+
     $('.course-title span').html(window.section_data[index].course_title);
+
     updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id,
               window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
               section.course_number + '-' + section.section_id);
+
     setup_exposures($("#current-course-target"));
 }
 
@@ -173,14 +179,11 @@ function fetchHistoricCourseData(index) {
         success: function(results) {
             window.section_historic_data[index] = results.past_offerings;
             window.section_historic_data[index].loaded = true;
-            showHistoricDataSelectors(index, "All Quarters", "All Years");
-            showHistoricCourseData(index, "All Quarters", "All Years");
+            showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
+            showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
 
+            setPillListeners();
 
-            $(".toggle-my-courses").click(function(){
-                only_my_courses = !only_my_courses;
-                updateHistoricDisplay()
-            });
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);
@@ -189,6 +192,20 @@ function fetchHistoricCourseData(index) {
             stopLoadingHistoricCourseData();
         }
     });
+}
+
+function setPillListeners(){
+    $("#myTab").on("click", ".all-courses", myCoursesToggle);
+    $("#myTab").on("click", ".my-courses", myCoursesToggle);
+}
+
+function myCoursesToggle(e){
+    var is_my_courses = $(e.currentTarget).hasClass("my-courses");
+
+    if(only_my_courses !== is_my_courses){
+        only_my_courses = is_my_courses;
+        updateHistoricDisplay();
+    }
 }
 
 function startLoadingHistoricCourseData() {
@@ -200,7 +217,7 @@ function stopLoadingHistoricCourseData() {
 }
 
 //Populate the historic data selectors for the currently selected course
-function showHistoricDataSelectors(index, quarter, year) {
+function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) {
     //Fix case of past quarters and create arrays without duplicate quarters/years
     var valid_quarters = [];
     var valid_years = [];
@@ -217,7 +234,7 @@ function showHistoricDataSelectors(index, quarter, year) {
     });
 
     //Remove any invalid combinations of quarter and year based on current selection
-    if (quarter != "All Quarters") {
+    if (quarter !== ALL_QUARTERS) {
         var remove_years = [];
         for (var y in valid_years)
             if (combined.indexOf(quarter + valid_years[y]) == -1)
@@ -227,7 +244,7 @@ function showHistoricDataSelectors(index, quarter, year) {
             remove_years.splice(0,1);
         }
     }
-    if (year != "All Years") {
+    if (year !== ALL_YEARS) {
         var remove_quarters = [];
         for (var q in valid_quarters)
             if (combined.indexOf(valid_quarters[q] + year) == -1)
@@ -242,22 +259,29 @@ function showHistoricDataSelectors(index, quarter, year) {
     var selectors = $("#historic-data-selectors").html();
     var selectorsTemplate = Handlebars.compile(selectors);
     var sections = window.section_historic_data[index];
+
+    var instructed_sections = getInstructedSections(sections);
+
     $("#historic-selector-target").html(selectorsTemplate({
-        past_quarters:prepOptions(quarter, valid_quarters, "All Quarters"),
-        past_years:prepOptions(year, valid_years, "All Years"),
+        past_quarters:prepOptions(quarter, valid_quarters, ALL_QUARTERS),
+        past_years:prepOptions(year, valid_years, ALL_YEARS),
         student_total:calculateTotalStudents(sections),
         year_count:calculatePastYearCount(sections),
+        index: index,
         curriculum:window.section_data[index].curriculum,
         course_number:window.section_data[index].course_number,
         section_id:window.section_data[index].section_id,
         total_students: calculateTotalStudents(sections),
-        section_count: calculateSectionCount(sections)
+        section_count: calculateSectionCount(sections),
+        instructed_sections: instructed_sections,
+        only_my_courses: only_my_courses
     }));
 
     //Historic data selection
     $(".historic-filter").change(function() {
         updateHistoricDisplay()
     });
+    setPillListeners();
 }
 
 function updateHistoricDisplay(){
@@ -265,16 +289,18 @@ function updateHistoricDisplay(){
     var newQuarter = $("select[name='historic_filter_quarter'] option:selected").val();
     var newYear = $("select[name='historic_filter_year'] option:selected").val();
 
+    var taught = $("select[name='historic_filter_taught'] option:selected").val();
+
     if(newYear === undefined){
         newYear = ALL_YEARS;
     }
 
-    if(newYear != ALL_YEARS) {
+    if(newYear !== ALL_YEARS) {
         newYear = parseInt(newYear)
     }
 
-    showHistoricDataSelectors(index, newQuarter, newYear);
-    showHistoricCourseData(index, newQuarter, newYear);
+    showHistoricDataSelectors(index, newQuarter, newYear, taught);
+    showHistoricCourseData(index, newQuarter, newYear, taught);
 }
 
 //Prepares the handlebars variable for historic data selectors
@@ -295,7 +321,7 @@ function prepOptions(selected, valid, all) {
 }
 
 //Display data about the past offerings of selected course - called whenever selection changes
-function showHistoricCourseData(index, quarter, year) {
+function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     var past_offerings = window.section_historic_data[index];
     var offerings = filterOfferings(past_offerings, quarter, year, only_my_courses);
 
@@ -306,6 +332,20 @@ function showHistoricCourseData(index, quarter, year) {
     var historic = $("#historic-course-data").html();
     var historicTemplate = Handlebars.compile(historic);
     var section_count = calculateSectionCount(offerings, quarter, year);
+
+    if(taught !== ALL_MY_COURSES){
+        var section = undefined;
+
+        for(var i = 0; i < offerings.length; i++){
+            if(taught === offerings[i].quarter + "-" + offerings[i].year){
+                section = offerings[i];
+            }
+        }
+
+        if(section !== undefined) {
+            offerings = [section];
+        }
+    }
 
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(offerings, "majors","major"),
@@ -318,7 +358,7 @@ function showHistoricCourseData(index, quarter, year) {
         total_students: calculateTotalStudents(offerings),
         section_count: section_count,
         instructors: getInstructors(offerings),
-        display_course: section_count >= 2
+        display_course: shouldDisplayCourse(offerings)
         //past_terms:window.section_data[index].past_offerings
     }));
 
@@ -363,16 +403,11 @@ function setup_exposures($container) {
 
 function filterOfferings(sections, quarter, year, only_my_courses){
     var filtered_sections = [];
-    console.log("My Coureses: " + only_my_courses)
 
     for(var i = 0; i < sections.length; i++){
-        console.log("Quarter in range: " + quarterIsInRange(sections[i], quarter, year) + " quarter: " + quarter + " year: " + year)
         if (quarterIsInRange(sections[i], quarter, year)){
             if(!only_my_courses || only_my_courses && isInstructor(sections[i])){
-                filtered_sections.push(sections[i])
-                console.log()
-            } else {
-                console.log("Not instructor!")
+                filtered_sections.push(sections[i]);
             }
         }
     }
@@ -476,6 +511,18 @@ function quarterIsInRange(past_offering, quarter, year) {
     return (past_offering.year === year && quarter === past_offering.quarter)
 }
 
+function getInstructedSections(past_offerings){
+    var instructed = []
+
+    for(var i = 0; i < past_offerings.length; i++){
+        if(isInstructor(past_offerings[i])){
+            instructed.push(past_offering);
+        }
+    }
+
+    return instructed;
+}
+
 function isInstructor(past_offering){
     for(var i = 0; i < past_offering.instructors.length; i++){
         if (past_offering.instructors[i].uwnetid === window.user.netid){
@@ -483,6 +530,15 @@ function isInstructor(past_offering){
         }
     }
     return false;
+}
+
+function shouldDisplayCourse(offerings){
+    if(offerings.length > 1 || offerings.length === 0) {
+        return true;
+    } else{
+        console.log(offerings);
+        return isInstructor(offerings[0]);
+    }
 }
 
 //order majors/courses by number of students
