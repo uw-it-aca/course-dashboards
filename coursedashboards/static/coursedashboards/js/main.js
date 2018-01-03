@@ -262,6 +262,14 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
 
     var instructed_sections = getInstructedSections(sections);
 
+    for (var i = 0; i < instructed_sections.length; i++){
+        if(offeringMatchesQuarter(instructed_sections[i], taught)){
+            instructed_sections[i]['selected'] = "selected";
+        } else {
+            instructed_sections[i]['selected'] = "";
+        }
+    }
+
     $("#historic-selector-target").html(selectorsTemplate({
         past_quarters:prepOptions(quarter, valid_quarters, ALL_QUARTERS),
         past_years:prepOptions(year, valid_years, ALL_YEARS),
@@ -274,7 +282,8 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
         total_students: calculateTotalStudents(sections),
         section_count: calculateSectionCount(sections),
         instructed_sections: instructed_sections,
-        only_my_courses: only_my_courses
+        only_my_courses: only_my_courses,
+        all_my_courses: taught == ALL_MY_COURSES ? "selected" : ""
     }));
 
     //Historic data selection
@@ -290,6 +299,7 @@ function updateHistoricDisplay(){
     var newYear = $("select[name='historic_filter_year'] option:selected").val();
 
     var taught = $("select[name='historic_filter_taught'] option:selected").val();
+    taught = taught.replace(' ', '-');
 
     if(newYear === undefined){
         newYear = ALL_YEARS;
@@ -331,13 +341,12 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
 
     var historic = $("#historic-course-data").html();
     var historicTemplate = Handlebars.compile(historic);
-    var section_count = calculateSectionCount(offerings, quarter, year);
 
     if(taught !== ALL_MY_COURSES){
         var section = undefined;
 
         for(var i = 0; i < offerings.length; i++){
-            if(taught === offerings[i].quarter + "-" + offerings[i].year){
+            if(offeringMatchesQuarter(offerings[i], taught)){
                 section = offerings[i];
             }
         }
@@ -346,6 +355,8 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
             offerings = [section];
         }
     }
+
+    var section_count = calculateSectionCount(offerings, quarter, year);
 
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(offerings, "majors","major"),
@@ -530,6 +541,10 @@ function isInstructor(past_offering){
         }
     }
     return false;
+}
+
+function offeringMatchesQuarter(offering, taught){
+    return taught === offering.quarter + "-" + offering.year;
 }
 
 function shouldDisplayCourse(offerings){
