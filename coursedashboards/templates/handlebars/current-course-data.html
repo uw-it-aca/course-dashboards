@@ -11,10 +11,14 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                <dl class="row">
+                <ul class="list-unstyled">
+                    <li><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}" title="View course details in Teaching page"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Course details<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>
+                    {{#if canvas_course_url}}<li><a href="{{canvas_course_url}}"><i class="fa fa-book" aria-hidden="true"></i> Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>{{/if}}
+                </ul>
+                <!--<dl class="row">
                     <dt class="col-sm-3">Details</dt>
                     <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a>{{/if}}</dd>
-                </dl>
+                </dl>-->
             </div>
         </div>
     </div>
