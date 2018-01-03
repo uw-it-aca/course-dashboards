@@ -42,7 +42,7 @@
                     <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
                     <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught" aria-controls="historic-course-target">
 
-                        <option data-label="All My Courses" {{selected}}>All My Courses</option>
+                        <option data-label="All My Courses" selected>All My Courses</option>
 
                         {{#each instructed_sections}}
                             <option data-label="{{../index}}:{{quarter}}-{{year}}">{{quarter}} {{year}}</option>
