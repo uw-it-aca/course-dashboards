@@ -295,11 +295,19 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
 
 function updateHistoricDisplay(){
     var index = $("select[name='my_courses'] option:selected").index();
-    var newQuarter = $("select[name='historic_filter_quarter'] option:selected").val();
-    var newYear = $("select[name='historic_filter_year'] option:selected").val();
 
-    var taught = $("select[name='historic_filter_taught'] option:selected").val();
-    taught = taught.replace(' ', '-');
+    var taught = ALL_MY_COURSES;
+    var newQuarter = ALL_QUARTERS;
+    var newYear = ALL_YEARS;
+
+    if(only_my_courses){
+        taught = $("select[name='historic_filter_taught'] option:selected").val();
+        taught = taught.replace(' ', '-');
+    } else {
+        newQuarter = $("select[name='historic_filter_quarter'] option:selected").val();
+        newYear = $("select[name='historic_filter_year'] option:selected").val();
+    }
+
 
     if(newYear === undefined){
         newYear = ALL_YEARS;
