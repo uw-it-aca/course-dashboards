@@ -21,6 +21,11 @@ $(document).ready(function () {
     } else {
         displaySelectedCourse();
     }
+
+    //Listed for course dropdown selection change
+    $("#my_courses").change(function() {
+        displaySelectedCourse();
+    });
 });
 
 
