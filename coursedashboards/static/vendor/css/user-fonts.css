@@ -10,14 +10,14 @@
 }
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
-/*
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'user-fonts';
     src: url('../font/user-fonts.svg?71088049#user-fonts') format('svg');
   }
 }
-*/
+
  
  [class^="icon-"]:before, [class*=" icon-"]:before {
   font-family: "user-fonts";
@@ -30,7 +30,7 @@
   width: 1em;
   margin-right: .2em;
   text-align: center;
-  /* opacity: .8; */
+  opacity: .8; 
  
   /* For safety - reset parent styles, that can break glyph codes*/
   font-variant: normal;
