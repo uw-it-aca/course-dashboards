@@ -3,21 +3,22 @@
 {% load staticfiles %}
 
         <header class="topbanner-bg" role="banner">
+            <h1 class="sr-only">Course Dashboard</h1>
             <div aria-labelledby="coda_banner">
                 <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
                 <div class="coda-thin-bar">
-                    <div class="coda-wrapper container">
+                    <div class="coda-wrapper">
                         <div class="coda-netid">
-                            <i class="ion-person" aria-hidden="true"></i><span><span class="visually-hidden">Logged in as: </span> {{netid}}</span>
+                            <span class="visually-hidden">Logged in as: </span> <a href="https://my.uw.edu/profile/"><i class="icon-user icon-user-female" aria-hidden="true"></i><span>{{netid}}</span></a>
                         </div>
                         <div class="coda-search-links">
-                            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Sign Out</span></a>
+                            <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true" style="font-size: 15px;"></i> <span>Sign Out</span></a>
                         </div>
                     </div>
                 </div>
-                <div class="coda-navigation container">
+                <div class="coda-navigation">
                     <div class="coda-wrapper" style="background-image: url({% static 'coursedashboards/img/w-logo-white.png' %})">
-                        <h1 id="coda_banner"><div class="coda-title"><a href="https://my.uw.edu">MyUW</a> <i class="ion-chevron-right" aria-hidden="true"></i> <span class="hide-sm">Course</span> Dashboard</div></h1>
+                        <div class="coda-title"><a href="https://my.uw.edu">MyUW</a>
                     </div>
                 </div>
             </div>

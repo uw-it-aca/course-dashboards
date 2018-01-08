@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
-<select class="form-control" name="my_courses" id="my_courses" aria-contols="current-course-target">
+<select class="form-control form-control-lg" name="my_courses" id="my_courses" aria-contols="current-course-target">
   <optgroup label="{{quarter}} {{year}}">
     {{#each sections}}
     <option data-label="{{section_label}}" {{#if @first}}selected{{/if}}>{{curriculum}} {{course_number}} {{section_id}}</option>
