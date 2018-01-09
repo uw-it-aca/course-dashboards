@@ -83,8 +83,13 @@ $data_desctext: #787878;
             margin-top: .5rem;
             .nav { padding-bottom: 1rem;
                 .nav-item {
-                    a {padding: 0 .5em;}
-                    &.active a { pointer-events: none; cursor: default; color:#333; 
+                    .nav-link {padding: 0 .5em;
+                        &.nohref {
+                            color: #0077c2;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                        &.active { pointer-events: none; cursor: default; color:#333; background-color:transparent;}
                     }
                 }
             }
