@@ -14,9 +14,7 @@ def save_term_key(apps, schema_editor):
     terms = Term.objects.all()
 
     for term in terms:
-        print "Before: " + str(term.term_key)
         term.save()
-        print "After: " + str(term.term_key)
 
 
 class Migration(migrations.Migration):
