@@ -253,6 +253,12 @@ class TestCourseOffering(TransactionTestCase):
         fail_rate = self.spring_ess.get_fail_rate()
         self.assertEqual(fail_rate, 1 / 7)
 
+    def test_past_json(self):
+        json = self.spring_ess.past_offerings_json_object()
+        json = json['past_offerings'][0]
+
+        self.assertEquals(json['enrollment'], 25)
+
     def tearDown(self):
         for stumaj in self.student_majors:
             stumaj.delete()

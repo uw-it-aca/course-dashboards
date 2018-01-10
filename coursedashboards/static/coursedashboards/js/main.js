@@ -458,7 +458,7 @@ function getInstructors(sections) {
 function calculateTotalStudents(sections) {
     var total_students = 0;
     for (var o = 0; o < sections.length; o++) {
-        total_students += sections[o].course_grades.length;
+        total_students += sections[o].enrollment;
     }
 
     return total_students;
