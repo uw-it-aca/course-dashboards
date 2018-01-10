@@ -397,6 +397,7 @@ class CourseOffering(models.Model):
         off_obj = {
             "year": course_offering.term.year,
             "quarter": course_offering.term.quarter,
+            "enrollment": course_offering.current_enrollment
         }
 
         course_offering.set_past_offering_data(off_obj)
