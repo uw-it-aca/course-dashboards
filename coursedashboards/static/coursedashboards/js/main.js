@@ -458,7 +458,7 @@ function getInstructors(sections) {
 function calculateTotalStudents(sections) {
     var total_students = 0;
     for (var o = 0; o < sections.length; o++) {
-        total_students += sections[o].course_grades.length;
+        total_students += sections[o].enrollment;
     }
 
     return total_students;
@@ -509,15 +509,21 @@ function calculateFailedPercentage(sections) {
 function calculateCommon(sections, list_type, name_type) {
     var obj = {};
     var total_students = 0;
+
     for (var o = 0; o < sections.length; o++) {
         var term_obj = sections[o][list_type];
+        total_students += sections[o].enrollment;
+
         for (var m = 0; m < term_obj.length; m++) {
-            total_students += term_obj[m].number_students;
-            if (obj.hasOwnProperty(term_obj[m][name_type]))
+
+            if (obj.hasOwnProperty(term_obj[m][name_type])) {
                 obj[term_obj[m][name_type]] += term_obj[m].number_students;
-            else obj[term_obj[m][name_type]] = term_obj[m].number_students;
+            } else {
+                obj[term_obj[m][name_type]] = term_obj[m].number_students;
+            }
         }
     }
+    
     return sortObj(obj, total_students, name_type);
 }
 
