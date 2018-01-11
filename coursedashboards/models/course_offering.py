@@ -99,7 +99,8 @@ class CourseOffering(models.Model):
         Return grade array for course offering
         """
         return [float(s.grade) for s in self.get_students()
-                if s.grade[0] in '01234']
+                if s.grade is not None and len(s.grade) > 0 and
+                s.grade[0] in '01234']
 
     @profile
     def get_repeating_total(self):
