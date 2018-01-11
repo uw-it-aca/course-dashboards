@@ -509,6 +509,7 @@ function calculateFailedPercentage(sections) {
 function calculateCommon(sections, list_type, name_type) {
     var obj = {};
     var total_students = 0;
+    var original_objects = {}
 
     for (var o = 0; o < sections.length; o++) {
         var term_obj = sections[o][list_type];
@@ -520,11 +521,21 @@ function calculateCommon(sections, list_type, name_type) {
                 obj[term_obj[m][name_type]] += term_obj[m].number_students;
             } else {
                 obj[term_obj[m][name_type]] = term_obj[m].number_students;
+                original_objects[term_obj[m][name_type]] = term_obj[m];
             }
         }
     }
-    
-    return sortObj(obj, total_students, name_type);
+
+    var result = sortObj(obj, total_students, name_type);
+
+    if (name_type === "course"){
+        for(var i = 0; i < result.length; i++){
+            result[i]['title'] = original_objects[result[i].course].title;
+
+        }
+    }
+
+    return result;
 }
 
 //check if past offering was in the range selected in the dropdowns
@@ -577,6 +588,7 @@ function shouldDisplayCourse(offerings){
 //order majors/courses by number of students
 function sortObj(arr, total_students, name_type) {
     var sorted = [];
+
     for (var i in arr) {
         if (name_type == "major")
             sorted.push({"major":i, "number_students":arr[i], "percent_students": ((arr[i]/total_students)*100).toFixed(2)});
