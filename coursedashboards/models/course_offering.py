@@ -284,6 +284,12 @@ class CourseOffering(models.Model):
         json_obj['current_student_majors'] = self.get_majors()
 
     def set_course_data(self, json_obj):
+        # get students first
+
+        self.get_students()
+        repr(self.get_students())
+
+        # start threads
         threads = []
         t = Thread(target=self.set_json_repeating_total,
                    args=(json_obj,))
@@ -365,6 +371,12 @@ class CourseOffering(models.Model):
         past_obj['past_median_gpa'] = self.get_cumulative_median_gpa()
 
     def set_past_offering_data(self, past_obj):
+        # get students first
+
+        self.get_students()
+        repr(self.get_students())
+
+        # start threads
         threads = []
         t = Thread(target=self.set_past_offering_instructors,
                    args=(past_obj,))
