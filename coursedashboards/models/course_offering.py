@@ -320,6 +320,13 @@ class CourseOffering(models.Model):
 
         self.set_course_data(json_obj)
 
+        fields = ["current_repeating", "current_student_majors",
+                  "current_student_majors", "concurrent_courses"]
+
+        for field in fields:
+            if field not in json_obj:
+                raise(Exception("There was an error in data processing!"))
+
         log_profile_data('%s,%s' % (self.term, self.course), logger)
         clear_prof_data()
         return json_obj
@@ -401,6 +408,14 @@ class CourseOffering(models.Model):
         }
 
         course_offering.set_past_offering_data(off_obj)
+
+        fields = ["instructors", "majors", "concurrent_courses",
+                  "course_grades"]
+
+        for field in fields:
+            if field not in off_obj:
+                raise(Exception("There was an error in data processing!"))
+
         offerings.append(off_obj)
 
     @profile
