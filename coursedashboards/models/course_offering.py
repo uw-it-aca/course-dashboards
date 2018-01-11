@@ -34,7 +34,7 @@ class CourseOffering(models.Model):
         """
         if not hasattr(self, 'students'):
             self.students = Registration.objects.filter(
-                course=self.course, term=self.term).select_related('user')
+                course=self.course, term=self.term)
 
         return self.students
 
@@ -99,7 +99,8 @@ class CourseOffering(models.Model):
         Return grade array for course offering
         """
         return [float(s.grade) for s in self.get_students()
-                if s.grade[0] in '01234']
+                if s.grade is not None and len(s.grade) > 0 and
+                s.grade[0] in '01234']
 
     @profile
     def get_repeating_total(self):
@@ -154,6 +155,8 @@ class CourseOffering(models.Model):
 
     @profile
     def last_student_undergraduate_major(self, students):
+
+        students = students.select_related('user')
 
         class_majors = self.retrieve_course_majors(students)
         student_majors = self.sort_major_by_user(class_majors)
@@ -320,6 +323,13 @@ class CourseOffering(models.Model):
 
         self.set_course_data(json_obj)
 
+        fields = ["current_repeating", "current_student_majors",
+                  "current_student_majors", "concurrent_courses"]
+
+        for field in fields:
+            if field not in json_obj:
+                raise(Exception("There was an error in data processing!"))
+
         log_profile_data('%s,%s' % (self.term, self.course), logger)
         clear_prof_data()
         return json_obj
@@ -401,6 +411,7 @@ class CourseOffering(models.Model):
         }
 
         course_offering.set_past_offering_data(off_obj)
+
         offerings.append(off_obj)
 
     @profile
@@ -426,6 +437,14 @@ class CourseOffering(models.Model):
 
         for t in threads:
             t.join()
+
+        fields = ["instructors", "majors", "concurrent_courses",
+                  "course_grades", "latest_majors"]
+
+        for offering in offerings:
+            for field in fields:
+                if field not in offering:
+                    raise (Exception("There was an error in data processing!"))
 
         return offerings if len(offerings) >= min_offerings else []
 

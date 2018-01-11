@@ -86,7 +86,7 @@ class TestCourseOffering(TransactionTestCase):
         self.registrations = []
         self.student_majors = []
 
-        for x in range(0, 7):
+        for x in range(0, 10):
             user = User()
             user.uwnetid = "netid" + str(x)
             user.save()
@@ -209,6 +209,17 @@ class TestCourseOffering(TransactionTestCase):
         reg.is_repeat = False
         self.registrations.append(reg)
         reg.save()
+        reg.save()
+
+        reg = Registration()
+        reg.credits = 5
+        reg.course = self.course
+        reg.term = self.winter
+        reg.user = self.students[7]
+        reg.grade = ""
+        reg.is_repeat = False
+        self.registrations.append(reg)
+        reg.save()
 
         major = StudentMajor()
         major.major = self.majors[2]
@@ -234,7 +245,7 @@ class TestCourseOffering(TransactionTestCase):
         self.assertEqual(len(spring_students), 3)
 
         winter_students = self.winter_ess.get_students()
-        self.assertEqual(len(winter_students), 4)
+        self.assertEqual(len(winter_students), 5)
 
     def test_majors(self):
         majors = self.winter_ess.get_majors()
@@ -258,6 +269,10 @@ class TestCourseOffering(TransactionTestCase):
         json = json['past_offerings'][0]
 
         self.assertEquals(json['enrollment'], 25)
+
+    def test_get_grades(self):
+        grades = self.winter_ess.get_grades()
+        self.assertEquals(grades, [3.5, 3.5, 0.7, 2.4])
 
     def tearDown(self):
         for stumaj in self.student_majors:
