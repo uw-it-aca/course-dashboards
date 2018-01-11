@@ -132,8 +132,9 @@ class CourseOffering(models.Model):
         course_dict = {}
         for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
-                name = "%s" % reg.course
-                name = name[:name.rindex('-')]
+                name = "%s-%s|%s" % (reg.course.curriculum,
+                                     reg.course.course_number,
+                                     reg.course.course_title)
                 if name in course_dict:
                     course_dict[name] += 1
                 else:
@@ -141,7 +142,8 @@ class CourseOffering(models.Model):
 
         total_students = float(len(self.get_students()))
         return [{
-            "course": sort,
+            "course": sort.split("|")[0],
+            "title": sort.split("|")[1],
             "number_students": course_dict[sort],
             "percent_students": round(
                 (float(course_dict[sort]) / total_students) * 100.0, 2)
