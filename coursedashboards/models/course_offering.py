@@ -409,13 +409,6 @@ class CourseOffering(models.Model):
 
         course_offering.set_past_offering_data(off_obj)
 
-        fields = ["instructors", "majors", "concurrent_courses",
-                  "course_grades"]
-
-        for field in fields:
-            if field not in off_obj:
-                raise(Exception("There was an error in data processing!"))
-
         offerings.append(off_obj)
 
     @profile
@@ -441,6 +434,15 @@ class CourseOffering(models.Model):
 
         for t in threads:
             t.join()
+
+
+        fields = ["instructors", "majors", "concurrent_courses",
+                  "course_grades", "latest_majors"]
+
+        for offering in offerings:
+            for field in fields:
+                if field not in offering:
+                    raise (Exception("There was an error in data processing!"))
 
         return offerings if len(offerings) >= min_offerings else []
 
