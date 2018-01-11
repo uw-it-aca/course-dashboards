@@ -34,7 +34,7 @@ class CourseOffering(models.Model):
         """
         if not hasattr(self, 'students'):
             self.students = Registration.objects.filter(
-                course=self.course, term=self.term).select_related('user')
+                course=self.course, term=self.term)
 
         return self.students
 
@@ -155,6 +155,8 @@ class CourseOffering(models.Model):
 
     @profile
     def last_student_undergraduate_major(self, students):
+
+        students = students.select_related('user')
 
         class_majors = self.retrieve_course_majors(students)
         student_majors = self.sort_major_by_user(class_majors)
