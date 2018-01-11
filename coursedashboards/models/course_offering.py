@@ -448,7 +448,6 @@ class CourseOffering(models.Model):
         for t in threads:
             t.join()
 
-
         fields = ["instructors", "majors", "concurrent_courses",
                   "course_grades", "latest_majors"]
 
