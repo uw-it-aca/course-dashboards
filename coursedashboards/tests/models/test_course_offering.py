@@ -179,7 +179,7 @@ class TestCourseOffering(TransactionTestCase):
         reg.course = self.course
         reg.term = self.winter
         reg.user = self.students[5]
-        reg.grade = 0.7
+        reg.grade = 0.0
         self.registrations.append(reg)
         reg.save()
 
@@ -262,7 +262,7 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_historic_fail_rate(self):
         fail_rate = self.spring_ess.get_fail_rate()
-        self.assertEqual(fail_rate, 1 / 7)
+        self.assertEqual(fail_rate, 1.0 / 10.0)
 
     def test_past_json(self):
         json = self.spring_ess.past_offerings_json_object()
@@ -272,7 +272,7 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_get_grades(self):
         grades = self.winter_ess.get_grades()
-        self.assertEquals(grades, [3.5, 3.5, 0.7, 2.4])
+        self.assertEquals(grades, [3.5, 3.5, 0.0, 2.4])
 
     def tearDown(self):
         for stumaj in self.student_majors:
