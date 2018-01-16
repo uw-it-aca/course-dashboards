@@ -234,29 +234,21 @@ class CourseOffering(models.Model):
             } for sort in sorted(
                 majors_dict, reverse=True, key=majors_dict.get)]
 
+    @profile
     def get_fail_rate(self):
-        past_objs = []
-        threads = []
 
-        for co in CourseOffering.objects.filter(
-                course=self.course).select_related('course', 'term'):
-            past_obj = {}
-            past_objs.append(past_obj)
-
-            t = Thread(target=co.set_past_course_grades,
-                       args=(past_obj,))
-            threads.append(t)
-            t.start()
-
-        for t in threads:
-            t.join()
+        registrations = Registration.objects.filter(course=self.course)\
+            .values('grade').annotate(total=Count('grade')).order_by('total')
 
         total = 0.0
         failed = 0.0
-        for past_obj in past_objs:
-            total += len(past_obj['course_grades'])
-            failed += len([grade for grade in past_obj['course_grades']
-                          if grade < 0.7])
+
+        for reg in registrations:
+            if len(reg['grade']) > 0 and reg['grade'][0] in '01234':
+                if float(reg['grade']) == 0.0:
+                    failed += reg['total']
+
+                total += reg['total']
 
         if total == 0:
             return 0
