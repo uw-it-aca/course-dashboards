@@ -531,7 +531,6 @@ function calculateCommon(sections, list_type, name_type) {
     if (name_type === "course"){
         for(var i = 0; i < result.length; i++){
             result[i]['title'] = original_objects[result[i].course].title;
-
         }
     }
 

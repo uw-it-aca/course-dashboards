@@ -51,7 +51,7 @@
         <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses</h4>
         <ol class="list-unstyled">
            {{#each concurrent_courses}}
-            <li><strong>{{ roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
+            <li><strong>{{ roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
            {{/each}}
        </ol>
        <div><a href="#" class="toggle-show">Show more<span class="sr-only"> concurrent courses taken this quarter</span>...</a></div>
