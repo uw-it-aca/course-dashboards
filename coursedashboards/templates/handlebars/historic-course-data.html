@@ -51,7 +51,7 @@
         <h4 id="historic_common_courses" class="list-header">Concurrent Courses</h4>
         <ol class="list-unstyled" aria-labelledby="historic_common_courses">
             {{#each common_courses}}
-           <li><strong>{{roundPercentage percent_students}}%</strong> <span>{{course}}</span></li>
+           <li><strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
            {{/each}}
        </ol>
        <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> historic concurrent courses taken</span>...</a></div>
