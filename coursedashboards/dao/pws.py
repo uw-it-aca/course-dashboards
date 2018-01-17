@@ -5,6 +5,7 @@ provides information of the current user
 
 import logging
 from uw_pws import PWS
+from coursedashboards.dao.exceptions import MissingNetIDException
 from coursedashboards.util.retry import retry
 from coursedashboards.dao import get_netid_of_current_user
 from urllib3.exceptions import MaxRetryError

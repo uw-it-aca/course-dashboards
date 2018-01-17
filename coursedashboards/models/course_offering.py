@@ -306,10 +306,6 @@ class CourseOffering(models.Model):
             t.join()
 
     @profile
-    def retrieve_db_objects(self):
-        pass
-
-    @profile
     def json_object(self):
         json_obj = self.base_json_object()
 
