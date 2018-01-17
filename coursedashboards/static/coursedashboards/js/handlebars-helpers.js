@@ -19,3 +19,7 @@ Handlebars.registerHelper('formatName', function(name) {
         return name;
     }
 });
+
+Handlebars.registerHelper('myPlanFormat', function(name) {
+    return name.replace("-", "");
+});

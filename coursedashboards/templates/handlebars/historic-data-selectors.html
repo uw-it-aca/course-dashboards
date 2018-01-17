@@ -9,17 +9,17 @@
 <div class="row">
     <div class="historic-filters col">
         <ul class="nav nav-pills" id="myTab" role="tablist">
-            <li class="nav-item active">
-                <a class="nav-link" id="allcourses-tab" data-toggle="pill" href="#allcourses" role="tab" aria-controls="allcourses" aria-selected="true">All Courses</a>
+            <li class="nav-item">
+                <a class="nav-link all-courses nohref {{#if only_my_courses}} {{else}} active {{/if}}" id="allcourses-tab" role="button" aria-selected="true">All Courses</a>
             </li> |
             <li class="nav-item">
-                <a class="nav-link" id="mycourses-tab" data-toggle="pill" href="#mycourses" role="tab" aria-controls="mycourses" aria-selected="false">Only My Courses</a>
+                <a class="nav-link my-courses nohref {{#if only_my_courses}} active{{/if}}" id="mycourses-tab" role="button" aria-selected="false">Only My Courses</a>
             </li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div class="tab-pane active" id="allcourses" role="tabpanel">
+            <div class="tab-pane  {{#if only_my_courses}} {{else}} active {{/if}}" id="allcourses" role="tabpanel">
                 <div class="d-inline-block">
                    <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
                    <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter" aria-controls="historic-course-target">
@@ -27,23 +27,27 @@
                            <option data-label="{{name}}" {{selected}}>{{name}}</option>
                        {{/each}}
                    </select>
-                </div> 
+                </div>
                 <div class="d-inline-block">
                     <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
                     <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year" aria-controls="historic-course-target">
-                         {{#each past_years}}
+                       {{#each past_years}}
                            <option data-label="{{name}}" {{selected}}>{{name}}</option>
                        {{/each}}
                     </select>
                 </div>
             </div>
-            <div class="tab-pane" id="mycourses" role="tabpanel">
+            <div class="tab-pane  {{#if only_my_courses}} active {{/if}}" id="mycourses" role="tabpanel">
                 <div class="d-inline-block">
                     <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
                     <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught" aria-controls="historic-course-target">
-                       
-                        <option data-label="{{name}}" {{selected}}>All My Courses</option>
-                       
+
+                        <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
+
+                        {{#each instructed_sections}}
+                            <option data-label="{{../index}}:{{quarter}}-{{year}}" {{selected}}>{{quarter}} {{year}}</option>
+                        {{/each}}
+
                     </select>
                </div>
             </div>

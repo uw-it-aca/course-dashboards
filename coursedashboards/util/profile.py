@@ -9,7 +9,7 @@ PROF_DATA = {}
 def profile(fn):
     @wraps(fn)
     def with_profiling(*args, **kwargs):
-        if not getattr(settings, 'DEBUG', False):
+        if not getattr(settings, 'CODA_PROFILE', False):
             return fn(*args, **kwargs)
 
         start_time = time.time()

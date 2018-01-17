@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',    
+    'compressor',
     'authz_group',
     'templatetag_handlebars',
     'userservice',
@@ -77,13 +77,16 @@ ROOT_URLCONF = 'travis-ci.urls'
 
 WSGI_APPLICATION = 'travis-ci.wsgi.application'
 
-
 import os
 if os.environ['DB'] == "sqlite3":
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'TEST':
+                {
+                    'NAME': 'test_db',
+                }
         }
     }
 elif os.environ['DB'] == "mysql":
