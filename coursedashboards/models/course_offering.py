@@ -39,59 +39,63 @@ class CourseOffering(models.Model):
         return self.students
 
     @profile
-    def get_student_gpa(self, registrations):
-        """
-        Return current gpa for given student
-        (assumption: all student registrations are modelled)
-        """
-        try:
-
-            points = 0.0
-            credits = 0
-            for reg in registrations:
-                try:
-                    course_credits = int(reg.credits)
-                    points += (float(reg.grade) * course_credits)
-                    credits += course_credits
-                except ValueError:
-                    pass
-
-            return round(points / credits, 2)
-        except ZeroDivisionError:
-            return None
-
-    def set_student_gpa(self, student, cumulative):
-        gpa = self.get_student_gpa(student)
-        if gpa:
-            cumulative.append(gpa)
-
-    @profile
     def get_cumulative_median_gpa(self):
         """
         Return median gpa for this course offering at the time it was offered
         """
         try:
-            cumulative = []
             userids = []
 
             for student in self.get_students():
                 userids.append(student.user_id)
 
-            all_registrations = Registration.objects.\
-                filter(user_id__in=userids)\
+            registrations = Registration.objects.filter(user_id__in=userids)\
                 .filter(term__term_key__lt=self.term.term_key)\
-                .select_related('term')
+                .values('grade', 'credits', 'user')\
+                .annotate(total=Count('grade', 'credits'))
 
-            for student in self.get_students():
-                regs = all_registrations.filter(user=student.user_id)
-                gpa = self.get_student_gpa(regs)
-
-                if gpa is not None:
-                    cumulative.append(gpa)
+            cumulative = self._process_grade_totals(registrations)
 
             return round(median(cumulative), 2)
         except StatisticsError:
             return None
+
+    def _process_grade_totals(self, registrations):
+        user_grades = {}
+
+        for registration in registrations:
+            userid = registration['user']
+
+            if userid not in user_grades:
+                user_grades[userid] = {
+                    'credits': 0,
+                    'grade_points': 0
+                }
+
+            self._add_grade_entry(user_grades[userid], registration)
+
+        grades = []
+
+        for userid in user_grades:
+            credits = user_grades[userid]['credits']
+            grade_points = user_grades[userid]['grade_points']
+
+            if credits != 0:
+                grades.append(grade_points / credits)
+
+        return grades
+
+    @staticmethod
+    def _add_grade_entry(user_grade, grade_entry):
+        try:
+            credits = float(grade_entry['credits'])
+            grade = float(grade_entry['grade'])
+            total = grade_entry['total']
+
+            user_grade['credits'] += credits * total
+            user_grade['grade_points'] += grade * total * credits
+        except ValueError:
+            pass
 
     @profile
     def get_grades(self):
@@ -223,6 +227,7 @@ class CourseOffering(models.Model):
         total_students = float(len(students))
         majors = student_majors(students)
         majors_dict = defaultdict(int)
+
         for major in majors:
             majors_dict[major] += 1
 
@@ -238,7 +243,7 @@ class CourseOffering(models.Model):
     def get_fail_rate(self):
 
         registrations = Registration.objects.filter(course=self.course)\
-            .values('grade').annotate(total=Count('grade')).order_by('total')
+            .values('grade').annotate(total=Count('grade'))
 
         total = 0.0
         failed = 0.0
@@ -304,10 +309,6 @@ class CourseOffering(models.Model):
 
         for t in threads:
             t.join()
-
-    @profile
-    def retrieve_db_objects(self):
-        pass
 
     @profile
     def json_object(self):

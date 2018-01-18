@@ -274,6 +274,48 @@ class TestCourseOffering(TransactionTestCase):
         grades = self.winter_ess.get_grades()
         self.assertEquals(grades, [3.5, 3.5, 0.0, 2.4])
 
+    def test_student_majors(self):
+        majors = self.winter_ess.get_majors()
+
+        self.assertEquals(len(majors), 2)
+
+        self.assertEquals(majors[0]['major'], u'Computer Science')
+        self.assertEquals(majors[0]['number_students'], 2)
+
+        self.assertEquals(majors[1]['major'], u'Pre Science')
+        self.assertEquals(majors[1]['number_students'], 2)
+
+    def test_process_grade_totals(self):
+
+        grade_totals = []
+
+        grades = [2.0, 3.6, 0.0]
+
+        grade_totals.append({
+            'grade': grades[0],
+            'credits': 5,
+            'total': 2,
+            'user': 0
+        })
+
+        grade_totals.append({
+            'grade': grades[1],
+            'credits': 5,
+            'total': 3,
+            'user': 0
+        })
+
+        grade_totals.append({
+            'grade': grades[2],
+            'credits': 5,
+            'total': 1,
+            'user': 0
+        })
+
+        grades = self.winter_ess._process_grade_totals(grade_totals)
+
+        self.assertEquals(2.466666666666667, grades[0])
+
     def tearDown(self):
         for stumaj in self.student_majors:
             stumaj.delete()
