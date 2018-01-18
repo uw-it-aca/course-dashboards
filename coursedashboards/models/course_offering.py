@@ -39,40 +39,11 @@ class CourseOffering(models.Model):
         return self.students
 
     @profile
-    def get_student_gpa(self, registrations):
-        """
-        Return current gpa for given student
-        (assumption: all student registrations are modelled)
-        """
-        try:
-
-            points = 0.0
-            credits = 0
-            for reg in registrations:
-
-                try:
-                    course_credits = int(reg.credits)
-                    points += (float(reg.grade) * course_credits)
-                    credits += course_credits
-                except ValueError:
-                    pass
-
-            return round(points / credits, 2)
-        except ZeroDivisionError:
-            return None
-
-    def set_student_gpa(self, student, cumulative):
-        gpa = self.get_student_gpa(student)
-        if gpa:
-            cumulative.append(gpa)
-
-    @profile
     def get_cumulative_median_gpa(self):
         """
         Return median gpa for this course offering at the time it was offered
         """
         try:
-            cumulative = []
             userids = []
 
             for student in self.get_students():
