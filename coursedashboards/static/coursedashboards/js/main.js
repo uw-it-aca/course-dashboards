@@ -391,6 +391,8 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     setup_exposures($("#historic-course-target"));
 
     $('[data-toggle="popover"]').popover();
+
+    $('.popover-dismiss').popover({ trigger: 'focus'});
 }
 
 function setup_exposures($container) {
