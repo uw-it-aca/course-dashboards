@@ -11,16 +11,16 @@
     <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
         <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
         </div>
-    
+
     {% block web_content %}{% endblock %}
 
     </div> <!-- end of .page-wrap  -->
-    
+
     <!-- FOOTER STUFF -->
 
 <div>
 	<footer id="app_footer" role="contentinfo">
-		<div class="footer-bar"> 
+		<div class="footer-bar">
             <div class="container footer-links">
                 <ul class="footer-links-list">
                     <li class="footer-links-list-item"><a href="//myuw.washington.edu/cgi-bin/contactmyuw.cgi" title="Contact help@uwe.edu"><i class="ion-android-mail" role="presentation"></i> Contact</a></li>
@@ -29,11 +29,11 @@
                </ul>
                 <div style="clear:both;">&copy; {% now "Y" %} University of Washington</div>
             </div>
-            
+
 		</div><!-- end of footer content -->
 	</footer>
 
-    
+
 
 </div><!-- footer role -->
 {% include "handlebars/page-top.html" %}
@@ -44,5 +44,15 @@
 {% include "handlebars/cannot-display-course.html" %}
 <script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112926375-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-112926375-1');
+</script>
+
 </body>
 </html>
