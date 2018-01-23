@@ -1,6 +1,7 @@
 $green: #5cb85c;
 $red: #d9534f;
 $data_desctext: #787878;
+$info-circle: #8f9bcc;
 
 .historic-section, .current-section {
     margin-top:1rem;
@@ -22,7 +23,7 @@ $data_desctext: #787878;
     padding: 0 0;
 
     .coda-info-popover {
-        i {padding-left: 8px;font-size: 85%;color: #0077c2;cursor:pointer;}
+        i {padding-left: 8px;font-size: 85%;color: $info-circle;cursor:pointer;}
     }
 
     /** Current Course **/
@@ -81,7 +82,7 @@ $data_desctext: #787878;
                 color:$data_desctext;
                 margin-top:-5px;
                 .coda-info-popover {
-                    i {padding-left: 8px;font-size: 100%;color: #0077c2;cursor:pointer;}
+                    i {padding-left: 8px;font-size: 100%;color: $info-circle;cursor:pointer;}
                 }
             }
         }
