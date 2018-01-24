@@ -6,7 +6,7 @@
     <div class="historic-median course-data-widget col">
         <div class="d-inline-block course-data-items">
             <div class="course-data-number" title="{{median_course_grade}} Median course GPA">{{median_course_grade}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
-            <div class="course-data-description">Median Course GPA</div>
+            <div class="course-data-description">Median Course GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Course GPA" data-content="If you've taught the class before, use this data to assess the impact of pedagogical or curricular tweaks you've made."></i></span></div>
         </div>
     </div>
     <div class="historic-enrollment course-data-widget col">
@@ -20,7 +20,7 @@
     <div class="historic-failure course-data-widget col">
         <div class="d-inline-block course-data-items">
             <div class="course-data-number" title="{{failed_percent}}% of students failed this course">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
-            <div class="course-data-description">Percent Failure</div>
+            <div class="course-data-description">Percent Failure<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Percent Failure" data-content="Get a sense of how much time you should spend on challenging topics, considering how much students have struggled with the course in the past."></i></span></div>
         </div>
     </div>
     <div class="col"><span></span></div>
@@ -28,7 +28,7 @@
 
 <div class="row">
     <div class="list col">
-        <h4 id="historic_declared_majors_course" class="list-header">Declared Majors <br><small>(when taking the course)</small></h4>
+        <h4 id="historic_declared_majors_course" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Compare the proportion of certain majors in your class to past offerings and track shifts over time in the 'popularity' of your class for certain majors."></i></span> <br><small>(when taking the course)</small></h4>
         <ol class="list-unstyled" aria-labelledby="historic_declared_majors_course">
             {{#each common_majors}}
            <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
@@ -37,7 +37,7 @@
        <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors while taking the course</span>...</a></div>
     </div>
     <div class="list col">
-        <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<br><small>(upon graduation)</small></h4>
+        <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Learn what your students go on to major in. Is your course a 'gateway' course to a particular field of study?"></i></span><br><small>(upon graduation)</small></h4>
         <ol class="list-unstyled" aria-labelledby="historic_declared_majors_graduation">
            {{#each latest_majors}}
            <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
@@ -48,7 +48,7 @@
 </div>
 <div class="row">
     <div class="list col">
-        <h4 id="historic_common_courses" class="list-header">Concurrent Courses</h4>
+        <h4 id="historic_common_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Get a sense of what other courses your students are taking compared to the last time you taught the course."></i></span></h4>
         <ol class="list-unstyled" aria-labelledby="historic_common_courses">
             {{#each common_courses}}
            <li><strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
@@ -59,7 +59,7 @@
 </div>
 <div class="row">
     <div class="list previous-instructors col">
-       <h4 id="previous_instructors" class="list-header">Previous Instructors for this course</h4>
+       <h4 id="previous_instructors" class="list-header">Previous Instructors for this course<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Previous Instructors" data-content="Reach out to past instructors to share ideas and materials."></i></span></h4>
        <ol class="list-unstyled" aria-labelledby="previous_instructors">
            {{#each instructors}}
             <li><a href="mailto:{{uw_email}}">{{ formatName display_name }}</a>, {{quarter}} {{year}} </li>
