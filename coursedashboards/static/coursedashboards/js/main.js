@@ -149,6 +149,9 @@ function showCurrentCourseData(index) {
 
 function fetchCurrentCourseData(index) {
     startLoadingCourseData();
+
+    var startTime = Date.now();
+
     $.ajax({
         url: "/api/v1/course/" + window.section_data[index].section_label,
         dataType: "JSON",
@@ -158,6 +161,12 @@ function fetchCurrentCourseData(index) {
             window.section_data[index] = results;
             window.section_data[index].loaded = true;
             showCurrentCourseData(index);
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'course_data', {
+                'label': window.section_data[index].section_label,
+                'time': totalTime
+            });
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);
@@ -178,6 +187,8 @@ function stopLoadingCourseData() {
 
 function fetchHistoricCourseData(index) {
     startLoadingHistoricCourseData();
+    var startTime = Date.now();
+
     $.ajax({
         url: "/api/v1/course/past/" + window.section_data[index].section_label,
         dataType: "JSON",
@@ -186,6 +197,13 @@ function fetchHistoricCourseData(index) {
         success: function(results) {
             window.section_historic_data[index] = results.past_offerings;
             window.section_historic_data[index].loaded = true;
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'historic_course_data', {
+                'label': window.section_data[index].section_label,
+                'time': totalTime
+            });
+
             showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
             showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
 
