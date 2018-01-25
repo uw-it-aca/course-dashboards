@@ -390,10 +390,12 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     }
 
     var section_count = calculateSectionCount(offerings, quarter, year);
+    var latest_majors = calculateCommon(offerings, "latest_majors","major");
+    latest_majors = latest_majors.slice(0, 20);
 
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(offerings, "majors","major"),
-        latest_majors:calculateCommon(offerings, "latest_majors","major"),
+        latest_majors: latest_majors,
         common_courses:calculateCommon(offerings, "concurrent_courses","course"),
         selected_quarter:quarter,
         selected_year:year,
@@ -433,13 +435,13 @@ function setup_exposures($container) {
             $(this).attr("expanded", false);
 
             var $hidden = $(this).closest('.list').find('ol.list-unstyled li:visible');
-            $hidden.slice(10, 20).hide();
+            $hidden.slice(10, 21).hide();
 
             return false;
         } else{
             var $hidden = $(this).closest('.list').find('ol.list-unstyled li:hidden');
             // show next ten
-            $hidden.slice(0, 10).show();
+            $hidden.slice(0, 11).show();
 
             $(this).html("Show less...");
             $(this).attr("expanded", true);
