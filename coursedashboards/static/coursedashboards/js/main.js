@@ -164,8 +164,8 @@ function fetchCurrentCourseData(index) {
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'course_data', {
-                'label': window.section_data[index].section_label,
-                'time': totalTime
+                'eventLabel': window.section_data[index].section_label,
+                'value': totalTime
             });
         },
         error: function(xhr, status, error) {
@@ -200,8 +200,8 @@ function fetchHistoricCourseData(index) {
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'historic_course_data', {
-                'label': window.section_data[index].section_label,
-                'time': totalTime
+                'eventLabel': window.section_historic_data[index].section_label,
+                'value': totalTime
             });
 
             showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
