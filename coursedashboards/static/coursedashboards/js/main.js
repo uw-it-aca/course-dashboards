@@ -160,7 +160,10 @@ function fetchCurrentCourseData(index) {
         success: function(results) {
             window.section_data[index] = results;
             window.section_data[index].loaded = true;
-            showCurrentCourseData(index);
+
+            if(getSelectedCourseIndex() === index){
+                showCurrentCourseData(index);
+            }
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'course_data', {
@@ -204,8 +207,11 @@ function fetchHistoricCourseData(index) {
                 'value': totalTime
             });
 
-            showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
-            showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
+
+            if(getSelectedCourseIndex() === index) {
+                showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
+                showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
+            }
 
             setPillListeners();
 
@@ -318,8 +324,12 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
     setPillListeners();
 }
 
+function getSelectedCourseIndex(){
+    return $("select[name='my_courses'] option:selected").index();
+}
+
 function updateHistoricDisplay(){
-    var index = $("select[name='my_courses'] option:selected").index();
+    var index = getSelectedCourseIndex();
 
     var taught = ALL_MY_COURSES;
     var newQuarter = ALL_QUARTERS;
