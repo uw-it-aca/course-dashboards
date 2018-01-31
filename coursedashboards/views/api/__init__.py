@@ -12,12 +12,21 @@ class CoDaAPI(APIView):
 
     def get_offering(self, year, quarter, curriculum, course_number,
                      section_id):
-        term = Term.objects.get(year=year, quarter=quarter.lower())
-        course = Course.objects.get(curriculum=curriculum.upper(),
-                                    course_number=course_number,
-                                    section_id=section_id.upper())
-        offering = CourseOffering.objects.get(term=term, course=course)
-        return offering
+        try:
+            term = Term.objects.get(year=year, quarter=quarter.lower())
+            course = Course.objects.get(curriculum=curriculum.upper(),
+                                        course_number=course_number,
+                                        section_id=section_id.upper())
+            offering = CourseOffering.objects.get(term=term, course=course)
+            return offering
+
+        except Term.DoesNotExist:
+            return self.term_not_found()
+        except Course.DoesNotExist:
+            return self.course_not_found()
+        except CourseOffering.DoesNotExist:
+            return self.course_offering_not_found()
+
 
     def get_data(self, offering):
         raise NotImplementedError("You must define your get_data method to "
