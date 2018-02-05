@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from coursedashboards.views.api import CoDaAPI
 
 
-class CourseInfoView(CoDaAPI):
+class OfferingInfoView(CoDaAPI):
     """
     A superclass for handling individual data point/series retrievals about
     courses

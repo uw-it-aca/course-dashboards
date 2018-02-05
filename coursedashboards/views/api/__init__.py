@@ -27,6 +27,16 @@ class CoDaAPI(APIView):
         except CourseOffering.DoesNotExist:
             return self.course_offering_not_found()
 
+    def get(self, request, year, quarter, curriculum, course_number,
+            section_id):
+
+        offering = self.get_offering(year, quarter, curriculum,
+                                     course_number, section_id)
+
+        if isinstance(offering, HttpResponse):
+            return offering
+
+        return HttpResponse(self.get_data(offering))
 
     def get_data(self, offering):
         raise NotImplementedError("You must define your get_data method to "

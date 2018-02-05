@@ -1,9 +1,10 @@
 from django.http import HttpResponse
-from coursedashboards.views.api.integration.course_info import CourseInfoView
+from coursedashboards.views.api.integration.offering_info import\
+    OfferingInfoView
 import json
 
 
-class CourseMajors(CourseInfoView):
+class OfferingMajors(OfferingInfoView):
 
     def get(self, request, year, quarter, curriculum, course_number,
             section_id, num_majors):
