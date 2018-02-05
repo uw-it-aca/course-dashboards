@@ -1,9 +1,6 @@
-import json
-
 from django.http import HttpResponse
-
 from coursedashboards.views.api.endpoint import CoDaEndpoint
-from coursedashboards.views.api.integration.course_info import CourseInfoView
+import json
 
 
 class HistoricalCourseData(CoDaEndpoint):

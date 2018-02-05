@@ -1,6 +1,5 @@
 import json
 from django.http import HttpResponse
-from coursedashboards.models import CourseOffering, Course, Term
 from coursedashboards.views.api.endpoint import CoDaEndpoint
 
 

@@ -1,8 +1,6 @@
-import json
-
 from django.http import HttpResponse
-
 from coursedashboards.views.api.integration.course_info import CourseInfoView
+import json
 
 
 class GraduatedMajors(CourseInfoView):
