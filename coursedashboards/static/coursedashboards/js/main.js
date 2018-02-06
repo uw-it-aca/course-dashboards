@@ -193,7 +193,7 @@ function fetchHistoricCourseData(index) {
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/past/" + window.section_data[index].section_label,
+        url: "/api/v1/course/" + window.section_data[index].section_label + '/past',
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
