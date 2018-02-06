@@ -8,4 +8,4 @@ class CourseData(CoDaEndpoint):
         if offering.current_enrollment <= 5:
             return offering.base_json_object()
 
-        return json.dumps(offering.json_object())
+        return offering.json_object()

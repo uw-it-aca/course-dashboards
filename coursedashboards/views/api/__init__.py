@@ -1,9 +1,9 @@
 from django.http import HttpResponse
-from rest_framework.authentication import RemoteUserAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from coursedashboards.models import Term, Course, CourseOffering
 from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
+import json
 
 
 class CoDaAPI(APIView):
@@ -36,7 +36,9 @@ class CoDaAPI(APIView):
         if isinstance(offering, HttpResponse):
             return offering
 
-        return HttpResponse(self.get_data(offering))
+        json_response = self.get_data(offering)
+
+        return HttpResponse(json.dumps(json_response))
 
     def get_data(self, offering):
         raise NotImplementedError("You must define your get_data method to "

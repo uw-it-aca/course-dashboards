@@ -10,4 +10,4 @@ class OfferingFailRate(OfferingInfoView):
 
         offering.set_fail_rate(response)
 
-        return json.dumps(response)
+        return response

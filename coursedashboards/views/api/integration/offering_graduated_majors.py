@@ -6,4 +6,4 @@ import json
 class OfferingGraduatedMajors(OfferingInfoView):
 
     def get_data(self, offering):
-        return json.dumps(offering.get_graduated_majors())
+        return offering.get_graduated_majors()

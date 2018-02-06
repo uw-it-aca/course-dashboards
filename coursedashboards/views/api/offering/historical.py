@@ -5,4 +5,4 @@ import json
 class HistoricalCourseData(CoDaEndpoint):
 
     def get_data(self, offering):
-        return json.dumps(offering.past_offerings_json_object())
+        return offering.past_offerings_json_object()
