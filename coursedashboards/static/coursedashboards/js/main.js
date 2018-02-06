@@ -402,6 +402,7 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     var section_count = calculateSectionCount(offerings, quarter, year);
     var latest_majors = calculateCommon(offerings, "latest_majors","major");
     latest_majors = latest_majors.slice(0, 20);
+    console.log(calculateMedianGPA(offerings))
 
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(offerings, "majors","major"),
@@ -409,6 +410,7 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
         common_courses:calculateCommon(offerings, "concurrent_courses","course"),
         selected_quarter:quarter,
         selected_year:year,
+        median_gpa: calculateMedianGPA(offerings),
         median_course_grade: calculateCourseMedian(offerings),
         failed_percent: calculateFailedPercentage(offerings),
         total_students: calculateTotalStudents(offerings),
@@ -513,6 +515,25 @@ function calculatePastYearCount(sections) {
     return window.term.year - start_year;
 }
 
+function calculateMedianGPA(sections){
+    gpas = [];
+
+    for(var i = 0; i < sections.length; i++){
+        gpas.push.apply(gpas, sections[i].gpas);
+    }
+
+    gpas.sort(function(a, b) {return a - b;});
+
+    var median_index = Math.floor(gpas.length / 2);
+
+    if(gpas.length % 2){
+        return gpas[median_index];
+    } else {
+        return (gpas[median_index - 1] + gpas[median_index]) / 2.0;
+    }
+
+    return -1;
+}
 
 function calculateCourseMedian(sections) {
     var grades = [];
