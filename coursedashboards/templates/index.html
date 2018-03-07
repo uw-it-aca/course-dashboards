@@ -15,24 +15,48 @@
 
 </script>
 
+
+
+<header class="topbanner-bg" role="banner">
+    <h1 class="sr-only">Course Dashboard</h1>
+    <div aria-labelledby="coda_banner">
+        <a href="#maincontent" id="shortcut" class="visually-hidden">skip to main content</a>
+        <div class="coda-thin-bar">
+            <div class="coda-wrapper">
+                <div class="coda-netid">
+                    <span class="visually-hidden">Logged in as: </span> <a href="https://my.uw.edu/profile/"><i class="icon-user icon-user-female" aria-hidden="true"></i><span>{{user.netid}}</span></a>
+                </div>
+                <div class="coda-search-links">
+                    <a href="/logout"><i class="fa fa-sign-out" aria-hidden="true" style="font-size: 15px;"></i> <span>Sign Out</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="coda-navigation">
+            <div class="coda-wrapper" style="background-image: url({% static 'coursedashboards/img/w-logo-white.png' %})">
+                <div class="coda-title"><a href="https://my.uw.edu">MyUW</a>
+            </div>
+        </div>
+    </div>
+</header>
+
 <!-- MAIN CONTENT BELOW THE BANNER -->
-  	<main class="coda-wrapper" role="main">
-    		<div class="main-content row" id="maincontent"> 
-                <div class="course-info col-12" aria-labelledby="course_title">
-                    <div class="course-quarter-year text-capitalize">
-                        <h2 id="course_title" class="heading-page">Course Dashboard &middot; {{quarter}} {{year}} <span class="visually-hidden">{{course_title}}</span>
-                        <div class="d-inline-block course-select"></div>
-                        </h2>
-                    </div>
-                    <div class="course-title"><span>{{course_title}}</span></div>
+<main class="coda-wrapper" role="main">
+        <div class="main-content row" id="maincontent">
+            <div class="course-info col-12" aria-labelledby="course_title">
+                <div class="course-quarter-year text-capitalize">
+                    <h2 id="course_title" class="heading-page">Course Dashboard &middot; {{quarter}} {{year}} <span class="visually-hidden">{{course_title}}</span>
+                    <div class="d-inline-block course-select"></div>
+                    </h2>
                 </div>
-                <div class="course-data row col-12">
-                    <div class="section-container current-section col-md-6" id="current-course-target" aria-labelledby="current_section_data"></div>
-                    <div class="section-container historic-section col-md-6" aria-labelledby="historic_section_data" style="">
-                        <div id="historic-selector-target"></div>
-                        <div class="course_info data-section" id="historic-course-target"></div>
-                    </div>
+                <div class="course-title"><span>{{course_title}}</span></div>
+            </div>
+            <div class="course-data row col-12">
+                <div class="section-container current-section col-md-6" id="current-course-target" aria-labelledby="current_section_data"></div>
+                <div class="section-container historic-section col-md-6" aria-labelledby="historic_section_data" style="">
+                    <div id="historic-selector-target"></div>
+                    <div class="course_info data-section" id="historic-course-target"></div>
                 </div>
-    		</div>	<!-- end of main -->
-	</main>  <!-- end of main container -->
+            </div>
+        </div>	<!-- end of main -->
+</main>  <!-- end of main container -->
 {% endblock %}
