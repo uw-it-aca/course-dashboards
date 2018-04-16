@@ -402,7 +402,6 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     var section_count = calculateSectionCount(offerings, quarter, year);
     var latest_majors = calculateCommon(offerings, "latest_majors","major");
     latest_majors = latest_majors.slice(0, 20);
-    console.log(calculateMedianGPA(offerings))
 
     $("#historic-course-target").html(historicTemplate({
         common_majors:calculateCommon(offerings, "majors","major"),
@@ -634,11 +633,13 @@ function offeringMatchesQuarter(offering, taught){
 }
 
 function shouldDisplayCourse(offerings){
-    if(offerings.length > 1 || offerings.length === 0) {
+    if(offerings.length > 1) {
         return true;
-    } else{
+    } else if(offerings.length === 1){
         return isInstructor(offerings[0]);
     }
+
+    return false;
 }
 
 //order majors/courses by number of students
