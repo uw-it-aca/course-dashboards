@@ -521,17 +521,7 @@ function calculateMedianGPA(sections){
         gpas.push.apply(gpas, sections[i].gpas);
     }
 
-    gpas.sort(function(a, b) {return a - b;});
-
-    var median_index = Math.floor(gpas.length / 2);
-
-    if(gpas.length % 2){
-        return gpas[median_index];
-    } else {
-        return (gpas[median_index - 1] + gpas[median_index]) / 2.0;
-    }
-
-    return -1;
+    return (Math.round(math.median(gpas) * 100) / 100).toFixed(2)
 }
 
 function calculateCourseMedian(sections) {
