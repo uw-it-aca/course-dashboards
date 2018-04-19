@@ -100,6 +100,8 @@ def get_current_sws_quarter(request):
     Return a uw_sws.models.Term object
     for the current quarter refered in the user session.
     """
+    return Term(year=2017, quarter=Term.AUTUMN)
+
     if hasattr(request, 'myuw_current_quarter'):
         return request.myuw_current_quarter
 
