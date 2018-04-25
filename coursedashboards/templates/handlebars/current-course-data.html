@@ -7,21 +7,11 @@
         <h3 id="current_section_data">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
     </div>
 </div>
-<div class="current-schedule-row row">
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <ul class="list-unstyled">
-                    <li><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}" title="View course details in Teaching page"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Course details<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>
-                    {{#if canvas_course_url}}<li><a href="{{canvas_course_url}}"><i class="fa fa-book" aria-hidden="true"></i> Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>{{/if}}
-                </ul>
-                <!--<dl class="row">
-                    <dt class="col-sm-3">Details</dt>
-                    <dd class="col-sm-9"><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}">MyUW course info<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a>{{#if canvas_course_url}}, <a href="{{canvas_course_url}}">Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a>{{/if}}</dd>
-                </dl>-->
-            </div>
-        </div>
-    </div>
+<div class="row">
+    <ul class="list-unstyled course-links col">
+        <li><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}" title="View course details in Teaching page"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Course details<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>
+        {{#if canvas_course_url}}<li><a href="{{canvas_course_url}}"><i class="fa fa-book" aria-hidden="true"></i> Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>{{/if}}
+    </ul>
 </div>
 {{#if display_course}}
 <div class="current-data-row row">
@@ -39,6 +29,9 @@
     </div>
 </div>
 <div class="current-data-row row">
+    <div class="placeholder-col col">
+
+    </div>
     <div class="current-enrollment course-data-widget col">
         <div class="d-inline-block course-data-items">
             <div class="course-data-number" title="{{current_repeat_students}} repeating students">{{current_repeat_students}}<i class="ion-android-refresh" aria-hidden="true"></i></div>
@@ -48,7 +41,7 @@
 </div>
 <div class="row ">
     <div class="list col" aria-labelledby="current_concurrent_courses">
-        <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Make connections between your course and other courses your students are taking."></i></span></h4>
+        <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Make connections between your course and other courses your students are taking."></i></span><br><small>(when taking the course)</small></h4>
         <ol class="list-unstyled">
            {{#each concurrent_courses}}
             <li><strong>{{ roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
@@ -57,7 +50,7 @@
        <div><a href="#" class="toggle-show">Show more<span class="sr-only"> concurrent courses taken this quarter</span>...</a></div>
     </div>
     <div class="list col" aria-labelledby="current_declared_majors">
-        <h4 id="current_declared_majors" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Make the topics you teach more engaging for non-majors who are taking your course."></i></span></h4>
+        <h4 id="current_declared_majors" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Make the topics you teach more engaging for non-majors who are taking your course."></i></span><br><small>(when taking the course)</small></h4>
         <ol class="list-unstyled">
             {{#each current_majors}}
                 <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>

@@ -257,7 +257,8 @@ class TestCourseOffering(TransactionTestCase):
         self.assertEquals(graduated_majors[0]['number_students'], 1)
 
     def test_student_cgpa(self):
-        cgpa = self.winter_ess.get_cumulative_median_gpa()
+        gpas = self.winter_ess.get_gpas()
+        cgpa = self.winter_ess.get_cumulative_median_gpa(gpas)
         self.assertEquals(cgpa, 2.85)
 
     def test_historic_fail_rate(self):
