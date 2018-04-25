@@ -39,7 +39,7 @@ $print: "print";
 
 $tablet: "(min-width: #{$tablet-width} ) and (max-width: #{$tablet-max} )";
 $desktop:  "(min-width: #{$desktop-width} )";
-$large-desktop: "(min-width: #{$large-desktop-width} )"; 
+$large-desktop: "(min-width: #{$large-desktop-width} )";
 
 /***** Type *******/
 
@@ -80,6 +80,10 @@ html, body {
 }
 
 .col { flex: 1 0 50%; }
+
+.placeholder-col {
+    min-width: 200px;
+}
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section {
   display: block;
@@ -134,7 +138,7 @@ h2.heading-page, h2.coda-heading-page {
 }
 
 h3 {
-    font-size: $font-header-large; 
+    font-size: $font-header-large;
     font-family: 'encode_sans_normalbold', sans-serif;
     font-weight: 600;
     color:$uw-dark-gray;
@@ -205,6 +209,15 @@ a {
 }
 
 
+.course-links {
+    margin-top: 0.5rem;
+    min-height: 4.5rem;
+    margin-bottom: 0;
+}
+
+.historic-filters {
+    min-height: 4.5rem;
+}
 
 .coda-thin-bar {
     background: $uw-purple-dark;
@@ -219,7 +232,7 @@ a {
         height: $bar-height;
         background: none;
         border: none;
-        
+
         &:hover, &:focus { color: #fff;
             span {  text-decoration: underline; }
 
@@ -237,11 +250,11 @@ a {
         color: #fff;
         margin-right: -3px;
     }
-    
+
 }
 
 .coda-navigation {
-    background: $uw-purple; 
+    background: $uw-purple;
     height: $nav-height;
 
     .coda-wrapper {

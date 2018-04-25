@@ -193,7 +193,7 @@ function fetchHistoricCourseData(index) {
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/past/" + window.section_data[index].section_label,
+        url: "/api/v1/course/" + window.section_data[index].section_label + '/past',
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
@@ -409,6 +409,7 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
         common_courses:calculateCommon(offerings, "concurrent_courses","course"),
         selected_quarter:quarter,
         selected_year:year,
+        median_gpa: calculateMedianGPA(offerings),
         median_course_grade: calculateCourseMedian(offerings),
         failed_percent: calculateFailedPercentage(offerings),
         total_students: calculateTotalStudents(offerings),
@@ -513,6 +514,15 @@ function calculatePastYearCount(sections) {
     return window.term.year - start_year;
 }
 
+function calculateMedianGPA(sections){
+    gpas = [];
+
+    for(var i = 0; i < sections.length; i++){
+        gpas.push.apply(gpas, sections[i].gpas);
+    }
+
+    return (Math.round(math.median(gpas) * 100) / 100).toFixed(2)
+}
 
 function calculateCourseMedian(sections) {
     var grades = [];
@@ -613,11 +623,13 @@ function offeringMatchesQuarter(offering, taught){
 }
 
 function shouldDisplayCourse(offerings){
-    if(offerings.length > 1 || offerings.length === 0) {
+    if(offerings.length > 1) {
         return true;
-    } else{
+    } else if(offerings.length === 1){
         return isInstructor(offerings[0]);
     }
+
+    return false;
 }
 
 //order majors/courses by number of students

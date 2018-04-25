@@ -39,24 +39,28 @@ class CourseOffering(models.Model):
         return self.students
 
     @profile
-    def get_cumulative_median_gpa(self):
+    def get_gpas(self):
+        userids = []
+
+        for student in self.get_students():
+            userids.append(student.user_id)
+
+        registrations = Registration.objects.filter(user_id__in=userids) \
+            .filter(term__term_key__lt=self.term.term_key) \
+            .values('grade', 'credits', 'user') \
+            .annotate(total=Count('grade', 'credits'))
+
+        cumulative = self._process_grade_totals(registrations)
+
+        return cumulative
+
+    @profile
+    def get_cumulative_median_gpa(self, gpas):
         """
         Return median gpa for this course offering at the time it was offered
         """
         try:
-            userids = []
-
-            for student in self.get_students():
-                userids.append(student.user_id)
-
-            registrations = Registration.objects.filter(user_id__in=userids)\
-                .filter(term__term_key__lt=self.term.term_key)\
-                .values('grade', 'credits', 'user')\
-                .annotate(total=Count('grade', 'credits'))
-
-            cumulative = self._process_grade_totals(registrations)
-
-            return round(median(cumulative), 2)
+            return round(median(gpas), 2)
         except StatisticsError:
             return None
 
@@ -277,7 +281,9 @@ class CourseOffering(models.Model):
         json_obj['failure_rate'] = self.get_fail_rate()
 
     def set_json_cumulative_median(self, json_obj):
-        json_obj['current_median'] = self.get_cumulative_median_gpa()
+        gpas = self.get_gpas()
+        json_obj['gpas'] = gpas
+        json_obj['current_median'] = self.get_cumulative_median_gpa(gpas)
 
     def set_json_concurrent_courses(self, json_obj):
         json_obj['concurrent_courses'] = self.concurrent_courses()
@@ -360,7 +366,7 @@ class CourseOffering(models.Model):
         past_obj['course_grades'] = self.get_grades()
 
     def set_past_median_gpa(self, past_obj):
-        past_obj['past_median_gpa'] = self.get_cumulative_median_gpa()
+        past_obj['gpas'] = self.get_gpas()
 
     def set_past_offering_data(self, past_obj):
         threads = []
@@ -369,7 +375,7 @@ class CourseOffering(models.Model):
         threads.append(t)
         t.start()
 
-        if getattr(settings, "HISTORIC_CGPA_ENABLED", False):
+        if getattr(settings, "HISTORIC_CGPA_ENABLED", True):
             t = Thread(target=self.set_past_median_gpa,
                        args=(past_obj,))
             threads.append(t)

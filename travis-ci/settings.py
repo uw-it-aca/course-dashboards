@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'compressor',
     'authz_group',
     'templatetag_handlebars',
+    'rest_framework.authtoken',
+    'rest_framework',
     'userservice',
     'django_mobileesp',
     'coursedashboards.apps.CourseDashboardsConfig',
