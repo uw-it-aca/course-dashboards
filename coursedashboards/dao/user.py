@@ -42,12 +42,10 @@ def _user_from_person(person):
 
 
 def _person_email(person):
-    try:                        # PWS person
-        email = person.email1
-    except AttributeError:
-        email = person.email    # SWS person
-
-    return email if email else '%s@uw.edu' % person.uwnetid
+    try:
+        return person.email_addresses[0]
+    except IndexError:
+        return '%s@uw.edu' % person.uwnetid
 
 
 def get_current_user():

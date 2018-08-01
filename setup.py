@@ -3,35 +3,43 @@ from setuptools import setup
 
 README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
+# The VERSION file is created by travis-ci, based on the tag name
+version_path = 'coursedashboards/VERSION'
+VERSION = open(os.path.join(os.path.dirname(__file__), version_path)).read()
+VERSION = VERSION.replace("\n", "")
+
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
+url = "https://github.com/uw-it-aca/course-dashboards"
 setup(
     name='coursedashboards',
-    version='0.1',
+    version=VERSION,
     packages=['coursedashboards'],
+    author="UW-IT AXDD",
+    author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
-        'Django<1.11',
+        'Django==1.11.10',
         'django-compressor',
         'django-pyscss',
         'django_mobileesp',
         'django-templatetag-handlebars',
-        'UW-RestClients-SWS',
-        'UW-RestClients-PWS',
-        'UW-RestClients-GWS',
-        'UW-RestClients-Canvas',
+        'UW-RestClients-Core==0.9.6',
+        'UW-RestClients-SWS<2.0,>=1.7.3',
+        'UW-RestClients-PWS<2.0,>=1.0.1',
+        'UW-RestClients-GWS>=1.0,<2.0',
+        'UW-RestClients-Canvas>=0.7.2,<1.0',
         'UW-Restclients-Django-Utils',
-        'Django-SupportTools',
+        'UW-Django-SAML2>=0.4',
+        'Django-SupportTools>=2.0.4,<3.0',
         'djangorestframework>=3.6.4',
         'statistics'
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',
     long_description=README,
-    url='http://www.example.com/',
-    author='UW IT AXDD',
-    author_email='uw-it-aca@uw.edu',
+    url=url,
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
@@ -39,9 +47,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
 )

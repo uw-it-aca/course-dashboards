@@ -295,9 +295,9 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
 
     for (var i = 0; i < instructed_sections.length; i++){
         if(offeringMatchesQuarter(instructed_sections[i], taught)){
-            instructed_sections[i]['selected'] = "selected";
+            instructed_sections[i].selected = "selected";
         } else {
-            instructed_sections[i]['selected'] = "";
+            instructed_sections[i].selected = "";
         }
     }
 
@@ -319,7 +319,7 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
 
     //Historic data selection
     $(".historic-filter").change(function() {
-        updateHistoricDisplay()
+        updateHistoricDisplay();
     });
     setPillListeners();
 }
@@ -349,7 +349,7 @@ function updateHistoricDisplay(){
     }
 
     if(newYear !== ALL_YEARS) {
-        newYear = parseInt(newYear)
+        newYear = parseInt(newYear);
     }
 
     showHistoricDataSelectors(index, newQuarter, newYear, taught);
@@ -378,21 +378,25 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     var past_offerings = window.section_historic_data[index];
     var offerings = filterOfferings(past_offerings, quarter, year, only_my_courses);
 
-    for (var i = 0; i < offerings.length; i++) {
-        offerings[i].quarter = firstLetterUppercase(offerings[i].quarter);
-    }
+    $.each(offerings, function () {
+        var offering = this;
+
+        offering.quarter = firstLetterUppercase(offering.quarter);
+    });
 
     var historic = $("#historic-course-data").html();
     var historicTemplate = Handlebars.compile(historic);
 
     if(taught !== ALL_MY_COURSES){
-        var section = undefined;
+        var section;
 
-        for(var i = 0; i < offerings.length; i++){
-            if(offeringMatchesQuarter(offerings[i], taught)){
-                section = offerings[i];
+        $.each(offerings, function () {
+            var offering = this;
+
+            if(offeringMatchesQuarter(offering, taught)){
+                section = offering;
             }
-        }
+        });
 
         if(section !== undefined) {
             offerings = [section];
@@ -439,18 +443,19 @@ function setup_exposures($container) {
     });
 
     $container.find(".toggle-show").on('click', function () {
-        var expanded = $(this).attr("expanded");
+        var expanded = $(this).attr("expanded"),
+            $hidden;
 
         if (expanded === "true") {
             $(this).html("Show more...");
             $(this).attr("expanded", false);
 
-            var $hidden = $(this).closest('.list').find('ol.list-unstyled li:visible');
+            $hidden = $(this).closest('.list').find('ol.list-unstyled li:visible');
             $hidden.slice(10, 21).hide();
 
             return false;
         } else{
-            var $hidden = $(this).closest('.list').find('ol.list-unstyled li:hidden');
+            $hidden = $(this).closest('.list').find('ol.list-unstyled li:hidden');
             // show next ten
             $hidden.slice(0, 11).show();
 
@@ -521,7 +526,7 @@ function calculateMedianGPA(sections){
         gpas.push.apply(gpas, sections[i].gpas);
     }
 
-    return (Math.round(math.median(gpas) * 100) / 100).toFixed(2)
+    return (Math.round(math.median(gpas) * 100) / 100).toFixed(2);
 }
 
 function calculateCourseMedian(sections) {
@@ -553,9 +558,9 @@ function calculateFailedPercentage(sections) {
 
 //Calculates all of the common major/course lists based on historic selections
 function calculateCommon(sections, list_type, name_type) {
-    var obj = {};
-    var total_students = 0;
-    var original_objects = {}
+    var obj = {},
+        total_students = 0,
+        original_objects = {};
 
     for (var o = 0; o < sections.length; o++) {
         var term_obj = sections[o][list_type];
@@ -576,7 +581,7 @@ function calculateCommon(sections, list_type, name_type) {
 
     if (name_type === "course"){
         for(var i = 0; i < result.length; i++){
-            result[i]['title'] = original_objects[result[i].course].title;
+            result[i].title = original_objects[result[i].course].title;
         }
     }
 
@@ -594,7 +599,7 @@ function quarterIsInRange(past_offering, quarter, year) {
     if(quarter === ALL_QUARTERS)
         return year === past_offering.year;
 
-    return (past_offering.year === year && quarter === past_offering.quarter)
+    return (past_offering.year === year && quarter === past_offering.quarter);
 }
 
 function getInstructedSections(past_offerings){
