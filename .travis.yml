@@ -28,8 +28,8 @@ before_script:
   - cp travis-ci/manage.py manage.py
   - python manage.py migrate
 script:
-  - pycodestyle coursedashboards --exclude=migrations,coursedashboards/static/vendor,endorsement/static/images,endorsement/static/fonts
-  - jshint coursedashboards/static/endorsement/js/ --verbose
+  - pycodestyle coursedashboards --exclude=migrations,coursedashboards/static/vendor,coursedashboards/static/images,coursedashboards/static/fonts
+  - jshint coursedashboards/static/coursedashboards/js/ --verbose
   - coverage run --source=coursedashboards/ --omit=coursedashboards/migrations/* manage.py test coursedashboards
 after_script:
   - coveralls
