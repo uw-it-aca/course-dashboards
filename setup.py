@@ -25,6 +25,8 @@ setup(
         'django-pyscss',
         'django_mobileesp',
         'django-templatetag-handlebars',
+        'pytz',
+        'AuthZ-Group>=1.6',
         'UW-RestClients-Core==0.9.6',
         'UW-RestClients-SWS<2.0,>=1.7.3',
         'UW-RestClients-PWS<2.0,>=1.0.1',
