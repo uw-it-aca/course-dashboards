@@ -214,8 +214,7 @@ class CourseOffering(models.Model):
         for student in student_majors:
 
             majors = student_majors[student]
-            majors = sorted(majors, StudentMajor.sort_by_term,
-                            reverse=True)
+            majors = sorted(majors, reverse=True)
 
             graduated_term = majors[0].term
 
