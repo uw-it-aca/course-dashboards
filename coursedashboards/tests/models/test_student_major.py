@@ -20,4 +20,4 @@ class TestStudentMajors(TestCase):
 
     def test_term_sort(self):
         sorted_majors = sorted([self.second_major, self.first_major],
-                               cmp=StudentMajor.sort_by_term)
+                               StudentMajor.sort_by_term)
