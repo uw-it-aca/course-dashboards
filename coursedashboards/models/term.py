@@ -34,6 +34,9 @@ class Term(models.Model):
 
         super(Term, self).save(*args, **kwargs)
 
+    def __cmp__(self, other):
+        return compare_terms(first, other)
+
     @staticmethod
     def compare_terms(first, other):
         if first.year < other.year:
