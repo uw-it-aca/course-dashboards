@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 
 from coursedashboards.models import Term
 
@@ -40,7 +40,7 @@ class TestTerm(TestCase):
             term.save()
 
     def test_term_sort(self):
-        sorted_terms = sorted(self.terms, cmp=Term.compare_terms)
+        sorted_terms = sorted(self.terms, key=Term.compare_terms)
 
         self.assertEqual(sorted_terms, [self.winter2016, self.spring2016,
                                         self.summer2016, self.autumn2016,
