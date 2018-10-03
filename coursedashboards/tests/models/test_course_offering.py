@@ -237,8 +237,8 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_get_concurrent_courses(self):
         concurrent = self.spring_ess.concurrent_courses()
-        self.assertEquals(len(concurrent), 1)
-        self.assertEquals(concurrent[0]['number_students'], 2)
+        self.assertEqual(len(concurrent), 1)
+        self.assertEqual(concurrent[0]['number_students'], 2)
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
@@ -253,13 +253,13 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_graduated_majors(self):
         graduated_majors = self.winter_ess.get_graduated_majors()
-        self.assertEquals(len(graduated_majors), 1)
-        self.assertEquals(graduated_majors[0]['number_students'], 1)
+        self.assertEqual(len(graduated_majors), 1)
+        self.assertEqual(graduated_majors[0]['number_students'], 1)
 
     def test_student_cgpa(self):
         gpas = self.winter_ess.get_gpas()
         cgpa = self.winter_ess.get_cumulative_median_gpa(gpas)
-        self.assertEquals(cgpa, 2.85)
+        self.assertEqual(cgpa, 2.85)
 
     def test_historic_fail_rate(self):
         fail_rate = self.spring_ess.get_fail_rate()
@@ -269,22 +269,22 @@ class TestCourseOffering(TransactionTestCase):
         json = self.spring_ess.past_offerings_json_object()
         json = json['past_offerings'][0]
 
-        self.assertEquals(json['enrollment'], 25)
+        self.assertEqual(json['enrollment'], 25)
 
     def test_get_grades(self):
         grades = self.winter_ess.get_grades()
-        self.assertEquals(grades, [3.5, 3.5, 0.0, 2.4])
+        self.assertEqual(grades, [3.5, 3.5, 0.0, 2.4])
 
     def test_student_majors(self):
         majors = self.winter_ess.get_majors()
 
-        self.assertEquals(len(majors), 2)
+        self.assertEqual(len(majors), 2)
 
-        self.assertEquals(majors[0]['major'], u'Computer Science')
-        self.assertEquals(majors[0]['number_students'], 2)
+        self.assertEqual(majors[0]['major'], 'Computer Science')
+        self.assertEqual(majors[0]['number_students'], 2)
 
-        self.assertEquals(majors[1]['major'], u'Pre Science')
-        self.assertEquals(majors[1]['number_students'], 2)
+        self.assertEqual(majors[1]['major'], 'Pre Science')
+        self.assertEqual(majors[1]['number_students'], 2)
 
     def test_process_grade_totals(self):
 
@@ -315,7 +315,7 @@ class TestCourseOffering(TransactionTestCase):
 
         grades = self.winter_ess._process_grade_totals(grade_totals)
 
-        self.assertEquals(2.466666666666667, grades[0])
+        self.assertEqual(2.466666666666667, grades[0])
 
     def tearDown(self):
         for stumaj in self.student_majors:

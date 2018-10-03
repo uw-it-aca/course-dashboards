@@ -329,7 +329,7 @@ class CourseOffering(models.Model):
 
         for field in fields:
             if field not in json_obj:
-                raise(Exception("There was an error in data processing!"))
+                raise Exception
 
         log_profile_data('%s,%s' % (self.term, self.course), logger)
         clear_prof_data()
@@ -445,7 +445,7 @@ class CourseOffering(models.Model):
         for offering in offerings:
             for field in fields:
                 if field not in offering:
-                    raise (Exception("There was an error in data processing!"))
+                    raise Exception
 
         return offerings if len(offerings) >= min_offerings else []
 

@@ -48,10 +48,10 @@ class TestTerm(TestCase):
                                         self.summer2017, self.autumn2017])
 
     def test_term_key(self):
-        self.assertEquals(Term.objects.get(year=2016,
+        self.assertEqual(Term.objects.get(year=2016,
                                            quarter="spring").term_key,
                           20162)
-        self.assertEquals(Term.objects.get(year=2017,
+        self.assertEqual(Term.objects.get(year=2017,
                                            quarter="autumn").term_key,
                           20174)
 
