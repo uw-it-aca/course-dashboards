@@ -6,7 +6,7 @@
     <div class="historic-median course-data-widget col">
         <div class="d-inline-block course-data-items">
             <div class="course-data-number" title="{{median_gpa}} Median Cumulative GPA">{{median_gpa}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
-            <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"></span></div>
+            <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumumlative GPA" data-content="This is the midpoint of the cumulative GPAs of the students based on the time frame selected above."></i></span></div>
         </div>
     </div>
     <div class="historic-enrollment course-data-widget col">
@@ -20,13 +20,13 @@
     <div class="historic-median course-data-widget col">
         <div class="d-inline-block course-data-items">
             <div class="course-data-number" title="{{median_course_grade}} Median course grade">{{median_course_grade}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
-            <div class="course-data-description">Median Course Grade<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Course Grade" data-content="If you've taught the class before, use this data to assess the impact of pedagogical or curricular tweaks you've made."></i></span></div>
+            <div class="course-data-description">Median Course Grade<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Course Grade" data-content="This is the midpoint of the final course grades based on the time frame selected above.  If you've taught the class before, use this data to assess the impact of pedagogical or curricular tweaks you've made."></i></span></div>
         </div>
     </div>
     <div class="historic-failure course-data-widget col">
         <div class="d-inline-block course-data-items">
             <div class="course-data-number" title="{{failed_percent}}% of students failed this course">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
-            <div class="course-data-description">Percent Failure<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Percent Failure" data-content="Get a sense of how much time you should spend on challenging topics, considering how much students have struggled with the course in the past."></i></span></div>
+            <div class="course-data-description">Percent Failure<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Percent Failure" data-content="This is the percent of students who received a 0.0 in the course(s) based on the time frame selected above.  Get a sense of how much time you should spend on challenging topics, considering how much students have struggled with the course in the past."></i></span></div>
         </div>
     </div>
 </div>
@@ -39,7 +39,7 @@
            <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
            {{/each}}
        </ol>
-       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors while taking the course</span>...</a></div>
+       <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> declared majors while taking the course</span>...</a></div>
     </div>
     <div class="list col">
         <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Learn what your students go on to major in. Is your course a 'gateway' course to a particular field of study?"></i></span><br><small>(upon graduation)</small></h4>
@@ -49,7 +49,7 @@
            {{/each}}
            <li class="small">Total will not add up to 100% if students have yet to graduate.</li>
        </ol>
-       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> declared majors upon graduation</span>...</a></div>
+       <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> declared majors upon graduation</span>...</a></div>
     </div>
 </div>
 <div class="row">
@@ -60,23 +60,26 @@
            <li><strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
            {{/each}}
        </ol>
-       <div><a href="#" class='toggle-show'>Show more<span class="sr-only"> historic concurrent courses taken</span>...</a></div>
+       <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> historic concurrent courses taken</span>...</a></div>
     </div>
 </div>
 <div class="row">
     <div class="list previous-instructors col">
-       <h4 id="previous_instructors" class="list-header">Previous Instructors for this course<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Previous Instructors" data-content="Reach out to past instructors to share ideas and materials."></i></span></h4>
+       <h4 id="previous_instructors" class="list-header">Previous Instructors or TAs for this course<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Previous Instructors or TAs" data-content="Reach out to past instructors or TAs to share ideas and materials."></i></span></h4>
+       <!-- <div class="contact-year-{{ year }} contact-quarter-{{ quarter }}{{#gt @index 1}} visually-hidden{{/gt}}"> -->
        <ol class="list-unstyled" aria-labelledby="previous_instructors">
-           {{#each instructors}}
-            <li><a href="mailto:{{uw_email}}">{{ formatName display_name }}</a>, {{quarter}} {{year}} </li>
-           {{/each}}
-
-           {{#each past_terms}}
-            {{#each instructors}}
-                <li><a href="mailto:{{uwnetid}}@uw.edu"><span class="sr-only">Email </span>{{ formatName display_name }}</a>, {{../quarter}} {{../year}}</li>
-            {{/each}}
-           {{/each}}
+         {{#each instructors}}
+         <li>
+           <h5>{{ quarter }} {{ year }}</h5>
+           <ol class="list-unstyled">
+             {{#each instructors}}
+             <li><a href="mailto:{{uw_email}}">{{ formatName display_name }}</a></li>
+             {{/each}}
+           </ol>
+         </li>
+         {{/each}}
        </ol>
+       <div><a href="#" class='toggle-show' data-toggle-length=4>Show more<span class="sr-only"> previous instructors</span>...</a></div>
     </div>
 
 </div>
@@ -89,4 +92,12 @@
 <li>To protect you and your colleagues' privacy, we do not show data for a single course, unless it's a course you've taught.</li></ul></p>
 </div>
 {{/if}}
+{% endtplhandlebars %}
+
+{% tplhandlebars "no-historic-course-data" %}
+<div class="coda-alert alert alert-info" role="alert">
+<p>
+The query you requested will not generate data.  This is a new course, and there is no historical information to draw upon.
+</p>
+</div>
 {% endtplhandlebars %}

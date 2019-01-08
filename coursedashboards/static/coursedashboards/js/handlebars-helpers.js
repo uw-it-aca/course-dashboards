@@ -23,3 +23,11 @@ Handlebars.registerHelper('formatName', function(name) {
 Handlebars.registerHelper('myPlanFormat', function(name) {
     return name.replace("-", "");
 });
+
+Handlebars.registerHelper('gt', function(lval, rval, options) {
+    if (rval > lval) {
+        return options.inverse(this);
+    }
+    return options.fn(this);
+});
+
