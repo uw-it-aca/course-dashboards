@@ -526,8 +526,11 @@ function getInstructorsByTerm(sections) {
         o.quarter = term[1];
         o.year = parseInt(term[0]);
         o.instructors.sort(function (a, b) {
-            var a_lastname = a.display_name.split(' ')[1],
-                b_lastname = b.display_name.split(' ')[1];
+            // approximate lastname alpha sort
+            var a_name = a.display_name.split(' '),
+                b_name = b.display_name.split(' '),
+                a_lastname = a_name[a_name.length > 1 ? 1 : 0].toLowerCase(),
+                b_lastname = b_name[b_name.length > 1 ? 1 : 0].toLowerCase();
             if (a_lastname < b_lastname) { return -1; }
             if (a_lastname > b_lastname) { return 1; }
             return 0;
