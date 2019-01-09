@@ -514,10 +514,22 @@ function getInstructorsByTerm(sections) {
                 };
             }
 
-            terms[term].instructors.push({
-                display_name: instructor.display_name,
-                uw_email: instructor.uwnetid + "@uw.edu"
-            });
+            if (instructor.preferred_surname && instructor.preferred_surname.length !== 0) {
+                instructor.first_name = instructor.preferred_first_name;
+                instructor.surname = instructor.preferred_surname;
+            } else {
+                var name = instructor.display_name.split(' ');
+
+                if (name.length > 1) {
+                    instructor.first_name = name.slice(0, -1).join(' ');
+                    instructor.surname = name.slice(-1)[0];
+                } else {
+                    instructor.first_name = null;
+                    instructor.surname = name[0];
+                }
+            }
+
+            terms[term].instructors.push(instructor);
         });
     });
 
@@ -526,13 +538,8 @@ function getInstructorsByTerm(sections) {
         o.quarter = term[1];
         o.year = parseInt(term[0]);
         o.instructors.sort(function (a, b) {
-            // approximate lastname alpha sort
-            var a_name = a.display_name.split(' '),
-                b_name = b.display_name.split(' '),
-                a_lastname = a_name[a_name.length > 1 ? 1 : 0].toLowerCase(),
-                b_lastname = b_name[b_name.length > 1 ? 1 : 0].toLowerCase();
-            if (a_lastname < b_lastname) { return -1; }
-            if (a_lastname > b_lastname) { return 1; }
+            if (a.surname < b.surname) { return -1; }
+            if (a.surname > b.surname) { return 1; }
             return 0;
         });
         return o;
@@ -540,8 +547,8 @@ function getInstructorsByTerm(sections) {
         var quarters = ['autumn', 'summer', 'spring', 'winter'],
             y = a.year - b.year;
 
-        return (y != 0) ? y : (quarters.indexOf(a.quarter.toLowerCase()) -
-                               quarters.indexOf(b.quarter.toLowerCase()));
+        return (y !== 0) ? y : (quarters.indexOf(a.quarter.toLowerCase()) -
+                                quarters.indexOf(b.quarter.toLowerCase()));
     });
 }
 

@@ -73,7 +73,7 @@
            <h5>{{ quarter }} {{ year }}</h5>
            <ol class="list-unstyled">
              {{#each instructors}}
-             <li><a href="mailto:{{uw_email}}">{{ formatName display_name }}</a></li>
+             <li><a href="mailto:{{email}}">{{ formatName surname }}, {{ formatName first_name }}</a>{{#if is_faculty}} - Faculty{{else}}{{#if is_student}} - Grad Student{{else}}{{#if is_member}} - Former Faculty{{else}}{{#if is_alum}} - Former Grad Student{{/if}}{{/if}}{{/if}}{{/if}}</li>
              {{/each}}
            </ol>
          </li>
