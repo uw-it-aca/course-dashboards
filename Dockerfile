@@ -1,4 +1,4 @@
-FROM acait/django-container:python3
+FROM acait/django-container:python2
 RUN apt-get install mysql-client -y
 RUN mkdir /app/logs
 ADD coursedashboards/VERSION /app/myuw/
