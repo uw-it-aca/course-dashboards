@@ -17,8 +17,18 @@ class User(models.Model):
                                       on_delete=models.PROTECT)
 
     display_name = models.CharField(max_length=250, null=True)
+    preferred_first_name = models.CharField(max_length=250, null=True)
+    preferred_middle_name = models.CharField(max_length=250, null=True)
+    preferred_surname = models.CharField(max_length=250, null=True)
+
     email = models.CharField(max_length=255, null=True)
+
+    # Affiliation flags
+    is_student = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_employee = models.BooleanField(default=False)
     is_alum = models.BooleanField(default=False)
+    is_faculty = models.BooleanField(default=False)
 
 
 class QuarterGPA(models.Model):

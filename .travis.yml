@@ -11,22 +11,26 @@ env:
   global:
     - TRAVIS_NODE_VERSION="6"
 install:
-  - pip install -r requirements.txt
+  - sudo apt-get install -qq python-dev libxml2-dev libxmlsec1-dev
 before_script:
   - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
   - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create user "coda" identified by "my_pass"'; fi
   - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'grant all on *.* to coda'; fi
-  - pip install -e .
+  - pip install -r requirements.txt
   - pip install pep8
   - pip install nose2
   - pip install coverage
   - pip install commonconf
   - pip install python-coveralls
   - pip install MySQL-python
+  - pip install pycodestyle
+  - npm install jquery
+  - npm install -g jshint
   - cp travis-ci/manage.py manage.py
   - python manage.py migrate
 script:
-  - pep8 coursedashboards --exclude=migrations,static
+  - pycodestyle coursedashboards --exclude=migrations,coursedashboards/static/vendor,coursedashboards/static/images,coursedashboards/static/fonts
+  - jshint coursedashboards/static/coursedashboards/js/ --verbose
   - coverage run --source=coursedashboards/ --omit=coursedashboards/migrations/* manage.py test coursedashboards
 after_script:
   - coveralls

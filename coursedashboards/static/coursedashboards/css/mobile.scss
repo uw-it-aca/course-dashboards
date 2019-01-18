@@ -94,14 +94,17 @@ $info-circle: #8f9bcc;
                 .nav-item {
                     .nav-link {padding: 0 .5em;
                         &.nohref {
-                            color: #0077c2;
+                            color: #999;
                             text-decoration: none;
                             cursor: pointer;
                         }
-                        &.active { pointer-events: none; cursor: default; color:#333; background-color:transparent;}
+                        &.active { pointer-events: none; cursor: default; color:#000; background-color:transparent;}
+                        &:after { content: ""; display: block; height: 3px; background-color: #999;}
+                        &.active:after { background-color: #000;}
                     }
                 }
             }
+
             .tab-content {
                 .tab-pane {padding: .5rem 0;}
             }

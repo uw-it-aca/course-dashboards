@@ -120,9 +120,17 @@ class CourseOffering(models.Model):
     @profile
     def get_instructors(self):
         return [{
-            'display_name': inst.user.display_name,
             'uwnetid': inst.user.uwnetid,
-            'email': inst.user.email
+            'display_name': inst.user.display_name,
+            'preferred_first_name': inst.user.preferred_first_name,
+            'preferred_middle_name': inst.user.preferred_middle_name,
+            'preferred_surname': inst.user.preferred_surname,
+            'email': inst.user.email,
+            'is_student': inst.user.is_student,
+            'is_staff': inst.user.is_staff,
+            'is_employee': inst.user.is_employee,
+            'is_alum': inst.user.is_alum,
+            'is_faculty': inst.user.is_faculty
         } for inst in Instructor.objects.filter(course=self.course,
                                                 term=self.term)]
 
