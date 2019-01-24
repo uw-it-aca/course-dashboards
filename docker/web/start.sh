@@ -2,7 +2,6 @@
 # Remove any existing httpd data
 rm -rf /run/httpd/* /tmp/httpd*
 
-source "/app/bin/activate"
 export DATABASE_NAME=`echo $BRANCH | sed 's/-/_/g' `
 echo $DATABASE_NAME
 
