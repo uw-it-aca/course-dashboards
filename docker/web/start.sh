@@ -9,7 +9,7 @@ echo $DATABASE_NAME
 
 if [ "$DB" = "mysql" ] && [ "$ENV" = "dev" ]
 then
-  mysql -u $DATABASE_USERNAME -p$DATABASE_PASSWORD -h $DATABASE_HOSTNAME --execute="create database $DATABASE_NAME "
+  mysql -u $DATABASE_USERNAME -p$DATABASE_PASSWORD -h $DATABASE_HOSTNAME --execute="create database $DATABASE_NAME " || true
 fi
 
 python manage.py migrate
