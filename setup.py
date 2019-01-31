@@ -20,7 +20,7 @@ setup(
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
-        'Django==1.11.10',
+        'Django<2',
         'django-compressor',
         'django-pyscss',
         'django_mobileesp',
@@ -32,8 +32,8 @@ setup(
         'UW-RestClients-PWS<2.0,>=1.0.1',
         'UW-RestClients-GWS>=1.0,<2.0',
         'UW-RestClients-Canvas>=0.7.2,<1.0',
-        'UW-Restclients-Django-Utils',
-        'UW-Django-SAML2>=0.4',
+        'UW-Restclients-Django-Utils<2.0',
+        'UW-Django-SAML2<2.0',
         'Django-SupportTools>=2.0.4,<3.0',
         'djangorestframework>=3.6.4',
         'statistics'

@@ -7,41 +7,64 @@ INSTALLED_APPS += [
     'compressor',
     'rc_django',
     'templatetag_handlebars',
-    'myuw',
+    'coursedashboards',
     'userservice',
-    'django_client_logger',
-    'supporttools',
-    'blti',
-    'hx_toolkit'
+    'supporttools'
 ]
 
 MIDDLEWARE += [
-    'userservice.user.UserServiceMiddleware',
-    'django_user_agents.middleware.UserAgentMiddleware'
 ]
 
-# MYUW_PREFETCH_THREADING = True
-MYUW_ENABLED_FEATURES = []
 
-EMAIL_BACKEND = "saferecipient.EmailBackend"
-MAILMAN_COURSEREQUEST_RECIPIENT = ""
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+COMPRESS_ROOT = '/static/'
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+)
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+]
+
+COMPRESS_PRECOMPILERS += (
+    ('text/x-sass', 'pyscss {infile} > {outfile}'),
+    ('text/x-scss', 'pyscss {infile} > {outfile}'),
+)
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
+]
 
 
-# Thrive required settings
-MEDIA_ROOT = "/statics/hx_images"
-MEDIA_URL = "/uploaded_images/"
-THRIVE_OUTPUT = "/hx_toolkit_output"
+USERSERVICE_VALIDATION_MODULE = "coursedashboards.userservice_validation.validate"
+USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
+RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
+RESTCLIENTS_DAO_CACHE_CLASS='coursedashboards.cache.RestClientsCache'
+AUTHZ_GROUP_BACKEND = 'authz_group.authz_implementation.uw_group_service.UWGroupService'
+RESTCLIENTS_MEMCACHED_SERVERS = ''
 
-USERSERVICE_VALIDATION_MODULE = "myuw.authorization.validate_netid"
-USERSERVICE_OVERRIDE_AUTH_MODULE = "myuw.authorization.can_override_user"
-RESTCLIENTS_ADMIN_AUTH_MODULE = "myuw.authorization.can_proxy_restclient"
-MYUW_ADMIN_GROUP = 'u_astratst_myuw_test-support-admin'
-MYUW_OVERRIDE_GROUP = 'u_astratst_myuw_test-support-impersonate'
-MYUW_ASTRA_GROUP_STEM = "u_astratst_myuw"
-MYUW_DISABLE_ACTIONS_WHEN_OVERRIDE = False
+RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
-#Support Tools settings
-SUPPORTTOOLS_PARENT_APP = "MyUW"
+SUPPORTTOOLS_PARENT_APP = "CoDa"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
 
+
+DETECT_USER_AGENTS = {
+    'is_tablet': False,
+    'is_mobile': False,
+    'is_desktop': True,
+}
+
+CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'appsubmit.cac.washington.edu'
 

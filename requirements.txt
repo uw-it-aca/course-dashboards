@@ -1,1 +1,2 @@
 -e .
+-e git+https://github.com/uw-it-aca/uw-django-saml2@feature/load_balanced#egg=uw-django-saml2

@@ -16,8 +16,7 @@ python manage.py migrate
 
 pip install -r requirements.txt
 
-rm -rf /static/
 python manage.py collectstatic
-
+python manage.py compress
 # Start Apache server in foreground
 exec /usr/sbin/apachectl -DFOREGROUND
