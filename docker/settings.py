@@ -44,6 +44,7 @@ COMPRESS_JS_FILTERS = [
 ]
 
 
+
 USERSERVICE_VALIDATION_MODULE = "coursedashboards.userservice_validation.validate"
 USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
@@ -56,6 +57,8 @@ RESTCLIENTS_DEFAULT_TIMEOUT = 3
 SUPPORTTOOLS_PARENT_APP = "CoDa"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
 
+USERSERVICE_OVERRIDE_AUTH_MODULE = "coursedashboards.authorization.can_override_user"
+RESTCLIENTS_ADMIN_AUTH_MODULE = "coursedashboards.authorization.can_proxy_restclient"
 
 DETECT_USER_AGENTS = {
     'is_tablet': False,

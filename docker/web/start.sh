@@ -13,9 +13,6 @@ then
 fi
 
 python manage.py migrate
-
-pip install -r requirements.txt
-
 python manage.py collectstatic
 python manage.py compress
 # Start Apache server in foreground

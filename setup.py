@@ -36,7 +36,8 @@ setup(
         'UW-Django-SAML2<2.0',
         'Django-SupportTools>=2.0.4,<3.0',
         'djangorestframework>=3.6.4',
-        'statistics'
+        'statistics',
+        'mysqlclient==1.3.14',
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',
