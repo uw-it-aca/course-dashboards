@@ -295,9 +295,9 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
 
     for (var i = 0; i < instructed_sections.length; i++){
         if(offeringMatchesQuarter(instructed_sections[i], taught)){
-            instructed_sections[i]['selected'] = "selected";
+            instructed_sections[i].selected = "selected";
         } else {
-            instructed_sections[i]['selected'] = "";
+            instructed_sections[i].selected = "";
         }
     }
 
@@ -319,7 +319,7 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
 
     //Historic data selection
     $(".historic-filter").change(function() {
-        updateHistoricDisplay()
+        updateHistoricDisplay();
     });
     setPillListeners();
 }
@@ -349,7 +349,7 @@ function updateHistoricDisplay(){
     }
 
     if(newYear !== ALL_YEARS) {
-        newYear = parseInt(newYear)
+        newYear = parseInt(newYear);
     }
 
     showHistoricDataSelectors(index, newQuarter, newYear, taught);
@@ -378,21 +378,25 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     var past_offerings = window.section_historic_data[index];
     var offerings = filterOfferings(past_offerings, quarter, year, only_my_courses);
 
-    for (var i = 0; i < offerings.length; i++) {
-        offerings[i].quarter = firstLetterUppercase(offerings[i].quarter);
-    }
+    $.each(offerings, function () {
+        var offering = this;
 
-    var historic = $("#historic-course-data").html();
-    var historicTemplate = Handlebars.compile(historic);
+        offering.quarter = firstLetterUppercase(offering.quarter);
+    });
+
+    var historic;
+    var historicTemplate;
 
     if(taught !== ALL_MY_COURSES){
-        var section = undefined;
+        var section;
 
-        for(var i = 0; i < offerings.length; i++){
-            if(offeringMatchesQuarter(offerings[i], taught)){
-                section = offerings[i];
+        $.each(offerings, function () {
+            var offering = this;
+
+            if(offeringMatchesQuarter(offering, taught)){
+                section = offering;
             }
-        }
+        });
 
         if(section !== undefined) {
             offerings = [section];
@@ -403,59 +407,77 @@ function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
     var latest_majors = calculateCommon(offerings, "latest_majors","major");
     latest_majors = latest_majors.slice(0, 20);
 
-    $("#historic-course-target").html(historicTemplate({
-        common_majors:calculateCommon(offerings, "majors","major"),
-        latest_majors: latest_majors,
-        common_courses:calculateCommon(offerings, "concurrent_courses","course"),
-        selected_quarter:quarter,
-        selected_year:year,
-        median_gpa: calculateMedianGPA(offerings),
-        median_course_grade: calculateCourseMedian(offerings),
-        failed_percent: calculateFailedPercentage(offerings),
-        total_students: calculateTotalStudents(offerings),
-        section_count: section_count,
-        instructors: getInstructors(offerings),
-        display_course: shouldDisplayCourse(offerings)
-        //past_terms:window.section_data[index].past_offerings
-    }));
+    if (offerings.length) {
+        historic = $("#historic-course-data").html();
+        historicTemplate = Handlebars.compile(historic);
 
-    setup_exposures($("#historic-course-target"));
+        $("#historic-course-target").html(historicTemplate({
+            common_majors:calculateCommon(offerings, "majors","major"),
+            latest_majors: latest_majors,
+            common_courses:calculateCommon(offerings, "concurrent_courses","course"),
+            selected_quarter:quarter,
+            selected_year:year,
+            median_gpa: calculateMedianGPA(offerings),
+            median_course_grade: calculateCourseMedian(offerings),
+            failed_percent: calculateFailedPercentage(offerings),
+            total_students: calculateTotalStudents(offerings),
+            section_count: section_count,
+            instructors: getInstructorsByTerm(offerings),
+            display_course: shouldDisplayCourse(offerings)
+            //past_terms:window.section_data[index].past_offerings
+        }));
+        setup_exposures($("#historic-course-target"));
 
-    $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover();
 
-    $('.popover-dismiss').popover({ trigger: 'focus'});
+        $('.popover-dismiss').popover({ trigger: 'focus'});
+    } else {
+        historic = $("#no-historic-course-data").html();
+        historicTemplate = Handlebars.compile(historic);
+
+        $("#historic-course-target").html(historicTemplate());
+    }
 }
 
 function setup_exposures($container) {
     $container.find(".toggle-show").each(function () {
-        var $hidden = $(this).closest('.list').find('ol.list-unstyled li');
+        var $this = $(this),
+            $list = $this.closest('.list').find('> ol.list-unstyled > li'),
+            show_length = $this.attr('data-toggle-length');
 
-        if ($hidden.length <= 10) {
-            $(this).parent().hide();
+        show_length = show_length ? show_length : 10;
+
+        if ($list.length <= show_length) {
+            $this.parent().hide();
         } else {
-            $hidden.slice(10, $hidden.length).hide();
+            $list.slice(show_length).hide();
         }
 
     });
 
     $container.find(".toggle-show").on('click', function () {
-        var expanded = $(this).attr("expanded");
+        var $this = $(this),
+            $list = $this.closest('.list').find('> ol.list-unstyled > li'),
+            expanded = $this.attr("expanded"),
+            $hidden,
+            show_length = $this.attr('data-toggle-length');
+            show_length_max = $this.attr('data-toggle-length-max');
+
+        show_length = show_length ? show_length : 10;
 
         if (expanded === "true") {
-            $(this).html("Show more...");
-            $(this).attr("expanded", false);
-
-            var $hidden = $(this).closest('.list').find('ol.list-unstyled li:visible');
-            $hidden.slice(10, 21).hide();
-
+            $this.html("Show more...");
+            $this.attr("expanded", false);
+            $list.slice(parseInt(show_length)).hide();
             return false;
         } else{
-            var $hidden = $(this).closest('.list').find('ol.list-unstyled li:hidden');
-            // show next ten
-            $hidden.slice(0, 11).show();
-
-            $(this).html("Show less...");
-            $(this).attr("expanded", true);
+            $this.html("Show less...");
+            $this.attr("expanded", true);
+            if (show_length_max) {
+                $list.slice(0, parseInt(show_length_max) + 1).show();
+            } else {
+                $list.slice(0).show();
+            }
 
             return false;
         }
@@ -476,19 +498,58 @@ function filterOfferings(sections, quarter, year, only_my_courses){
     return filtered_sections;
 }
 
-function getInstructors(sections) {
-    var instructors = [];
-    for (var o = 0; o < sections.length; o++) {
-        for (var i in sections[o].instructors) {
-            instructors.push({
-                quarter: sections[o].quarter,
-                year: sections[o].year,
-                display_name: sections[o].instructors[i].display_name,
-                uw_email: sections[o].instructors[i].uwnetid + "@uw.edu"
-            });
-        }
-    }
-    return instructors;
+function getInstructorsByTerm(sections) {
+    var terms = {};
+
+    $.each(sections, function () {
+        var section = this,
+            term = section.year + ' ' + section.quarter;
+
+        $.each(section.instructors, function () {
+            var instructor = this;
+
+            if (!terms.hasOwnProperty(term)) {
+                terms[term] = {
+                    instructors: []
+                };
+            }
+
+            if (instructor.preferred_surname && instructor.preferred_surname.length !== 0) {
+                instructor.first_name = instructor.preferred_first_name;
+                instructor.surname = instructor.preferred_surname;
+            } else {
+                var name = instructor.display_name.split(' ');
+
+                if (name.length > 1) {
+                    instructor.first_name = name.slice(0, -1).join(' ');
+                    instructor.surname = name.slice(-1)[0];
+                } else {
+                    instructor.first_name = null;
+                    instructor.surname = name[0];
+                }
+            }
+
+            terms[term].instructors.push(instructor);
+        });
+    });
+
+    return $.map(terms, function (o, key) {
+        var term = key.split(' ');
+        o.quarter = term[1];
+        o.year = parseInt(term[0]);
+        o.instructors.sort(function (a, b) {
+            if (a.surname < b.surname) { return -1; }
+            if (a.surname > b.surname) { return 1; }
+            return 0;
+        });
+        return o;
+    }).sort(function (a, b) {
+        var quarters = ['autumn', 'summer', 'spring', 'winter'],
+            y = a.year - b.year;
+
+        return (y !== 0) ? y : (quarters.indexOf(a.quarter.toLowerCase()) -
+                                quarters.indexOf(b.quarter.toLowerCase()));
+    });
 }
 
 
@@ -521,7 +582,7 @@ function calculateMedianGPA(sections){
         gpas.push.apply(gpas, sections[i].gpas);
     }
 
-    return (Math.round(math.median(gpas) * 100) / 100).toFixed(2)
+    return gpas.length ? (Math.round(math.median(gpas) * 100) / 100).toFixed(2) : 0;
 }
 
 function calculateCourseMedian(sections) {
@@ -553,9 +614,9 @@ function calculateFailedPercentage(sections) {
 
 //Calculates all of the common major/course lists based on historic selections
 function calculateCommon(sections, list_type, name_type) {
-    var obj = {};
-    var total_students = 0;
-    var original_objects = {}
+    var obj = {},
+        total_students = 0,
+        original_objects = {};
 
     for (var o = 0; o < sections.length; o++) {
         var term_obj = sections[o][list_type];
@@ -576,7 +637,7 @@ function calculateCommon(sections, list_type, name_type) {
 
     if (name_type === "course"){
         for(var i = 0; i < result.length; i++){
-            result[i]['title'] = original_objects[result[i].course].title;
+            result[i].title = original_objects[result[i].course].title;
         }
     }
 
@@ -594,7 +655,7 @@ function quarterIsInRange(past_offering, quarter, year) {
     if(quarter === ALL_QUARTERS)
         return year === past_offering.year;
 
-    return (past_offering.year === year && quarter === past_offering.quarter)
+    return (past_offering.year === year && quarter === past_offering.quarter);
 }
 
 function getInstructedSections(past_offerings){

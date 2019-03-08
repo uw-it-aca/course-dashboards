@@ -124,7 +124,7 @@ class Command(BaseCommand):
             course.course_title = section.course_title_long[:64]
             course.save()
 
-        if section.is_withdrawn:
+        if section.is_withdrawn():
             try:
                 self._remove_course(term, course)
             except Course.DoesNotExist:

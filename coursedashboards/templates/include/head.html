@@ -43,7 +43,6 @@
     {% endcompress %}
 {% endif %}
 
-{% if is_desktop %}
     <!-- critical (above the fold styles) -->
     {% compress css inline %}
     <link rel="stylesheet" href="{% static "vendor/css/bootstrap.min.css" %}">
@@ -61,7 +60,6 @@
     {% compress css %}
     {% endcompress %}
 
-{% endif %}
 
 <!-- Google Fonts -->
 <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
