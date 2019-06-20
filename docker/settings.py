@@ -13,6 +13,7 @@ INSTALLED_APPS += [
 ]
 
 MIDDLEWARE += [
+    'userservice.user.UserServiceMiddleware',
 ]
 
 
@@ -71,3 +72,4 @@ CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'appsubmit.cac.washington.edu'
 
+DEBUG = True

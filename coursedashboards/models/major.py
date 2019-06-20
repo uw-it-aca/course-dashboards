@@ -23,6 +23,9 @@ class StudentMajor(models.Model):
         db_table = 'StudentMajor'
         unique_together = ('user', 'major', 'term')
 
+    def __lt__(self, other):
+        return self.term < other.term
+
     @staticmethod
     def sort_by_term(first, other):
         return first.term.compare_terms(first.term, other.term)
