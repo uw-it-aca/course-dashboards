@@ -49,11 +49,11 @@ class TestTerm(TestCase):
 
     def test_term_key(self):
         self.assertEqual(Term.objects.get(year=2016,
-                                           quarter="spring").term_key,
-                          20162)
+                                          quarter="spring").term_key,
+                         20162)
         self.assertEqual(Term.objects.get(year=2017,
-                                           quarter="autumn").term_key,
-                          20174)
+                                          quarter="autumn").term_key,
+                         20174)
 
     def tearDown(self):
         for term in self.terms:
