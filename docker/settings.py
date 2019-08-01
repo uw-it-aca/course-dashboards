@@ -9,7 +9,8 @@ INSTALLED_APPS += [
     'templatetag_handlebars',
     'coursedashboards',
     'userservice',
-    'supporttools'
+    'supporttools',
+    'rest_framework'
 ]
 
 MIDDLEWARE += [
