@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install mysql-client libmysqlclient-dev libapache2
 ADD --chown=acait:acait coursedashboards/VERSION /app/coursedashboards/
 ADD --chown=acait:acait setup.py /app/
 ADD --chown=acait:acait requirements.txt /app/
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN . /app/bin/activate && pip install -r requirements.txt
 RUN . /app/bin/activate && pip install mysqlclient
 
