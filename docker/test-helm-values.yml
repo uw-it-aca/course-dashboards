@@ -22,7 +22,7 @@ certs:
   mounted: true
   certPath: /certs/coda-test.s.uw.edu-uwca.pem
   keyPath: /certs/coda-test.s.uw.edu-uwca.key
-  secretName: coda-test-uwca
+  secretName: coda-test-uwca-certs
 environmentVariables:
   - name: SWS_ENV
     value: EVAL 
