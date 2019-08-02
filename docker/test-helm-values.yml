@@ -17,7 +17,7 @@ database:
 image:
   repository: 847518396864.dkr.ecr.us-west-2.amazonaws.com/course-dashboards-coda-test-provisioner-web-ecr
 repo: coda-test
-branch: task/upgrades
+branch: drf
 certs:
   mounted: true
   certPath: /certs/coda-test.s.uw.edu-uwca.pem
