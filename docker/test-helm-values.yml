@@ -13,7 +13,7 @@ ingress:
 database:
   secretName: coda-test-rds
   hostname: coda-test-rds.default.svc.cluster.local
-  name: coda-test
+  name: codatest
 image:
   repository: 847518396864.dkr.ecr.us-west-2.amazonaws.com/course-dashboards-coda-test-provisioner-web-ecr
 repo: coda-test
