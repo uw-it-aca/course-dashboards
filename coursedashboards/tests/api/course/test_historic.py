@@ -1,4 +1,4 @@
-from unittest2 import TestCase, skip
+from django.test import TestCase
 
 
 class TestHistoricAPI(TestCase):

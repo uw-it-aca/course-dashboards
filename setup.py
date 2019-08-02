@@ -1,7 +1,11 @@
 import os
 from setuptools import setup
 
-README = open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
+README = """
+See the README on `GitHub
+<https://github.com/uw-it-aca/course-dashboards>`_.
+"""
+
 
 # The VERSION file is created by travis-ci, based on the tag name
 version_path = 'coursedashboards/VERSION'

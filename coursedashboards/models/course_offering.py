@@ -214,8 +214,7 @@ class CourseOffering(models.Model):
         for student in student_majors:
 
             majors = student_majors[student]
-            majors = sorted(majors, cmp=StudentMajor.sort_by_term,
-                            reverse=True)
+            majors = sorted(majors, reverse=True)
 
             graduated_term = majors[0].term
 
@@ -337,7 +336,7 @@ class CourseOffering(models.Model):
 
         for field in fields:
             if field not in json_obj:
-                raise(Exception("There was an error in data processing!"))
+                raise Exception("There was an error in data processing!")
 
         log_profile_data('%s,%s' % (self.term, self.course), logger)
         clear_prof_data()
@@ -453,7 +452,7 @@ class CourseOffering(models.Model):
         for offering in offerings:
             for field in fields:
                 if field not in offering:
-                    raise (Exception("There was an error in data processing!"))
+                    raise Exception("There was an error in data processing!")
 
         return offerings if len(offerings) >= min_offerings else []
 

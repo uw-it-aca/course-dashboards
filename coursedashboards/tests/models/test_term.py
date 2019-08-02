@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 
 from coursedashboards.models import Term
 
@@ -40,7 +40,7 @@ class TestTerm(TestCase):
             term.save()
 
     def test_term_sort(self):
-        sorted_terms = sorted(self.terms, cmp=Term.compare_terms)
+        sorted_terms = sorted(self.terms)
 
         self.assertEqual(sorted_terms, [self.winter2016, self.spring2016,
                                         self.summer2016, self.autumn2016,
@@ -48,12 +48,12 @@ class TestTerm(TestCase):
                                         self.summer2017, self.autumn2017])
 
     def test_term_key(self):
-        self.assertEquals(Term.objects.get(year=2016,
-                                           quarter="spring").term_key,
-                          20162)
-        self.assertEquals(Term.objects.get(year=2017,
-                                           quarter="autumn").term_key,
-                          20174)
+        self.assertEqual(Term.objects.get(year=2016,
+                                          quarter="spring").term_key,
+                         20162)
+        self.assertEqual(Term.objects.get(year=2017,
+                                          quarter="autumn").term_key,
+                         20174)
 
     def tearDown(self):
         for term in self.terms:

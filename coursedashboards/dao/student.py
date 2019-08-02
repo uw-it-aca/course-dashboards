@@ -81,7 +81,6 @@ def get_majors_all_students(students, term):
     for student in students:
         major = get_student_major(student, term)
         for m in major:
-            print m.full_name
             if m.full_name in majors_dict:
                 majors_dict[m.full_name] += 1
             else:
@@ -104,7 +103,6 @@ def get_most_recent_majors_all_students(students):
         majors = get_student_major(student, term)
 
         for m in majors:
-            print m.full_name
             if m.full_name in majors_dict:
                 majors_dict[m.full_name] += 1
             else:
