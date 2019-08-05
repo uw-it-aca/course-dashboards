@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from coursedashboards.models import Term, Course, CourseOffering
 from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
 
+logger = logger.getLogger(__name__)
 
 class CoDaAPI(APIView):
 
@@ -32,6 +33,7 @@ class CoDaAPI(APIView):
         offering = self.get_offering(year, quarter, curriculum,
                                      course_number, section_id)
 
+        logger.info(json.loads(request.META))
         if isinstance(offering, HttpResponse):
             return offering
 
