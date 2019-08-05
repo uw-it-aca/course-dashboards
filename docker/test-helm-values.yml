@@ -25,4 +25,8 @@ certs:
   secretName: coda-test-uwca-certs
 environmentVariables:
   - name: SWS_ENV
-    value: EVAL 
+    value: EVAL
+  - name: AUTH
+    value: SAML
+  - name: CLUSTER_NAME
+    value: coda-test.s.uw.edu

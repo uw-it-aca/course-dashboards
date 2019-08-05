@@ -10,8 +10,11 @@ INSTALLED_APPS += [
     'coursedashboards',
     'userservice',
     'supporttools',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
+
+
 
 MIDDLEWARE += [
     'userservice.user.UserServiceMiddleware',
