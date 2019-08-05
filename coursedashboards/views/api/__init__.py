@@ -33,7 +33,7 @@ class CoDaAPI(APIView):
         offering = self.get_offering(year, quarter, curriculum,
                                      course_number, section_id)
 
-        logger.info(json.loads(request.META))
+        logger.info(str(request.META))
         if isinstance(offering, HttpResponse):
             return offering
 
