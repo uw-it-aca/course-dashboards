@@ -1,4 +1,4 @@
-FROM acait/django-container:master
+FROM acait/django-container:auth
 
 USER root
 RUN apt-get update && apt-get install mysql-client libmysqlclient-dev libapache2-mod-wsgi libxmlsec1-dev -y
