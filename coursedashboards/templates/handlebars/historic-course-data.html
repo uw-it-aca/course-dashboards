@@ -91,9 +91,11 @@
 <li>To protect you and your colleagues' privacy, we do not show data for a single course, unless it's a course you've taught.</li></ul></p>
 </div>
 {{/if}}
-{% endtplhandlebars %}
+{% endverbatim %}
 
-{% tplhandlebars "no-historic-course-data" %}
+
+{% verbatim %}
+<script id="no-historic-course-data" type="text/x-handlebars-template">
 <div class="coda-alert alert alert-info" role="alert">
 <p>
 The query you requested will not generate data.  This is a new course, and there is no historical information to draw upon.
