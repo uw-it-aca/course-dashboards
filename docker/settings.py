@@ -2,10 +2,18 @@ from .base_settings import *
 
 ALLOWED_HOSTS = ['*']
 
+if os.getenv('AUTH', 'NONE') == 'SAML_MOCK':
+    MOCK_SAML_ATTRIBUTES = {
+        'uwnetid': ['bill'],
+        'affiliations': ['employee', 'member'],
+        'eppn': ['bill@washington.edu'],
+        'scopedAffiliations': ['employee@washington.edu', 'member@washington.edu'],
+        'isMemberOf': ['u_test_group', 'u_test_another_group',
+                       'u_acadev_coda_admins'],
+    }
 
 INSTALLED_APPS += [
     'compressor',
-    'rc_django',
     'coursedashboards',
     'userservice',
     'supporttools'
@@ -45,8 +53,11 @@ COMPRESS_JS_FILTERS = [
 USERSERVICE_VALIDATION_MODULE = "coursedashboards.userservice_validation.validate"
 USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
-RESTCLIENTS_DAO_CACHE_CLASS='coursedashboards.cache.RestClientsCache'
 AUTHZ_GROUP_BACKEND = 'authz_group.authz_implementation.uw_group_service.UWGroupService'
+
+if not os.getenv("ENV") == "localdev":
+    INSTALLED_APPS += ['rc_django',]
+    RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 

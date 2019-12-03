@@ -11,9 +11,9 @@ from coursedashboards.views.page import user_login, logout
 
 course_regex = r'^api/v1/course/(?P<year>\d{4})-'\
                r'(?P<quarter>[A-Za-z]+)-'\
-               r'(?P<curriculum>[&% 0-9a-z]+)-'\
+               r'(?P<curriculum>[&% 0-9A-Za-z]+)-'\
                r'(?P<course_number>\d{3})-'\
-               r'(?P<section_id>[A-Za-z][A-Z0-9a-z]?)'
+               r'(?P<section_id>[A-Za-z][0-9A-Za-z]?)'
 
 urlpatterns = [
     # Home
