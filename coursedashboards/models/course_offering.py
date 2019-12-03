@@ -461,7 +461,8 @@ class CourseOffering(models.Model):
             'past_offerings': self.get_past_offerings(),
         }
 
-        log_profile_data('{},{}: PAST: '.format(self.term, self.course), logger)
+        log_profile_data(
+            '{},{}: PAST: '.format(self.term, self.course), logger)
         clear_prof_data()
         return json_obj
 
