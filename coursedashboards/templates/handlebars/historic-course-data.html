@@ -1,6 +1,5 @@
-{% load templatetag_handlebars %}
-{% tplhandlebars "historic-course-data" %}
-{% load staticfiles %}
+{% verbatim %}
+<script id="historic-course-data" type="text/x-handlebars-template">
 {{#if display_course}}
 <div class="historic-data-row row">
     <div class="historic-median course-data-widget col">
@@ -100,4 +99,5 @@
 The query you requested will not generate data.  This is a new course, and there is no historical information to draw upon.
 </p>
 </div>
-{% endtplhandlebars %}
+</script>
+{% endverbatim %}

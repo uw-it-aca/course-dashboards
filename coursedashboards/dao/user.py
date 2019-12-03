@@ -76,7 +76,7 @@ def _person_email(person):
     try:
         return person.email_addresses[0]
     except IndexError:
-        return '%s@uw.edu' % person.uwnetid
+        return '{}@uw.edu'.format(person.uwnetid)
 
 
 def get_current_user():

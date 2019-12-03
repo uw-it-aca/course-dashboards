@@ -1,6 +1,5 @@
-{% load templatetag_handlebars %}
-{% tplhandlebars "historic-data-selectors" %}
-{% load staticfiles %}
+{% verbatim %}
+<script id="historic-data-selectors" type="text/x-handlebars-template">
 <div class="row">
     <div class="col">
         <h3 id="historic_section_data">Historical Student Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
@@ -54,4 +53,5 @@
         </div>
     </div>
 </div>
-{% endtplhandlebars %}
+</script>
+{% endverbatim %}

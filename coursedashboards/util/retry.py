@@ -44,8 +44,9 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[],
                         raise
 
                     if logger:
-                        logger.warning('%s: %s, Retrying in %s seconds.' % (
-                            f.__name__, err, mdelay))
+                        logger.warning(
+                            '{}: {}, Retrying in {} seconds.'.format(
+                                f.__name__, err, mdelay))
 
                     time.sleep(mdelay)
                     mtries -= 1

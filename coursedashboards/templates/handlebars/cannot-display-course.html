@@ -1,7 +1,7 @@
-{% load templatetag_handlebars %}
-{% tplhandlebars "cannot-display-course" %}
-{% load staticfiles %}
+{% verbatim %}
+<script id="cannot-display-course" type="text/x-handlebars-template">
 <div class="row">
   We're very sorry.  The course referred to, {{course}}, does not exist or is not available for view.
 </div> 
-{% endtplhandlebars %}
+</script>
+{% endverbatim %}

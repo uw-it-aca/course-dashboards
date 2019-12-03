@@ -6,7 +6,6 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS += [
     'compressor',
     'rc_django',
-    'templatetag_handlebars',
     'coursedashboards',
     'userservice',
     'supporttools'
@@ -25,11 +24,10 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-]
+STATICFILES_FINDERS += (
+    'compressor.finders.CompressorFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 COMPRESS_PRECOMPILERS += (
     ('text/x-sass', 'pyscss {infile} > {outfile}'),
@@ -44,14 +42,11 @@ COMPRESS_JS_FILTERS = [
     'compressor.filters.jsmin.JSMinFilter',
 ]
 
-
-
 USERSERVICE_VALIDATION_MODULE = "coursedashboards.userservice_validation.validate"
 USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_DAO_CACHE_CLASS='coursedashboards.cache.RestClientsCache'
 AUTHZ_GROUP_BACKEND = 'authz_group.authz_implementation.uw_group_service.UWGroupService'
-RESTCLIENTS_MEMCACHED_SERVERS = ''
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
@@ -72,4 +67,4 @@ CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'appsubmit.cac.washington.edu'
 
-DEBUG = False 
+DEBUG = True if os.getenv('ENV', 'localdev') == "localdev" else False

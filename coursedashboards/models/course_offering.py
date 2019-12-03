@@ -148,9 +148,9 @@ class CourseOffering(models.Model):
         course_dict = {}
         for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
-                name = "%s-%s|%s" % (reg.course.curriculum,
-                                     reg.course.course_number,
-                                     reg.course.course_title)
+                name = "{}-{}|{}".format(reg.course.curriculum,
+                                         reg.course.course_number,
+                                         reg.course.course_title)
                 if name in course_dict:
                     course_dict[name] += 1
                 else:
@@ -273,7 +273,7 @@ class CourseOffering(models.Model):
 
     def brief_json_object(self):
         json_obj = {
-            'section_label': '%s' % self,
+            'section_label': '{}'.format(self),
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
             'section_id': self.course.section_id
@@ -338,7 +338,7 @@ class CourseOffering(models.Model):
             if field not in json_obj:
                 raise Exception("There was an error in data processing!")
 
-        log_profile_data('%s,%s' % (self.term, self.course), logger)
+        log_profile_data('{},{}'.format(self.term, self.course), logger)
         clear_prof_data()
         return json_obj
 
@@ -348,7 +348,7 @@ class CourseOffering(models.Model):
             'course_number': self.course.course_number,
             'section_id': self.course.section_id,
             'course_title': self.course.course_title,
-            'section_label': '%s' % self,
+            'section_label': '{}'.format(self),
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'canvas_course_url': self.canvas_course_url,
@@ -461,7 +461,7 @@ class CourseOffering(models.Model):
             'past_offerings': self.get_past_offerings(),
         }
 
-        log_profile_data('%s,%s: PAST: ' % (self.term, self.course), logger)
+        log_profile_data('{},{}: PAST: '.format(self.term, self.course), logger)
         clear_prof_data()
         return json_obj
 
@@ -471,4 +471,4 @@ class CourseOffering(models.Model):
         ordering = ['-term__year', '-term__quarter']
 
     def __str__(self):
-        return "%s-%s" % (self.term, self.course)
+        return "{}-{}".format(self.term, self.course)

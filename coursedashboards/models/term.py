@@ -23,7 +23,7 @@ class Term(models.Model):
     term_key = models.PositiveSmallIntegerField(db_index=True, default=0)
 
     def __str__(self):
-        return "%s-%s" % (self.year, self.quarter)
+        return "{}-{}".format(self.year, self.quarter)
 
     def get_term_key(self):
         return self.year * 10 + self._quarter_to_int(self.quarter)
