@@ -1,36 +1,45 @@
-sudo: false
+sudo: required
+
 language: python
-services:
-  - mysql
 python:
 - '3.6'
+
+services:
+  - docker
+
 env:
-  matrix:
-    - DB=sqlite3
-    - DB=mysql
+#  matrix:
+#    - DB=sqlite3
+#    - DB=mysql
   global:
-    - TRAVIS_NODE_VERSION="6"
+    - RELEASE_NAME="coda"
+    - DJANGO_APP="coursedashboards"
+    - COMMIT_HASH="$(git rev-parse --short=7 HEAD)"
+    - IMAGE_TAG="${RELEASE_NAME}:${COMMIT_HASH}"
+    - DEPLOY_SCRIPT_BASE=https://raw.githubusercontent.com/uw-it-aca/gcp-app-deploy/master
+
 install:
-  - sudo apt-get install -qq python-dev libxml2-dev libxmlsec1-dev
+  - docker build -t "$IMAGE_TAG" .
+
 before_script:
-  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
-  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create user "coda" identified by "my_pass"'; fi
-  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'grant all on *.* to coda'; fi
-  - pip install -r requirements.txt
-  - pip install pep8
-  - pip install nose2
+#  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
+#  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create user "coda" identified by "my_pass"'; fi
+#  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'grant all on *.* to coda'; fi
   - pip install coverage
-  - pip install commonconf
-  - pip install python-coveralls
-  - pip install mysqlclient
-  - pip install pycodestyle
-  - npm install jquery
-  - npm install -g jshint
-  - cp travis-ci/manage.py manage.py
-  - python manage.py migrate
+  - pip install coveralls
+
 script:
-  - pycodestyle coursedashboards --exclude=migrations,coursedashboards/static/vendor,coursedashboards/static/images,coursedashboards/static/fonts
-  - jshint coursedashboards/static/coursedashboards/js/ --verbose
-  - coverage run --source=coursedashboards/ --omit=coursedashboards/migrations/* manage.py test coursedashboards
+  - docker run -u root -it -v /tmp:/coverage -e DJANGO_APP="$DJANGO_APP" -e "ENV=localdev" -e "AUTH=SAML_MOCK" "$IMAGE_TAG" bash -c ". ./travis-ci/test.sh"
+
 after_script:
+  - cp /tmp/.coverage.* .
+  - coverage combine
   - coveralls
+#  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [[ "$TRAVIS_BRANCH" =~ ^(develop|master)$ ]]; then
+#    curl -Ls ${DEPLOY_SCRIPT_BASE}/travis-ci/deploy.sh | bash;
+#    fi
+
+#cache:
+#  directories:
+#    - "$HOME/helm"
+#    - "$HOME/kubeval"
