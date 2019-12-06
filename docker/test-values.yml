@@ -1,0 +1,85 @@
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  tls:
+    coda-test:
+      secretName: coda-test.s.uw.edu
+      hosts:
+        - coda-test.s.uw.edu
+  hosts:
+    coda-test:
+      host: coda-test.s.uw.edu
+      paths: 
+        - "/"
+database:
+  engine: mysql
+  name: coda
+  hostname: coda-db-test-service
+  secretName: coda-db-test
+externalService:
+  enabled: true
+  name: coda-db-test-service
+  type: ClusterIP
+  serviceAddress: 172.18.0.5
+  servicePort: 3306
+repo: coda
+instance: test
+targetAverageUtilization: 90
+resources:
+  limits:
+    cpu: 600m
+  requests:
+    cpu: 200m
+image:
+  repository: registry.hub.docker.com/acait/coda
+  tag: IMAGE_TAG
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+certs:
+  mounted: true
+  certPath: /certs/coda-test.s.uw.edu-uwca.cert
+  keyPath: /certs/coda-test.s.uw.edu-uwca.key
+  secretName: coda-test-uwca-certs
+environmentVariables:
+  - name: ENV
+    value: dev
+  - name: CERT_PATH
+    value: /certs/coda-test.s.uw.edu-uwca.cert
+  - name: KEY_PATH
+    value: /certs/coda-test.s.uw.edu-uwca.key
+  - name: GWS_ENV
+    value: PROD
+  - name: SWS_DEV
+    value: EVAL
+  - name: PWS_ENV
+    value: EVAL
+  - name: CANVAS_ENV
+    value: EVAL
+  - name: AUTH
+    value: SAML
+  - name: SAML_ENTITY_ID
+    value: https://coda-test.s.uw.edu/sso/
+  - name: CLUSTER_CNAME
+    value: coda-test.s.uw.edu
+  - name: SP_CERT
+    value: '''MIIG9TCCBd2gAwIBAgIRAP2tup6wClg4D9ZKWcNbB8EwDQYJKoZIhvcNAQELBQAwdjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAk1JMRIwEAYDVQQHEwlBbm4gQXJib3IxEjAQBgNVBAoTCUludGVybmV0MjERMA8GA1UECxMISW5Db21tb24xHzAdBgNVBAMTFkluQ29tbW9uIFJTQSBTZXJ2ZXIgQ0EwHhcNMTkwMzIxMDAwMDAwWhcNMjEwMzIwMjM1OTU5WjCBpzELMAkGA1UEBhMCVVMxDjAMBgNVBBETBTk4MTk1MQswCQYDVQQIEwJXQTEQMA4GA1UEBxMHU2VhdHRsZTEZMBcGA1UECRMQNDU0NSAxNXRoIEF2ZSBORTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMQ4wDAYDVQQLEwVVVy1JVDEbMBkGA1UEAxMSY29kYS10ZXN0LnMudXcuZWR1MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs45rtx76kar/3rrCjPOoWQBwr+RyhXgzxNwtQR57QOFffCmm+ooTXl9JaiCwFxNDj1kqLvlfLIz43o06AjNgnfUsgXcD/qL+n4KXILEtobT9bg7btblHcUJSifBzzVsV2kmz+fL3gES8++Jtq02PpIil96qaEn2rsKRtHjBxEvCGgJZnsE/+o6b8zGLSc+OFIUJR/BD8G46xx7qGLwoNEeldGHW1zQCcZ3kFVW1/BGmUOns6F/cnt+4tkrMzkb3LK2OykKDIRU0QsMR45s/0qN5QH/237aQKc5Q9FC84Cm4hH/qosO98cHDAkoMbDLms3dep0Upgk/C4ewXZd9ASIQIDAQABo4IDSjCCA0YwHwYDVR0jBBgwFoAUHgWjd49sluJbh0umtIascQAM5zgwHQYDVR0OBBYEFEbIPfUK2rwlbejpwBx5vO3tuMQjMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBnBgNVHSAEYDBeMFIGDCsGAQQBriMBBAMBATBCMEAGCCsGAQUFBwIBFjRodHRwczovL3d3dy5pbmNvbW1vbi5vcmcvY2VydC9yZXBvc2l0b3J5L2Nwc19zc2wucGRmMAgGBmeBDAECAjBEBgNVHR8EPTA7MDmgN6A1hjNodHRwOi8vY3JsLmluY29tbW9uLXJzYS5vcmcvSW5Db21tb25SU0FTZXJ2ZXJDQS5jcmwwdQYIKwYBBQUHAQEEaTBnMD4GCCsGAQUFBzAChjJodHRwOi8vY3J0LnVzZXJ0cnVzdC5jb20vSW5Db21tb25SU0FTZXJ2ZXJDQV8yLmNydDAlBggrBgEFBQcwAYYZaHR0cDovL29jc3AudXNlcnRydXN0LmNvbTAdBgNVHREEFjAUghJjb2RhLXRlc3Qucy51dy5lZHUwggGABgorBgEEAdZ5AgQCBIIBcASCAWwBagB3ALvZ37wfinG1k5Qjl6qSe0c4V5UKq1LoGpCWZDaOHtGFAAABaaHGF1cAAAQDAEgwRgIhAMGeV1kN6eXaLsyBdwNGW/PWofodN7GTt1jTY72/A0cRAiEAy4Enmt580UHz1DewlRiqjH3LUQjwYCia3wvjpOfMeOEAdwBElGUusO7Or8RAB9io/ijA2uaCvtjLMbU/0zOWtbaBqAAAAWmhxhefAAAEAwBIMEYCIQDXQI0fcWjsXHTbjEOhf0sJ9X/rvXeGkJDEVRH9/cg63gIhANpHuqpc4QBG9LCw/8vgA/IESku9yRIkN7UG7ApIDdmLAHYAXNxDkv7mq0VEsV6a1FbmEDf71fpH3KFzlLJe5vbHDsoAAAFpocYXowAABAMARzBFAiEAo+cn1B1+BO9eV6cNm9eWGGRajnI+55b42CiBzLTd98kCIC40DGNvzOURQtRAFfPSY/JsXjfLWRhT7sX0miEupGerMA0GCSqGSIb3DQEBCwUAA4IBAQBRoGzXlSpQzoQ4Sdo481A2dQ5If7clt1Z+0+uf/PKyMhqu/2m3k5PFgiOPmbwpyk+ak2pNKuI4Y+3IiDi3tE36QcImTfS9BFBEsDs/omTgRskH42AR5NO+RFOgyJGVdRqS6mmyEQuuADFyKY2uMZqveatUXM32X9qoYuiuuL/fr3XzFcX+fUKNT03LHHX9e4xjqvyngd0BxhWjaXhvkMlm8iFLI4vjr27APL6xnlc63Ngqsnc6ixs2W/3ICqbXEH1A5McX5cDYm6cBUEw4vzt+jXko/mnCLHoyP8jfwpuKwMvCTLBMuIf8LAJqs0KwXvAfjoSBMKplEjxfKxcxvrZv'''
+  - name: IDP_CERT
+    value: 'MIID/TCCAuWgAwIBAgIJAMoYJbDt9lKKMA0GCSqGSIb3DQEBBQUAMFwxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJXQTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMR0wGwYDVQQDExRpZHAudS53YXNoaW5ndG9uLmVkdTAeFw0xMTA0MjYxOTEwMzlaFw0yMTA0MjMxOTEwMzlaMFwxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJXQTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMR0wGwYDVQQDExRpZHAudS53YXNoaW5ndG9uLmVkdTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMH9G8m68L0Hf9bmf4/7c+ERxgDQrbq50NfSi2YTQWc1veUIPYbZy1agSNuc4dwn3RtC0uOQbdNTYUAiVTcYgaYceJVB7syWf9QyGIrglZPMu98c5hWb7vqwvs6d3s2Sm7tBib2v6xQDDiZ4KJxpdAvsoPQlmGdgpFfmAsiYrnYFXLTHgbgCc/YhV8lubTakUdI3bMYWfh9dkj+DVGUmt2gLtQUzbuH8EU44vnXgrQYSXNQkmRcyoE3rj4Rhhbu/p5D3P+nuOukLYFOLRaNeiiGyTu3P7gtc/dy/UjUrf+pH75UUU7Lb369dGEfZwvVtITXsdyp0pBfun4CP808H9N0CAwEAAaOBwTCBvjAdBgNVHQ4EFgQUP5smx3ZYKODMkDglkTbduvLcGYAwgY4GA1UdIwSBhjCBg4AUP5smx3ZYKODMkDglkTbduvLcGYChYKReMFwxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJXQTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMR0wGwYDVQQDExRpZHAudS53YXNoaW5ndG9uLmVkdYIJAMoYJbDt9lKKMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAEo7c2CNHEI+Fvz5DhwumU+WHXqwSOK47MxXwNJVpFQ9GPR2ZGDAq6hzLJLAVWcY4kB3ECDkRtysAWSFHm1roOU7xsU9f0C17QokoXfLNC0d7KoivPM6ctl8aRftU5moyFJkkJX3qSExXrl053uxTOQVPms4ypkYv1A/FBZWgSC8eNoYnBnv1Mhy4m8bfeEN7qT9rFoxh4cVjMH1Ykq7JWyFXLEB4ifzH4KHyplt5Ryv61eh6J1YPFa2RurVTyGpHJZeOLUIBvJu15GzcexuDDXe0kg7sHD6PbK0xzEF/QeXP/hXzMxR9kQXB/IR/b2k4ien+EM3eY/ueBcTZ95dgVM='
+  - name: SAFE_EMAIL_RECIPIENT
+    value: "mikes@uw.edu"
+environmentVariablesSecrets:
+  djangoSecret:
+    name: DJANGO_SECRET
+    secretName: coda-test-django-secret
+    secretKey: django-secret
+  emailHostUser:
+    name: EMAIL_HOST_USER
+    secretName: email-post-credentials
+    secretKey: username
+  emailHostPassword:
+    name: EMAIL_HOST_PASSWORD
+    secretName: email-post-credentials
+    secretKey: password

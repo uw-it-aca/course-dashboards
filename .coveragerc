@@ -1,4 +1,8 @@
 [run]
-branch = True
 source = coursedashboards
-include = coursedashboards/*
+parallel = True
+
+[paths]
+source =
+  coursedashboards/
+  /app/coursedashboards/

@@ -15,8 +15,8 @@ def is_in_admin_group(group_key):
 
     if not hasattr(settings, group_key):
         print("You must have a group defined as your admin group.")
-        print('Configure that using %s="foo_group"' % group_key)
-        raise Exception("Missing %s in settings" % group_key)
+        print('Configure that using {}="foo_group"'.format(group_key))
+        raise Exception("Missing {} in settings".format(group_key))
 
     actual_user = user_service.get_original_user()
     if not actual_user:

@@ -17,12 +17,12 @@ def canvas_course_url_from_section(section):
         return canvas_course.course_url
     except DataFailureException as ex:
         if ex.status == 404:
-            logger.info("no canvas course: %s" % (sis_id))
+            logger.info("no canvas course: {}".format(sis_id))
         else:
-            logger.error("problem with canvas: %s" % (ex))
+            logger.error("problem with canvas: {}".format(ex))
     except InvalidCanvasIndependentStudyCourse as ex:
-        logger.error("problem with canvas: %s" % (ex))
+        logger.error("problem with canvas: {}".format(ex))
     except Exception as ex:
-        logger.error("problem with canvas: %s" % (ex))
+        logger.error("problem with canvas: {}".format(ex))
 
     return ''
