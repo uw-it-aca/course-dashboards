@@ -61,7 +61,7 @@ environmentVariables:
   - name: AUTH
     value: SAML
   - name: SAML_ENTITY_ID
-    value: https://coda-test.s.uw.edu/sso/
+    value: https://coda-test.s.uw.edu/saml
   - name: CLUSTER_CNAME
     value: coda-test.s.uw.edu
   - name: SP_CERT
