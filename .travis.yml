@@ -35,11 +35,11 @@ after_script:
   - cp /tmp/.coverage.* .
   - coverage combine
   - coveralls
-#  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [[ "$TRAVIS_BRANCH" =~ ^(develop|master)$ ]]; then
-#    curl -Ls ${DEPLOY_SCRIPT_BASE}/travis-ci/deploy.sh | bash;
-#    fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [[ "$TRAVIS_BRANCH" =~ ^(develop|master)$ ]]; then
+    curl -Ls ${DEPLOY_SCRIPT_BASE}/travis-ci/deploy.sh | bash;
+    fi
 
-#cache:
-#  directories:
-#    - "$HOME/helm"
-#    - "$HOME/kubeval"
+cache:
+  directories:
+    - "$HOME/helm"
+    - "$HOME/kubeval"
