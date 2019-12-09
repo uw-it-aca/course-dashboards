@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load static %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -44,6 +45,9 @@
 {% include "handlebars/cannot-display-course.html" %}
 <script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
+<script>
+  window.static_url = "{% get_static_prefix %}";
+</script>
 
 </body>
 </html>

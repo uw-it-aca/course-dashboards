@@ -19,5 +19,4 @@ class TestStudentMajors(TestCase):
         self.second_major.term = self.autumn2017
 
     def test_term_sort(self):
-        sorted_majors = sorted([self.second_major, self.first_major],
-                               cmp=StudentMajor.sort_by_term)
+        sorted_majors = sorted([self.second_major, self.first_major])

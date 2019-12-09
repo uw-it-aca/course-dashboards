@@ -42,7 +42,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         logger.debug(
-            'load_data_for_term: term=%s instructor=%s previous=%s' % (
+            'load_data_for_term: term={} instructor={} previous={}'.format(
                 options.get('term', ''), options.get('instructor', ''),
                 options.get('previous_terms')))
         term_string = options.get('term')
@@ -57,7 +57,7 @@ class Command(BaseCommand):
         sws_terms = get_given_and_previous_quarters(
             term_string, options.get('previous_terms'))
         for sws_term in sws_terms:
-            logger.info('loading term: %s,%s' % (
+            logger.info('loading term: {},{}'.format(
                 sws_term.quarter, sws_term.year))
 
             term, created = Term.objects.get_or_create(
@@ -69,7 +69,7 @@ class Command(BaseCommand):
 
             changed_date = datetime.utcnow().replace(tzinfo=utc)
             for instructor in instructors:
-                logger.debug('loading instructor: %s' % (instructor))
+                logger.debug('loading instructor: {}'.format(instructor))
                 params = {
                     'transcriptable_course': 'yes',
                     'include_secondaries': False,
@@ -89,7 +89,7 @@ class Command(BaseCommand):
                         section = get_section_from_url(section_ref.url)
                         self._load_section(section, term, sws_term)
                     except DataFailureException as ex:
-                        logger.error("section fetch: %s: %s" % (
+                        logger.error("section fetch: {}: {}".format(
                             section_ref.url, ex))
                         continue
                     for joint_section_url in section.joint_section_urls:
@@ -98,7 +98,7 @@ class Command(BaseCommand):
                                 joint_section_url)
                             self._load_section(joint_section, term, sws_term)
                         except DataFailureException as ex:
-                            logger.error("section fetch: %s: %s" % (
+                            logger.error("section fetch: {}: {}".format(
                                 section_ref.url, ex))
                             continue
 
@@ -109,7 +109,7 @@ class Command(BaseCommand):
     @transaction.atomic
     def _load_section(self, section, term, sws_term):
         if not section.is_primary_section:
-            logger.info('skip non-primary: %s' % (
+            logger.info('skip non-primary: {}'.format(
                 section.section_label()))
             return
 
@@ -132,8 +132,7 @@ class Command(BaseCommand):
 
             return
 
-        logger.info('load: %s' % (
-            self._offering_string(term, course)))
+        logger.info('load: {}'.format(self._offering_string(term, course)))
         self._course_offering_from_section(term, course, section)
         self._instructors_from_section(term, course, section)
         self._registrations_from_section(term, course, section)
@@ -162,9 +161,10 @@ class Command(BaseCommand):
             if not (section_instructor and
                     section_instructor.uwnetid and
                     section_instructor.uwregid):
-                logger.info('incomplete instructor: netid: %s, regid: %s' % (
-                    getattr(section_instructor, 'uwnetid', "null"),
-                    getattr(section_instructor, 'uwregid', "null")))
+                logger.info(
+                    'incomplete instructor: netid: {}, regid: {}'.format(
+                        getattr(section_instructor, 'uwnetid', "null"),
+                        getattr(section_instructor, 'uwregid', "null")))
                 continue
             try:
                 user = user_from_person(section_instructor)
@@ -177,13 +177,13 @@ class Command(BaseCommand):
             if inst_obj.user_id in prior_instructors:
                 prior_instructors.remove(inst_obj.user_id)
 
-            logger.debug('%s instructor: netid:%s, course: %s' % (
+            logger.debug('{} instructor: netid:{}, course: {}'.format(
                 'new' if created else 'update',
                 user.uwnetid, self._offering_string(term, course)))
 
         # remove prior instructors
         if len(prior_instructors):
-            logger.debug('drop instructor: %s for course: %s' % (
+            logger.debug('drop instructor: {} for course: {}'.format(
                 prior_instructors, self._offering_string(term, course)))
             Instructor.objects.filter(
                 user_id__in=prior_instructors,
@@ -196,9 +196,10 @@ class Command(BaseCommand):
             if not (registration.person and
                     registration.person.uwnetid and
                     registration.person.uwregid):
-                logger.info('incomplete registration: netid: %s, regid: %s' % (
-                    getattr(registration.person, 'uwnetid', "null"),
-                    getattr(registration.person, 'uwregid', "null")))
+                logger.info(
+                    'incomplete registration: netid: {}, regid: {}'.format(
+                        getattr(registration.person, 'uwnetid', "null"),
+                        getattr(registration.person, 'uwregid', "null")))
                 continue
             try:
                 user = user_from_person(registration.person)
@@ -233,13 +234,13 @@ class Command(BaseCommand):
             if reg_obj.user_id in prior_registrations:
                 prior_registrations.remove(reg_obj.user_id)
 
-            logger.debug('%s registration: netid:%s, course: %s' % (
+            logger.debug('{} registration: netid:{}, course: {}'.format(
                 'new' if created else 'update',
                 user.uwnetid, self._offering_string(term, course)))
 
         # remove dropped registrations
         if len(prior_registrations):
-            logger.debug('drop registrations: %s for course: %s' % (
+            logger.debug('drop registrations: {} for course: {}'.format(
                 prior_registrations, self._offering_string(term, course)))
             Registration.objects.filter(
                 user_id__in=prior_registrations,
@@ -263,11 +264,10 @@ class Command(BaseCommand):
                     majors[student_major.major_name] = 1
 
     def _remove_course(self, term, course):
-        logger.info('remove: %s' % (
-            self._offering_string(term, course)))
+        logger.info('remove: {}'.format(self._offering_string(term, course)))
         Registration.objects.filter(term=term, course=course).delete()
         Instructor.objects.filter(term=term, course=course).delete()
         CourseOffering.objects.filter(term=term, course=course).delete()
 
     def _offering_string(self, term, course):
-        return '%s,%s' % (term, course)
+        return '{},{}'.format(term, course)

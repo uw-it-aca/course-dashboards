@@ -16,8 +16,8 @@ def get_student_majors_for_regid_and_term(regid, term):
         return enrollment.majors
     except DataFailureException as ex:
         if ex.status == 404:
-            logger.info(" %s" % ex)
+            logger.info(" {}".format(ex))
         else:
-            logger.error(" %s" % ex)
+            logger.error(" {}".format(ex))
 
     return []

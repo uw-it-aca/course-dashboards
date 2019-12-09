@@ -12,5 +12,5 @@ class Course(models.Model):
         unique_together = ('curriculum', 'course_number', 'section_id')
 
     def __str__(self):
-        return "%s-%s-%s" % (
+        return "{}-{}-{}".format(
             self.curriculum, self.course_number, self.section_id)

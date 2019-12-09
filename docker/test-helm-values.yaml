@@ -1,0 +1,28 @@
+ingress:
+  enabled: true
+  tls:
+    prereq:
+      secretName: coda-test.s.uw.edu
+      hosts:
+        - coda-test.s.uw.edu
+  hosts:
+    prereq:
+      host: coda-test.s.uw.edu
+      paths: 
+        - "/"
+database:
+  secretName: coda-test-rds
+  hostname: coda-test-rds.default.svc.cluster.local
+  name: coda-test
+image:
+  repository: 847518396864.dkr.ecr.us-west-2.amazonaws.com/course-dashboards-coda-test-provisioner-web-ecr
+repo: coda-test
+branch: task/upgrades
+certs:
+  mounted: true
+  certPath: /certs/coda-test.s.uw.edu-uwca.pem
+  keyPath: /certs/coda-test.s.uw.edu-uwca.key
+  secretName: coda-test-uwca
+environmentVariables:
+  - name: SWS_ENV
+    value: EVAL 

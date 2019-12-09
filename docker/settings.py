@@ -2,17 +2,25 @@ from .base_settings import *
 
 ALLOWED_HOSTS = ['*']
 
+if os.getenv('AUTH', 'NONE') == 'SAML_MOCK':
+    MOCK_SAML_ATTRIBUTES = {
+        'uwnetid': ['bill'],
+        'affiliations': ['employee', 'member'],
+        'eppn': ['bill@washington.edu'],
+        'scopedAffiliations': ['employee@washington.edu', 'member@washington.edu'],
+        'isMemberOf': ['u_test_group', 'u_test_another_group',
+                       'u_acadev_coda_admins'],
+    }
 
 INSTALLED_APPS += [
     'compressor',
-    'rc_django',
-    'templatetag_handlebars',
     'coursedashboards',
     'userservice',
     'supporttools'
 ]
 
 MIDDLEWARE += [
+    'userservice.user.UserServiceMiddleware',
 ]
 
 
@@ -24,11 +32,10 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-]
+STATICFILES_FINDERS += (
+    'compressor.finders.CompressorFinder',
+#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 COMPRESS_PRECOMPILERS += (
     ('text/x-sass', 'pyscss {infile} > {outfile}'),
@@ -43,14 +50,14 @@ COMPRESS_JS_FILTERS = [
     'compressor.filters.jsmin.JSMinFilter',
 ]
 
-
-
 USERSERVICE_VALIDATION_MODULE = "coursedashboards.userservice_validation.validate"
 USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
-RESTCLIENTS_DAO_CACHE_CLASS='coursedashboards.cache.RestClientsCache'
 AUTHZ_GROUP_BACKEND = 'authz_group.authz_implementation.uw_group_service.UWGroupService'
-RESTCLIENTS_MEMCACHED_SERVERS = ''
+
+if not os.getenv("ENV") == "localdev":
+    INSTALLED_APPS += ['rc_django',]
+    RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
@@ -71,3 +78,4 @@ CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'appsubmit.cac.washington.edu'
 
+DEBUG = True if os.getenv('ENV', 'localdev') == "localdev" else False

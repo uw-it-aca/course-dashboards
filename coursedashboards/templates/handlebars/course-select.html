@@ -1,7 +1,5 @@
-{% load templatetag_handlebars %}
-{% tplhandlebars "course-select" %}
-{% load staticfiles %}
-
+{% verbatim %}
+<script id="course-select" type="text/x-handlebars-template">
 <label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
 <select class="form-control form-control-lg" name="my_courses" id="my_courses" aria-contols="current-course-target">
   <optgroup label="{{quarter}} {{year}}">
@@ -10,5 +8,5 @@
     {{/each}}
   </optgroup>
 </select>
-        
-{% endtplhandlebars %}
+</script>
+{% endverbatim %}

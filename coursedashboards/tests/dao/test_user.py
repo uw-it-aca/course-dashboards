@@ -1,4 +1,4 @@
-from unittest2 import TestCase
+from django.test import TestCase
 from coursedashboards.dao.person import get_person_from_regid
 from coursedashboards.dao.user import user_from_person
 

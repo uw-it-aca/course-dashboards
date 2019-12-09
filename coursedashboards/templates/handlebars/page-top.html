@@ -1,7 +1,5 @@
-{% load templatetag_handlebars %}
-{% tplhandlebars "page-top" %}
-{% load staticfiles %}
-
+{% verbatim %}
+<script id="page-top" type="text/x-handlebars-template">
         <header class="topbanner-bg" role="banner">
             <h1 class="sr-only">Course Dashboard</h1>
             <div aria-labelledby="coda_banner">
@@ -17,12 +15,11 @@
                     </div>
                 </div>
                 <div class="coda-navigation">
-                    <div class="coda-wrapper" style="background-image: url({% static 'coursedashboards/img/w-logo-white.png' %})">
+                    <div class="coda-wrapper" style="background-image: url({{ static 'coursedashboards/img/w-logo-white.png' }})">
                         <div class="coda-title"><a href="https://my.uw.edu">MyUW</a>
                     </div>
                 </div>
             </div>
         </header>
-
-
-{% endtplhandlebars %}
+</script>
+{% endverbatim %}

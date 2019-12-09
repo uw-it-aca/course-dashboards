@@ -1,36 +1,48 @@
-sudo: false
+sudo: required
+
 language: python
-services:
-  - mysql
 python:
-- '2.7'
+- '3.6'
+
+services:
+  - docker
+
 env:
-  matrix:
-    - DB=sqlite3
-    - DB=mysql
+#  matrix:
+#    - DB=sqlite3
+#    - DB=mysql
   global:
-    - TRAVIS_NODE_VERSION="6"
+    - RELEASE_NAME="coda"
+    - DJANGO_APP="coursedashboards"
+    - COMMIT_HASH="$(git rev-parse --short=7 HEAD)"
+    - IMAGE_TAG="${RELEASE_NAME}:${COMMIT_HASH}"
+    - DEPLOY_SCRIPT_BASE=https://raw.githubusercontent.com/uw-it-aca/gcp-app-deploy/master
+    - secure: "dgpD0LUnlHwhHvCF8zxkcjG9LbFZ/PCYA3k+Hp8CPgGyEjr8roN4lOGnVFWGz2hUa03os/FZzdC5s9iVGTkZN8gqDWBDo0KakYwpi0jVC3HGKAhgjV6mcnLK90Ltyu4SRyJU4TL7YcVAx7LLu8FwvGB/7QBGqHAaaPupM9H/8Hy4J6DP5emx51O45YhSmeMu7AuwOxcqVxjJ3GkmRkxQ5SdvDzhJJzf1raT0lTcsK6ijtsd2UpBn5uLS6AVt4zAPJ4RdqvJzP0MrZH5p+ZYJYPoQRNlhccGIrULlo1cswE5vmpwdbKtksrUQBg3bJlC62Akl1fpk2oVoQ7xLqYVi0DpiOh9ggB8mPXhpKSesttwEE/Hbu5DxbPflEQ4kV42urn6bP3NrweVbf9ItJrwPnCBMdTbKfbVeWm3Snni2E9ucN/BvK3gV13pp/egSMfYYrVosVn6vUnc3md6N5IISeFHq1kUDHbCjtRqlNMefIYg4hOO6sT1usuyouSubq3zl6dSGCAJi27XhY2ayfocF7lTYImOMRXTnFxdyP2VSqWym4JNnI4r43mCjhb8wsBP6PsfD7Ieyj/pssxVTvcDxair0PH7CURXlCjtOkj2rJFBEfDNJZmiDoaa1Evo2b/B/RKk1YIYhInFH+msDstJKlS9cPkauQGhwQ4Q7AMxQr/o="
+    - secure: "fj+EHviYr8U1odfNnrGuubjjcruDyaEqNPzYVmL7EcPMafP6iUgrvohT4GV61/Y7bXqPKJEvEmlw4n5IdcP/Cjc9Q7UoaGNTam1rDmSFuMoGBitMD8oFsFDbZv871pLKNp6X/GkRaIARW/A87KxmscUr/Tp64sf3DDZt3VHWyGb/T++NtbBaRrNwkkQ5qLUex2g3TcIlg2L8+iu2sx5rcfuGwdyfo1kGDPvdoNb/Xd0p2H3vAzQB+tEtDmzX/OXBQpsiThKFjWwsi8cBGs7+EjAbwcU26E0XUdPbcb5ICtSZ0AqIiD871dHmMTyeqlmF/hQNxISE2PKNhFviUGl+rK4WhPPhGW/hL11mUX4tcCi8+XcVaq/lLxJ3uT/Z47i2Kfbsoo9L94VfTMV2Bo/GEJ0D0EQGcyWHvp4INjBua5OMarbw62b1NOvZsA7gqOqCwSctGCYxWYulRJtO5mnfXWHEB3sOB5VKw3UWdbWQIKgF8La6trRSbdOQkHG7wFZp8Uo0i54h9gZ+k61CsvyOSAbGn/LNvIxLKFr1wuj+z6t9MVZsYOTERL7pPL31eGqjYKiRi36bVEr78uwu0LjQZiUcLuNGSTdryDU3cjQZRhvN02MnFx8ni4nlKZRWlA/HY8C+ZWQa3XRAdEX1uUL8ByyNr0gMUD7sRYouzoAwiJI="
+    - secure: "o7D+hpS0eNXDNJmq0yhpLQboqsyjBVoHLveGadswWshMX+NmfF5MNuYbF0tRpyl0dQyAvhKtl//ARmyBcJqMqX5WFw9ieX8PI3WiP9koeTiO/WcM5XgWaDDXnnkC9JOUdZjo0BIivlPozbogX4nRpsMsI0JZPQduxx614GbvIIhbbU2SmloTD3BpVBZ5pMo4PtBj0z50TNPMcZ965IUqavZotOPDa9Xif0mOjRRqjdmol9Tsan0vFHwBjaAvFTlGPnVR64rpox9BYRYLRQTh4Pueyr4hgCeZvSVbXK/WJ79eyidyxMDUkRTmDzKnyJmtXhAWmsa13q3M1/frWZGOoQtI36Qf6lTXnQUxX4uPYAWU4RKwS/T/SiA/9+PvmVswWLVR/dEc+ATl3oWElllxkhQayNUE8G48frjk2oVRoiO/UjVkzuxKb3AmNrsAOUIXMyZxn9NHY2knNOCxsgzP/JI6cazQiWkVcd/iB8QCWwTTCSNboxS6yJSom02hJC0vSRIDf6uI+ycpkvE5vvMSnaR5YztPPSlZyQqupGHFzGrJW3/13zezBgjbDTMS4fu37TUYguwuETTYUVrBTPityVrLFB2sCBH4/GEqNYpKRkHTNc0bIn4sCIV/H8QwHe7Q5LH14FSQY2N1kFzb6vQhEE5GVBF08iChFuMgKjPIFNo="
+
 install:
-  - sudo apt-get install -qq python-dev libxml2-dev libxmlsec1-dev
+  - docker build -t "$IMAGE_TAG" .
+
 before_script:
-  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
-  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create user "coda" identified by "my_pass"'; fi
-  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'grant all on *.* to coda'; fi
-  - pip install -r requirements.txt
-  - pip install pep8
-  - pip install nose2
+#  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
+#  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create user "coda" identified by "my_pass"'; fi
+#  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'grant all on *.* to coda'; fi
   - pip install coverage
-  - pip install commonconf
-  - pip install python-coveralls
-  - pip install MySQL-python
-  - pip install pycodestyle
-  - npm install jquery
-  - npm install -g jshint
-  - cp travis-ci/manage.py manage.py
-  - python manage.py migrate
+  - pip install coveralls
+
 script:
-  - pycodestyle coursedashboards --exclude=migrations,coursedashboards/static/vendor,coursedashboards/static/images,coursedashboards/static/fonts
-  - jshint coursedashboards/static/coursedashboards/js/ --verbose
-  - coverage run --source=coursedashboards/ --omit=coursedashboards/migrations/* manage.py test coursedashboards
+  - docker run -u root -it -v /tmp:/coverage -e DJANGO_APP="$DJANGO_APP" -e "ENV=localdev" -e "AUTH=SAML_MOCK" "$IMAGE_TAG" bash -c ". ./travis-ci/test.sh"
+
 after_script:
+  - cp /tmp/.coverage.* .
+  - coverage combine
   - coveralls
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [[ "$TRAVIS_BRANCH" =~ ^(develop|master)$ ]]; then
+    curl -Ls ${DEPLOY_SCRIPT_BASE}/travis-ci/deploy.sh | bash;
+    fi
+
+cache:
+  directories:
+    - "$HOME/helm"
+    - "$HOME/kubeval"
