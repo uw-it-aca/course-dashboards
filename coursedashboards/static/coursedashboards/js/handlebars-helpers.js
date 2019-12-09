@@ -31,3 +31,6 @@ Handlebars.registerHelper('gt', function(lval, rval, options) {
     return options.fn(this);
 });
 
+Handlebars.registerHelper('static', function(path) {
+    return window.static_url + path;
+});
