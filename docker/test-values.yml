@@ -52,7 +52,7 @@ environmentVariables:
     value: /certs/coda-test.s.uw.edu-uwca.key
   - name: GWS_ENV
     value: PROD
-  - name: SWS_DEV
+  - name: SWS_ENV
     value: EVAL
   - name: PWS_ENV
     value: EVAL
