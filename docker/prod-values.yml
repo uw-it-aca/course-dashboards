@@ -3,12 +3,12 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
   tls:
-    coda-test:
+    coda-prod:
       secretName: coda.uw.edu-ingress-cert
       hosts:
         - coda.uw.edu
   hosts:
-    coda-test:
+    coda-prod:
       host: coda.uw.edu
       paths: 
         - "/"
@@ -24,7 +24,7 @@ externalService:
   serviceAddress: 172.18.0.7
   servicePort: 3306
 repo: coda
-instance: test
+instance: prod
 targetAverageUtilization: 90
 resources:
   limits:
@@ -49,7 +49,7 @@ certs:
   mounted: true
   certPath: /certs/coda.uw.edu-uwca.cert
   keyPath: /certs/coda.uw.edu-uwca.key
-  secretName: coda-test-uwca-certs
+  secretName: coda-prod-uwca-certs
 environmentVariables:
   - name: ENV
     value: dev
