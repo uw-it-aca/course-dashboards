@@ -11,10 +11,16 @@ def user_from_person(person):
     try:
         user = User.objects.get(uwnetid=person.uwnetid)
     except User.DoesNotExist:
-        try:
-            user = User.objects.get(uwregid=person.uwregid)
-        except User.DoesNotExist:
-            return _user_from_person(person)
+        if len(person.prior_uwnetids):
+            prior = User.objects.filter(uwnetid__in=person.prior_uwnetids)
+            if len(prior) > 1:
+                raise Exception(
+                    'Need to sort out netid {} User objects'.format(
+                        person.uwnetid))
+            elif len(prior) == 1:
+                user = prior[0]
+            else:
+                return _user_from_person(person)
 
     save = False
     if user.uwnetid != person.uwnetid:
