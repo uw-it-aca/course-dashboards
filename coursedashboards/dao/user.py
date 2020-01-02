@@ -13,6 +13,7 @@ def user_from_person(person):
     try:
         user = User.objects.get(uwnetid=person.uwnetid)
     except User.DoesNotExist:
+        user = None
         if len(person.prior_uwnetids):
             # update model on netid change
             prior = User.objects.filter(uwnetid__in=person.prior_uwnetids)
@@ -26,12 +27,12 @@ def user_from_person(person):
                     'Need to sort out netid {} User models'.format(
                         person.uwnetid))
 
-        if not Save:
+        if not user:
             return _user_from_person(person)
 
     if user.uwregid != person.uwregid:
         if user.uwregid in person.prior_uwregids:
-            # clean up any earlier regid changes
+            # update model for new regid and clean up any earlier changes
             try:
                 regid_user = User.objects.get(uwregid=person.uwregid)
                 if user.id == regid_user.id:
