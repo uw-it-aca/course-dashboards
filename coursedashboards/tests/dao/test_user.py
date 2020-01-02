@@ -65,4 +65,11 @@ class TestGetUser(TestCase):
 
         self.assertEqual(user.uwnetid, new_netid)
         self.assertEqual(user.uwregid, new_regid)
+
         self.assertEqual(len(User.objects.all()), 2)
+
+        new_user = User.objects.get(uwnetid=new_netid)
+        self.assertEqual(new_user.uwregid, new_regid)
+
+        prior_user = User.objects.get(uwnetid=prior_netid)
+        self.assertEqual(prior_user.uwregid, prior_regid)
