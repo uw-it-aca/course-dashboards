@@ -46,7 +46,6 @@ def user_from_person(person):
                     regid_user.save()
                     user.uwregid = person.uwregid
                     save = True
-                    
             except User.DoesNotExist:
                 user.uwregid = person.uwregid
                 save = True
