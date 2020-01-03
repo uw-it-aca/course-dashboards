@@ -8,21 +8,51 @@ def user_from_person(person):
     if type(person) is not uw_pws.models.Person:
         person = get_person_by_netid(person.uwnetid)
 
+    save = False
+
     try:
         user = User.objects.get(uwnetid=person.uwnetid)
     except User.DoesNotExist:
-        try:
-            user = User.objects.get(uwregid=person.uwregid)
-        except User.DoesNotExist:
+        user = None
+        if len(person.prior_uwnetids):
+            # update model on netid change
+            prior = User.objects.filter(uwnetid__in=person.prior_uwnetids)
+            n_prior = len(prior)
+            if n_prior == 1:
+                user = prior[0]
+                user.uwnetid = person.uwnetid
+                save = True
+            elif n_prior > 1:
+                raise Exception(
+                    'Need to sort out netid {} User models'.format(
+                        person.uwnetid))
+
+        if not user:
             return _user_from_person(person)
 
-    save = False
-    if user.uwnetid != person.uwnetid:
-        user.uwnetid = person.uwnetid
-        save = True
     if user.uwregid != person.uwregid:
-        user.uwregid = person.uwregid
-        save = True
+        if user.uwregid in person.prior_uwregids:
+            # update model for new regid and clean up any earlier changes
+            try:
+                regid_user = User.objects.get(uwregid=person.uwregid)
+                if user.id == regid_user.id:
+                    user.uwregid = person.uwregid
+                    save = True
+                else:
+                    # netid change on top of previous regid change
+                    regid_user.uwregid = user.uwregid
+                    user.uwregid = 'regid_placeholder'
+                    user.save()
+                    regid_user.save()
+                    user.uwregid = person.uwregid
+                    save = True
+            except User.DoesNotExist:
+                user.uwregid = person.uwregid
+                save = True
+        else:
+            raise Exception('Mismatched regid {} for {}'.format(
+                user.uwregid, user.uwnetid))
+
     if user.email != _person_email(person):
         user.email = _person_email(person)
         save = True
