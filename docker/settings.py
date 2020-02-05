@@ -17,6 +17,7 @@ INSTALLED_APPS += [
     'coursedashboards',
     'userservice',
     'supporttools'
+    'django_prometheus',
 ]
 
 MIDDLEWARE += [
