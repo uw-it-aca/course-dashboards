@@ -57,18 +57,22 @@ function displayCourseSelector() {
 function displaySelectedCourse() {
     var $option = $("select[name='my_courses'] option:selected");
     var index = $option.index();
+    var label = $option.attr('data-label')
+    var section_data;
 
-    if (window.section_data[index].loaded) {
-        showCurrentCourseData(index);
+    if (label in window.section_data && window.section_data[label].loaded) {
+        showCurrentCourseData(label);
     } else {
-        fetchCurrentCourseData(index);
+        fetchCurrentCourseData(label);
     }
 
-    if (window.section_historic_data[index].loaded){
-        showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
-        showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
+    section_data = window.section_data[label];
+
+    if (window.section_historic_data[label].loaded){
+        showHistoricDataSelectors(section_data, ALL_QUARTERS, ALL_YEARS);
+        showHistoricCourseData(section_data, ALL_QUARTERS, ALL_YEARS);
     } else {
-        fetchHistoricCourseData(index);
+        fetchHistoricCourseData(section_data);
     }
 }
 
@@ -114,11 +118,11 @@ function loadCourse(course) {
 }
 
 //Display data about the currently selected course - called whenever selection changes
-function showCurrentCourseData(index) {
+function showCurrentCourseData(label) {
     var current = $("#current-course-data").html();
     var currentTemplate = Handlebars.compile(current);
 
-    section = window.section_data[index];
+    section = window.section_data[label];
 
     $("#current-course-target").html(currentTemplate({
         current_median: section.current_median,
@@ -136,7 +140,7 @@ function showCurrentCourseData(index) {
         display_course: section.display_course
     }));
 
-    $('.course-title span').html(window.section_data[index].course_title);
+    $('.course-title span').html(window.section_data[label].course_title);
 
     updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id,
               window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
@@ -147,27 +151,27 @@ function showCurrentCourseData(index) {
     $('[data-toggle="popover"]').popover();
 }
 
-function fetchCurrentCourseData(index) {
+function fetchCurrentCourseData(label) {
     startLoadingCourseData();
 
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + window.section_data[index].section_label,
+        url: "/api/v1/course/" + window.section_data[label].section_label,
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
         success: function(results) {
-            window.section_data[index] = results;
-            window.section_data[index].loaded = true;
+            window.section_data[label] = results;
+            window.section_data[label].loaded = true;
 
-            if(getSelectedCourseIndex() === index){
-                showCurrentCourseData(index);
+            if(getSelectedCourseLabel() === label){
+                showCurrentCourseData(label);
             }
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'course_data', {
-                'eventLabel': window.section_data[index].section_label,
+                'eventLabel': window.section_data[label].section_label,
                 'value': totalTime
             });
         },
@@ -188,29 +192,28 @@ function stopLoadingCourseData() {
     $(".section-container.current-section").removeClass('loading');
 }
 
-function fetchHistoricCourseData(index) {
+function fetchHistoricCourseData(section_data) {
     startLoadingHistoricCourseData();
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + window.section_data[index].section_label + '/past',
+        url: "/api/v1/course/" + section_data.section_label + '/past',
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
         success: function(results) {
-            window.section_historic_data[index] = results.past_offerings;
-            window.section_historic_data[index].loaded = true;
+            window.section_historic_data[section_data.section_label] = results.past_offerings;
+            window.section_historic_data[section_data.section_label].loaded = true;
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'historic_course_data', {
-                'eventLabel': window.section_historic_data[index].section_label,
+                'eventLabel': window.section_historic_data[section_data.section_label].section_label,
                 'value': totalTime
             });
 
-
-            if(getSelectedCourseIndex() === index) {
-                showHistoricDataSelectors(index, ALL_QUARTERS, ALL_YEARS);
-                showHistoricCourseData(index, ALL_QUARTERS, ALL_YEARS);
+            if(getSelectedCourseLabel() === section_data.section_label) {
+                showHistoricDataSelectors(section_data, ALL_QUARTERS, ALL_YEARS);
+                showHistoricCourseData(section_data, ALL_QUARTERS, ALL_YEARS);
             }
 
             setPillListeners();
@@ -248,12 +251,14 @@ function stopLoadingHistoricCourseData() {
 }
 
 //Populate the historic data selectors for the currently selected course
-function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) {
+function showHistoricDataSelectors(section_data, quarter, year, taught=ALL_MY_COURSES) {
     //Fix case of past quarters and create arrays without duplicate quarters/years
     var valid_quarters = [];
     var valid_years = [];
     var combined = [];//stores quarter + year so that when a quarter is selected, can only select years where the course was offered in that quarter & vice versa
-    $.each(window.section_historic_data[index], function () {
+    var section_label = section_data.section_label;
+
+    $.each(window.section_historic_data[section_label], function () {
         past_offering = this;
         past_offering.quarter = firstLetterUppercase(past_offering.quarter);
         if (combined.indexOf(past_offering.quarter + past_offering.year) == -1)
@@ -289,7 +294,7 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
     //Load template
     var selectors = $("#historic-data-selectors").html();
     var selectorsTemplate = Handlebars.compile(selectors);
-    var sections = window.section_historic_data[index];
+    var sections = window.section_historic_data[section_label];
 
     var instructed_sections = getInstructedSections(sections);
 
@@ -306,10 +311,10 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
         past_years:prepOptions(year, valid_years, ALL_YEARS),
         student_total:calculateTotalStudents(sections),
         year_count:calculatePastYearCount(sections),
-        index: index,
-        curriculum:window.section_data[index].curriculum,
-        course_number:window.section_data[index].course_number,
-        section_id:window.section_data[index].section_id,
+        section_label: section_data.section_label,
+        curriculum:window.section_data[section_label].curriculum,
+        course_number:window.section_data[section_label].course_number,
+        section_id:window.section_data[section_label].section_id,
         total_students: calculateTotalStudents(sections),
         section_count: calculateSectionCount(sections),
         instructed_sections: instructed_sections,
@@ -324,12 +329,16 @@ function showHistoricDataSelectors(index, quarter, year, taught=ALL_MY_COURSES) 
     setPillListeners();
 }
 
-function getSelectedCourseIndex(){
-    return $("select[name='my_courses'] option:selected").index();
+function getSelectedCourseLabel(){
+    return $("select[name='my_courses'] option:selected").attr('data-label');
+}
+
+function getSelectedCourseSection(){
+    return window.section_data[getSelectedCourseLabel()];
 }
 
 function updateHistoricDisplay(){
-    var index = getSelectedCourseIndex();
+    var section_data = getSelectedCourseSection();
 
     var taught = ALL_MY_COURSES;
     var newQuarter = ALL_QUARTERS;
@@ -352,8 +361,8 @@ function updateHistoricDisplay(){
         newYear = parseInt(newYear);
     }
 
-    showHistoricDataSelectors(index, newQuarter, newYear, taught);
-    showHistoricCourseData(index, newQuarter, newYear, taught);
+    showHistoricDataSelectors(section_data, newQuarter, newYear, taught);
+    showHistoricCourseData(section_data, newQuarter, newYear, taught);
 }
 
 //Prepares the handlebars variable for historic data selectors
@@ -374,8 +383,8 @@ function prepOptions(selected, valid, all) {
 }
 
 //Display data about the past offerings of selected course - called whenever selection changes
-function showHistoricCourseData(index, quarter, year, taught=ALL_MY_COURSES) {
-    var past_offerings = window.section_historic_data[index];
+function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURSES) {
+    var past_offerings = window.section_historic_data[section_data.section_label];
     var offerings = filterOfferings(past_offerings, quarter, year, only_my_courses);
 
     $.each(offerings, function () {
@@ -661,6 +670,7 @@ function quarterIsInRange(past_offering, quarter, year) {
 function getInstructedSections(past_offerings){
     var instructed = [];
 
+    debugger
     for(var i = 0; i < past_offerings.length; i++){
         if(isInstructor(past_offerings[i])){
             instructed.push(past_offerings[i]);

@@ -48,11 +48,12 @@ def page(request,
             course_id__in=list(courses), term=cur_term)
 
         context['no_courses'] = (len(offerings) == 0)
-        sections = []
-        historical = []
+        sections = {}
+        historical = {}
         for offering in offerings:
-            sections.append(offering.brief_json_object())
-            historical.append({})
+            course_label = str(offering)
+            sections[course_label] = offering.brief_json_object()
+            historical[course_label] = {}
 
         context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
         context['historic_sections'] = json.dumps(
