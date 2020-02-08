@@ -3,7 +3,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from coursedashboards.dao.user import get_current_user
-from coursedashboards.dao.term import get_current_coda_term
+from coursedashboards.dao.term import (
+get_current_coda_term, get_previous_quarter)
 from coursedashboards.dao.exceptions import MissingNetIDException
 from coursedashboards.models import Term, Instructor, CourseOffering
 from django.contrib.auth import logout as django_logout
@@ -59,6 +60,22 @@ def page(request,
         context['historic_sections'] = json.dumps(
             historical, cls=DjangoJSONEncoder)
 
+        # previous quarter sections taught
+        prev_sections = {}
+        prev_sws_term = get_previous_quarter(request)
+        prev_term, created = Term.objects.get_or_create(
+            year=prev_sws_term.year, quarter=prev_sws_term.quarter)
+        context["previous_year"] = prev_term.year
+        context["previous_quarter"] = prev_term.quarter
+        prev_courses = Instructor.objects.filter(
+            user=user, term=prev_term).values_list('course_id', flat=True)
+        for prev_offering in CourseOffering.objects.filter(
+                course_id__in=list(prev_courses), term=prev_term):
+            prev_sections[
+                str(prev_offering)] = prev_offering.brief_json_object()
+
+        context['previous_sections'] = json.dumps(
+            prev_sections, cls=DjangoJSONEncoder)
     except Instructor.DoesNotExist:
         context['no_courses'] = True
 

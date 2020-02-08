@@ -47,17 +47,20 @@ function courseHash() {
 function displayCourseSelector() {
     source = $("#course-select").html();
     template = Handlebars.compile(source);
+
     $(".course-select").html(template({
         quarter: firstLetterUppercase(window.term.quarter),
         year: window.term.year,
-        sections: window.section_data
+        sections: window.section_data,
+        previous_quarter: firstLetterUppercase(window.previous_term.quarter),
+        previous_year: window.previous_term.year,
+        previous_sections: window.previous_section_data
     }));
 }
 
 function displaySelectedCourse() {
     var $option = $("select[name='my_courses'] option:selected");
-    var index = $option.index();
-    var label = $option.attr('data-label')
+    var label = $option.attr('data-label');
     var section_data;
 
     if (label in window.section_data && window.section_data[label].loaded) {
@@ -97,22 +100,18 @@ $(window).bind('popstate', function (e, o) {
     }
 });
 
-function loadCourse(course) {
+function loadCourse(section_label) {
     var found = false;
-    var m = course.match(/^([0-9]{4})-(winter|spring|summer|autumn)-([^-]+)-([0-9]{3})-([a-z]+)$/i);
-    if (m && window.term.year === m[1] && window.term.quarter === m[2]) {
-        var label = m[3] + ' ' + m[4] + ' ' + m[5];
-        var return_val = false;
-        $('select#my_courses option').each(function () {
-            var $option = $(this);
-            if (label === $option.text()) {
-                $option.prop('selected', true);
-                displaySelectedCourse();
-                found = true;
-                return false;
-            }
-        });
-    }
+
+    $('select#my_courses option').each(function () {
+        var $option = $(this);
+        if (section_label === $option.attr('data-label')) {
+            $option.prop('selected', true);
+            displaySelectedCourse();
+            found = true;
+            return false;
+        }
+    });
 
     return found;
 }
@@ -670,12 +669,11 @@ function quarterIsInRange(past_offering, quarter, year) {
 function getInstructedSections(past_offerings){
     var instructed = [];
 
-    debugger
-    for(var i = 0; i < past_offerings.length; i++){
-        if(isInstructor(past_offerings[i])){
-            instructed.push(past_offerings[i]);
+    $.each(past_offerings, function () {
+        if(isInstructor(this)){
+            instructed.push(this);
         }
-    }
+    });
 
     return instructed;
 }

@@ -11,6 +11,11 @@
         "quarter": "{{quarter}}"
     };
     window.section_data = {{sections | safe | escape}};
+    window.previous_term = {
+        "year": "{{previous_year}}",
+        "quarter": "{{previous_quarter}}"
+    };
+    window.previous_section_data = {{previous_sections | safe | escape}};
     window.section_historic_data = {{historic_sections | safe | escape}};
 
 </script>
