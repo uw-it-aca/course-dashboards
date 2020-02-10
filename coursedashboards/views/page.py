@@ -9,7 +9,9 @@ from coursedashboards.dao.exceptions import MissingNetIDException
 from coursedashboards.models import Term, Instructor, CourseOffering
 from django.contrib.auth import logout as django_logout
 
+
 LOGOUT_URL = "/user_logout"
+HISTORIC_TERM_COUNT = 4
 
 
 def page(request,
@@ -47,7 +49,8 @@ def page(request,
         historical = {}
 
         for sws_term in get_given_and_previous_quarters(
-                "{},{}".format(cur_term.year, cur_term.quarter), 2):
+                "{},{}".format(cur_term.year, cur_term.quarter),
+                HISTORIC_TERM_COUNT + 1):
             term, created = Term.objects.get_or_create(
                 year=sws_term.year, quarter=sws_term.quarter)
 
