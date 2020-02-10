@@ -11,11 +11,6 @@
         "quarter": "{{quarter}}"
     };
     window.section_data = {{sections | safe | escape}};
-    window.previous_term = {
-        "year": "{{previous_year}}",
-        "quarter": "{{previous_quarter}}"
-    };
-    window.previous_section_data = {{previous_sections | safe | escape}};
     window.section_historic_data = {{historic_sections | safe | escape}};
 
 </script>
@@ -25,7 +20,7 @@
     		<div class="main-content row" id="maincontent"> 
                 <div class="course-info col-12" aria-labelledby="course_title">
                     <div class="course-quarter-year text-capitalize">
-                        <h2 id="course_title" class="heading-page">Course Dashboard &middot; {{quarter}} {{year}} <span class="visually-hidden">{{course_title}}</span>
+                        <h2 id="course_title" class="heading-page">Course Dashboard &middot; <span class="displayed-quarter">{{quarter}} {{year}}</span> <span class="visually-hidden">{{course_title}}</span>
                         <div class="d-inline-block course-select"></div>
                         </h2>
                     </div>

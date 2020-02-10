@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from coursedashboards.dao.user import get_current_user
 from coursedashboards.dao.term import (
-get_current_coda_term, get_previous_quarter)
+    get_current_coda_term, get_given_and_previous_quarters)
 from coursedashboards.dao.exceptions import MissingNetIDException
 from coursedashboards.models import Term, Instructor, CourseOffering
 from django.contrib.auth import logout as django_logout
@@ -43,39 +43,32 @@ def page(request,
 
     context['sections'] = []
     try:
-        courses = Instructor.objects.filter(
-            user=user, term=cur_term).values_list('course_id', flat=True)
-        offerings = CourseOffering.objects.filter(
-            course_id__in=list(courses), term=cur_term)
-
-        context['no_courses'] = (len(offerings) == 0)
-        sections = {}
+        sections = []
         historical = {}
-        for offering in offerings:
-            course_label = str(offering)
-            sections[course_label] = offering.brief_json_object()
-            historical[course_label] = {}
 
-        context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
-        context['historic_sections'] = json.dumps(
-            historical, cls=DjangoJSONEncoder)
+        for sws_term in get_given_and_previous_quarters(
+                "{},{}".format(cur_term.year, cur_term.quarter), 2):
+            term, created = Term.objects.get_or_create(
+                year=sws_term.year, quarter=sws_term.quarter)
 
-        # previous quarter sections taught
-        prev_sections = {}
-        prev_sws_term = get_previous_quarter(request)
-        prev_term, created = Term.objects.get_or_create(
-            year=prev_sws_term.year, quarter=prev_sws_term.quarter)
-        context["previous_year"] = prev_term.year
-        context["previous_quarter"] = prev_term.quarter
-        prev_courses = Instructor.objects.filter(
-            user=user, term=prev_term).values_list('course_id', flat=True)
-        for prev_offering in CourseOffering.objects.filter(
-                course_id__in=list(prev_courses), term=prev_term):
-            prev_sections[
-                str(prev_offering)] = prev_offering.brief_json_object()
+            courses = Instructor.objects.filter(
+                user=user, term=term).values_list('course_id', flat=True)
+            offerings = CourseOffering.objects.filter(
+                course_id__in=list(courses), term=term)
 
-        context['previous_sections'] = json.dumps(
-            prev_sections, cls=DjangoJSONEncoder)
+            if str(term) == str(cur_term):
+                context['no_courses'] = (len(offerings) == 0)
+
+            for offering in offerings:
+                course_label = str(offering)
+                sections.append(offering.brief_json_object())
+                historical[course_label] = {}
+
+        if len(offerings):
+            context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
+            context['historic_sections'] = json.dumps(
+                historical, cls=DjangoJSONEncoder)
+
     except Instructor.DoesNotExist:
         context['no_courses'] = True
 

@@ -33,11 +33,7 @@ function displayPageHeader() {
     //Display the top bar: netid and course dropdown
     var source = $("#page-top").html();
     var template = Handlebars.compile(source);
-    $("#top_banner").html(template({
-        netid: window.user.netid,
-        quarter: firstLetterUppercase(window.term.quarter),
-        year: window.term.year
-    }));
+    $("#top_banner").html(template({ netid: window.user.netid }));
 }
 
 function courseHash() {
@@ -45,31 +41,54 @@ function courseHash() {
 }
 
 function displayCourseSelector() {
+    var sections = [],
+        term_index = -1,
+        year = null,
+        quarter = null;
+
+    $.each(window.section_data, function () {
+        var section = this;
+
+        if (year != section.year && quarter != section.quarter) {
+            term_index++;
+            sections.push({
+                term: {
+                    year: section.year,
+                    quarter: firstLetterUppercase(section.quarter)
+                },
+                offerings: []
+            });
+        }
+
+        if (sections[term_index].offerings.length == 0) {
+            section.selected = true;
+            if (term_index > 0) {
+                sections[term_index - 1].offerings[0].selected = false;
+            }
+        }
+
+        sections[term_index].offerings.push(section);
+        year = section.year;
+        quarter = section.quarter
+    });
+
     source = $("#course-select").html();
     template = Handlebars.compile(source);
-
     $(".course-select").html(template({
-        quarter: firstLetterUppercase(window.term.quarter),
-        year: window.term.year,
-        sections: window.section_data,
-        previous_quarter: firstLetterUppercase(window.previous_term.quarter),
-        previous_year: window.previous_term.year,
-        previous_sections: window.previous_section_data
+        sections: sections
     }));
 }
 
 function displaySelectedCourse() {
-    var $option = $("select[name='my_courses'] option:selected");
-    var label = $option.attr('data-label');
-    var section_data;
+    var $option = $("select[name='my_courses'] option:selected"),
+        label = $option.attr('data-label'),
+        section_data = getSectionDataByLabel(label);
 
-    if (label in window.section_data && window.section_data[label].loaded) {
+    if (label in section_data && section_data.loaded) {
         showCurrentCourseData(label);
     } else {
         fetchCurrentCourseData(label);
     }
-
-    section_data = window.section_data[label];
 
     if (window.section_historic_data[label].loaded){
         showHistoricDataSelectors(section_data, ALL_QUARTERS, ALL_YEARS);
@@ -118,10 +137,9 @@ function loadCourse(section_label) {
 
 //Display data about the currently selected course - called whenever selection changes
 function showCurrentCourseData(label) {
-    var current = $("#current-course-data").html();
-    var currentTemplate = Handlebars.compile(current);
-
-    section = window.section_data[label];
+    var current = $("#current-course-data").html(),
+        currentTemplate = Handlebars.compile(current),
+        section = getSectionDataByLabel(label);
 
     $("#current-course-target").html(currentTemplate({
         current_median: section.current_median,
@@ -139,11 +157,14 @@ function showCurrentCourseData(label) {
         display_course: section.display_course
     }));
 
-    $('.course-title span').html(window.section_data[label].course_title);
+    $('.course-title span').html(section.course_title);
 
     updateCourseURL(section.curriculum + '-' + section.course_number + '-' + section.section_id,
-              window.term.year + '-' + window.term.quarter + '-' + section.curriculum + '-' +
+              section.year + '-' + section.quarter + '-' + section.curriculum + '-' +
               section.course_number + '-' + section.section_id);
+
+    // update term labels
+    $('span.displayed-quarter').html(firstLetterUppercase(section.quarter) + " " + section.year);
 
     setup_exposures($("#current-course-target"));
 
@@ -156,13 +177,13 @@ function fetchCurrentCourseData(label) {
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + window.section_data[label].section_label,
+        url: "/api/v1/course/" + label,
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
         success: function(results) {
-            window.section_data[label] = results;
-            window.section_data[label].loaded = true;
+            results.loaded = true;
+            setSectionDataByLabel(label, results);
 
             if(getSelectedCourseLabel() === label){
                 showCurrentCourseData(label);
@@ -170,7 +191,7 @@ function fetchCurrentCourseData(label) {
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'course_data', {
-                'eventLabel': window.section_data[label].section_label,
+                'eventLabel': label,
                 'value': totalTime
             });
         },
@@ -206,7 +227,7 @@ function fetchHistoricCourseData(section_data) {
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'historic_course_data', {
-                'eventLabel': window.section_historic_data[section_data.section_label].section_label,
+                'eventLabel': section_data.section_label,
                 'value': totalTime
             });
 
@@ -294,6 +315,7 @@ function showHistoricDataSelectors(section_data, quarter, year, taught=ALL_MY_CO
     var selectors = $("#historic-data-selectors").html();
     var selectorsTemplate = Handlebars.compile(selectors);
     var sections = window.section_historic_data[section_label];
+    var section_data = getSectionDataByLabel(section_label);
 
     var instructed_sections = getInstructedSections(sections);
 
@@ -311,9 +333,9 @@ function showHistoricDataSelectors(section_data, quarter, year, taught=ALL_MY_CO
         student_total:calculateTotalStudents(sections),
         year_count:calculatePastYearCount(sections),
         section_label: section_data.section_label,
-        curriculum:window.section_data[section_label].curriculum,
-        course_number:window.section_data[section_label].course_number,
-        section_id:window.section_data[section_label].section_id,
+        curriculum: section_data.curriculum,
+        course_number: section_data.course_number,
+        section_id: section_data.section_id,
         total_students: calculateTotalStudents(sections),
         section_count: calculateSectionCount(sections),
         instructed_sections: instructed_sections,
@@ -332,8 +354,26 @@ function getSelectedCourseLabel(){
     return $("select[name='my_courses'] option:selected").attr('data-label');
 }
 
-function getSelectedCourseSection(){
-    return window.section_data[getSelectedCourseLabel()];
+function getSectionDataByLabel(label){
+    var section_data;
+
+    $.each(window.section_data, function () {
+        if (this.section_label == label) {
+            section_data = this;
+            return false;
+        }
+    });
+
+    return section_data;
+}
+
+function setSectionDataByLabel(label, section){
+    $.each(window.section_data, function (i) {
+        if (this.section_label == label) {
+            window.section_data[i] = section;
+            return false;
+        }
+    });
 }
 
 function updateHistoricDisplay(){
