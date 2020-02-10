@@ -60,7 +60,7 @@ function displayCourseSelector() {
             });
         }
 
-        if (sections[term_index].offerings.length == 0) {
+        if (sections[term_index].offerings.length === 0) {
             section.selected = true;
             if (term_index > 0) {
                 sections[term_index - 1].offerings[0].selected = false;
@@ -69,7 +69,7 @@ function displayCourseSelector() {
 
         sections[term_index].offerings.push(section);
         year = section.year;
-        quarter = section.quarter
+        quarter = section.quarter;
     });
 
     source = $("#course-select").html();
@@ -315,7 +315,6 @@ function showHistoricDataSelectors(section_data, quarter, year, taught=ALL_MY_CO
     var selectors = $("#historic-data-selectors").html();
     var selectorsTemplate = Handlebars.compile(selectors);
     var sections = window.section_historic_data[section_label];
-    var section_data = getSectionDataByLabel(section_label);
 
     var instructed_sections = getInstructedSections(sections);
 
