@@ -405,7 +405,10 @@ function getSelectedCourseLabel() {
 
 
 function firstCourseCurrentQuarterLabel() {
-    var section_data = null;
+    var section_data = null,
+        first_recent_section_data = null,
+        year = null,
+        quarter = null;
 
     $.each(window.section_data, function () {
         if (window.term.year == this.year &&
@@ -413,9 +416,17 @@ function firstCourseCurrentQuarterLabel() {
             section_data = this;
             return false;
         }
+
+        if (year != this.year &&
+            (!quarter || quarter != this.quarter.toLowerCase())) {
+            first_recent_section_data = section_data;
+            year = this.year;
+            quarter = this.quarter.toLowerCase();
+
+        }
     });
 
-    return section_data ? section_data.section_label : window.section_data[0].section_label;
+    return section_data.section_label;
 }
 
 function getSectionDataByLabel(label) {
