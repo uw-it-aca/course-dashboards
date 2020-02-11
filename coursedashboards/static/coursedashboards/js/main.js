@@ -12,18 +12,24 @@ var only_my_courses = false;
 
 $(document).ready(function () {
     displayPageHeader();
-    displayCourseSelector();
+    displayCourseSelector(courseHash());
 
     if (courseHash()) {
-        if (!loadCourse(courseHash())) {
+        if (!displayCourse(courseHash())) {
             displayErrorPage();
         }
     } else {
-        displaySelectedCourse();
+        // display first course in current term
+        displayCourse(firstCourseCurrentQuarterLabel())
     }
 
     //Listed for course dropdown selection change
     $("#my_courses").change(function() {
+        $('#course_quarters').html('');
+        displaySelectedCourse();
+    });
+
+    $("#current-course-target").on('change', 'select[name="course_quarters"]', function(e) {
         displaySelectedCourse();
     });
 });
@@ -40,62 +46,75 @@ function courseHash() {
     return decodeURIComponent(window.location.hash.slice(1));
 }
 
-function displayCourseSelector() {
-    var sections = [],
+function displayCourseSelector(label) {
+    var section_data = getSectionDataByLabel(label),
+        courses = [],
         term_index = -1,
-        year = null,
-        quarter = null;
+        course_curriculum,
+        course_number,
+        course_id,
+        seen = [];
 
     $.each(window.section_data, function () {
         var section = this;
 
-        if (year != section.year && quarter != section.quarter) {
-            term_index++;
-            sections.push({
-                term: {
-                    year: section.year,
-                    quarter: firstLetterUppercase(section.quarter)
-                },
-                offerings: []
-            });
-        }
+        if (course_curriculum != section.curriculum &&
+            course_number != section.course_number) {
 
-        if (sections[term_index].offerings.length === 0) {
-            section.selected = true;
-            if (term_index > 0) {
-                sections[term_index - 1].offerings[0].selected = false;
+            course_id = section.curriculum + '-' + section.course_number + '-' + section.section_id;
+            if (!seen.includes(course_id)) {
+                courses.push({
+                    curriculum: section.curriculum,
+                    course_number: section.course_number,
+                    section_id: section.section_id,
+                    title: section.course_title,
+                    selected: (section_data &&
+                               section_data.curriculum.toLowerCase() == section.curriculum.toLowerCase() &&
+                               section_data.course_number == section.course_number)
+                });
+
+                seen.push(course_id);
             }
         }
-
-        sections[term_index].offerings.push(section);
-        year = section.year;
-        quarter = section.quarter;
     });
 
     source = $("#course-select").html();
     template = Handlebars.compile(source);
     $(".course-select").html(template({
-        sections: sections
+        courses: courses
     }));
 }
 
 function displaySelectedCourse() {
-    var $option = $("select[name='my_courses'] option:selected"),
-        label = $option.attr('data-label'),
-        section_data = getSectionDataByLabel(label);
+    displayCourse(getSelectedCourseLabel());
+}
 
-    if (label in section_data && section_data.loaded) {
-        showCurrentCourseData(label);
+function displayCourse(label) {
+    var section_data = getSectionDataByLabel(label);
+
+    if (!section_data) {
+        return false;
+    }
+
+    if (section_data && section_data.loaded) {
+        showCourseData(label);
     } else {
-        fetchCurrentCourseData(label);
+        fetchCourseData(label, function () {
+            showCourseData(label);
+        });
     }
 
     if (window.section_historic_data[label].loaded){
         showHistoricDataSelectors(section_data, ALL_QUARTERS, ALL_YEARS);
         showHistoricCourseData(section_data, ALL_QUARTERS, ALL_YEARS);
     } else {
-        fetchHistoricCourseData(section_data);
+        fetchHistoricCourseData(section_data, function () {
+            showHistoricDataSelectors(section_data, ALL_QUARTERS, ALL_YEARS);
+            showHistoricCourseData(section_data, ALL_QUARTERS, ALL_YEARS);
+        });
     }
+
+    return true;
 }
 
 function displayErrorPage() {
@@ -115,31 +134,29 @@ function updateCourseURL(page, course) {
 
 $(window).bind('popstate', function (e, o) {
     if (history.state && history.state.course) {
-        loadCourse(history.state.course);
+        displayCourse(history.state.course);
     }
 });
 
-function loadCourse(section_label) {
-    var found = false;
-
-    $('select#my_courses option').each(function () {
-        var $option = $(this);
-        if (section_label === $option.attr('data-label')) {
-            $option.prop('selected', true);
-            displaySelectedCourse();
-            found = true;
-            return false;
-        }
-    });
-
-    return found;
-}
-
 //Display data about the currently selected course - called whenever selection changes
-function showCurrentCourseData(label) {
+function showCourseData(label) {
     var current = $("#current-course-data").html(),
         currentTemplate = Handlebars.compile(current),
-        section = getSectionDataByLabel(label);
+        section = getSectionDataByLabel(label),
+        terms = [];
+
+    $.each(window.section_data, function () {
+        if (this.curriculum == section.curriculum &&
+            this.course_number == section.course_number &&
+            this.section_id == section.section_id) {
+            terms.push({
+                year: this.year,
+                quarter: firstLetterUppercase(this.quarter),
+                selected: (this.year == section.year &&
+                           this.quarter.toLowerCase() == section.quarter.toLowerCase())
+            });
+        }
+    });
 
     $("#current-course-target").html(currentTemplate({
         current_median: section.current_median,
@@ -151,8 +168,7 @@ function showCurrentCourseData(label) {
         curriculum:section.curriculum,
         course_number:section.course_number,
         section_id:section.section_id,
-        quarter: window.term.quarter,
-        year: window.term.year,
+        terms: terms,
         canvas_course_url:section.canvas_course_url,
         display_course: section.display_course
     }));
@@ -171,7 +187,7 @@ function showCurrentCourseData(label) {
     $('[data-toggle="popover"]').popover();
 }
 
-function fetchCurrentCourseData(label) {
+function fetchCourseData(label, on_success) {
     startLoadingCourseData();
 
     var startTime = Date.now();
@@ -185,9 +201,10 @@ function fetchCurrentCourseData(label) {
             results.loaded = true;
             setSectionDataByLabel(label, results);
 
-            if(getSelectedCourseLabel() === label){
-                showCurrentCourseData(label);
+            if (on_success) {
+                on_success.call()
             }
+
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'course_data', {
@@ -212,7 +229,7 @@ function stopLoadingCourseData() {
     $(".section-container.current-section").removeClass('loading');
 }
 
-function fetchHistoricCourseData(section_data) {
+function fetchHistoricCourseData(section_data, on_success) {
     startLoadingHistoricCourseData();
     var startTime = Date.now();
 
@@ -231,9 +248,8 @@ function fetchHistoricCourseData(section_data) {
                 'value': totalTime
             });
 
-            if(getSelectedCourseLabel() === section_data.section_label) {
-                showHistoricDataSelectors(section_data, ALL_QUARTERS, ALL_YEARS);
-                showHistoricCourseData(section_data, ALL_QUARTERS, ALL_YEARS);
+            if (on_success) {
+                on_success.call();
             }
 
             setPillListeners();
@@ -349,12 +365,61 @@ function showHistoricDataSelectors(section_data, quarter, year, taught=ALL_MY_CO
     setPillListeners();
 }
 
-function getSelectedCourseLabel(){
-    return $("select[name='my_courses'] option:selected").attr('data-label');
+function getSelectedCourseLabel() {
+    var $selected_course = $("select[name='my_courses'] option:selected"),
+        $selected_term = $("select[name='course_quarters'] option:selected"),
+        curriculum = $selected_course.attr('data-curriculum'),
+        course_number = $selected_course.attr('data-course-number'),
+        section_id = $selected_course.attr('data-section-id'),
+        year,
+        quarter,
+        label = '';
+
+    if ($selected_term.length) {
+        year = $selected_term.attr('data-year');
+        quarter = $selected_term.attr('data-quarter');
+        $.each(window.section_data, function () {
+            if (this.curriculum == curriculum &&
+                this.course_number == course_number &&
+                this.section_id == section_id &&
+                this.year.toString() == $selected_term.attr('data-year') &&
+                this.quarter.toLowerCase() == quarter.toLowerCase()) {
+                label = this.section_label;
+                return false;
+            }
+        });
+    } else {
+        $.each(window.section_data, function () {
+            if (this.curriculum == curriculum &&
+                this.course_number == course_number &&
+                this.section_id == section_id) {
+                label = this.section_label;
+                return false;
+            }
+        });
+    }
+
+
+    return label;
 }
 
-function getSectionDataByLabel(label){
-    var section_data;
+
+function firstCourseCurrentQuarterLabel() {
+    var section_data = null;
+
+    $.each(window.section_data, function () {
+        if (window.term.year == this.year &&
+            window.term.quarter.toLowerCase() == this.quarter.toLowerCase()) {
+            section_data = this;
+            return false;
+        }
+    });
+
+    return section_data ? section_data.section_label : window.section_data[0].section_label;
+}
+
+function getSectionDataByLabel(label) {
+    var section_data = null;
 
     $.each(window.section_data, function () {
         if (this.section_label == label) {

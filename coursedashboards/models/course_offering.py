@@ -278,7 +278,8 @@ class CourseOffering(models.Model):
             'quarter': self.term.quarter,
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
-            'section_id': self.course.section_id
+            'section_id': self.course.section_id,
+            'course_title': self.course.course_title
         }
 
         return json_obj

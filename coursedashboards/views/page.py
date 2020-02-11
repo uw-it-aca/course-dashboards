@@ -11,7 +11,7 @@ from django.contrib.auth import logout as django_logout
 
 
 LOGOUT_URL = "/user_logout"
-HISTORIC_TERM_COUNT = 4
+HISTORIC_TERM_COUNT = 12
 
 
 def page(request,
