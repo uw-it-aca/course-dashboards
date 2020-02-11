@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
     } else {
         // display first course in current term
-        displayCourse(firstCourseCurrentQuarterLabel())
+        displayCourse(firstCourseCurrentQuarterLabel());
     }
 
     //Listed for course dropdown selection change
@@ -204,7 +204,7 @@ function fetchCourseData(label, on_success) {
             setSectionDataByLabel(label, results);
 
             if (on_success) {
-                on_success.call()
+                on_success.call();
             }
 
             var totalTime = Date.now() - startTime;
