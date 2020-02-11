@@ -462,8 +462,7 @@ function setSectionDataByLabel(label, section){
 }
 
 function updateHistoricDisplay(){
-    var section_data = getSelectedCourseSection();
-
+    var section_data = getSectionDataByLabel(getSelectedCourseLabel());
     var taught = ALL_MY_COURSES;
     var newQuarter = ALL_QUARTERS;
     var newYear = ALL_YEARS;
