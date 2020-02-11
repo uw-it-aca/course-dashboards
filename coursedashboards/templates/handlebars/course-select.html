@@ -1,12 +1,10 @@
 {% verbatim %}
 <script id="course-select" type="text/x-handlebars-template">
-<label for="my_courses" class="visually-hidden">My Course Dashboards:</label>
+<label for="my_courses" class="visually-hidden">My Courses:</label>
 <select class="form-control form-control-lg" name="my_courses" id="my_courses" aria-contols="current-course-target">
-  <optgroup label="{{quarter}} {{year}}">
-    {{#each sections}}
-    <option data-label="{{section_label}}" {{#if @first}}selected{{/if}}>{{curriculum}} {{course_number}} {{section_id}}</option>
-    {{/each}}
-  </optgroup>
+  {{#each courses}}
+  <option data-curriculum="{{curriculum}}" data-course-number="{{course_number}}" data-section-id="{{section_id}}"{{#if selected}} selected{{/if}}>{{curriculum}} {{course_number}} {{section_id}} - {{title}}</option>
+  {{/each}}
 </select>
 </script>
 {% endverbatim %}

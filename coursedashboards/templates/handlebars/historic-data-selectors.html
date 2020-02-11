@@ -44,7 +44,7 @@
                         <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
 
                         {{#each instructed_sections}}
-                            <option data-label="{{../index}}:{{quarter}}-{{year}}" {{selected}}>{{quarter}} {{year}}</option>
+                            <option data-label="{{../section_label}}" {{selected}}>{{quarter}} {{year}}</option>
                         {{/each}}
 
                     </select>

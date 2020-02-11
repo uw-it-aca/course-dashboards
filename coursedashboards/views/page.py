@@ -3,12 +3,15 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from coursedashboards.dao.user import get_current_user
-from coursedashboards.dao.term import get_current_coda_term
+from coursedashboards.dao.term import (
+    get_current_coda_term, get_given_and_previous_quarters)
 from coursedashboards.dao.exceptions import MissingNetIDException
 from coursedashboards.models import Term, Instructor, CourseOffering
 from django.contrib.auth import logout as django_logout
 
+
 LOGOUT_URL = "/user_logout"
+HISTORIC_TERM_COUNT = 12
 
 
 def page(request,
@@ -42,21 +45,32 @@ def page(request,
 
     context['sections'] = []
     try:
-        courses = Instructor.objects.filter(
-            user=user, term=cur_term).values_list('course_id', flat=True)
-        offerings = CourseOffering.objects.filter(
-            course_id__in=list(courses), term=cur_term)
-
-        context['no_courses'] = (len(offerings) == 0)
         sections = []
-        historical = []
-        for offering in offerings:
-            sections.append(offering.brief_json_object())
-            historical.append({})
+        historical = {}
 
-        context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
-        context['historic_sections'] = json.dumps(
-            historical, cls=DjangoJSONEncoder)
+        for sws_term in get_given_and_previous_quarters(
+                "{},{}".format(cur_term.year, cur_term.quarter),
+                HISTORIC_TERM_COUNT + 1):
+            term, created = Term.objects.get_or_create(
+                year=sws_term.year, quarter=sws_term.quarter)
+
+            courses = Instructor.objects.filter(
+                user=user, term=term).values_list('course_id', flat=True)
+            offerings = CourseOffering.objects.filter(
+                course_id__in=list(courses), term=term)
+
+            if str(term) == str(cur_term):
+                context['no_courses'] = (len(offerings) == 0)
+
+            for offering in offerings:
+                course_label = str(offering)
+                sections.append(offering.brief_json_object())
+                historical[course_label] = {}
+
+        if len(offerings):
+            context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
+            context['historic_sections'] = json.dumps(
+                historical, cls=DjangoJSONEncoder)
 
     except Instructor.DoesNotExist:
         context['no_courses'] = True

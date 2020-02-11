@@ -170,6 +170,10 @@ h5 {
     }
 }
 
+.course-quarter-year {
+    margin-bottom: 32px;
+}
+
 /* Hyperlink style:*/
 a {
 	color:#0077c2;
@@ -217,6 +221,10 @@ a {
     margin-top: 0.5rem;
     min-height: 4.5rem;
     margin-bottom: 0;
+}
+
+#course_quarters {
+    width: 13em;
 }
 
 .historic-filters {

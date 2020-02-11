@@ -2,7 +2,13 @@
 <script id="current-course-data" type="text/x-handlebars-template">
 <div class="row">
     <div class="col">
-        <h3 id="current_section_data">Current Quarter Data for {{curriculum}} {{course_number}} {{section_id}}</h3>
+        <h3 id="current_section_data">My data for {{curriculum}} {{course_number}} {{section_id}}</h3>
+        <label for="my_courses" class="visually-hidden">My Courses:</label>
+        <select class="form-control form-control-lg" name="course_quarters" id="course_quarters" aria-contols="current-quarter-target">
+          {{#each terms}}
+          <option data-year="{{year}}" data-quarter="{{quarter}}"{{#if selected}} selected{{/if}}>{{quarter}} {{year}}{{#if current}} (current){{/if}}</option>
+          {{/each}}
+        </select>
     </div>
 </div>
 <div class="row">
