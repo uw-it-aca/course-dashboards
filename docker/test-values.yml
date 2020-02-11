@@ -1,7 +1,6 @@
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  type: nginx
   tls:
     coda-test:
       secretName: coda-test.s.uw.edu
