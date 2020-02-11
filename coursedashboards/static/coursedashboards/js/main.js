@@ -152,6 +152,8 @@ function showCourseData(label) {
             terms.push({
                 year: this.year,
                 quarter: firstLetterUppercase(this.quarter),
+                current: (this.year == window.term.year &&
+                          this.quarter.toLowerCase() == window.term.quarter.toLowerCase()),
                 selected: (this.year == section.year &&
                            this.quarter.toLowerCase() == section.quarter.toLowerCase())
             });
@@ -393,6 +395,14 @@ function getSelectedCourseLabel() {
             if (this.curriculum == curriculum &&
                 this.course_number == course_number &&
                 this.section_id == section_id) {
+                label = this.section_label;
+            }
+
+            if (this.curriculum == curriculum &&
+                this.course_number == course_number &&
+                this.section_id == section_id &&
+                this.year == window.term.year &&
+                this.quarter.toLowerCase() == window.term.quarter.toLowerCase()) {
                 label = this.section_label;
                 return false;
             }

@@ -6,7 +6,7 @@
         <label for="my_courses" class="visually-hidden">My Courses:</label>
         <select class="form-control form-control-lg" name="course_quarters" id="course_quarters" aria-contols="current-quarter-target">
           {{#each terms}}
-          <option data-year="{{year}}" data-quarter="{{quarter}}"{{#if selected}} selected{{/if}}>{{quarter}} {{year}}</option>
+          <option data-year="{{year}}" data-quarter="{{quarter}}"{{#if selected}} selected{{/if}}>{{quarter}} {{year}}{{#if current}} (current){{/if}}</option>
           {{/each}}
         </select>
     </div>
