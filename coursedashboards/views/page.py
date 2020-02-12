@@ -43,7 +43,6 @@ def page(request,
             context["year"] = cur_term.year
             context["quarter"] = cur_term.quarter
 
-    context['sections'] = []
     try:
         sections = []
         historical = {}
@@ -67,10 +66,12 @@ def page(request,
                 sections.append(offering.brief_json_object())
                 historical[course_label] = {}
 
-        if len(offerings):
-            context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
-            context['historic_sections'] = json.dumps(
-                historical, cls=DjangoJSONEncoder)
+        context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
+        context['historic_sections'] = json.dumps(
+            historical, cls=DjangoJSONEncoder)
+
+        if len(sections) == 0:
+            context['no_courses'] = True
 
     except Instructor.DoesNotExist:
         context['no_courses'] = True

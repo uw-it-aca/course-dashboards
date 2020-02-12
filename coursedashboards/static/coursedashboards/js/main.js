@@ -12,6 +12,11 @@ var only_my_courses = false;
 
 $(document).ready(function () {
     displayPageHeader();
+
+    if ($(".course-select").length == 0) {
+        return;
+    }
+
     displayCourseSelector(courseHash());
 
     if (courseHash()) {
@@ -19,16 +24,16 @@ $(document).ready(function () {
             displayErrorPage();
         }
     } else {
-        // display first course in current term
         displayCourse(firstCourseCurrentQuarterLabel());
     }
 
-    //Listed for course dropdown selection change
+    // Listen for course dropdown selection change
     $("#my_courses").change(function() {
         $('#course_quarters').html('');
         displaySelectedCourse();
     });
 
+    // Listen for term dropdown selection change
     $("#current-course-target").on('change', 'select[name="course_quarters"]', function(e) {
         displaySelectedCourse();
     });
