@@ -13,7 +13,7 @@ var only_my_courses = false;
 $(document).ready(function () {
     displayPageHeader();
 
-    if ($(".course-select").length == 0) {
+    if ($(".course-select").length === 0) {
         return;
     }
 
@@ -790,7 +790,7 @@ function gatherMedianGPAs(sections) {
         gpas.push.apply(gpas, sections[i].gpas);
     }
 
-    return gpas
+    return gpas;
 }
 
 function gatherCourseGrades(sections) {
