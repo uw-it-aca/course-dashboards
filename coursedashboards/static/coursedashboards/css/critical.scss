@@ -220,7 +220,14 @@ a {
 .course-links {
     margin-top: 0.5rem;
     min-height: 4.5rem;
+    margin-left: 4rem;
     margin-bottom: 0;
+}
+
+.grade-distribution {
+    margin: 18px 8px 0 0;
+    width: 250px;
+    height: 124px;
 }
 
 #course_quarters {
@@ -229,6 +236,10 @@ a {
 
 .historic-filters {
     min-height: 4.5rem;
+}
+
+.course-data-number i {
+  color: #7D87C0;
 }
 
 .coda-thin-bar {

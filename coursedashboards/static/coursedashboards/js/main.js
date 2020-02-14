@@ -13,7 +13,7 @@ var only_my_courses = false;
 $(document).ready(function () {
     displayPageHeader();
 
-    if ($(".course-select").length == 0) {
+    if ($(".course-select").length === 0) {
         return;
     }
 
@@ -190,8 +190,13 @@ function showCourseData(label) {
     $('span.displayed-quarter').html(firstLetterUppercase(section.quarter) + " " + section.year);
 
     setup_exposures($("#current-course-target"));
+    $('.current-section .popover-dismiss').popover({ trigger: 'focus'});
 
-    $('[data-toggle="popover"]').popover();
+    $('.current-section [data-toggle="popover"]').popover();
+    $('.current-section .cumulative-popover')
+        .on('inserted.bs.popover', function () {
+            renderGPADisribution('current-gpa-distribution', section.gpas);
+        });
 }
 
 function fetchCourseData(label, on_success) {
@@ -565,9 +570,19 @@ function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURS
         }));
         setup_exposures($("#historic-course-target"));
 
-        $('[data-toggle="popover"]').popover();
+        $('#historic-course-target [data-toggle="popover"]').popover();
+        $('#historic-course-target .popover-dismiss').popover({ trigger: 'focus'});
+        $('#historic-course-target .cumulative-popover')
+            .on('inserted.bs.popover', function () {
+                renderGPADisribution('historic-gpa-distribution',
+                                     gatherMedianGPAs(offerings));
+            });
 
-        $('.popover-dismiss').popover({ trigger: 'focus'});
+        $('#historic-course-target .course-gpa-popover')
+            .on('inserted.bs.popover', function () {
+                renderGPADisribution('historic-course-gpa-distribution',
+                                     gatherCourseGrades(offerings));
+            });
     } else {
         historic = $("#no-historic-course-data").html();
         historicTemplate = Handlebars.compile(historic);
@@ -633,6 +648,62 @@ function filterOfferings(sections, quarter, year, only_my_courses){
     }
 
     return filtered_sections;
+}
+
+function renderGPADisribution(container, gpas) {
+    var gpas_dist = Array(2.5*10).fill(0),
+        categories = [],
+        max = 0;
+
+    $.each(gpas, function () {
+        gpas_dist[(this <= 1.5) ? 0 : Math.round((this - 1.5) * 10)]++;
+    });
+
+    $.each(gpas_dist, function (i) {
+        if (this > max) {
+            max = this;
+        }
+
+        categories.push((1.5 + (i * 0.1)).toFixed(1).toString());
+    });
+
+    Highcharts.chart(container, {
+        title: {
+            text: undefined
+        },
+        credits: {
+            enabled: false
+        },
+        chart: {
+            type: 'column',
+            height: 120
+        },
+        xAxis: {
+            categories: categories,
+            title: {
+                text: "GPA"
+            }
+        },
+        yAxis: {
+            tickInterval: 5,
+            title: {
+                text: 'Frequency'
+            },
+            xlabels: {
+                enabled: false
+            }
+        },
+        tooltip: {
+            formatter: function () {
+                return this.y + ' with GPA of ' + this.x;
+            }
+        },
+        series: [{
+            name: 'GPA',
+            showInLegend: false,
+            data: gpas_dist
+        }]
+    });
 }
 
 function getInstructorsByTerm(sections) {
@@ -712,22 +783,33 @@ function calculatePastYearCount(sections) {
     return window.term.year - start_year;
 }
 
-function calculateMedianGPA(sections){
+function gatherMedianGPAs(sections) {
     gpas = [];
 
     for(var i = 0; i < sections.length; i++){
         gpas.push.apply(gpas, sections[i].gpas);
     }
 
-    return gpas.length ? (Math.round(math.median(gpas) * 100) / 100).toFixed(2) : 0;
+    return gpas;
 }
 
-function calculateCourseMedian(sections) {
+function gatherCourseGrades(sections) {
     var grades = [];
+
     for (var o = 0; o < sections.length; o++) {
         grades = grades.concat(sections[o].course_grades);
     }
 
+    return grades;
+}
+
+function calculateMedianGPA(sections){
+    gpas = gatherMedianGPAs(sections);
+    return gpas.length ? (Math.round(math.median(gpas) * 100) / 100).toFixed(2) : 0;
+}
+
+function calculateCourseMedian(sections) {
+    grades = gatherCourseGrades(sections);
     return (grades.length) ? (Math.round(math.median(grades) * 100) / 100).toFixed(2) : 'None';
 }
 

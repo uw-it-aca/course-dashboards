@@ -22,7 +22,15 @@ $info-circle: #8f9bcc;
         i {padding-left: 8px;font-size: 85%;color: $info-circle;cursor:pointer;}
     }
 
+    i[data-toggle="popover"] {
+        color: #5D9CD2 !important;
+    }
+
     /** Current Course **/
+
+    .current-top-row {
+        margin-bottom: 30px;
+    }
 
     .current-schedule-row {
         .card {border:none;
