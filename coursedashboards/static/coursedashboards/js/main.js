@@ -193,8 +193,7 @@ function showCourseData(label) {
     $('.current-section .popover-dismiss').popover({ trigger: 'focus'});
 
     $('.current-section [data-toggle="popover"]').popover();
-    $('.current-section [data-toggle="cumulative-popover"]')
-        .popover()
+    $('.current-section .cumulative-popover')
         .on('inserted.bs.popover', function () {
             renderGPADisribution('current-gpa-distribution', section.gpas);
         });
@@ -573,17 +572,13 @@ function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURS
 
         $('#historic-course-target [data-toggle="popover"]').popover();
         $('#historic-course-target .popover-dismiss').popover({ trigger: 'focus'});
-
-        $('#historic-course-target [data-toggle="popover"]').popover();
-        $('#historic-course-target [data-toggle="cumulative-popover"]')
-            .popover()
+        $('#historic-course-target .cumulative-popover')
             .on('inserted.bs.popover', function () {
                 renderGPADisribution('historic-gpa-distribution',
                                      gatherMedianGPAs(offerings));
             });
 
-        $('#historic-course-target [data-toggle="course-gpa-popover"]')
-            .popover()
+        $('#historic-course-target .course-gpa-popover')
             .on('inserted.bs.popover', function () {
                 renderGPADisribution('historic-course-gpa-distribution',
                                      gatherCourseGrades(offerings));

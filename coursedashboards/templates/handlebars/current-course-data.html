@@ -1,6 +1,6 @@
 {% verbatim %}
 <script id="current-course-data" type="text/x-handlebars-template">
-<div class="row">
+<div class="current-top-row row">
     <div class="col">
         <h3 id="current_section_data">My data for {{curriculum}} {{course_number}} {{section_id}}</h3>
         <label for="my_courses" class="visually-hidden">My Courses:</label>
@@ -21,7 +21,7 @@
 <div class="current-data-row row">
     <div class="current-median course-data-widget col">
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{current_median}} Median Cumulative GPA">{{current_median}}<i class="ion-stats-bars" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="cumulative-popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="current-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
+            <div class="course-data-number" title="{{current_median}} Median Cumulative GPA">{{current_median}}<i class="ion-stats-bars cumulative-popover" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="current-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
             <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumulative GPA" data-content="This is the midpoint of the cumulative GPAs of the students who are currently in your class.  If the median is lower than past offerings, spend more time on the most challenging topics."></i></span></div>
         </div>
     </div>
