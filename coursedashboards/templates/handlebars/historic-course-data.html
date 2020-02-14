@@ -4,7 +4,7 @@
 <div class="historic-data-row row">
     <div class="historic-median course-data-widget col">
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{median_gpa}} Median Cumulative GPA">{{median_gpa}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
+            <div class="course-data-number" title="{{median_gpa}} Median Cumulative GPA">{{median_gpa}}<i class="ion-stats-bars" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="cumulative-popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="historic-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
             <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumumlative GPA" data-content="This is the midpoint of the cumulative GPAs of the students based on the time frame selected above."></i></span></div>
         </div>
     </div>
@@ -18,7 +18,7 @@
 <div class="historic-data-row row">
     <div class="historic-median course-data-widget col">
         <div class="d-inline-block course-data-items">
-            <div class="course-data-number" title="{{median_course_grade}} Median course grade">{{median_course_grade}}<i class="ion-stats-bars" aria-hidden="true"></i></div>
+          <div class="course-data-number" title="{{median_course_grade}} Median course grade">{{median_course_grade}}<i class="ion-stats-bars" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="course-gpa-popover" data-trigger="focus" title="Course Grade Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="historic-course-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
             <div class="course-data-description">Median Course Grade<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Course Grade" data-content="This is the midpoint of the final course grades based on the time frame selected above.  If you've taught the class before, use this data to assess the impact of pedagogical or curricular tweaks you've made."></i></span></div>
         </div>
     </div>
