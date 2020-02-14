@@ -651,7 +651,7 @@ function filterOfferings(sections, quarter, year, only_my_courses){
 }
 
 function renderGPADisribution(container, gpas) {
-    var gpas_dist = Array(2.5*10).fill(0),
+    var gpas_dist = Array((2.5*10) + 1).fill(0),
         categories = [],
         max = 0;
 
@@ -695,7 +695,13 @@ function renderGPADisribution(container, gpas) {
         },
         tooltip: {
             formatter: function () {
-                return this.y + ' with GPA of ' + this.x;
+                var tip = this.y + ' with GPA of ' + this.x;
+
+                if (this.x == 1.5) {
+                    tip += ' or less';
+                }
+
+                return tip;
             }
         },
         series: [{
