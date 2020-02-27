@@ -2,14 +2,22 @@ ingress:
   enabled: true
   type: nginx
   tls:
+    test-coda:
+      secretName: test.coda.uw.edu-d3d858dd8b83865851432a4431d3d0e1
+      hosts:
+        - test.coda.uw.edu
     coda-test:
       secretName: coda-test.s.uw.edu
       hosts:
         - coda-test.s.uw.edu
   hosts:
+    test-coda:
+      host: test.coda.uw.edu
+      paths:
+        - "/"
     coda-test:
       host: coda-test.s.uw.edu
-      paths: 
+      paths:
         - "/"
 database:
   engine: mysql
