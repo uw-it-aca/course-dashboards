@@ -274,9 +274,12 @@ class CourseOffering(models.Model):
     def brief_json_object(self):
         json_obj = {
             'section_label': '{}'.format(self),
+            'year': self.term.year,
+            'quarter': self.term.quarter,
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
-            'section_id': self.course.section_id
+            'section_id': self.course.section_id,
+            'course_title': self.course.course_title
         }
 
         return json_obj
@@ -347,6 +350,8 @@ class CourseOffering(models.Model):
             'curriculum': self.course.curriculum,
             'course_number': self.course.course_number,
             'section_id': self.course.section_id,
+            'year': self.term.year,
+            'quarter': self.term.quarter,
             'course_title': self.course.course_title,
             'section_label': '{}'.format(self),
             'current_enrollment': self.current_enrollment,
