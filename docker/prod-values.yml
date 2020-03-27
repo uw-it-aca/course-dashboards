@@ -37,13 +37,13 @@ metrics:
   enabled: true
   serviceMonitor:
     enabled: true
-#cronjob:
-#  enabled: true
-#  jobs:
-#    - name: load-term-data
-#      schedule: "15 4 * * *"
-#      command: '["bash"]'
-#      args: '["-c", "(cd /app && source ./bin/activate && ./bin/python manage.py load_data_for_term)"]'
+cronjob:
+  enabled: true
+  jobs:
+    - name: load-term-data
+      schedule: "15 4 * * *"
+      command: '["bash"]'
+      args: '["-c", "(cd /app && source ./bin/activate && ./bin/python manage.py load_data_for_term)"]'
 certs:
   mounted: true
   certPath: /certs/coda.uw.edu-uwca.cert
