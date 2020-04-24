@@ -41,7 +41,6 @@ setup(
         'djangorestframework>=3.6.4',
         'statistics',
         'mysqlclient==1.3.14',
-        'django-prometheus>=1.0,<2.0',
     ],
     license='Apache License, Version 2.0',  # example license
     description='A Django App for viewing course data',
