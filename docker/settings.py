@@ -17,7 +17,7 @@ INSTALLED_APPS += [
     'coursedashboards',
     'userservice',
     'supporttools',
-    'django_prometheus',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE += [

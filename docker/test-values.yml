@@ -53,10 +53,6 @@ certs:
 environmentVariables:
   - name: ENV
     value: dev
-  - name: CERT_PATH
-    value: /certs/coda-test.s.uw.edu-uwca.cert
-  - name: KEY_PATH
-    value: /certs/coda-test.s.uw.edu-uwca.key
   - name: GWS_ENV
     value: PROD
   - name: SWS_ENV
