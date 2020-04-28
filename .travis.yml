@@ -22,7 +22,8 @@ env:
     - secure: "sm7ux8Hpgb/YiToTDHXb4qT0YNZ4Kr/H/W4kNOBv+qG4BGCZJiOECM6TuN8RyybiXWUfizmiiXvA2ei4EaWm4FQIU62Hc+Qm0Q0NYUoAJe6M6+8PBRk0vpM5x6I3J+cny568xpNkvTLcw0v7TfxzsYq1mTBmMDBuLLwptpvaCOR1FkuOJksdum7uMwDuB3P4RcQnE82tR7K0bbtGOQAzmZEcYz4siw/3oRIlsJV4I4eOr1n1DMS4LYtALfmiUm2IVPuiPtvStxUkhRn7B85nboybo+Kp0lzDLycMDsFo8HK77gBK6lmy6Jq7+XoT0nme/HYxXuDNGlyVKBpCrvgS2lhmhm1RQqPzR0BY2wkolFCDuKyyGLboiU6NgzA78aicZzVYWhNgQSLAn1O064fOHRi5DD1MAgwyVXA+Y4dffv3dLtG/R0ijNAREhraTEEiWMtDMoVOUcSL+mdLWAfue0rvyu5qLz8yrdOkEWvzMB2lwocWbaPrzHPL1Ed+8JV5a1S+Nn/IBUFo0kAzG9abQpgmjTRSYW3EWyfWxuFTsW+TT1PpYyUIuh7X6ambpG55FddTxqRjQrMODT0y6bZN6WlrOqqF5tbXweM6oyLQNqq9LrZyoT4QGiq07KOyAMvJ6YwgPoOK9fvhNzuGFmaQ1LBgsz/EToYElJuK8fAKeHSU="
 
 install:
-  - docker build -t "$IMAGE_TAG" .
+  - docker build --target coda -t "$IMAGE_TAG" .
+  - docker build -t "${IMAGE_TAG}-test" .
 
 before_script:
 #  - if [ "$DB" = "mysql" ] ; then mysql -u root -e 'create database coda'; fi
@@ -32,7 +33,7 @@ before_script:
   - pip install coveralls
 
 script:
-  - docker run -u root -it -v /tmp:/coverage -e DJANGO_APP="$DJANGO_APP" -e "ENV=localdev" -e "AUTH=SAML_MOCK" "$IMAGE_TAG" bash -c ". ./travis-ci/test.sh"
+  - docker run -u root -it -v /tmp:/coverage -e DJANGO_APP="$DJANGO_APP" -e "ENV=localdev" -e "AUTH=SAML_MOCK" "${IMAGE_TAG}-test" bash -c ". ./travis-ci/test.sh"
 
 after_script:
   - cp /tmp/.coverage.* .
