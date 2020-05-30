@@ -1,9 +1,13 @@
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
 ingress:
   enabled: true
   type: nginx
   tls:
     coda-prod:
-      secretName: coda.uw.edu-508f52b8ffc7e3e564faa4148b2bb647
+      secretName: coda.uw.edu-ingress-cert
       hosts:
         - coda.uw.edu
   hosts:
@@ -11,6 +15,8 @@ ingress:
       host: coda.uw.edu
       paths: 
         - "/"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
 database:
   engine: mysql
   name: coda
