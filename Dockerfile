@@ -1,4 +1,4 @@
-FROM acait/django-container:1.0.25 as django
+FROM acait/django-container:1.0.30 as app-container
 
 USER root
 RUN apt-get update && apt-get install mysql-client libmysqlclient-dev libpq-dev -y
@@ -21,3 +21,8 @@ ADD --chown=acait:acait docker/app_start.sh /scripts
 RUN chmod u+x /scripts/app_start.sh
 
 RUN . /app/bin/activate && python manage.py compress -f && python manage.py collectstatic --noinput
+
+FROM acait/django-test-container:1.0.30 as app-test-container
+
+COPY --from=app-container /app/ /app/
+COPY --from=app-container /static/ /static/
