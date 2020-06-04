@@ -13,6 +13,8 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+readiness:
+  enabled: true
 database:
   engine: mysql
   name: coda

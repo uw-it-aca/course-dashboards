@@ -17,6 +17,8 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+readiness:
+  enabled: true
 database:
   engine: mysql
   name: coda
@@ -48,8 +50,7 @@ cronjob:
   jobs:
     - name: load-term-data
       schedule: "15 4 * * *"
-      command: '["bash"]'
-      args: '["-c", "(cd /app && source ./bin/activate && ./bin/python manage.py load_data_for_term)"]'
+      command: [/scripts/management_command.sh load_data_for_term]
 certs:
   mounted: true
   certPath: /certs/coda.uw.edu-uwca.cert
