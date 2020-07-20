@@ -13,6 +13,8 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+readiness:
+  enabled: true
 database:
   engine: mysql
   name: coda
@@ -26,12 +28,12 @@ externalService:
   servicePort: 3306
 repo: coda
 instance: test
-targetAverageUtilization: 90
+targetAverageUtilization: 100
 resources:
   limits:
-    cpu: 600m
+    cpu: 512m
   requests:
-    cpu: 200m
+    cpu: 128m
 image:
   repository: registry.hub.docker.com/acait/coda
   tag: IMAGE_TAG
