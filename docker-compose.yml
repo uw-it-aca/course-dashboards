@@ -1,4 +1,4 @@
-version: '2'
+version: '3.4'
 
 services:
   app:
@@ -10,6 +10,7 @@ services:
     container_name: app-coda
     build:
       context: .
+      target: app-container
     volumes:
       - ./coursedashboards:/app/coursedashboards
     ports:
