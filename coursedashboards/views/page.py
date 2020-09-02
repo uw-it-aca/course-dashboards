@@ -58,9 +58,6 @@ def page(request,
             offerings = CourseOffering.objects.filter(
                 course_id__in=list(courses), term=term)
 
-            if str(term) == str(cur_term):
-                context['no_courses'] = (len(offerings) == 0)
-
             for offering in offerings:
                 course_label = str(offering)
                 sections.append(offering.brief_json_object())

@@ -24,6 +24,15 @@ MIDDLEWARE += [
     'userservice.user.UserServiceMiddleware',
 ]
 
+TEMPLATES[0]['DIRS'] = ['/app/coursedashboards/templates/']
+TEMPLATES[0]['OPTIONS']['context_processors'] += [
+    'django.template.context_processors.i18n',
+    'django.template.context_processors.media',
+    'django.template.context_processors.static',
+    'django.template.context_processors.tz',
+    'supporttools.context_processors.supportools_globals',
+    'supporttools.context_processors.has_less_compiled',
+]
 
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
