@@ -85,7 +85,4 @@ DETECT_USER_AGENTS = {
 
 CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'appsubmit.cac.washington.edu'
-
 DEBUG = True if os.getenv('ENV', 'localdev') == "localdev" else False
