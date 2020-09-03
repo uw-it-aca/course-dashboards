@@ -1,7 +1,3 @@
-autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 5
 ingress:
   enabled: true
   type: nginx
@@ -17,6 +13,14 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+readiness:
+  enabled: true
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+affinity:
+   podsSpanNodes: true
 database:
   engine: mysql
   name: coda
@@ -30,12 +34,14 @@ externalService:
   servicePort: 3306
 repo: coda
 instance: prod
-targetAverageUtilization: 90
+targetAverageUtilization: 100
 resources:
   limits:
-    cpu: 600m
+    cpu: 512m
+    memory: 1024Mi
   requests:
-    cpu: 200m
+    cpu: 256m
+    memory: 512Mi
 image:
   repository: registry.hub.docker.com/acait/coda
   tag: IMAGE_TAG
