@@ -1,6 +1,7 @@
 from uw_saml.utils import is_member_of_group
 from uw_pws import PWS
-from coda.util.setting import get_coda_admin_group, get_coda_override_group
+from coursedashboards.util.settings import (
+    get_coda_admin_group, get_coda_override_group)
 
 
 INVALID_STRING = ("Username not a valid netid (starts with a letter, "
