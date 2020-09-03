@@ -74,6 +74,7 @@ RESTCLIENTS_DEFAULT_TIMEOUT = 3
 SUPPORTTOOLS_PARENT_APP = "CoDa"
 SUPPORTTOOLS_PARENT_APP_URL = "/"
 
+USERSERVICE_VALIDATION_MODULE = "coursedashboards.authorization.validate_netid"
 USERSERVICE_OVERRIDE_AUTH_MODULE = "coursedashboards.authorization.can_override_user"
 RESTCLIENTS_ADMIN_AUTH_MODULE = "coursedashboards.authorization.can_proxy_restclient"
 
