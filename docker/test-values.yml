@@ -1,3 +1,15 @@
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+targetAverageUtilization: 100
+resources:
+  limits:
+    cpu: 1.0
+    memory: 768Mi
+  requests:
+    cpu: 100m
+    memory: 700Mi
 ingress:
   enabled: true
   type: nginx
@@ -13,6 +25,12 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+lifecycle:
+  enabled: true
+  preStop:
+    enabled: true
+affinity:
+   podsSpanNodes: true
 readiness:
   enabled: true
 database:
@@ -28,12 +46,6 @@ externalService:
   servicePort: 3306
 repo: coda
 instance: test
-targetAverageUtilization: 100
-resources:
-  limits:
-    cpu: 512m
-  requests:
-    cpu: 128m
 image:
   repository: registry.hub.docker.com/acait/coda
   tag: IMAGE_TAG
@@ -98,8 +110,8 @@ externalSecrets:
 environmentVariablesSecrets:
   djangoSecret:
     name: DJANGO_SECRET
-      secretName: test.coda.uw.edu-secrets
-      secretKey: django-secret
+    secretName: test.coda.uw.edu-secrets
+    secretKey: django-secret
   SAMLServiceProviderCert:
     name: SP_CERT
     secretName: test.coda.uw.edu-ic-certs
