@@ -19,7 +19,7 @@ database:
   engine: mysql
   name: coda
   hostname: coda-db-test-service
-  secretName: coda-db-test
+  secretName: test.coda.uw.edu-sql-secrets
 externalService:
   enabled: true
   name: coda-db-test-service
@@ -45,7 +45,7 @@ certs:
   mounted: true
   certPath: /certs/coda-test.s.uw.edu-uwca.cert
   keyPath: /certs/coda-test.s.uw.edu-uwca.key
-  secretName: coda-test-uwca-certs
+  secretName: test.coda.uw.edu-uwca-certs
 environmentVariables:
   - name: ENV
     value: dev
@@ -59,26 +59,53 @@ environmentVariables:
     value: EVAL
   - name: AUTH
     value: SAML
-  - name: SAML_ENTITY_ID
-    value: https://test.coda.uw.edu/saml
   - name: CLUSTER_CNAME
     value: test.coda.uw.edu
-  - name: SP_CERT
-    value: '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'
-  - name: IDP_CERT
-    value: 'MIID/TCCAuWgAwIBAgIJAMoYJbDt9lKKMA0GCSqGSIb3DQEBBQUAMFwxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJXQTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMR0wGwYDVQQDExRpZHAudS53YXNoaW5ndG9uLmVkdTAeFw0xMTA0MjYxOTEwMzlaFw0yMTA0MjMxOTEwMzlaMFwxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJXQTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMR0wGwYDVQQDExRpZHAudS53YXNoaW5ndG9uLmVkdTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMH9G8m68L0Hf9bmf4/7c+ERxgDQrbq50NfSi2YTQWc1veUIPYbZy1agSNuc4dwn3RtC0uOQbdNTYUAiVTcYgaYceJVB7syWf9QyGIrglZPMu98c5hWb7vqwvs6d3s2Sm7tBib2v6xQDDiZ4KJxpdAvsoPQlmGdgpFfmAsiYrnYFXLTHgbgCc/YhV8lubTakUdI3bMYWfh9dkj+DVGUmt2gLtQUzbuH8EU44vnXgrQYSXNQkmRcyoE3rj4Rhhbu/p5D3P+nuOukLYFOLRaNeiiGyTu3P7gtc/dy/UjUrf+pH75UUU7Lb369dGEfZwvVtITXsdyp0pBfun4CP808H9N0CAwEAAaOBwTCBvjAdBgNVHQ4EFgQUP5smx3ZYKODMkDglkTbduvLcGYAwgY4GA1UdIwSBhjCBg4AUP5smx3ZYKODMkDglkTbduvLcGYChYKReMFwxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJXQTEhMB8GA1UEChMYVW5pdmVyc2l0eSBvZiBXYXNoaW5ndG9uMR0wGwYDVQQDExRpZHAudS53YXNoaW5ndG9uLmVkdYIJAMoYJbDt9lKKMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADggEBAEo7c2CNHEI+Fvz5DhwumU+WHXqwSOK47MxXwNJVpFQ9GPR2ZGDAq6hzLJLAVWcY4kB3ECDkRtysAWSFHm1roOU7xsU9f0C17QokoXfLNC0d7KoivPM6ctl8aRftU5moyFJkkJX3qSExXrl053uxTOQVPms4ypkYv1A/FBZWgSC8eNoYnBnv1Mhy4m8bfeEN7qT9rFoxh4cVjMH1Ykq7JWyFXLEB4ifzH4KHyplt5Ryv61eh6J1YPFa2RurVTyGpHJZeOLUIBvJu15GzcexuDDXe0kg7sHD6PbK0xzEF/QeXP/hXzMxR9kQXB/IR/b2k4ien+EM3eY/ueBcTZ95dgVM='
-  - name: SAFE_EMAIL_RECIPIENT
-    value: "mikes@uw.edu"
+
+externalSecrets:
+  enabled: true
+  secrets:
+    - name: test.coda.uw.edu-secrets
+      externalKey: axdd/kv/data/coda/test/secrets
+      data:
+        - name: django-secret
+          property: django-secret
+    - name: test.coda.uw.edu-sql-secrets
+      externalKey: axdd/kv/data/coda/test/sql-secrets
+      data:
+        - name: username
+          property: sql_user
+        - name: password
+          property: sql_pass
+    - name: test.coda.uw.edu-uwca-certs
+      externalKey: axdd/kv/data/coda/test/uwca-certs
+      data:
+        - name: coda-test.s.uw.edu-uwca.key
+          property: key
+        - name: coda-test.s.uw.edu-uwca.cert
+          property: cert
+    - name: test.coda.uw.edu-ic-certs
+      externalKey: axdd/kv/data/coda/test/ic-certs
+      data:
+        - name: test.coda.uw.edu.cert
+          property: cert
+    - name: test.coda.uw.edu-uw-idp-cert
+      externalKey: axdd/kv/data/idp-cert
+      data:
+        - name: uw-idp-cert
+          property: cert
+
 environmentVariablesSecrets:
   djangoSecret:
     name: DJANGO_SECRET
-    secretName: coda-test-django-secret
-    secretKey: django-secret
-  emailHostUser:
-    name: EMAIL_HOST_USER
-    secretName: email-post-credentials
-    secretKey: username
-  emailHostPassword:
-    name: EMAIL_HOST_PASSWORD
-    secretName: email-post-credentials
-    secretKey: password
+      secretName: test.coda.uw.edu-secrets
+      secretKey: django-secret
+  SAMLServiceProviderCert:
+    name: SP_CERT
+    secretName: test.coda.uw.edu-ic-certs
+    secretKey: test.coda.uw.edu.cert
+  SAMLIDPCert:
+    name: IDP_CERT
+    secretName: test.coda.uw.edu-uw-idp-cert
+    secretKey: uw-idp-cert
+
