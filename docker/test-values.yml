@@ -49,6 +49,11 @@ instance: test
 image:
   repository: registry.hub.docker.com/acait/coda
   tag: IMAGE_TAG
+memcached:
+  enabled: true
+  replicaCount: 1
+  updateStrategy:
+    type: RollingUpdate
 metrics:
   enabled: true
   serviceMonitor:
@@ -61,6 +66,8 @@ certs:
 environmentVariables:
   - name: ENV
     value: dev
+  - name: SESSION_BACKEND
+    value: MEMCACHED
   - name: GWS_ENV
     value: PROD
   - name: SWS_ENV
