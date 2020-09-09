@@ -28,6 +28,7 @@ setup(
         'django-compressor==2.2',
         'django-pyscss',
         'django_mobileesp',
+        'python-memcached',
         'pytz',
         'AuthZ-Group>=1.6',
         'UW-RestClients-Core>=1.1.1,<2.0',
