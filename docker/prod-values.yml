@@ -69,7 +69,7 @@ certs:
   mounted: true
   certPath: /certs/coda.uw.edu-uwca.cert
   keyPath: /certs/coda.uw.edu-uwca.key
-  secretName: coda-prod-uwca-certs
+  secretName: coda.uw.edu-uwca-certs
 environmentVariables:
   - name: ENV
     value: dev
