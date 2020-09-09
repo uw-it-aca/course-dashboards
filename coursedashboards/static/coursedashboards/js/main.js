@@ -24,7 +24,7 @@ $(document).ready(function () {
             displayErrorPage();
         }
     } else {
-        displayCourse(firstCourseCurrentQuarterLabel());
+        displayCourse(firstCourseRecentQuarterLabel());
     }
 
     // Listen for course dropdown selection change
@@ -424,29 +424,23 @@ function getSelectedCourseLabel() {
 }
 
 
-function firstCourseCurrentQuarterLabel() {
-    var section_data = null,
-        first_recent_section_data = null,
-        year = null,
-        quarter = null;
+function firstCourseRecentQuarterLabel() {
+    var first_recent_section_data = null;
 
     $.each(window.section_data, function () {
-        if (window.term.year == this.year &&
-            window.term.quarter.toLowerCase() == this.quarter.toLowerCase()) {
-            section_data = this;
-            return false;
-        }
-
-        if (year != this.year &&
-            (!quarter || quarter != this.quarter.toLowerCase())) {
-            first_recent_section_data = section_data;
-            year = this.year;
-            quarter = this.quarter.toLowerCase();
-
+        if (!first_recent_section_data) {
+            first_recent_section_data = this;
+        } else if (compare_terms(this.year, this.quarter,
+                                 first_recent_section_data.year,
+                                 first_recent_section_data.quarter) > 0 &&
+                   compare_terms(first_recent_section_data.year,
+                                 first_recent_section_data.quarter,
+                                 window.term.year, window.term.quarter) <= 0) {
+            first_recent_section_data = this;
         }
     });
 
-    return section_data.section_label;
+    return first_recent_section_data.section_label;
 }
 
 function getSectionDataByLabel(label) {
@@ -758,12 +752,17 @@ function getInstructorsByTerm(sections) {
         });
         return o;
     }).sort(function (a, b) {
-        var quarters = ['autumn', 'summer', 'spring', 'winter'],
-            y = a.year - b.year;
-
-        return (y !== 0) ? y : (quarters.indexOf(a.quarter.toLowerCase()) -
-                                quarters.indexOf(b.quarter.toLowerCase()));
+        return compare_terms(a.year, a.quarter, b.year, b.quarter);
     });
+}
+
+
+function compare_terms(a_year, a_quarter, b_year, b_quarter) {
+    var quarters = ['autumn', 'summer', 'spring', 'winter'],
+        y = a_year - b_year;
+
+    return (y !== 0) ? y : (quarters.indexOf(a_quarter.toLowerCase()) -
+                            quarters.indexOf(b_quarter.toLowerCase()));
 }
 
 
