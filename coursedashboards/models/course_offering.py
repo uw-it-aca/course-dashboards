@@ -161,7 +161,7 @@ class CourseOffering(models.Model):
             mean_gpa = CourseGradeAverage.objects.get(
                 curriculum=self.course.curriculum,
                 course_number=self.course.course_number).grade
-        except:
+        except CourseGradeAverage.DoesNotExist:
             mean_gpa = None
 
         total_students = float(len(self.get_students()))
