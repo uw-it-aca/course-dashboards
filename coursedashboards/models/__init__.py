@@ -5,3 +5,4 @@ from coursedashboards.models.course import Course
 from coursedashboards.models.course_offering import CourseOffering
 from coursedashboards.models.registration import Registration
 from coursedashboards.models.instructor import Instructor
+from coursedashboards.models.course_grade_average import CourseGradeAverage
