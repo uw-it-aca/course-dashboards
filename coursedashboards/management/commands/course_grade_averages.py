@@ -48,10 +48,12 @@ class Command(BaseCommand):
 
         if running:
             N_sum = N + running['N']
-            return {
-                'mean': ((N * m) + (running['N'] * running['mean'])) / N_sum,
-                'N': N_sum
-            }
+            if N_sum > 0:
+                return {
+                    'mean': (
+                        (N * m) + (running['N'] * running['mean'])) / N_sum,
+                    'N': N_sum
+                }
 
         return {
             'mean': m,

@@ -149,20 +149,22 @@ class CourseOffering(models.Model):
         course_dict = {}
         for reg in self.all_student_registrations():
             if reg.course.id != self.course.id:
-                name = "{}-{}|{}".format(reg.course.curriculum,
-                                         reg.course.course_number,
-                                         reg.course.course_title)
+                try:
+                    cga = CourseGradeAverage.objects.get(
+                        curriculum=reg.course.curriculum,
+                        course_number=reg.course.course_number)
+                    mean_gpa = cga.grade
+                except CourseGradeAverage.DoesNotExist:
+                    mean_gpa = ''
+
+                name = "{}-{}|{}|{}".format(reg.course.curriculum,
+                                            reg.course.course_number,
+                                            reg.course.course_title,
+                                            mean_gpa)
                 if name in course_dict:
                     course_dict[name] += 1
                 else:
                     course_dict[name] = 1
-
-        try:
-            mean_gpa = CourseGradeAverage.objects.get(
-                curriculum=self.course.curriculum,
-                course_number=self.course.course_number).grade
-        except CourseGradeAverage.DoesNotExist:
-            mean_gpa = None
 
         total_students = float(len(self.get_students()))
         return [{
@@ -171,7 +173,7 @@ class CourseOffering(models.Model):
             "number_students": course_dict[sort],
             "percent_students": round(
                 (float(course_dict[sort]) / total_students) * 100.0, 2),
-            "mean_gpa": mean_gpa
+            "mean_gpa": sort.split("|")[2]
         } for sort in sorted(course_dict, reverse=True, key=course_dict.get)]
 
     @profile
