@@ -6,6 +6,7 @@ from collections import defaultdict
 from django.db import models
 from coursedashboards.models.instructor import Instructor
 from coursedashboards.models.course import Course
+from coursedashboards.models.course_grade_average import CourseGradeAverage
 from coursedashboards.models.term import Term
 from coursedashboards.models.registration import Registration
 from coursedashboards.models.major import StudentMajor
@@ -156,13 +157,21 @@ class CourseOffering(models.Model):
                 else:
                     course_dict[name] = 1
 
+        try:
+            mean_gpa = CourseGradeAverage.objects.get(
+                curriculum=self.course.curriculum,
+                course_number=self.course.course_number).grade
+        except:
+            mean_gpa = None
+
         total_students = float(len(self.get_students()))
         return [{
             "course": sort.split("|")[0],
             "title": sort.split("|")[1],
             "number_students": course_dict[sort],
             "percent_students": round(
-                (float(course_dict[sort]) / total_students) * 100.0, 2)
+                (float(course_dict[sort]) / total_students) * 100.0, 2),
+            "mean_gpa": mean_gpa
         } for sort in sorted(course_dict, reverse=True, key=course_dict.get)]
 
     @profile

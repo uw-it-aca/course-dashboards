@@ -1,4 +1,3 @@
-import json
 from coursedashboards.views.api.endpoint import CoDaEndpoint
 
 
