@@ -591,7 +591,7 @@ function setup_exposures($container) {
             $list = $this.closest('.list').find('> ol.list-unstyled > li'),
             show_length = $this.attr('data-toggle-length');
 
-        show_length = show_length ? show_length : 10;
+        show_length = show_length ? show_length : 5;
 
         if ($list.length <= show_length) {
             $this.parent().hide();
@@ -609,7 +609,7 @@ function setup_exposures($container) {
             show_length = $this.attr('data-toggle-length');
             show_length_max = $this.attr('data-toggle-length-max');
 
-        show_length = show_length ? show_length : 10;
+        show_length = show_length ? show_length : 5;
 
         if (expanded === "true") {
             $this.html("Show more...");
