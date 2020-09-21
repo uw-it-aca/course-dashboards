@@ -46,7 +46,7 @@
 </div>
 <div class="row ">
     <div class="list col" aria-labelledby="current_concurrent_courses">
-        <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Make connections between your course and other courses your students are taking."></i></span><br><small>When taking the course</small></h4>
+        <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Make connections between your course and other courses your students are taking. The number in parenthesis is the median grade of the course. This provides insight into the difficulty of your students' course load."></i></span><br><small>When taking the course</small></h4>
         <ol class="list-unstyled">
            {{#each concurrent_courses}}
             <li><strong>{{ roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span> {{# if mean_gpa}}({{mean_gpa}}){{/if}}</li>
