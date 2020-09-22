@@ -24,7 +24,7 @@ $(document).ready(function () {
             displayErrorPage();
         }
     } else {
-        var section = firstCourseRecentQuarter()
+        var section = firstCourseRecentQuarter();
 
         $('#my_courses').val(section.curriculum + '-' + section.course_number + '-' + section.section_id);
         displayCourse(section.section_label);
