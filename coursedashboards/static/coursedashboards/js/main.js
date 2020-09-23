@@ -24,7 +24,10 @@ $(document).ready(function () {
             displayErrorPage();
         }
     } else {
-        displayCourse(firstCourseRecentQuarterLabel());
+        var section = firstCourseRecentQuarter();
+
+        $('#my_courses').val(section.curriculum + '-' + section.course_number + '-' + section.section_id);
+        displayCourse(section.section_label);
     }
 
     // Listen for course dropdown selection change
@@ -424,7 +427,7 @@ function getSelectedCourseLabel() {
 }
 
 
-function firstCourseRecentQuarterLabel() {
+function firstCourseRecentQuarter() {
     var first_recent_section_data = null;
 
     $.each(window.section_data, function () {
@@ -440,7 +443,7 @@ function firstCourseRecentQuarterLabel() {
         }
     });
 
-    return first_recent_section_data.section_label;
+    return first_recent_section_data;
 }
 
 function getSectionDataByLabel(label) {
@@ -591,7 +594,7 @@ function setup_exposures($container) {
             $list = $this.closest('.list').find('> ol.list-unstyled > li'),
             show_length = $this.attr('data-toggle-length');
 
-        show_length = show_length ? show_length : 10;
+        show_length = show_length ? show_length : 5;
 
         if ($list.length <= show_length) {
             $this.parent().hide();
@@ -609,7 +612,7 @@ function setup_exposures($container) {
             show_length = $this.attr('data-toggle-length');
             show_length_max = $this.attr('data-toggle-length-max');
 
-        show_length = show_length ? show_length : 10;
+        show_length = show_length ? show_length : 5;
 
         if (expanded === "true") {
             $this.html("Show more...");
