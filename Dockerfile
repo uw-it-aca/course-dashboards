@@ -1,4 +1,4 @@
-FROM acait/django-container:1.1.3 as app-container
+FROM acait/django-container:1.1.4 as app-container
 
 USER root
 RUN apt-get update && apt-get install mysql-client libmysqlclient-dev libpq-dev -y
@@ -22,7 +22,7 @@ RUN chmod u+x /scripts/app_start.sh
 
 RUN . /app/bin/activate && python manage.py compress -f && python manage.py collectstatic --noinput
 
-FROM acait/django-test-container:1.1.3 as app-test-container
+FROM acait/django-test-container:1.1.4 as app-test-container
 
 COPY --from=app-container /app/ /app/
 COPY --from=app-container /static/ /static/
