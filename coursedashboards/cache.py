@@ -1,48 +1,28 @@
-from rc_django.cache_implementation import TimedCache
-from rc_django.models import CacheEntryTimed
+from memcached_clients import RestclientPymemcacheClient
 import re
 
+ONE_MINUTE = 60
+ONE_HOUR = 60 * 60
 
-class RestClientsCache(TimedCache):
+
+class RestClientsCache(RestclientPymemcacheClient):
     """ A custom cache implementation for Course Dashboards """
 
-    url_policies = {}
-    url_policies["sws"] = (
-        (re.compile(r"^/student/v5/term/current"), 60 * 60),
-        (re.compile(r"^/student/v5/term/"), 60 * 60 * 10),
-        (re.compile(r"^/student/v5/course/"), 60 * 60),
-        (re.compile(r"^/student/v5/section"), 60 * 60),
-        (re.compile(r"^/student/v5/enrollment"), 60 * 60 * 2),
-        (re.compile(r"^/student/v5/registration"), 60 * 60 * 2),
-    )
-    url_policies["pws"] = (
-        (re.compile(r"^/identity/v1/person/"), 60 * 60 * 10),
-    )
-    url_policies["gws"] = (
-        (re.compile(r"^/group_sws/v2/group/"), 60 * 2),
-    )
+    def get_cache_expiration_time(self, service, url, status=200):
+        if "sws" == service:
+            if re.match(r"^/student/v\d/term/\d{4}", url):
+                return ONE_HOUR * 10
+            if re.match(r"^/student/v\d/(?:enrollment|registration)", url):
+                return ONE_HOUR * 2
+            return ONE_HOUR
 
-    def getCache(self, service, url, headers):
-        cache_time = self.getCacheTime(service, url)
-        if cache_time is not None:
-            return self._response_from_cache(service, url, headers, cache_time)
-        else:
-            return None
+        if "pws" == service:
+            return ONE_HOUR * 10
 
-    def processResponse(self, service, url, response):
-        if self.getCacheTime(service, url) is not None:
-            return self._process_response(service, url, response)
-        else:
-            return
+        if "gws" == service:
+            return ONE_MINUTE * 2
 
-    def getCacheTime(self, service, url):
-        if service in RestClientsCache.url_policies:
-            service_policies = RestClientsCache.url_policies[service]
-
-            for policy in service_policies:
-                pattern = policy[0]
-                policy_cache_time = policy[1]
-
-                if pattern.match(url):
-                    return policy_cache_time
-        return
+        if "canvas" == service:
+            if status == 200:
+                return ONE_HOUR * 10
+            return ONE_MINUTE * 5
