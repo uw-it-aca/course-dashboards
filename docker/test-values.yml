@@ -66,6 +66,8 @@ certs:
 environmentVariables:
   - name: ENV
     value: dev
+  - name: WEBSERVER
+    value: nginx
   - name: SESSION_BACKEND
     value: MEMCACHED
   - name: GWS_ENV
