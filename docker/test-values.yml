@@ -25,6 +25,8 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+securityPolicy:
+  enabled: true
 lifecycle:
   enabled: true
   preStop:
