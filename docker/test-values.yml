@@ -49,7 +49,7 @@ externalService:
 repo: coda
 instance: test
 image:
-  repository: registry.hub.docker.com/acait/coda
+  repository: gcr.io/uwit-mci-axdd/coda
   tag: IMAGE_TAG
 memcached:
   enabled: true
