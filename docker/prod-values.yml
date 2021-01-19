@@ -21,7 +21,7 @@ ingress:
   hosts:
     coda-prod:
       host: coda.uw.edu
-      paths: 
+      paths:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
@@ -47,11 +47,11 @@ externalService:
 repo: coda
 instance: prod
 image:
-  repository: registry.hub.docker.com/acait/coda
+  repository: gcr.io/uwit-mci-axdd/coda
   tag: IMAGE_TAG
 memcached:
   enabled: true
-  replicaCount: 1
+  replicaCount: 2
   updateStrategy:
     type: RollingUpdate
 metrics:
@@ -73,6 +73,8 @@ certs:
 environmentVariables:
   - name: ENV
     value: dev
+  - name: WEBSERVER
+    value: nginx
   - name: SESSION_BACKEND
     value: MEMCACHED
   - name: GWS_ENV
@@ -89,6 +91,8 @@ environmentVariables:
     value: https://coda.uw.edu/shibboleth
   - name: CLUSTER_CNAME
     value: coda.uw.edu
+  - name: MEMCACHED_MAX_POOL_SIZE
+    value: "10"
 
 externalSecrets:
   enabled: true

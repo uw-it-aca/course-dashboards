@@ -5,11 +5,11 @@ autoscaling:
 targetAverageUtilization: 100
 resources:
   limits:
-    cpu: 1.0
+    cpu: 500m
     memory: 768Mi
   requests:
-    cpu: 100m
-    memory: 700Mi
+    cpu: 25m
+    memory: 512Mi
 ingress:
   enabled: true
   type: nginx
@@ -25,6 +25,8 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+securityPolicy:
+  enabled: true
 lifecycle:
   enabled: true
   preStop:
@@ -47,7 +49,7 @@ externalService:
 repo: coda
 instance: test
 image:
-  repository: registry.hub.docker.com/acait/coda
+  repository: gcr.io/uwit-mci-axdd/coda
   tag: IMAGE_TAG
 memcached:
   enabled: true
@@ -66,6 +68,8 @@ certs:
 environmentVariables:
   - name: ENV
     value: dev
+  - name: WEBSERVER
+    value: nginx
   - name: SESSION_BACKEND
     value: MEMCACHED
   - name: GWS_ENV
