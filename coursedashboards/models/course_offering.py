@@ -49,7 +49,7 @@ class CourseOffering(models.Model):
         registrations = Registration.objects.filter(user_id__in=userids) \
             .filter(term__term_key__lt=self.term.term_key) \
             .values('grade', 'credits', 'user') \
-            .annotate(total=Count('grade', 'credits'))
+            .annotate(total=Count('grade'))
 
         cumulative = self._process_grade_totals(registrations)
 
