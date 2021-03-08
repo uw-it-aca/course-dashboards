@@ -34,6 +34,9 @@ class Term(models.Model):
 
         super(Term, self).save(*args, **kwargs)
 
+    def __hash__(self):
+        return super().__hash__()
+
     def __eq__(self, other):
         return (other is not None and
                 type(self) == type(other) and
