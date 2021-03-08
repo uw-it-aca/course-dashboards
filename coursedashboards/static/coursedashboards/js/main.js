@@ -169,10 +169,6 @@ function showCourseData(label) {
     });
 
     $("#current-course-target").html(currentTemplate({
-        current_median: section.current_median,
-        current_num_registered: section.current_enrollment,
-        current_capacity:section.limit_estimate_enrollment,
-        current_repeat_students:section.current_repeating,
         concurrent_courses:section.concurrent_courses,
         current_majors:section.current_student_majors,
         curriculum:section.curriculum,
@@ -182,6 +178,35 @@ function showCourseData(label) {
         canvas_course_url:section.canvas_course_url,
         display_course: section.display_course
     }));
+
+    if (compare_terms(section.year, section.quarter.toLowerCase(),
+                      window.term.year, window.term.quarter.toLowerCase()) >= 0) {
+        var currentPanel = $("#current-course-panel").html(),
+            currentPanelTemplate = Handlebars.compile(currentPanel);
+
+        $("#current-data-panel").html(currentPanelTemplate({
+            current_median: section.current_median,
+            current_num_registered: section.current_enrollment,
+            current_capacity:section.limit_estimate_enrollment,
+            current_repeat_students:section.current_repeating
+        }));
+    } else {
+        var historicPanel = $("#historic-course-panel").html(),
+            historicPanelTemplate = Handlebars.compile(historicPanel),
+            offerings = filterOfferings(
+                window.section_historic_data[section.section_label],
+                section.quarter, section.year, true),
+            section_count = calculateSectionCount(
+                offerings, section.quarter, section.year);
+
+        $("#current-data-panel").html(historicPanelTemplate({
+            median_gpa: calculateMedianGPA(offerings),
+            median_course_grade: calculateCourseMedian(offerings),
+            failed_percent: calculateFailedPercentage(offerings),
+            total_students: calculateTotalStudents(offerings),
+            section_count: section_count
+        }));
+    }
 
     $('.course-title span').html(section.course_title);
 
@@ -514,17 +539,16 @@ function prepOptions(selected, valid, all) {
 
 //Display data about the past offerings of selected course - called whenever selection changes
 function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURSES) {
-    var past_offerings = window.section_historic_data[section_data.section_label];
-    var offerings = filterOfferings(past_offerings, quarter, year, only_my_courses);
+    var past_offerings = window.section_historic_data[section_data.section_label],
+        offerings = filterOfferings(past_offerings, quarter, year, only_my_courses),
+        historic,
+        historicTemplate;
 
     $.each(offerings, function () {
         var offering = this;
 
         offering.quarter = firstLetterUppercase(offering.quarter);
     });
-
-    var historic;
-    var historicTemplate;
 
     if(taught !== ALL_MY_COURSES){
         var section;
@@ -547,6 +571,9 @@ function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURS
     latest_majors = latest_majors.slice(0, 20);
 
     if (offerings.length) {
+        var historicPanel = $("#historic-course-panel").html(),
+            historicPanelTemplate = Handlebars.compile(historicPanel);
+
         historic = $("#historic-course-data").html();
         historicTemplate = Handlebars.compile(historic);
 
@@ -556,15 +583,19 @@ function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURS
             common_courses:calculateCommon(offerings, "concurrent_courses","course"),
             selected_quarter:quarter,
             selected_year:year,
-            median_gpa: calculateMedianGPA(offerings),
-            median_course_grade: calculateCourseMedian(offerings),
-            failed_percent: calculateFailedPercentage(offerings),
-            total_students: calculateTotalStudents(offerings),
-            section_count: section_count,
             instructors: getInstructorsByTerm(offerings),
             display_course: shouldDisplayCourse(offerings)
             //past_terms:window.section_data[index].past_offerings
         }));
+
+        $("#historic-course-panel-target").html(historicPanelTemplate({
+            median_gpa: calculateMedianGPA(offerings),
+            median_course_grade: calculateCourseMedian(offerings),
+            failed_percent: calculateFailedPercentage(offerings),
+            total_students: calculateTotalStudents(offerings),
+            section_count: section_count
+        }));
+
         setup_exposures($("#historic-course-target"));
 
         $('#historic-course-target [data-toggle="popover"]').popover();

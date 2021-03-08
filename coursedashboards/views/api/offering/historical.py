@@ -1,5 +1,4 @@
 from coursedashboards.views.api.endpoint import CoDaEndpoint
-import json
 
 
 class HistoricalCourseData(CoDaEndpoint):

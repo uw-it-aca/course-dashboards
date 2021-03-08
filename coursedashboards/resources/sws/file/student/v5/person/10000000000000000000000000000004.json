@@ -9,7 +9,7 @@
         "Href":"\/student\/v5\/term\/2013,winter.json",
         "Quarter":"winter",
         "Year":2012},
-"LastName":"Student",
+"LastName":"Student", "Pronouns": "they/them/theirs",
 "LocalAddress":{
         "City":"Tacoma",
         "Country":"United States",

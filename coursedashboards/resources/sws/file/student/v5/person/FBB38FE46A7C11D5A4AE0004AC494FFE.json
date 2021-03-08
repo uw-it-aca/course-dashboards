@@ -6,7 +6,7 @@
     "FirstName": "BILL AVERAGE",
     "Gender": null,
     "LastEnrolled": null,
-    "LastName": "TEACHER",
+    "LastName": "TEACHER", "Pronouns": "they/them/theirs",
     "LocalAddress": null,
     "LocalPhone": null,
     "Notices": {
