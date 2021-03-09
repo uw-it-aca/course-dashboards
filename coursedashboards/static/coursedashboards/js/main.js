@@ -192,19 +192,14 @@ function showCourseData(label) {
         }));
     } else {
         var historicPanel = $("#historic-course-panel").html(),
-            historicPanelTemplate = Handlebars.compile(historicPanel),
-            offerings = filterOfferings(
-                window.section_historic_data[section.section_label],
-                section.quarter, section.year, true),
-            section_count = calculateSectionCount(
-                offerings, section.quarter, section.year);
+            historicPanelTemplate = Handlebars.compile(historicPanel);
 
         $("#current-data-panel").html(historicPanelTemplate({
-            median_gpa: calculateMedianGPA(offerings),
-            median_course_grade: calculateCourseMedian(offerings),
-            failed_percent: calculateFailedPercentage(offerings),
-            total_students: calculateTotalStudents(offerings),
-            section_count: section_count
+            median_gpa: section.current_median,
+            median_course_grade: section.median_course_grade,
+            failed_percent: calculateFailedPercentage([section]),
+            total_students: section.course_grades.length,
+            section_count: 1
         }));
     }
 

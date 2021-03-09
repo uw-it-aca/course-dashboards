@@ -306,6 +306,12 @@ class CourseOffering(models.Model):
         json_obj['gpas'] = gpas
         json_obj['current_median'] = self.get_cumulative_median_gpa(gpas)
 
+    def set_json_course_grades(self, json_obj):
+        grades = self.get_grades()
+        json_obj['course_grades'] = grades
+        json_obj['median_course_grade'] = self.get_cumulative_median_gpa(
+            grades)
+
     def set_json_concurrent_courses(self, json_obj):
         json_obj['concurrent_courses'] = self.concurrent_courses()
 
@@ -320,6 +326,11 @@ class CourseOffering(models.Model):
         t.start()
 
         t = Thread(target=self.set_json_cumulative_median,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_json_course_grades,
                    args=(json_obj,))
         threads.append(t)
         t.start()
