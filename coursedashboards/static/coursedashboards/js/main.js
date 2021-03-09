@@ -195,10 +195,12 @@ function showCourseData(label) {
             historicPanelTemplate = Handlebars.compile(historicPanel);
 
         $("#current-data-panel").html(historicPanelTemplate({
-            median_gpa: section.current_median,
-            median_course_grade: section.median_course_grade,
+            median_gpa: section.current_median
+                ? (section.current_median) : 'N/A',
+            median_course_grade: section.median_course_grade
+                ? (section.median_course_grade) : 'N/A',
             failed_percent: calculateFailedPercentage([section]),
-            total_students: section.course_grades.length,
+            total_students: section.current_enrollment,
             section_count: 1
         }));
     }
