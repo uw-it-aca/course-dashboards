@@ -151,7 +151,11 @@ function showCourseData(label) {
     var current = $("#current-course-data").html(),
         currentTemplate = Handlebars.compile(current),
         section = getSectionDataByLabel(label),
-        terms = [];
+        terms = [],
+        current_course_panel = (compare_terms(section.year,
+                                              section.quarter.toLowerCase(),
+                                              window.term.year,
+                                              window.term.quarter.toLowerCase()) >= 0);
 
     $.each(window.section_data, function () {
         if (this.curriculum == section.curriculum &&
@@ -179,13 +183,13 @@ function showCourseData(label) {
         display_course: section.display_course
     }));
 
-    if (compare_terms(section.year, section.quarter.toLowerCase(),
-                      window.term.year, window.term.quarter.toLowerCase()) >= 0) {
+    if (current_course_panel) {
         var currentPanel = $("#current-course-panel").html(),
             currentPanelTemplate = Handlebars.compile(currentPanel);
 
         $("#current-data-panel").html(currentPanelTemplate({
-            current_median: section.current_median,
+            current_median: section.current_median
+                ? section.current_median : 'N/A',
             current_num_registered: section.current_enrollment,
             current_capacity:section.limit_estimate_enrollment,
             current_repeat_students:section.current_repeating
@@ -201,7 +205,8 @@ function showCourseData(label) {
                 ? (section.median_course_grade) : 'N/A',
             failed_percent: calculateFailedPercentage([section]),
             total_students: section.current_enrollment,
-            section_count: 1
+            section_count: 1,
+            gpa_distribution_time: 'past'
         }));
     }
 
@@ -215,13 +220,25 @@ function showCourseData(label) {
     $('span.displayed-quarter').html(firstLetterUppercase(section.quarter) + " " + section.year);
 
     setup_exposures($("#current-course-target"));
-    $('.current-section .popover-dismiss').popover({ trigger: 'focus'});
+    $('#current-course-target [data-toggle="popover"]').popover();
+    $('#current-course-target .popover-dismiss').popover({ trigger: 'focus'});
 
-    $('.current-section [data-toggle="popover"]').popover();
-    $('.current-section .cumulative-popover')
+    $('#current-course-target .cumulative-popover')
         .on('inserted.bs.popover', function () {
-            renderGPADisribution('current-gpa-distribution', section.gpas);
+            if (current_course_panel) {
+                renderGPADisribution('current-gpa-distribution', section.gpas);
+            } else {
+                renderGPADisribution('past-gpa-distribution',
+                                     gatherMedianGPAs([section]));
+            }
         });
+
+    $('#current-course-target .course-gpa-popover')
+        .on('inserted.bs.popover', function () {
+            renderGPADisribution('past-course-gpa-distribution',
+                                 gatherCourseGrades([section]));
+        });
+
 }
 
 function fetchCourseData(label, on_success) {
@@ -590,7 +607,8 @@ function showHistoricCourseData(section_data, quarter, year, taught=ALL_MY_COURS
             median_course_grade: calculateCourseMedian(offerings),
             failed_percent: calculateFailedPercentage(offerings),
             total_students: calculateTotalStudents(offerings),
-            section_count: section_count
+            section_count: section_count,
+            gpa_distribution_time: 'historic'
         }));
 
         setup_exposures($("#historic-course-target"));
