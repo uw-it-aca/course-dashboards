@@ -188,8 +188,7 @@ function showCourseData(label) {
             currentPanelTemplate = Handlebars.compile(currentPanel);
 
         $("#current-data-panel").html(currentPanelTemplate({
-            current_median: section.current_median
-                ? section.current_median : 'N/A',
+            current_median: section.current_median ? section.current_median : 'N/A',
             current_num_registered: section.current_enrollment,
             current_capacity:section.limit_estimate_enrollment,
             current_repeat_students:section.current_repeating
@@ -199,10 +198,8 @@ function showCourseData(label) {
             historicPanelTemplate = Handlebars.compile(historicPanel);
 
         $("#current-data-panel").html(historicPanelTemplate({
-            median_gpa: section.current_median
-                ? (section.current_median) : 'N/A',
-            median_course_grade: section.median_course_grade
-                ? (section.median_course_grade) : 'N/A',
+            median_gpa: section.current_median ? (section.current_median) : 'N/A',
+            median_course_grade: section.median_course_grade ? (section.median_course_grade) : 'N/A',
             failed_percent: calculateFailedPercentage([section]),
             total_students: section.current_enrollment,
             section_count: 1,
