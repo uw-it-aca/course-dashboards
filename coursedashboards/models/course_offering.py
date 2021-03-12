@@ -29,24 +29,24 @@ class CourseOffering(models.Model):
     canvas_course_url = models.CharField(max_length=2000)
 
     @profile
-    def get_students(self):
+    def get_registrations(self):
         """
         Return Registration queryset for this course offering
         """
-        if not hasattr(self, 'students'):
-            self.students = Registration.objects.filter(
-                course=self.course, term=self.term)
+        return Registration.objects.filter(course=self.course, term=self.term)
 
-        return self.students
+    @profile
+    def get_students(self):
+        return list(self.get_registrations().values_list('user_id', flat=True))
+
+    @profile
+    def get_student_count(self):
+        return float(self.get_registrations().count())
 
     @profile
     def get_gpas(self):
-        userids = []
-
-        for student in self.get_students():
-            userids.append(student.user_id)
-
-        registrations = Registration.objects.filter(user_id__in=userids) \
+        registrations = Registration.objects.filter(
+            user_id__in=self.get_students()) \
             .filter(term__term_key__lt=self.term.term_key) \
             .values('grade', 'credits', 'user') \
             .annotate(total=Count('grade'))
@@ -107,16 +107,16 @@ class CourseOffering(models.Model):
         """
         Return grade array for course offering
         """
-        return [float(s.grade) for s in self.get_students()
-                if s.grade is not None and len(s.grade) > 0 and
-                s.grade[0] in '01234']
+        return [float(grade) for grade in Registration.objects.filter(
+            course=self.course, term=self.term).values_list('grade', flat=True)
+                if grade is not None and grade[:1].isdigit()]
 
     @profile
     def get_repeating_total(self):
         """
         Number of students repeating this course offering
         """
-        return len(self.get_students().filter(is_repeat=True))
+        return self.get_registrations().filter(is_repeat=True).count()
 
     @profile
     def get_instructors(self):
@@ -140,9 +140,9 @@ class CourseOffering(models.Model):
         """
         Return given user's Courses for this term
         """
-        students = list(self.get_students().values_list('user_id', flat=True))
         return Registration.objects.filter(
-            user_id__in=students, term=self.term).select_related('course')
+            user_id__in=self.get_students(),
+            term=self.term).select_related('course')
 
     @profile
     def concurrent_courses(self):
@@ -166,7 +166,7 @@ class CourseOffering(models.Model):
                 else:
                     course_dict[name] = 1
 
-        total_students = float(len(self.get_students()))
+        total_students = self.get_student_count()
         return [{
             "course": sort.split("|")[0],
             "title": sort.split("|")[1],
@@ -177,19 +177,16 @@ class CourseOffering(models.Model):
         } for sort in sorted(course_dict, reverse=True, key=course_dict.get)]
 
     @profile
-    def student_majors_for_term(self, students):
+    def student_majors_for_term(self):
         return [sm.major.major for sm in StudentMajor.objects.filter(
-            user_id__in=students.values_list('user_id', flat=True),
+            user_id__in=self.get_students(),
             term=self.term).select_related('major')]
 
     @profile
-    def last_student_undergraduate_major(self, students):
-
-        students = students.select_related('user')
-
+    def last_student_undergraduate_major(self):
+        students = self.get_registrations().select_related('user')
         class_majors = self.retrieve_course_majors(students)
         student_majors = self.sort_major_by_user(class_majors)
-
         return self.process_individual_majors(student_majors)
 
     @profile
@@ -238,16 +235,14 @@ class CourseOffering(models.Model):
 
     @profile
     def get_graduated_majors(self):
-        return self._get_majors(self.last_student_undergraduate_major)
+        return self._get_majors(self.last_student_undergraduate_major())
 
     @profile
     def get_majors(self):
-        return self._get_majors(self.student_majors_for_term)
+        return self._get_majors(self.student_majors_for_term())
 
-    def _get_majors(self, student_majors):
-        students = self.get_students()
-        total_students = float(len(students))
-        majors = student_majors(students)
+    def _get_majors(self, majors):
+        total_students = self.get_student_count()
         majors_dict = defaultdict(int)
 
         for major in majors:
