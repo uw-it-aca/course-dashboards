@@ -109,7 +109,7 @@ class CourseOffering(models.Model):
         """
         return [float(grade) for grade in Registration.objects.filter(
             course=self.course, term=self.term).values_list('grade', flat=True)
-                if grade is not None and grade[0] in '01234']
+                if grade is not None and grade[:1].isdigit()]
 
     @profile
     def get_repeating_total(self):
