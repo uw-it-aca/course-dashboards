@@ -20,3 +20,6 @@ class Registration(models.Model):
         db_table = 'Registration'
         unique_together = ('user', 'term', 'course')
         index_together = ('term', 'course')
+        indexes = [
+            models.Index(fields=['grade', 'credits'])
+        ]

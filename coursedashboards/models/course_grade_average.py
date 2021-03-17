@@ -8,6 +8,9 @@ class CourseGradeAverage(models.Model):
 
     class Meta:
         db_table = "CourseGradeAverage"
+        indexes = [
+            models.Index(fields=['curriculum', 'course_number'])
+        ]
 
     def __str__(self):
         return "{}-{}: {}".format(
