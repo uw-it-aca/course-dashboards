@@ -107,8 +107,8 @@ class CourseOffering(models.Model):
         """
         Return grade array for course offering
         """
-        return [float(grade) for grade in Registration.objects.filter(
-            course=self.course, term=self.term).values_list('grade', flat=True)
+        return [float(grade) for grade in list(
+            self.get_registrations().values_list('grade', flat=True))
                 if grade is not None and grade[:1].isdigit()]
 
     @profile
