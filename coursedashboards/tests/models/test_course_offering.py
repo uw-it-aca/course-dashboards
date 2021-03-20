@@ -315,7 +315,7 @@ class TestCourseOffering(TransactionTestCase):
 
         grades = self.winter_ess._process_grade_totals(grade_totals)
 
-        self.assertEqual(2.466666666666667, grades[0])
+        self.assertEqual(2.47, grades[0])
 
     def tearDown(self):
         for stumaj in self.student_majors:
