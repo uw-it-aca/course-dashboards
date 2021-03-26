@@ -20,12 +20,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Run Python Linters
-        uses: uw-it-aca/actions/python-linters@52fce2a819d8a8648e5babdb25edad6924aece2b
-        with:
-            app_name: ${{ env.DJANGO_APP }}
-            exclude_paths: 'migrations'
-
       - name: Set up Context
         id: cicd
         uses: uw-it-aca/actions/cicd-context@main
@@ -76,6 +70,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.6
+
+      - name: Run Python Linters
+        uses: uw-it-aca/actions/python-linters@52fce2a819d8a8648e5babdb25edad6924aece2b
+        with:
+            app_name: ${{ env.DJANGO_APP }}
+            exclude_paths: 'migrations'
 
       - name: Record Test Results
         env:
