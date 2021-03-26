@@ -229,6 +229,10 @@ class CourseOffering(models.Model):
                                                major__degree_level=1) \
             .select_related('major', 'term')
 
+        if getattr(settings, "CODA_PROFILE", False):
+            # trigger query for profiling:
+            repr(queryset)
+
         return queryset
 
     @profile
