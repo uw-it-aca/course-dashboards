@@ -8,7 +8,7 @@
 "LastEnrolled":{"Href":"\/student\/v5\/term\/2013,spring.json",
 "Quarter":"spring",
 "Year":2013},
-"LastName":"Eos",
+"LastName":"Eos", "Pronouns": "they/them/theirs",
 "LocalAddress":{
         "City":"Seattle",
         "Country":"United States",

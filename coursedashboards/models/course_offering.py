@@ -29,31 +29,29 @@ class CourseOffering(models.Model):
     canvas_course_url = models.CharField(max_length=2000)
 
     @profile
-    def get_students(self):
+    def get_registrations(self):
         """
         Return Registration queryset for this course offering
         """
-        if not hasattr(self, 'students'):
-            self.students = Registration.objects.filter(
-                course=self.course, term=self.term)
+        return Registration.objects.filter(course=self.course, term=self.term)
 
-        return self.students
+    @profile
+    def get_students(self):
+        return list(self.get_registrations().values_list('user_id', flat=True))
+
+    @profile
+    def get_student_count(self):
+        return float(self.get_registrations().count())
 
     @profile
     def get_gpas(self):
-        userids = []
+        registrations = Registration.objects.filter(
+            user_id__in=self.get_students(),
+            term__term_key__lt=self.term.term_key)\
+            .values('grade', 'credits', 'user')\
+            .annotate(total=Count('grade'))
 
-        for student in self.get_students():
-            userids.append(student.user_id)
-
-        registrations = Registration.objects.filter(user_id__in=userids) \
-            .filter(term__term_key__lt=self.term.term_key) \
-            .values('grade', 'credits', 'user') \
-            .annotate(total=Count('grade', 'credits'))
-
-        cumulative = self._process_grade_totals(registrations)
-
-        return cumulative
+        return self._process_grade_totals(registrations)
 
     @profile
     def get_cumulative_median_gpa(self, gpas):
@@ -86,7 +84,7 @@ class CourseOffering(models.Model):
             grade_points = user_grades[userid]['grade_points']
 
             if credits != 0:
-                grades.append(grade_points / credits)
+                grades.append(round(grade_points / credits, 2))
 
         return grades
 
@@ -107,16 +105,16 @@ class CourseOffering(models.Model):
         """
         Return grade array for course offering
         """
-        return [float(s.grade) for s in self.get_students()
-                if s.grade is not None and len(s.grade) > 0 and
-                s.grade[0] in '01234']
+        return [float(grade) for grade in list(
+            self.get_registrations().values_list('grade', flat=True))
+                if self._is_grade_value(grade)]
 
     @profile
     def get_repeating_total(self):
         """
         Number of students repeating this course offering
         """
-        return len(self.get_students().filter(is_repeat=True))
+        return self.get_registrations().filter(is_repeat=True).count()
 
     @profile
     def get_instructors(self):
@@ -140,56 +138,72 @@ class CourseOffering(models.Model):
         """
         Return given user's Courses for this term
         """
-        students = list(self.get_students().values_list('user_id', flat=True))
         return Registration.objects.filter(
-            user_id__in=students, term=self.term).select_related('course')
+            user_id__in=self.get_students(),
+            term=self.term).select_related('course')
+
+    def _course_id(self, course):
+        return "{}-{}".format(course.curriculum, course.course_number)
 
     @profile
     def concurrent_courses(self):
-        course_dict = {}
+        concurrent = {}
+        courses = {}
+        students = set()
         for reg in self.all_student_registrations():
+            students.add(reg.user_id)
             if reg.course.id != self.course.id:
-                try:
-                    cga = CourseGradeAverage.objects.get(
-                        curriculum=reg.course.curriculum,
-                        course_number=reg.course.course_number)
-                    mean_gpa = cga.grade
-                except CourseGradeAverage.DoesNotExist:
-                    mean_gpa = ''
+                course_id = self._course_id(reg.course)
+                if course_id not in concurrent:
+                    concurrent[course_id] = {
+                        'course': course_id,
+                        'title': reg.course.course_title,
+                        'mean_gpa': '',
+                        'students': 0
+                    }
 
-                name = "{}-{}|{}|{}".format(reg.course.curriculum,
-                                            reg.course.course_number,
-                                            reg.course.course_title,
-                                            mean_gpa)
-                if name in course_dict:
-                    course_dict[name] += 1
-                else:
-                    course_dict[name] = 1
+                concurrent[course_id]['students'] += 1
 
-        total_students = float(len(self.get_students()))
+                if reg.course.curriculum not in courses:
+                    courses[reg.course.curriculum] = set()
+
+                courses[reg.course.curriculum].add(reg.course.course_number)
+
+        query = models.Q()
+        for curriculum, course_numbers in courses.items():
+            query |= models.Q(curriculum=curriculum,
+                              course_number__in=list(course_numbers))
+
+        for cga in CourseGradeAverage.objects.filter(query):
+            try:
+                concurrent[self._course_id(cga)]['mean_gpa'] = cga.grade
+            except KeyError as ex:
+                logger.error("Unexpected CourseGradeAverage: {}".format(ex))
+
+        total_students = len(students)
+
         return [{
-            "course": sort.split("|")[0],
-            "title": sort.split("|")[1],
-            "number_students": course_dict[sort],
+            "course": sort['course'],
+            "title": sort['title'],
+            "number_students": sort['students'],
             "percent_students": round(
-                (float(course_dict[sort]) / total_students) * 100.0, 2),
-            "mean_gpa": sort.split("|")[2]
-        } for sort in sorted(course_dict, reverse=True, key=course_dict.get)]
+                (float(sort['students']) / total_students) * 100.0, 2),
+            "mean_gpa": sort['mean_gpa']
+        } for sort in sorted(list(concurrent.values()),
+                             key=lambda i: (i['students'], i['course']),
+                             reverse=True)]
 
     @profile
-    def student_majors_for_term(self, students):
+    def student_majors_for_term(self):
         return [sm.major.major for sm in StudentMajor.objects.filter(
-            user_id__in=students.values_list('user_id', flat=True),
+            user_id__in=self.get_students(),
             term=self.term).select_related('major')]
 
     @profile
-    def last_student_undergraduate_major(self, students):
-
-        students = students.select_related('user')
-
+    def last_student_undergraduate_major(self):
+        students = self.get_registrations().select_related('user')
         class_majors = self.retrieve_course_majors(students)
         student_majors = self.sort_major_by_user(class_majors)
-
         return self.process_individual_majors(student_majors)
 
     @profile
@@ -214,8 +228,6 @@ class CourseOffering(models.Model):
         queryset = StudentMajor.objects.filter(user__in=users,
                                                major__degree_level=1) \
             .select_related('major', 'term')
-        # trigger query for profiling:
-        repr(queryset)
 
         return queryset
 
@@ -238,16 +250,14 @@ class CourseOffering(models.Model):
 
     @profile
     def get_graduated_majors(self):
-        return self._get_majors(self.last_student_undergraduate_major)
+        return self._get_majors(self.last_student_undergraduate_major())
 
     @profile
     def get_majors(self):
-        return self._get_majors(self.student_majors_for_term)
+        return self._get_majors(self.student_majors_for_term())
 
-    def _get_majors(self, student_majors):
-        students = self.get_students()
-        total_students = float(len(students))
-        majors = student_majors(students)
+    def _get_majors(self, majors):
+        total_students = self.get_student_count()
         majors_dict = defaultdict(int)
 
         for major in majors:
@@ -263,24 +273,24 @@ class CourseOffering(models.Model):
 
     @profile
     def get_fail_rate(self):
-
-        registrations = Registration.objects.filter(course=self.course)\
-            .values('grade').annotate(total=Count('grade'))
-
         total = 0.0
         failed = 0.0
 
-        for reg in registrations:
-            if len(reg['grade']) > 0 and reg['grade'][0] in '01234':
+        for reg in Registration.objects.filter(
+                course=self.course).values(
+                    'grade').annotate(
+                        total=Count('grade')):
+            if self._is_grade_value(reg['grade']):
                 if float(reg['grade']) == 0.0:
                     failed += reg['total']
 
                 total += reg['total']
 
-        if total == 0:
-            return 0
+        return (failed / total) if total > 0 else 0
 
-        return failed / total
+    @staticmethod
+    def _is_grade_value(grade):
+        return grade is not None and grade[:1].isdigit()
 
     def brief_json_object(self):
         json_obj = {
@@ -306,6 +316,12 @@ class CourseOffering(models.Model):
         json_obj['gpas'] = gpas
         json_obj['current_median'] = self.get_cumulative_median_gpa(gpas)
 
+    def set_json_course_grades(self, json_obj):
+        grades = self.get_grades()
+        json_obj['course_grades'] = grades
+        json_obj['median_course_grade'] = self.get_cumulative_median_gpa(
+            grades)
+
     def set_json_concurrent_courses(self, json_obj):
         json_obj['concurrent_courses'] = self.concurrent_courses()
 
@@ -320,6 +336,11 @@ class CourseOffering(models.Model):
         t.start()
 
         t = Thread(target=self.set_json_cumulative_median,
+                   args=(json_obj,))
+        threads.append(t)
+        t.start()
+
+        t = Thread(target=self.set_json_course_grades,
                    args=(json_obj,))
         threads.append(t)
         t.start()

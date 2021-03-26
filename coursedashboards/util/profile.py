@@ -32,7 +32,7 @@ def profile(fn):
 def log_profile_data(prefix, logger):
     for fname, data in list(PROF_DATA.items()):
         logger.debug(
-            'profile {}: called:{:6s}  max: {:.3f} avg: {:.3f} {}'.format(
+            'profile {}: called:{:6}  max: {:.3f} avg: {:.3f} {}'.format(
                 prefix, data[0], max(data[1]),
                 sum(data[1]) / len(data[1]), fname))
 
