@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Python Linters
-        uses: uw-it-aca/actions/python-linters@52fce2a819d8
+        uses: uw-it-aca/actions/python-linters@52fce2a819d8a8648e5babdb25edad6924aece2b
         with:
             app_name: ${{ env.DJANGO_APP }}
             exclude_paths: 'migrations'
