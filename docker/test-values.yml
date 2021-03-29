@@ -53,9 +53,6 @@ image:
   tag: IMAGE_TAG
 memcached:
   enabled: true
-  replicaCount: 1
-  updateStrategy:
-    type: RollingUpdate
 metrics:
   enabled: true
   serviceMonitor:

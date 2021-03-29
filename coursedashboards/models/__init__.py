@@ -1,3 +1,6 @@
+# Copyright 2021 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from coursedashboards.models.user import User
 from coursedashboards.models.major import Major, StudentMajor
 from coursedashboards.models.term import Term

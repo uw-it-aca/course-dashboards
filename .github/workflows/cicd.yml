@@ -26,7 +26,7 @@ jobs:
           python-version: 3.6
 
       - name: Run Python Linters
-        uses: uw-it-aca/actions/python-linters@52fce2a819d8a8648e5babdb25edad6924aece2b
+        uses: uw-it-aca/actions/python-linters@main
         with:
             app_name: ${{ env.DJANGO_APP }}
             exclude_paths: 'migrations'
