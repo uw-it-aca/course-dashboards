@@ -1,6 +1,5 @@
 # Copyright 2021 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
-
 import logging
 from uw_sws.person import get_person_by_regid
 from coursedashboards.util.retry import retry

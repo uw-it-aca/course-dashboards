@@ -1,6 +1,5 @@
 # Copyright 2021 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
-
 import uw_pws
 from coursedashboards.models.user import User
 from coursedashboards.dao.pws import get_person_of_current_user, \
