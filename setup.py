@@ -39,7 +39,7 @@ setup(
         'UW-RestClients-Canvas>=1.1.5,<2.0',
         'UW-Django-SAML2>=1.5.1,<2.0',
         'Django-SupportTools>=3.4,<4.0',
-        'djangorestframework==3.11.1',
+        'djangorestframework==3.11.2',
         'statistics',
         'mysqlclient==1.3.14',
     ],

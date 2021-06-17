@@ -42,7 +42,7 @@
        <ol class="list-unstyled" aria-labelledby="previous_instructors">
          {{#each instructors}}
          <li>
-           <h5>{{ quarter }} {{ year }}</h5>
+           <h5 class="text-capitalize">{{ quarter }} {{ year }}</h5>
            <ol class="list-unstyled">
              {{#each instructors}}
              <li><a href="mailto:{{email}}">{{ formatName surname }}, {{ formatName first_name }}</a>{{#if is_faculty}} - Faculty{{else}}{{#if is_student}} - Grad Student{{else}}{{#if is_member}} - Former Faculty{{else}}{{#if is_alum}} - Former Grad Student{{/if}}{{/if}}{{/if}}{{/if}}</li>

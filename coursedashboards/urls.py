@@ -18,7 +18,7 @@ course_regex = r'^api/v1/course/(?P<year>\d{4})-'\
 urlpatterns = [
     # Home
     re_path(r'^$', index, name='home'),
-    re_path(course_regex + r'/past$',
+    re_path(course_regex + r'/past/?',
             HistoricalCourseData.as_view(),
             name='historic_course_data'),
     re_path(course_regex + r'$',
