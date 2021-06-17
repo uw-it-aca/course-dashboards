@@ -6,7 +6,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="historic-filters col">
+    <div class="historic-filters col tabs">
         <ul class="nav nav-pills" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link all-courses nohref {{#if only_my_courses}} {{else}} active {{/if}}" id="allcourses-tab" role="button" aria-selected="true">All Courses</a>
@@ -23,7 +23,7 @@
                    <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
                    <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter" aria-controls="historic-course-target">
                        {{#each past_quarters}}
-                           <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                           <option data-label="{{this.quarter}}" {{this.selected}}>{{this.quarter}}</option>
                        {{/each}}
                    </select>
                 </div>
@@ -31,7 +31,7 @@
                     <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
                     <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year" aria-controls="historic-course-target">
                        {{#each past_years}}
-                           <option data-label="{{name}}" {{selected}}>{{name}}</option>
+                           <option data-label="{{this.year}}" {{this.selected}}>{{this.year}}</option>
                        {{/each}}
                     </select>
                 </div>
@@ -44,7 +44,7 @@
                         <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
 
                         {{#each instructed_sections}}
-                            <option data-label="{{../section_label}}" {{selected}}>{{quarter}} {{year}}</option>
+                            <option value=>{{this.quarter}} {{this.year}}</option>
                         {{/each}}
 
                     </select>
