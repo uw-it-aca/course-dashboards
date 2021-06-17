@@ -71,7 +71,7 @@ function showCourseData(label) {
         $("#current-data-panel").html(historicPanelTemplate({
             median_gpa: section.current_median ? (section.current_median) : 'N/A',
             median_course_grade: section.median_course_grade ? (section.median_course_grade) : 'N/A',
-            failed_percent: calculateFailedPercentage(sections.course_grades),
+            failed_percent: calculateFailedPercentage(section.course_grades),
             total_students: section.current_enrollment,
             section_count: 1,
             gpa_distribution_time: 'past'

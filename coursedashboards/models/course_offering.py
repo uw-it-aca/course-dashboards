@@ -463,27 +463,35 @@ class CourseOffering(models.Model):
 
         return json_obj
 
+    @profile
     def set_past_offering_enrollment_count(self, past_obj, term_ids=None):
         past_obj['enrollment'] = self.get_enrollment_count(term_ids)
 
+    @profile
     def set_past_offering_instructors(self, past_obj, term_ids=None):
         past_obj['instructors'] = self.get_instructors(term_ids)
 
+    @profile
     def set_past_offering_majors(self, past_obj, term_ids=None):
         past_obj['majors'] = self.get_majors(term_ids)
 
+    @profile
     def set_past_concurrent_courses(self, past_obj, term_ids=None):
         past_obj['concurrent_courses'] = self.concurrent_courses(term_ids)
 
+    @profile
     def set_past_latest_majors(self, past_obj, term_ids=None):
         past_obj['latest_majors'] = self.get_graduated_majors(term_ids)
 
+    @profile
     def set_past_course_grades(self, past_obj, term_ids=None):
         past_obj['course_grades'] = self.get_grades(term_ids)
 
+    @profile
     def set_past_median_gpa(self, past_obj, term_ids=None):
         past_obj['gpas'] = self.get_gpas(term_ids)
 
+    @profile
     def set_past_offering_data(self, past_obj, term_ids):
         threads = []
 
