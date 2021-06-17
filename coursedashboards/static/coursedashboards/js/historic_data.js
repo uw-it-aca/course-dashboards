@@ -4,10 +4,10 @@
 
 
 function historicCacheData(section_data, filter, results) {
-    var hash = section_data.curriculum + '-' + section_data.section_id
-        + '-' + ((filter && filter.year !== undefined) ? filter.year : '')
-        + '-' + ((filter && filter.quarter !== undefined) ? filter.quarter : '')
-        + '-' + ((filter && filter.only_instructed) ? 'instructed' : '');
+    var hash = section_data.curriculum + '-' + section_data.section_id +
+        '-' + ((filter && filter.year !== undefined) ? filter.year : '') +
+        '-' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
+        '-' + ((filter && filter.only_instructed) ? 'instructed' : '');
 
     if (results) {
         window.historic_data[hash] = results;
@@ -34,10 +34,10 @@ function getHistoricCourseData(section_data, filter) {
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + section_data.section_label + '/past'
-            + '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '')
-            + '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '')
-            + '&instructed=' + (filter && filter.only_instructed ? 'true' : ''),
+        url: "/api/v1/course/" + section_data.section_label + '/past' +
+            '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
+            '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
+            '&instructed=' + (filter && filter.only_instructed ? 'true' : ''),
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},

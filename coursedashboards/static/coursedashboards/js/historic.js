@@ -89,7 +89,7 @@ function showHistoricCourseData(section_data, data) {
         $('#historic-course-target .cumulative-popover')
             .on('inserted.bs.popover', function () {
                 renderGPADisribution('historic-gpa-distribution',
-                                     data.past_offerings.gpas)
+                                     data.past_offerings.gpas);
             });
 
         $('#historic-course-target .course-gpa-popover')
@@ -243,7 +243,7 @@ function getInstructorsByTerm(term_list, sections) {
 }
 
 function shouldDisplayCourse(data){
-    var term_count = data.past_offerings.terms.length
+    var term_count = data.past_offerings.terms.length;
 
     if(term_count > 1) {
         return true;

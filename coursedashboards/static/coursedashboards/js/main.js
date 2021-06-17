@@ -19,9 +19,9 @@ $(document).ready(function () {
     } else {
         var section = firstCourseRecentQuarter();
 
-        $('#my_courses').val(section.curriculum 
-                             + '-' + section.course_number 
-                             + '-' + section.section_id);
+        $('#my_courses').val(section.curriculum +
+                             '-' + section.course_number +
+                             '-' + section.section_id);
         displayCourse(section.section_label);
     }
 
@@ -69,7 +69,7 @@ function registerEvents() {
         .on('change', '#allcourses .historic-filter', function (e) {
             var filter = filterChoices(
                 (this.name === 'historic_filter_year') ? this.value : null,
-                (this.name === 'historic_filter_quarter') ? this.value : null)
+                (this.name === 'historic_filter_quarter') ? this.value : null);
 
             fetchHistoricCourseData(
                 getSectionDataByLabel(getSelectedCourseLabel()), filter);
@@ -86,7 +86,7 @@ function filterChoices(year_override, quarter_override) {
             'only_instructed': false
         };
 
-    return filter
+    return filter;
 }
 
 function displayPageHeader() {

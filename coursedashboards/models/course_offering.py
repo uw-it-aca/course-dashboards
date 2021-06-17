@@ -80,10 +80,9 @@ class CourseOffering(models.Model):
                           .annotate(total=Count('grade')).explain())
 
         registrations = Registration.objects.filter(
-                user_id__in=self.get_students(term_ids=term_ids),
-                term__term_key__lt=self.term.term_key)\
-                    .values('grade', 'credits', 'user')\
-                    .annotate(total=Count('grade'))
+            user_id__in=self.get_students(term_ids=term_ids),
+            term__term_key__lt=self.term.term_key).values(
+                'grade', 'credits', 'user').annotate(total=Count('grade'))
 
         return self._process_grade_totals(registrations)
 
@@ -608,7 +607,7 @@ class CourseOffering(models.Model):
         json_obj = {
             'past_offerings': self.get_past_offerings(term_ids),
             'sections': self.get_past_sections(),
-            'filter' : {
+            'filter': {
                 'year': past_year,
                 'quarter': past_quarter,
                 'only_instructed': instructor is not None
