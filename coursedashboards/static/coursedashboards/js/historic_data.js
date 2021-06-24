@@ -3,7 +3,7 @@
 //
 
 
-function historicCacheData(section_label, filter, results) {
+var historicCacheData = function (section_label, filter, results) {
     var hash = section_label +
         '-' + ((filter && filter.year !== undefined) ? filter.year : '') +
         '-' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
@@ -17,9 +17,9 @@ function historicCacheData(section_label, filter, results) {
     }
 
     return null;
-}
+};
 
-function fetchHistoricCourseData(section_label, filter) {
+var fetchHistoricCourseData = function (section_label, filter) {
     if (historicCacheData(section_label, filter)) {
         $('div.historic-section').trigger(
             'coda:HistoricCourseDataSuccess',
@@ -27,9 +27,9 @@ function fetchHistoricCourseData(section_label, filter) {
     } else {
         getHistoricCourseData(section_label, filter);
     }
-}
+};
 
-function getHistoricCourseData(section_label, filter) {
+var getHistoricCourseData = function (section_label, filter) {
     startLoadingHistoricCourseData();
     var startTime = Date.now();
 
@@ -61,12 +61,12 @@ function getHistoricCourseData(section_label, filter) {
             stopLoadingHistoricCourseData();
         }
     });
-}
+};
 
-function startLoadingHistoricCourseData() {
+var startLoadingHistoricCourseData = function () {
     $(".section-container.historic-section").addClass('loading');
-}
+};
 
-function stopLoadingHistoricCourseData() {
+var stopLoadingHistoricCourseData = function () {
     $(".section-container.historic-section").removeClass('loading');
-}
+};

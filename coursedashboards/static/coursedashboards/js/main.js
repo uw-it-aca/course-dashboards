@@ -31,10 +31,10 @@ var displayMyCourseAndHistory = function (course) {
                                                  '-' + section.course_number +
                                                  '-' + section.section_id);
     displayCourse(section.section_label);
-}
+};
 
 
-function registerEvents() {
+var registerEvents = function () {
     $('div.course-quarter-year')
         .on(
             'change', '#my_courses',
@@ -76,10 +76,10 @@ function registerEvents() {
 
             fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });
-}
+};
 
 
-function filterChoices(year_override, quarter_override) {
+var filterChoices = function (year_override, quarter_override) {
     var year = year_override ? year_override : $('#allcourses #historic_filter_year option:selected').val(),
         quarter = quarter_override ? quarter_override : $('#allcourses #historic_filter_quarter option:selected').val(),
         filter = {
@@ -89,33 +89,32 @@ function filterChoices(year_override, quarter_override) {
         };
 
     return filter;
-}
+};
 
-function displayPageHeader() {
+var displayPageHeader = function () {
     //Display the top bar: netid and course dropdown
     var source = $("#page-top").html();
     var template = Handlebars.compile(source);
     $("#top_banner").html(template({ netid: window.user.netid }));
-}
+};
 
-function courseHash() {
+var courseHash = function () {
     return decodeURIComponent(window.location.hash.slice(1));
-}
+};
 
-function displayErrorPage() {
+var displayErrorPage = function () {
     var current = $("#cannot-display-course").html();
     var currentTemplate = Handlebars.compile(current);
     $('.main-content').html(currentTemplate({
         course: courseHash()
     }));
+};
 
-}
-
-function updateCourseURL(page, course) {
+var updateCourseURL = function (page, course) {
     if (courseHash() !== course) {
         history.pushState({ page: page, course: course }, page, '#' + course);
     }
-}
+};
 
 $(window).bind('popstate', function (e, o) {
     if (history.state && history.state.course) {
@@ -124,7 +123,7 @@ $(window).bind('popstate', function (e, o) {
 });
 
 
-function firstCourseRecentQuarter(course) {
+var firstCourseRecentQuarter = function (course) {
     var first_recent_section_data = null,
         course_parts = (course) ? course.split('-') : null,
         curriculum = (course) ? course_parts[0] : null,
@@ -132,10 +131,9 @@ function firstCourseRecentQuarter(course) {
         section_id = (course) ? course_parts[2] : null;
 
     $.each(window.section_data, function () {
-        if (course
-            && !(curriculum == this.curriculum
-                 && course_number == this.course_number
-                 && section_id == this.section_id)) {
+        if (course && !(curriculum == this.curriculum &&
+                        course_number == this.course_number &&
+                        section_id == this.section_id)) {
             return true;
         }
 
@@ -152,12 +150,12 @@ function firstCourseRecentQuarter(course) {
     });
 
     return first_recent_section_data;
-}
+};
 
-function compare_terms(a_year, a_quarter, b_year, b_quarter) {
+var compare_terms = function (a_year, a_quarter, b_year, b_quarter) {
     var quarters = ['autumn', 'summer', 'spring', 'winter'],
         y = a_year - b_year;
 
     return (y !== 0) ? y : (quarters.indexOf(a_quarter.toLowerCase()) -
                             quarters.indexOf(b_quarter.toLowerCase()));
-}
+};

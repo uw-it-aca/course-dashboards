@@ -3,7 +3,7 @@
 //
 
 
-function displayCourseSelector(label) {
+var displayCourseSelector = function (label) {
     var section_data = getSectionDataByLabel(label),
         courses = [],
         term_index = -1,
@@ -40,8 +40,8 @@ function displayCourseSelector(label) {
     $(".course-select").html(template({
         courses: courses
     }));
-}
+};
 
-function getSelectedCourseLabel() {
+var getSelectedCourseLabel = function () {
     return $('div.current-section #current_course_label').val();
-}
+};
