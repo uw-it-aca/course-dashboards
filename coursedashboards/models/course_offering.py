@@ -29,11 +29,11 @@ class CourseOffering(models.Model):
     canvas_course_url = models.CharField(max_length=2000)
 
     @profile
-    def get_registrations(self, term_ids=None):
+    def get_registrations(self, terms=None):
         """
         Return Registration queryset for this course offering
         """
-        filter_parms = self._filter_parms(term_ids)
+        filter_parms = self._filter_parms(terms)
 
         if settings.DEBUG:
             try:
@@ -41,48 +41,55 @@ class CourseOffering(models.Model):
                     pass
             except AttributeError:
                 self._get_reg_explained = True
-                self._explain("registrations", Registration.objects.filter(
-                    filter_parms).explain())
+                self._explain(
+                    "registrations", Registration.objects.filter(
+                        filter_parms
+                    ).explain())
 
         return Registration.objects.filter(filter_parms)
 
     @profile
-    def _filter_parms(self, term_ids=None):
-        filter_parms = models.Q(course=self.course)
-
-        if term_ids:
-            filter_parms &= models.Q(term_id__in=term_ids)
+    def _filter_parms(self, terms=None):
+        if terms:
+            term_parm = models.Q(term__in=terms)
         else:
-            filter_parms &= models.Q(term=self.term)
+            term_parm = models.Q(term=self.term)
 
-        return filter_parms
+        return term_parm & models.Q(course=self.course)
 
     @profile
-    def get_students(self, term_ids=None):
+    def get_students(self, terms=None):
         if settings.DEBUG:
             self._explain("students", self.get_registrations(
-                term_ids=term_ids).values_list('user_id', flat=True).explain())
+                terms=terms).values_list('user_id', flat=True).explain())
 
         return list(self.get_registrations(
-            term_ids=term_ids).values_list('user_id', flat=True))
+            terms=terms).values_list('user_id', flat=True))
 
     @profile
-    def get_student_count(self, term_ids=None):
-        return float(self.get_registrations(term_ids=term_ids).count())
+    def get_student_count(self, terms=None):
+        return float(self.get_registrations(terms=terms).count())
 
     @profile
-    def get_gpas(self, term_ids=None):
+    def get_gpas(self, terms=None):
         if settings.DEBUG:
             self._explain("get_gpas", Registration.objects.filter(
-                user_id__in=self.get_students(term_ids=term_ids),
-                term__term_key__lt=self.term.term_key)
-                          .values('grade', 'credits', 'user')
-                          .annotate(total=Count('grade')).explain())
+                user_id__in=self.get_students(terms=terms),
+                term__term_key__lt=self.term.term_key
+            ).values(
+                'grade', 'credits', 'user'
+            ).annotate(
+                total=Count('grade')
+            ).explain())
 
         registrations = Registration.objects.filter(
-            user_id__in=self.get_students(term_ids=term_ids),
-            term__term_key__lt=self.term.term_key).values(
-                'grade', 'credits', 'user').annotate(total=Count('grade'))
+            user_id__in=self.get_students(terms=terms),
+            term__term_key__lt=self.term.term_key
+        ).values(
+            'grade', 'credits', 'user'
+        ).annotate(
+            total=Count('grade')
+        )
 
         return self._process_grade_totals(registrations)
 
@@ -134,25 +141,31 @@ class CourseOffering(models.Model):
             pass
 
     @profile
-    def get_grades(self, term_ids=None):
+    def get_grades(self, terms=None):
         """
         Return grade array for course offering
         """
         return [float(grade) for grade in list(
             self.get_registrations(
-                term_ids=term_ids).values_list('grade', flat=True))
+                terms=terms
+            ).values_list(
+                'grade', flat=True
+            ))
                 if self._is_grade_value(grade)]
 
     @profile
-    def get_repeating_total(self, term_ids=None):
+    def get_repeating_total(self, terms=None):
         """
         Number of students repeating this course offering
         """
         return self.get_registrations(
-            term_ids=term_ids).filter(is_repeat=True).count()
+            terms=terms
+        ).filter(
+            is_repeat=True
+        ).count()
 
     @profile
-    def get_instructors(self, term_ids=None):
+    def get_instructors(self, terms=None):
         return [{
             'uwnetid': inst.user.uwnetid,
             'display_name': inst.user.display_name,
@@ -165,45 +178,53 @@ class CourseOffering(models.Model):
             'is_employee': inst.user.is_employee,
             'is_alum': inst.user.is_alum,
             'is_faculty': inst.user.is_faculty
-        } for inst in Instructor.objects.filter(self._filter_parms(term_ids))]
+        } for inst in Instructor.objects.filter(self._filter_parms(terms))]
 
     @profile
-    def get_enrollment_count(self, term_ids=None):
-        filter_parms = self._filter_parms(term_ids)
+    def get_enrollment_count(self, terms=None):
+        filter_parms = self._filter_parms(terms)
 
         return CourseOffering.objects.filter(
-            filter_parms).aggregate(
-                Sum('current_enrollment'))['current_enrollment__sum']
+            filter_parms
+        ).aggregate(
+            Sum('current_enrollment')
+        )['current_enrollment__sum']
 
     @profile
-    def all_student_registrations(self, term_ids=None):
+    def all_student_registrations(self, terms=None):
         """
         Return given user's Courses for this term
         """
-        filter_parms = models.Q(user_id__in=self.get_students(term_ids))
-        if term_ids:
-            filter_parms &= models.Q(term__in=term_ids)
+        if terms:
+            filter_parms = models.Q(term__in=terms)
         else:
-            filter_parms &= models.Q(term=self.term)
+            filter_parms = models.Q(term=self.term)
+
+        filter_parms &= models.Q(user_id__in=self.get_students(terms))
 
         if settings.DEBUG:
             self._explain(
                 "all student registrations",
                 Registration.objects.filter(
-                    filter_parms).select_related('course').explain())
+                    filter_parms
+                ).select_related(
+                    'course'
+                ).explain())
 
         return Registration.objects.filter(
-            filter_parms).select_related('course')
+            filter_parms
+        ).select_related(
+            'course')
 
     def _course_id(self, course):
         return "{}-{}".format(course.curriculum, course.course_number)
 
     @profile
-    def concurrent_courses(self, term_ids=None):
+    def concurrent_courses(self, terms=None):
         concurrent = {}
         courses = {}
         students = set()
-        for reg in self.all_student_registrations(term_ids):
+        for reg in self.all_student_registrations(terms):
             students.add(reg.user_id)
             if reg.course.id != self.course.id:
                 course_id = self._course_id(reg.course)
@@ -252,24 +273,30 @@ class CourseOffering(models.Model):
                              reverse=True)]
 
     @profile
-    def student_majors_for_term(self, term_ids=None):
-        filter_parms = models.Q(user_id__in=self.get_students(term_ids))
-
-        if term_ids:
-            filter_parms &= models.Q(term_id__in=term_ids)
+    def student_majors_for_term(self, terms=None):
+        if terms:
+            filter_parms = models.Q(term_id__in=terms)
         else:
-            filter_parms &= models.Q(term=self.term)
+            filter_parms = models.Q(term=self.term)
+
+        filter_parms &= models.Q(user_id__in=self.get_students(terms))
 
         if settings.DEBUG:
             self._explain("student majors", StudentMajor.objects.filter(
-                filter_parms).select_related('major').explain())
+                filter_parms
+            ).select_related(
+                'major'
+            ).explain())
 
         return [sm.major.major for sm in StudentMajor.objects.filter(
-            filter_parms).select_related('major')]
+            filter_parms
+        ).select_related(
+            'major'
+        )]
 
     @profile
-    def last_student_undergraduate_major(self, term_ids=None):
-        students = self.get_registrations(term_ids).select_related('user')
+    def last_student_undergraduate_major(self, terms=None):
+        students = self.get_registrations(terms).select_related('user')
         class_majors = self.retrieve_course_majors(students)
         student_majors = self.sort_major_by_user(class_majors)
         return self.process_individual_majors(student_majors)
@@ -317,13 +344,13 @@ class CourseOffering(models.Model):
         return major_list
 
     @profile
-    def get_graduated_majors(self, term_ids=None):
+    def get_graduated_majors(self, terms=None):
         return self._get_majors(
-            self.last_student_undergraduate_major(term_ids))
+            self.last_student_undergraduate_major(terms))
 
     @profile
-    def get_majors(self, term_ids=None):
-        return self._get_majors(self.student_majors_for_term(term_ids))
+    def get_majors(self, terms=None):
+        return self._get_majors(self.student_majors_for_term(terms))
 
     def _get_majors(self, majors):
         total_students = self.get_student_count()
@@ -345,10 +372,15 @@ class CourseOffering(models.Model):
         total = 0.0
         failed = 0.0
 
-        for reg in Registration.objects.filter(
-                course=self.course).values(
-                    'grade').annotate(
-                        total=Count('grade')):
+        registrations = Registration.objects.filter(
+            course=self.course
+        ).values(
+            'grade'
+        ).annotate(
+            total=Count('grade')
+        )
+
+        for reg in registrations:
             if self._is_grade_value(reg['grade']):
                 if float(reg['grade']) == 0.0:
                     failed += reg['total']
@@ -464,65 +496,65 @@ class CourseOffering(models.Model):
         return json_obj
 
     @profile
-    def set_past_offering_enrollment_count(self, past_obj, term_ids=None):
-        past_obj['enrollment'] = self.get_enrollment_count(term_ids)
+    def set_past_offering_enrollment_count(self, past_obj, terms=None):
+        past_obj['enrollment'] = self.get_enrollment_count(terms)
 
     @profile
-    def set_past_offering_instructors(self, past_obj, term_ids=None):
-        past_obj['instructors'] = self.get_instructors(term_ids)
+    def set_past_offering_instructors(self, past_obj, terms=None):
+        past_obj['instructors'] = self.get_instructors(terms)
 
     @profile
-    def set_past_offering_majors(self, past_obj, term_ids=None):
-        past_obj['majors'] = self.get_majors(term_ids)
+    def set_past_offering_majors(self, past_obj, terms=None):
+        past_obj['majors'] = self.get_majors(terms)
 
     @profile
-    def set_past_concurrent_courses(self, past_obj, term_ids=None):
-        past_obj['concurrent_courses'] = self.concurrent_courses(term_ids)
+    def set_past_concurrent_courses(self, past_obj, terms=None):
+        past_obj['concurrent_courses'] = self.concurrent_courses(terms)
 
     @profile
-    def set_past_latest_majors(self, past_obj, term_ids=None):
-        past_obj['latest_majors'] = self.get_graduated_majors(term_ids)
+    def set_past_latest_majors(self, past_obj, terms=None):
+        past_obj['latest_majors'] = self.get_graduated_majors(terms)
 
     @profile
-    def set_past_course_grades(self, past_obj, term_ids=None):
-        past_obj['course_grades'] = self.get_grades(term_ids)
+    def set_past_course_grades(self, past_obj, terms=None):
+        past_obj['course_grades'] = self.get_grades(terms)
 
     @profile
-    def set_past_median_gpa(self, past_obj, term_ids=None):
-        past_obj['gpas'] = self.get_gpas(term_ids)
+    def set_past_median_gpa(self, past_obj, terms=None):
+        past_obj['gpas'] = self.get_gpas(terms)
 
     @profile
-    def set_past_offering_data(self, past_obj, term_ids):
+    def set_past_offering_data(self, past_obj, terms):
         threads = []
 
         t = Thread(target=self.set_past_offering_enrollment_count,
-                   args=(past_obj, term_ids,))
+                   args=(past_obj, terms,))
         threads.append(t)
         t.start()
 
         if bool(getattr(settings, "HISTORIC_CGPA_ENABLED", True)):
             t = Thread(target=self.set_past_median_gpa,
-                       args=(past_obj, term_ids,))
+                       args=(past_obj, terms,))
             threads.append(t)
             t.start()
 
         t = Thread(target=self.set_past_offering_majors,
-                   args=(past_obj, term_ids,))
+                   args=(past_obj, terms,))
         threads.append(t)
         t.start()
 
         t = Thread(target=self.set_past_concurrent_courses,
-                   args=(past_obj, term_ids,))
+                   args=(past_obj, terms,))
         threads.append(t)
         t.start()
 
         t = Thread(target=self.set_past_latest_majors,
-                   args=(past_obj, term_ids,))
+                   args=(past_obj, terms,))
         threads.append(t)
         t.start()
 
         t = Thread(target=self.set_past_course_grades,
-                   args=(past_obj, term_ids,))
+                   args=(past_obj, terms,))
         threads.append(t)
         t.start()
 
@@ -537,11 +569,18 @@ class CourseOffering(models.Model):
         filter_parms = models.Q(course=self.course)
 
         if settings.DEBUG:
-            self._explain("get_past_sections", Instructor.objects.filter(
-                filter_parms).select_related('term', 'user').explain())
+            self._explain("get_past_sections",
+                          Instructor.objects.filter(
+                              filter_parms
+                          ).select_related(
+                              'term', 'user'
+                          ).explain())
 
         instructors = Instructor.objects.filter(
-            filter_parms).select_related('term', 'user')
+            filter_parms
+        ).select_related(
+            'term', 'user'
+        )
 
         sections = {}
         for i in instructors:
@@ -568,7 +607,7 @@ class CourseOffering(models.Model):
         return sections
 
     @profile
-    def get_past_offerings(self, term_ids):
+    def get_past_offerings(self, terms):
         """
         List of past course offerings
         """
@@ -576,11 +615,10 @@ class CourseOffering(models.Model):
         quarters = 20
 
         offerings = {
-            'terms': ["{}".format(t) for t in Term.objects.filter(
-                id__in=term_ids)]
+            'terms': ["{}".format(t) for t in list(terms)]
         }
 
-        self.set_past_offering_data(offerings, term_ids)
+        self.set_past_offering_data(offerings, terms)
 
         return offerings
 
@@ -588,11 +626,12 @@ class CourseOffering(models.Model):
             self, past_year='', past_quarter='', instructor=None):
 
         # build filter for past offerings
-        filter_parms = models.Q(course=self.course)
         try:
-            filter_parms &= models.Q(term__year=int(past_year))
+            filter_parms = models.Q(term__year=int(past_year))
         except ValueError:
-            pass
+            filter_parms = models.Q()
+
+        filter_parms &= models.Q(course=self.course)
 
         try:
             quarter = past_quarter.lower()
@@ -604,16 +643,16 @@ class CourseOffering(models.Model):
         if instructor is not None:
             filter_parms &= models.Q(user__uwnetid=instructor)
 
-        term_ids = list(Instructor.objects.filter(
-            filter_parms).values_list('term', flat=True))
-
-        try:
-            term_ids.remove(self.term.id)
-        except ValueError:
-            pass
+        terms = Instructor.objects.filter(
+            filter_parms
+        ).exclude(
+            term=self.term
+        ).values_list(
+            'term', flat=True
+        )
 
         json_obj = {
-            'past_offerings': self.get_past_offerings(term_ids),
+            'past_offerings': self.get_past_offerings(terms),
             'sections': self.get_past_sections(),
             'filter': {
                 'year': past_year,
