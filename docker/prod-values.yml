@@ -72,7 +72,7 @@ certs:
   secretName: coda.uw.edu-uwca-certs
 environmentVariables:
   - name: ENV
-    value: dev
+    value: prod
   - name: WEBSERVER
     value: nginx
   - name: SESSION_BACKEND
