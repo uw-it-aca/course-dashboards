@@ -17,24 +17,29 @@ $(document).ready(function () {
             displayErrorPage();
         }
     } else {
-        var section = firstCourseRecentQuarter();
-
-        $('#my_courses').val(section.curriculum +
-                             '-' + section.course_number +
-                             '-' + section.section_id);
-        displayCourse(section.section_label);
+        displayMyCourseAndHistory();
     }
 
     registerEvents();
 });
 
 
-function registerEvents() {
-    $('div.course-info')
+var displayMyCourseAndHistory = function (course) {
+    var section = firstCourseRecentQuarter(course);
+
+    $('div.course-quarter-year #my_courses').val(section.curriculum +
+                                                 '-' + section.course_number +
+                                                 '-' + section.section_id);
+    displayCourse(section.section_label);
+};
+
+
+var registerEvents = function () {
+    $('div.course-quarter-year')
         .on(
             'change', '#my_courses',
             function (e) {
-                displaySelectedCourse();
+                displayMyCourseAndHistory(this.value);
             });
 
     $('div.current-section')
@@ -59,25 +64,22 @@ function registerEvents() {
         .on('click', '#myTab .all-courses', function (e) {
             var filter = filterChoices();
 
-            fetchHistoricCourseData(
-                getSectionDataByLabel(getSelectedCourseLabel()), filter);
+            fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         })
         .on('click', '#myTab .my-courses', function (e) {
-            fetchHistoricCourseData(
-                getSectionDataByLabel(getSelectedCourseLabel()), {only_instructed: true});
+            fetchHistoricCourseData(getSelectedCourseLabel(), {only_instructed: true});
         })
         .on('change', '#allcourses .historic-filter', function (e) {
             var filter = filterChoices(
                 (this.name === 'historic_filter_year') ? this.value : null,
                 (this.name === 'historic_filter_quarter') ? this.value : null);
 
-            fetchHistoricCourseData(
-                getSectionDataByLabel(getSelectedCourseLabel()), filter);
+            fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });
-}
+};
 
 
-function filterChoices(year_override, quarter_override) {
+var filterChoices = function (year_override, quarter_override) {
     var year = year_override ? year_override : $('#allcourses #historic_filter_year option:selected').val(),
         quarter = quarter_override ? quarter_override : $('#allcourses #historic_filter_quarter option:selected').val(),
         filter = {
@@ -87,33 +89,32 @@ function filterChoices(year_override, quarter_override) {
         };
 
     return filter;
-}
+};
 
-function displayPageHeader() {
+var displayPageHeader = function () {
     //Display the top bar: netid and course dropdown
     var source = $("#page-top").html();
     var template = Handlebars.compile(source);
     $("#top_banner").html(template({ netid: window.user.netid }));
-}
+};
 
-function courseHash() {
+var courseHash = function () {
     return decodeURIComponent(window.location.hash.slice(1));
-}
+};
 
-function displayErrorPage() {
+var displayErrorPage = function () {
     var current = $("#cannot-display-course").html();
     var currentTemplate = Handlebars.compile(current);
     $('.main-content').html(currentTemplate({
         course: courseHash()
     }));
+};
 
-}
-
-function updateCourseURL(page, course) {
+var updateCourseURL = function (page, course) {
     if (courseHash() !== course) {
         history.pushState({ page: page, course: course }, page, '#' + course);
     }
-}
+};
 
 $(window).bind('popstate', function (e, o) {
     if (history.state && history.state.course) {
@@ -122,10 +123,20 @@ $(window).bind('popstate', function (e, o) {
 });
 
 
-function firstCourseRecentQuarter() {
-    var first_recent_section_data = null;
+var firstCourseRecentQuarter = function (course) {
+    var first_recent_section_data = null,
+        course_parts = (course) ? course.split('-') : null,
+        curriculum = (course) ? course_parts[0] : null,
+        course_number = (course) ? parseInt(course_parts[1]) : null,
+        section_id = (course) ? course_parts[2] : null;
 
     $.each(window.section_data, function () {
+        if (course && !(curriculum == this.curriculum &&
+                        course_number == this.course_number &&
+                        section_id == this.section_id)) {
+            return true;
+        }
+
         if (!first_recent_section_data) {
             first_recent_section_data = this;
         } else if (compare_terms(this.year, this.quarter,
@@ -139,12 +150,12 @@ function firstCourseRecentQuarter() {
     });
 
     return first_recent_section_data;
-}
+};
 
-function compare_terms(a_year, a_quarter, b_year, b_quarter) {
+var compare_terms = function (a_year, a_quarter, b_year, b_quarter) {
     var quarters = ['autumn', 'summer', 'spring', 'winter'],
         y = a_year - b_year;
 
     return (y !== 0) ? y : (quarters.indexOf(a_quarter.toLowerCase()) -
                             quarters.indexOf(b_quarter.toLowerCase()));
-}
+};

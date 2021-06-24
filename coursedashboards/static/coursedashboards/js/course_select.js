@@ -3,7 +3,7 @@
 //
 
 
-function displayCourseSelector(label) {
+var displayCourseSelector = function (label) {
     var section_data = getSectionDataByLabel(label),
         courses = [],
         term_index = -1,
@@ -40,50 +40,8 @@ function displayCourseSelector(label) {
     $(".course-select").html(template({
         courses: courses
     }));
-}
+};
 
-function getSelectedCourseLabel() {
-    var $selected_course = $("select[name='my_courses'] option:selected"),
-        $selected_term = $("select[name='course_quarters'] option:selected"),
-        curriculum = $selected_course.attr('data-curriculum'),
-        course_number = $selected_course.attr('data-course-number'),
-        section_id = $selected_course.attr('data-section-id'),
-        year,
-        quarter,
-        label = '';
-
-    if ($selected_term.length) {
-        year = $selected_term.attr('data-year');
-        quarter = $selected_term.attr('data-quarter');
-        $.each(window.section_data, function () {
-            if (this.curriculum == curriculum &&
-                this.course_number == course_number &&
-                this.section_id == section_id &&
-                this.year.toString() == $selected_term.attr('data-year') &&
-                this.quarter.toLowerCase() == quarter.toLowerCase()) {
-                label = this.section_label;
-                return false;
-            }
-        });
-    } else {
-        $.each(window.section_data, function () {
-            if (this.curriculum == curriculum &&
-                this.course_number == course_number &&
-                this.section_id == section_id) {
-                label = this.section_label;
-            }
-
-            if (this.curriculum == curriculum &&
-                this.course_number == course_number &&
-                this.section_id == section_id &&
-                this.year == window.term.year &&
-                this.quarter.toLowerCase() == window.term.quarter.toLowerCase()) {
-                label = this.section_label;
-                return false;
-            }
-        });
-    }
-
-
-    return label;
-}
+var getSelectedCourseLabel = function () {
+    return $('div.current-section #current_course_label').val();
+};

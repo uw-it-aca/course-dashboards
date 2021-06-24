@@ -9,7 +9,7 @@ var ALL_MY_COURSES = "All My Courses";
 
 
 //Display data about the past offerings of selected course - called whenever selection changes
-function showHistoricCourseData(section_data, data) {
+var showHistoricCourseData = function (section_data, data) {
 
     // paint historic course selector
     var selectors = $("#historic-data-selectors").html();
@@ -19,6 +19,9 @@ function showHistoricCourseData(section_data, data) {
     historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
     instructed_sections = [ALL_MY_COURSES];
     $.each(data.sections, function (year, quarters) {
+        var seen_quarter = [],
+            seen_year = [];
+
         if (historic_years.indexOf(year) < 0) {
             historic_years.push({
                 year: year,
@@ -27,7 +30,8 @@ function showHistoricCourseData(section_data, data) {
         }
 
         $.each(quarters, function (quarter, instructors) {
-            if (historic_quarters.indexOf(quarter) < 0) {
+            if (seen_quarter.indexOf(quarter) < 0) {
+                seen_quarter.push(quarter);
                 historic_quarters.push({
                     quarter: quarter,
                     selected: (data.filter.quarter === quarter) ? 'selected' : ''
@@ -103,9 +107,9 @@ function showHistoricCourseData(section_data, data) {
 
         $("#historic-course-target").html(historicTemplate());
     }
-}
+};
 
-function setup_exposures($container) {
+var setup_exposures = function ($container) {
     $container.find(".toggle-show").each(function () {
         var $this = $(this),
             $list = $this.closest('.list').find('> ol.list-unstyled > li'),
@@ -148,10 +152,10 @@ function setup_exposures($container) {
             return false;
         }
     });
-}
+};
 
 //Calculates all of the common major/course lists based on historic selections
-function calculateCommon(past_offerings, list_type, name_type) {
+var calculateCommon = function (past_offerings, list_type, name_type) {
     var obj = {},
         original_objects = {};
 
@@ -175,10 +179,10 @@ function calculateCommon(past_offerings, list_type, name_type) {
     }
 
     return result;
-}
+};
 
 //order majors/courses by number of students
-function sortObj(arr, total_students, name_type) {
+var sortObj = function (arr, total_students, name_type) {
     var sorted = [];
 
     for (var i in arr) {
@@ -188,9 +192,9 @@ function sortObj(arr, total_students, name_type) {
             sorted.push({"course":i, "number_students":arr[i], "percent_students": ((arr[i]/total_students)*100).toFixed(2)});
     }
     return reverseSortByNumStudents(sorted);
-}
+};
 
-function getInstructorsByTerm(term_list, sections) {
+var getInstructorsByTerm = function (term_list, sections) {
     var terms = {};
 
     $.each(term_list, function () {
@@ -240,9 +244,9 @@ function getInstructorsByTerm(term_list, sections) {
     }).sort(function (a, b) {
         return compare_terms(a.year, a.quarter, b.year, b.quarter);
     });
-}
+};
 
-function shouldDisplayCourse(data){
+var shouldDisplayCourse = function (data) {
     var term_count = data.past_offerings.terms.length;
 
     if(term_count > 1) {
@@ -252,17 +256,17 @@ function shouldDisplayCourse(data){
     }
 
     return false;
-}
+};
 
 //sort array of objects by number_students value
-function reverseSortByNumStudents(arr) {
+var reverseSortByNumStudents = function (arr) {
     arr.sort(function(a, b) {
         return a.number_students - b.number_students;
     });
     return arr.reverse();
-}
+};
 
-function isInstructor(data){
+var isInstructor = function (data) {
     for (var i = 0; i < data.past_offerings.terms.length; i++) {
         t = data.past_offerings.terms[i].split('-');
 
@@ -278,4 +282,4 @@ function isInstructor(data){
     }
 
     return false;
-}
+};

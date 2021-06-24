@@ -3,7 +3,7 @@
 //
 
 
-function getSectionDataByLabel(label) {
+var getSectionDataByLabel = function (label) {
     var section_data = null;
 
     $.each(window.section_data, function () {
@@ -14,11 +14,11 @@ function getSectionDataByLabel(label) {
     });
 
     return section_data;
-}
+};
 
 
 //Display data about the currently selected course - called whenever selection changes
-function showCourseData(label) {
+var showCourseData = function (label) {
     var current = $("#current-course-data").html(),
         currentTemplate = Handlebars.compile(current),
         section = getSectionDataByLabel(label),
@@ -44,6 +44,7 @@ function showCourseData(label) {
     });
 
     $("#current-course-target").html(currentTemplate({
+        section_label: section.section_label,
         concurrent_courses: section.concurrent_courses,
         current_majors: section.current_student_majors,
         curriculum: section.curriculum,
@@ -105,13 +106,13 @@ function showCourseData(label) {
             renderGPADisribution('past-course-gpa-distribution', section.course_grades);
         });
 
-}
+};
 
-function displaySelectedCourse() {
+var displaySelectedCourse = function () {
     displayCourse(getSelectedCourseLabel());
-}
+};
 
-function displayCourse(label) {
+var displayCourse = function (label) {
     var section_data = getSectionDataByLabel(label);
 
     if (!section_data) {
@@ -124,13 +125,12 @@ function displayCourse(label) {
         fetchCourseData(label);
     }
 
-    fetchHistoricCourseData(section_data);
+    fetchHistoricCourseData(section_data.section_label);
 
     return true;
-}
+};
 
 //Capitalize the first letter of a word
-function firstLetterUppercase(word)
-{
+var firstLetterUppercase = function (word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
-}
+};

@@ -4,16 +4,16 @@
 
 
 
-function setSectionDataByLabel(label, section){
+var setSectionDataByLabel = function (label, section) {
     $.each(window.section_data, function (i) {
         if (this.section_label == label) {
             window.section_data[i] = section;
             return false;
         }
     });
-}
+};
 
-function fetchCourseData(label) {
+var fetchCourseData = function (label) {
     startLoadingCourseData();
 
     var startTime = Date.now();
@@ -44,12 +44,12 @@ function fetchCourseData(label) {
             stopLoadingCourseData();
         }
     });
-}
+};
 
-function startLoadingCourseData() {
+var startLoadingCourseData = function () {
     $(".section-container.current-section").addClass('loading');
-}
+};
 
-function stopLoadingCourseData() {
+var stopLoadingCourseData = function () {
     $(".section-container.current-section").removeClass('loading');
-}
+};
