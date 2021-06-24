@@ -19,6 +19,9 @@ function showHistoricCourseData(section_data, data) {
     historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
     instructed_sections = [ALL_MY_COURSES];
     $.each(data.sections, function (year, quarters) {
+        var seen_quarter = [],
+            seen_year = [];
+
         if (historic_years.indexOf(year) < 0) {
             historic_years.push({
                 year: year,
@@ -27,7 +30,8 @@ function showHistoricCourseData(section_data, data) {
         }
 
         $.each(quarters, function (quarter, instructors) {
-            if (historic_quarters.indexOf(quarter) < 0) {
+            if (seen_quarter.indexOf(quarter) < 0) {
+                seen_quarter.push(quarter);
                 historic_quarters.push({
                     quarter: quarter,
                     selected: (data.filter.quarter === quarter) ? 'selected' : ''

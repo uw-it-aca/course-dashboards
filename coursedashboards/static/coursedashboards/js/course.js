@@ -44,6 +44,7 @@ function showCourseData(label) {
     });
 
     $("#current-course-target").html(currentTemplate({
+        section_label: section.section_label,
         concurrent_courses: section.concurrent_courses,
         current_majors: section.current_student_majors,
         curriculum: section.curriculum,
@@ -124,7 +125,7 @@ function displayCourse(label) {
         fetchCourseData(label);
     }
 
-    fetchHistoricCourseData(section_data);
+    fetchHistoricCourseData(section_data.section_label);
 
     return true;
 }

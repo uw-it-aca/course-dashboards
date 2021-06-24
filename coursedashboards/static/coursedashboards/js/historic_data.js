@@ -3,8 +3,8 @@
 //
 
 
-function historicCacheData(section_data, filter, results) {
-    var hash = section_data.curriculum + '-' + section_data.section_id +
+function historicCacheData(section_label, filter, results) {
+    var hash = section_label +
         '-' + ((filter && filter.year !== undefined) ? filter.year : '') +
         '-' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
         '-' + ((filter && filter.only_instructed) ? 'instructed' : '');
@@ -19,22 +19,22 @@ function historicCacheData(section_data, filter, results) {
     return null;
 }
 
-function fetchHistoricCourseData(section_data, filter) {
-    if (historicCacheData(section_data, filter)) {
+function fetchHistoricCourseData(section_label, filter) {
+    if (historicCacheData(section_label, filter)) {
         $('div.historic-section').trigger(
             'coda:HistoricCourseDataSuccess',
-            [section_data, historicCacheData(section_data, filter)]);
+            [section_label, historicCacheData(section_label, filter)]);
     } else {
-        getHistoricCourseData(section_data, filter);
+        getHistoricCourseData(section_label, filter);
     }
 }
 
-function getHistoricCourseData(section_data, filter) {
+function getHistoricCourseData(section_label, filter) {
     startLoadingHistoricCourseData();
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + section_data.section_label + '/past' +
+        url: "/api/v1/course/" + section_label + '/past' +
             '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
             '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
             '&instructed=' + (filter && filter.only_instructed ? 'true' : ''),
@@ -45,14 +45,14 @@ function getHistoricCourseData(section_data, filter) {
             var totalTime = Date.now() - startTime;
 
             gtag('event', 'historic_course_data', {
-                'eventLabel': section_data.section_label,
+                'eventLabel': section_label,
                 'value': totalTime
             });
 
-            historicCacheData(section_data, filter, results);
+            historicCacheData(section_label, filter, results);
 
             $('div.historic-section').trigger(
-                'coda:HistoricCourseDataSuccess', [section_data, results]);
+                'coda:HistoricCourseDataSuccess', [section_label, results]);
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);

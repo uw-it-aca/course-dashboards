@@ -17,24 +17,29 @@ $(document).ready(function () {
             displayErrorPage();
         }
     } else {
-        var section = firstCourseRecentQuarter();
-
-        $('#my_courses').val(section.curriculum +
-                             '-' + section.course_number +
-                             '-' + section.section_id);
-        displayCourse(section.section_label);
+        displayMyCourseAndHistory();
     }
 
     registerEvents();
 });
 
 
+var displayMyCourseAndHistory = function (course) {
+    var section = firstCourseRecentQuarter(course);
+
+    $('div.course-quarter-year #my_courses').val(section.curriculum +
+                                                 '-' + section.course_number +
+                                                 '-' + section.section_id);
+    displayCourse(section.section_label);
+}
+
+
 function registerEvents() {
-    $('div.course-info')
+    $('div.course-quarter-year')
         .on(
             'change', '#my_courses',
             function (e) {
-                displaySelectedCourse();
+                displayMyCourseAndHistory(this.value);
             });
 
     $('div.current-section')
@@ -59,20 +64,17 @@ function registerEvents() {
         .on('click', '#myTab .all-courses', function (e) {
             var filter = filterChoices();
 
-            fetchHistoricCourseData(
-                getSectionDataByLabel(getSelectedCourseLabel()), filter);
+            fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         })
         .on('click', '#myTab .my-courses', function (e) {
-            fetchHistoricCourseData(
-                getSectionDataByLabel(getSelectedCourseLabel()), {only_instructed: true});
+            fetchHistoricCourseData(getSelectedCourseLabel(), {only_instructed: true});
         })
         .on('change', '#allcourses .historic-filter', function (e) {
             var filter = filterChoices(
                 (this.name === 'historic_filter_year') ? this.value : null,
                 (this.name === 'historic_filter_quarter') ? this.value : null);
 
-            fetchHistoricCourseData(
-                getSectionDataByLabel(getSelectedCourseLabel()), filter);
+            fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });
 }
 
@@ -122,10 +124,21 @@ $(window).bind('popstate', function (e, o) {
 });
 
 
-function firstCourseRecentQuarter() {
-    var first_recent_section_data = null;
+function firstCourseRecentQuarter(course) {
+    var first_recent_section_data = null,
+        course_parts = (course) ? course.split('-') : null,
+        curriculum = (course) ? course_parts[0] : null,
+        course_number = (course) ? parseInt(course_parts[1]) : null,
+        section_id = (course) ? course_parts[2] : null;
 
     $.each(window.section_data, function () {
+        if (course
+            && !(curriculum == this.curriculum
+                 && course_number == this.course_number
+                 && section_id == this.section_id)) {
+            return true;
+        }
+
         if (!first_recent_section_data) {
             first_recent_section_data = this;
         } else if (compare_terms(this.year, this.quarter,
