@@ -196,7 +196,6 @@ class CourseOffering(models.Model):
             Sum('current_enrollment')
         )['current_enrollment__sum']
 
-
     @profile
     def all_student_registrations(self):
         """
