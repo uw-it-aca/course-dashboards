@@ -43,23 +43,19 @@ class CourseOffering(models.Model):
                 self._get_reg_explained = True
                 self._explain(
                     "registrations", Registration.objects.filter(
-                        **filter_parms
+                        filter_parms
                     ).explain())
 
-        return Registration.objects.filter(**filter_parms)
+        return Registration.objects.filter(filter_parms)
 
     @profile
     def _filter_parms(self, terms=None):
-        parms = {
-            'course': self.course
-        }
-
         if terms:
-            parms['term__in'] = terms
+            term_filter = models.Q(term__in=terms)
         else:
-            parms['term'] = self.term
+            term_filter = models.Q(term=self.term)
 
-        return parms
+        return term_filter & models.Q(course=self.course)
 
     @profile
     def get_students(self, terms=None):
@@ -188,14 +184,14 @@ class CourseOffering(models.Model):
             'is_employee': inst.user.is_employee,
             'is_alum': inst.user.is_alum,
             'is_faculty': inst.user.is_faculty
-        } for inst in Instructor.objects.filter(**self._filter_parms(terms))]
+        } for inst in Instructor.objects.filter(self._filter_parms(terms))]
 
     @profile
     def get_enrollment_count(self, terms=None):
         filter_parms = self._filter_parms(terms)
 
         return CourseOffering.objects.filter(
-            **filter_parms
+            filter_parms
         ).aggregate(
             Sum('current_enrollment')
         )['current_enrollment__sum']
@@ -209,26 +205,24 @@ class CourseOffering(models.Model):
         courses = {}
         students = set()
 
-        filter_parms = {
-            'user_id__in': self.get_students(terms)
-        }
-
         if terms:
-            filter_parms['term__in'] = terms
+            filter_parms = models.Q(term__in=terms)
         else:
-            filter_parms['term'] = self.term
+            filter_parms = models.Q(term=self.term)
+
+        filter_parms &= models.Q(user_id__in=self.get_students(terms))
 
         if settings.DEBUG:
             self._explain(
                 "all student registrations",
                 Registration.objects.filter(
-                    **filter_parms
+                    filter_parms
                 ).select_related(
                     'course'
                 ).explain())
 
         all_students = Registration.objects.filter(
-            **filter_parms
+            filter_parms
         ).select_related(
             'course'
         )
@@ -283,23 +277,22 @@ class CourseOffering(models.Model):
 
     @profile
     def student_majors_for_term(self, terms=None):
-        filter_parms = {
-            'user_id__in': self.get_students(terms)
-        }
         if terms:
-            filter_parms['term__in'] = terms
+            filter_parms = models.Q(term__in=terms)
         else:
-            filter_parms['term'] = self.term
+            filter_parms = models.Q(term=self.term)
+
+        filter_parms &= models.Q(user_id__in=self.get_students(terms))
 
         if settings.DEBUG:
             self._explain("student majors", StudentMajor.objects.filter(
-                **filter_parms
+                filter_parms
             ).select_related(
                 'major'
             ).explain())
 
         return [sm.major.major for sm in StudentMajor.objects.filter(
-            **filter_parms
+            filter_parms
         ).select_related(
             'major'
         )]
@@ -624,7 +617,7 @@ class CourseOffering(models.Model):
         List of past course offerings
         """
         offerings = {
-            'terms': ["{}".format(Term.objects.get(pk=t)) for t in list(terms)]
+            'terms': ["{}".format(Term.objects.get(id=t)) for t in terms]
         }
 
         self.set_past_offering_data(offerings, terms)
@@ -635,29 +628,27 @@ class CourseOffering(models.Model):
             self, past_year='', past_quarter='', instructor=None):
 
         # build filter for past offerings
-        filter_parms = {
-            'course': self.course
-        }
+        filter_parms = models.Q(course=self.course)
+
         try:
-            filter_parms['term__year'] = int(past_year)
+            filter_parms &= models.Q(term__year=int(past_year))
         except ValueError:
             pass
 
         try:
             quarter = past_quarter.lower()
             if quarter in ['winter', 'spring', 'summer', 'autumn']:
-                filter_parms['term__quarter'] = quarter
+                filter_parms &= models.Q(term__quarter=quarter)
         except Exception:
             pass
 
         if instructor is not None:
-            filter_parms['user__uwnetid'] = instructor
+            filter_parms &= models.Q(user__uwnetid=instructor)
 
         terms = Instructor.objects.filter(
-            **filter_parms
+            filter_parms
         ).exclude(
             term=self.term
-        ).distinct(
         ).values_list(
             'term', flat=True
         )
