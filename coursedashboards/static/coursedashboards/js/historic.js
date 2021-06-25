@@ -12,16 +12,14 @@ var ALL_MY_COURSES = "All My Courses";
 var showHistoricCourseData = function (section_data, data) {
 
     // paint historic course selector
-    var selectors = $("#historic-data-selectors").html();
-    var selectorsTemplate = Handlebars.compile(selectors);
+    var selectors = $("#historic-data-selectors").html(),
+        selectorsTemplate = Handlebars.compile(selectors),
+        seen_quarter = [];
 
     historic_years = [{year: ALL_YEARS, selected: (data.filter.year) ? 'selected' : '' }];
     historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
     instructed_sections = [ALL_MY_COURSES];
     $.each(data.sections, function (year, quarters) {
-        var seen_quarter = [],
-            seen_year = [];
-
         if (historic_years.indexOf(year) < 0) {
             historic_years.push({
                 year: year,
