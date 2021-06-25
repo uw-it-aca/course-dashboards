@@ -67,13 +67,13 @@ class CourseOffering(models.Model):
             self._explain("students", self.get_registrations(
                 terms=terms
             ).values_list(
-                'user', flat=True
+                'user_id', flat=True
             ).explain())
 
         return self.get_registrations(
             terms
         ).values_list(
-            'user', flat=True
+            'user_id', flat=True
         )
 
     @profile
@@ -84,7 +84,7 @@ class CourseOffering(models.Model):
     def get_gpas(self, terms=None):
         if settings.DEBUG:
             self._explain("get_gpas", Registration.objects.filter(
-                user__in=self.get_students(terms=terms),
+                user_id__in=self.get_students(terms=terms),
                 term__term_key__lt=self.term.term_key
             ).values(
                 'grade', 'credits', 'user'
@@ -93,7 +93,7 @@ class CourseOffering(models.Model):
             ).explain())
 
         registrations = Registration.objects.filter(
-            user__in=self.get_students(terms=terms),
+            user_id__in=self.get_students(terms=terms),
             term__term_key__lt=self.term.term_key
         ).values(
             'grade', 'credits', 'user'
@@ -210,7 +210,7 @@ class CourseOffering(models.Model):
         students = set()
 
         filter_parms = {
-            'user__in': self.get_students(terms)
+            'user_id__in': self.get_students(terms)
         }
 
         if terms:
@@ -234,8 +234,8 @@ class CourseOffering(models.Model):
         )
 
         for reg in all_students:
-            students.add(reg.user.id)
-            if reg.course.id != self.course.id:
+            students.add(reg.user_id)
+            if reg.course_id != self.course_id:
                 course_id = self._course_id(reg.course)
                 if course_id not in concurrent:
                     concurrent[course_id] = {
@@ -284,7 +284,7 @@ class CourseOffering(models.Model):
     @profile
     def student_majors_for_term(self, terms=None):
         filter_parms = {
-            'user__in': self.get_students(terms)
+            'user_id__in': self.get_students(terms)
         }
         if terms:
             filter_parms['term__in'] = terms
@@ -316,11 +316,11 @@ class CourseOffering(models.Model):
         student_majors = {}
 
         for major in class_majors:
-            if major.user.id not in student_majors:
+            if major.user_id not in student_majors:
                 majors = []
-                student_majors[major.user.id] = majors
+                student_majors[major.user_id] = majors
             else:
-                majors = student_majors[major.user.id]
+                majors = student_majors[major.user_id]
 
             majors.append(major)
 
@@ -330,7 +330,7 @@ class CourseOffering(models.Model):
     def retrieve_course_majors(self, students):
         users = [student.user for student in students if student.user.is_alum]
 
-        queryset = StudentMajor.objects.filter(user__in=users,
+        queryset = StudentMajor.objects.filter(user_id__in=users,
                                                major__degree_level=1) \
             .select_related('major', 'term')
 
