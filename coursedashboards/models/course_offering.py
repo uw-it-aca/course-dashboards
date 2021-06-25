@@ -196,21 +196,14 @@ class CourseOffering(models.Model):
             Sum('current_enrollment')
         )['current_enrollment__sum']
 
-    def _course_id(self, course):
-        return "{}-{}".format(course.curriculum, course.course_number)
 
     @profile
-    def concurrent_courses(self, terms=None):
-        concurrent = {}
-        courses = {}
-        students = set()
-
-        if terms:
-            filter_parms = models.Q(term__in=terms)
-        else:
-            filter_parms = models.Q(term=self.term)
-
-        filter_parms &= models.Q(user_id__in=self.get_students(terms))
+    def all_student_registrations(self):
+        """
+        Return given user's Courses for this term
+        """
+        filter_parms = models.Q(term=self.term)
+        filter_parms &= models.Q(user_id__in=self.get_students())
 
         if settings.DEBUG:
             self._explain(
@@ -221,13 +214,21 @@ class CourseOffering(models.Model):
                     'course'
                 ).explain())
 
-        all_students = Registration.objects.filter(
+        return Registration.objects.filter(
             filter_parms
         ).select_related(
             'course'
         )
 
-        for reg in all_students:
+    def _course_id(self, course):
+        return "{}-{}".format(course.curriculum, course.course_number)
+
+    @profile
+    def concurrent_courses(self, terms=None):
+        concurrent = {}
+        courses = {}
+        students = set()
+        for reg in self.all_student_registrations():
             students.add(reg.user_id)
             if reg.course_id != self.course_id:
                 course_id = self._course_id(reg.course)
@@ -649,6 +650,7 @@ class CourseOffering(models.Model):
             filter_parms
         ).exclude(
             term=self.term
+        ).distinct(
         ).values_list(
             'term', flat=True
         )
