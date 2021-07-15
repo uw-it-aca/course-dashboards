@@ -308,10 +308,10 @@ class TestCourseOffering(TransactionTestCase):
 
         self.assertEqual(len(majors), 2)
 
-        self.assertEqual(majors[0]['major'], 'Computer Science')
+        self.assertEqual(majors[0]['major_name'], 'Computer Science')
         self.assertEqual(majors[0]['number_students'], 2)
 
-        self.assertEqual(majors[1]['major'], 'Pre Science')
+        self.assertEqual(majors[1]['major_name'], 'Pre Science')
         self.assertEqual(majors[1]['number_students'], 2)
 
     def test_process_grade_totals(self):

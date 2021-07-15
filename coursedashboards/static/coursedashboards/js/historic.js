@@ -65,7 +65,7 @@ var showHistoricCourseData = function (section_data, data) {
         historicTemplate = Handlebars.compile(historic);
 
         $("#historic-course-target").html(historicTemplate({
-            common_majors: calculateCommon(data.past_offerings, "majors", "major"),
+            common_majors: data.past_offerings.majors.slice(0, 20),
             latest_majors: data.past_offerings.latest_majors.slice(0, 20),
             common_courses: calculateCommon(data.past_offerings, "concurrent_courses", "course"),
             selected_quarter: data.filter.quarter,
