@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, F
 from statistics import median
 from statistics import StatisticsError
 from collections import defaultdict
@@ -29,45 +29,30 @@ class CourseOffering(models.Model):
     canvas_course_url = models.CharField(max_length=2000)
 
     @profile
-    def get_registrations(self, terms=None):
+    def get_registrations(self, terms=None, is_alum=None):
         """
         Return Registration queryset for this course offering
         """
-        filter_parms = self._filter_parms(terms)
-
-        if settings.DEBUG:
-            try:
-                if not self._get_reg_explained:
-                    pass
-            except AttributeError:
-                self._get_reg_explained = True
-                self._explain(
-                    "registrations", Registration.objects.filter(
-                        filter_parms
-                    ).explain())
-
+        filter_parms = self._filter_parms(terms, is_alum)
         return Registration.objects.filter(filter_parms)
 
     @profile
-    def _filter_parms(self, terms=None):
+    def _filter_parms(self, terms=None, is_alum=None):
         if terms:
             term_filter = models.Q(term__in=terms)
         else:
             term_filter = models.Q(term=self.term)
 
+        if is_alum:
+            term_filter &= models.Q(user__is_alum=1)
+
         return term_filter & models.Q(course=self.course)
 
     @profile
-    def get_students(self, terms=None):
-        if settings.DEBUG:
-            self._explain("students", self.get_registrations(
-                terms=terms
-            ).values_list(
-                'user_id', flat=True
-            ).explain())
-
+    def get_students(self, terms=None, is_alum=False):
         return self.get_registrations(
-            terms
+            terms,
+            is_alum
         ).values_list(
             'user_id', flat=True
         )
@@ -78,16 +63,6 @@ class CourseOffering(models.Model):
 
     @profile
     def get_gpas(self, terms=None):
-        if settings.DEBUG:
-            self._explain("get_gpas", Registration.objects.filter(
-                user_id__in=self.get_students(terms=terms),
-                term__term_key__lt=self.term.term_key
-            ).values(
-                'grade', 'credits', 'user'
-            ).annotate(
-                total=Count('grade')
-            ).explain())
-
         registrations = Registration.objects.filter(
             user_id__in=self.get_students(terms=terms),
             term__term_key__lt=self.term.term_key
@@ -171,7 +146,7 @@ class CourseOffering(models.Model):
         ).count()
 
     @profile
-    def get_instructors(self, terms=None):
+    def get_instructors(self, terms=None, is_alum=None):
         return [{
             'uwnetid': inst.user.uwnetid,
             'display_name': inst.user.display_name,
@@ -184,11 +159,12 @@ class CourseOffering(models.Model):
             'is_employee': inst.user.is_employee,
             'is_alum': inst.user.is_alum,
             'is_faculty': inst.user.is_faculty
-        } for inst in Instructor.objects.filter(self._filter_parms(terms))]
+        } for inst in Instructor.objects.filter(
+            self._filter_parms(terms, is_alum))]
 
     @profile
-    def get_enrollment_count(self, terms=None):
-        filter_parms = self._filter_parms(terms)
+    def get_enrollment_count(self, terms=None, is_alum=None):
+        filter_parms = self._filter_parms(terms, is_alum)
 
         return CourseOffering.objects.filter(
             filter_parms
@@ -201,20 +177,9 @@ class CourseOffering(models.Model):
         """
         Return given user's Courses for this term
         """
-        filter_parms = models.Q(term=self.term)
-        filter_parms &= models.Q(user_id__in=self.get_students())
-
-        if settings.DEBUG:
-            self._explain(
-                "all student registrations",
-                Registration.objects.filter(
-                    filter_parms
-                ).select_related(
-                    'course'
-                ).explain())
-
         return Registration.objects.filter(
-            filter_parms
+            term=self.term,
+            user_id__in=self.get_students()
         ).select_related(
             'course'
         )
@@ -277,98 +242,47 @@ class CourseOffering(models.Model):
 
     @profile
     def student_majors_for_term(self, terms=None):
-        if terms:
-            filter_parms = models.Q(term__in=terms)
-        else:
-            filter_parms = models.Q(term=self.term)
-
-        filter_parms &= models.Q(user_id__in=self.get_students(terms))
-
-        if settings.DEBUG:
-            self._explain("student majors", StudentMajor.objects.filter(
-                filter_parms
-            ).select_related(
-                'major'
-            ).explain())
-
-        return [sm.major.major for sm in StudentMajor.objects.filter(
-            filter_parms
-        ).select_related(
-            'major'
-        )]
+        return self.student_major_distribution(terms)
 
     @profile
     def last_student_undergraduate_major(self, terms=None):
-        students = self.get_registrations(terms).select_related('user')
-        class_majors = self.retrieve_course_majors(students)
-        student_majors = self.sort_major_by_user(class_majors)
-        return self.process_individual_majors(student_majors)
+        return self.student_major_distribution(terms, graduated_major=True)
 
     @profile
-    def sort_major_by_user(self, class_majors):
-        student_majors = {}
+    def student_major_distribution(self, terms=None, graduated_major=False):
+        students = self.get_students(
+            terms=terms, is_alum=(graduated_major is True))
+        student_count = len(students)
 
-        for major in class_majors:
-            if major.user_id not in student_majors:
-                majors = []
-                student_majors[major.user_id] = majors
-            else:
-                majors = student_majors[major.user_id]
+        major_filter = {'user_id__in': students}
+        if graduated_major:
+            major_filter['major__degree_level'] = 1
+        else:
+            major_filter['term__in'] = terms if terms else [self.term]
 
-            majors.append(major)
-
-        return student_majors
-
-    @profile
-    def retrieve_course_majors(self, students):
-        users = [student.user for student in students if student.user.is_alum]
-
-        queryset = StudentMajor.objects.filter(user_id__in=users,
-                                               major__degree_level=1) \
-            .select_related('major', 'term')
-
-        return queryset
-
-    @profile
-    def process_individual_majors(self, student_majors):
-        major_list = []
-        for student in student_majors:
-
-            majors = student_majors[student]
-            majors = sorted(majors, reverse=True)
-
-            graduated_term = majors[0].term
-
-            majors = [major for major in majors
-                      if major.term == graduated_term]
-
-            major_list += [sm.major.major for sm in majors]
-
-        return major_list
+        return sorted(
+            list(
+                StudentMajor.objects.filter(
+                    **major_filter
+                ).annotate(
+                    major_name=F('major__major')
+                ).values(
+                    'major_name'
+                ).annotate(
+                    number_students=Count('major'),
+                    percent_students=(
+                        (Count('major')/float(student_count)) * 100.0)
+                )),
+            key=lambda k: k['percent_students'],
+            reverse=True)
 
     @profile
     def get_graduated_majors(self, terms=None):
-        return self._get_majors(
-            self.last_student_undergraduate_major(terms))
+        return self.last_student_undergraduate_major(terms)
 
     @profile
     def get_majors(self, terms=None):
-        return self._get_majors(self.student_majors_for_term(terms))
-
-    def _get_majors(self, majors):
-        total_students = self.get_student_count()
-        majors_dict = defaultdict(int)
-
-        for major in majors:
-            majors_dict[major] += 1
-
-        return [{
-            "major": sort,
-            "number_students": majors_dict[sort],
-            "percent_students": round(
-                (float(majors_dict[sort]) / total_students) * 100.0, 2)
-            } for sort in sorted(
-                majors_dict, reverse=True, key=majors_dict.get)]
+        return self.student_majors_for_term(terms)
 
     @profile
     def get_fail_rate(self):

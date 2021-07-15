@@ -36,7 +36,7 @@
     <h4 id="current_declared_majors" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Make the topics you teach more engaging for non-majors who are taking your course."></i></span><br><small>When taking the course</small></h4>
     <ol class="list-unstyled">
       {{#each current_majors}}
-      <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}}</span></li>
+      <li><strong>{{ roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major_name}}</span></li>
       {{/each}}
     </ol>
     <div><a href="#" class="toggle-show" data-toggle-length-max=20>Show more<span class="sr-only"> current majors</span>...</a></div>
