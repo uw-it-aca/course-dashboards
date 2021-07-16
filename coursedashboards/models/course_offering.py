@@ -197,24 +197,23 @@ class CourseOffering(models.Model):
         registrations = Registration.objects.filter(
             user_id__in=self.get_students(terms=terms))
         registrations_total = registrations.count()
-        return sorted(
-            list(
-                registrations.annotate(
-                    title=F('course__course_title'),
-                    curriculum=F('course__curriculum'),
-                    course_number=F('course__course_number'),
-                    section_id=F('course__section_id')
-                ).values(
-                    'title',
-                    'curriculum',
-                    'course_number',
-                    'section_id'
-                ).annotate(
-                    number_students=Count('course__id'),
-                    percent_students=((Count('course') * 100.0
-                                       / float(registrations_total))))),
-            key=lambda k: k['percent_students'],
-            reverse=True)
+        return list(
+            registrations.annotate(
+                title=F('course__course_title'),
+                curriculum=F('course__curriculum'),
+                course_number=F('course__course_number'),
+                section_id=F('course__section_id')
+            ).values(
+                'title',
+                'curriculum',
+                'course_number',
+                'section_id'
+            ).annotate(
+                percent_students=((Count('course') * 100.0
+                                   / float(registrations_total)))
+            ).order_by(
+                'percent_students',
+            ).reverse()[:20])
 
     @profile
     def student_majors_for_term(self, terms=None):
@@ -239,18 +238,17 @@ class CourseOffering(models.Model):
         majors = StudentMajor.objects.filter(**major_filter)
         majors_count = majors.count()
 
-        return sorted(
-            list(
-                majors.annotate(
-                    major_name=F('major__major')
-                ).values(
-                    'major_name'
-                ).annotate(
-                    number_students=Count('major'),
-                    percent_students=(
-                        (Count('major') * 100.0 / float(majors_count))))),
-            key=lambda k: k['percent_students'],
-            reverse=True)
+        return list(
+            majors.annotate(
+                major_name=F('major__major')
+            ).values(
+                'major_name'
+            ).annotate(
+                percent_students=((Count('major') * 100.0
+                                   / float(majors_count)))
+            ).order_by(
+                'percent_students'
+            ).reverse()[:20])
 
     @profile
     def get_graduated_majors(self, terms=None):
