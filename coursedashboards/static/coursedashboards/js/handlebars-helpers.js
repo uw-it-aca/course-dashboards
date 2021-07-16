@@ -12,6 +12,10 @@ Handlebars.registerHelper('roundPercentage', function(percentage) {
     return Math.round(percentage);
 });
 
+Handlebars.registerHelper('toFixed', function(percentage, decimals) {
+    return parseFloat(percentage).toFixed(decimals);
+});
+
 Handlebars.registerHelper('formatName', function(name) {
     if(name && name === name.toUpperCase()){
         return name.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -20,8 +24,8 @@ Handlebars.registerHelper('formatName', function(name) {
     }
 });
 
-Handlebars.registerHelper('myPlanFormat', function(name) {
-    return name.replace("-", "");
+Handlebars.registerHelper('myPlanFormat', function(curriculum, course_number, section_id) {
+    return curriculum + course_number + section_id;
 });
 
 Handlebars.registerHelper('gt', function(lval, rval, options) {

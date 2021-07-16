@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.db.models import Count, Sum, F
+from django.db.models import (
+    Count, Sum, F, Avg, Subquery, OuterRef, FloatField)
 from statistics import median
 from statistics import StatisticsError
 from collections import defaultdict
@@ -38,15 +39,17 @@ class CourseOffering(models.Model):
 
     @profile
     def _filter_parms(self, terms=None, is_alum=None):
+        term_filter = models.Q(course=self.course)
+
         if terms:
-            term_filter = models.Q(term__in=terms)
+            term_filter &= models.Q(term__in=terms)
         else:
-            term_filter = models.Q(term=self.term)
+            term_filter &= models.Q(term=self.term)
 
         if is_alum:
             term_filter &= models.Q(user__is_alum=1)
 
-        return term_filter & models.Q(course=self.course)
+        return term_filter
 
     @profile
     def get_students(self, terms=None, is_alum=False):
@@ -173,13 +176,13 @@ class CourseOffering(models.Model):
         )['current_enrollment__sum']
 
     @profile
-    def all_student_registrations(self):
+    def all_student_registrations(self, terms=None):
         """
         Return given user's Courses for this term
         """
         return Registration.objects.filter(
-            term=self.term,
-            user_id__in=self.get_students()
+            term__in=terms if terms else [self.term],
+            user_id__in=self.get_students(terms)
         ).select_related(
             'course'
         )
@@ -189,56 +192,37 @@ class CourseOffering(models.Model):
 
     @profile
     def concurrent_courses(self, terms=None):
-        concurrent = {}
-        courses = {}
-        students = set()
-        for reg in self.all_student_registrations():
-            students.add(reg.user_id)
-            if reg.course_id != self.course_id:
-                course_id = self._course_id(reg.course)
-                if course_id not in concurrent:
-                    concurrent[course_id] = {
-                        'course': course_id,
-                        'title': reg.course.course_title,
-                        'mean_gpa': '',
-                        'students': 0
-                    }
-
-                concurrent[course_id]['students'] += 1
-
-                if reg.course.curriculum not in courses:
-                    courses[reg.course.curriculum] = set()
-
-                courses[reg.course.curriculum].add(reg.course.course_number)
-
-        query = models.Q()
-        for curriculum, course_numbers in courses.items():
-            query |= models.Q(curriculum=curriculum,
-                              course_number__in=list(course_numbers))
-
-        if settings.DEBUG:
-            self._explain(
-                "course grade avg",
-                CourseGradeAverage.objects.filter(query).explain())
-
-        for cga in CourseGradeAverage.objects.filter(query):
-            try:
-                concurrent[self._course_id(cga)]['mean_gpa'] = cga.grade
-            except KeyError as ex:
-                logger.error("Unexpected CourseGradeAverage: {}".format(ex))
-
-        total_students = len(students)
-
-        return [{
-            "course": sort['course'],
-            "title": sort['title'],
-            "number_students": sort['students'],
-            "percent_students": round(
-                (float(sort['students']) / total_students) * 100.0, 2),
-            "mean_gpa": sort['mean_gpa']
-        } for sort in sorted(list(concurrent.values()),
-                             key=lambda i: (i['students'], i['course']),
-                             reverse=True)]
+        # all registrations for students in this course for the
+        # selected term
+        registrations = Registration.objects.filter(
+            user_id__in=self.get_students(terms=terms))
+        course_total = registrations.count()
+        return sorted(
+            list(
+                registrations.annotate(
+                    title=F('course__course_title'),
+                    curriculum=F('course__curriculum'),
+                    course_number=F('course__course_number'),
+                    section_id=F('course__section_id')
+                ).values(
+                    'title',
+                    'curriculum',
+                    'course_number',
+                    'section_id'
+                ).annotate(
+                    mean_gpa=Subquery(
+                        Registration.objects.filter(
+                            course=OuterRef('course_id')
+                        ).annotate(
+                            mean_gpa=Avg('grade')
+                        ).values(
+                            'mean_gpa'
+                        )[:1]),
+                    number_students=Count('course__id'),
+                    percent_students=(
+                        (Count('course') * 100.0 / float(course_total))))),
+            key=lambda k: k['percent_students'],
+            reverse=True)
 
     @profile
     def student_majors_for_term(self, terms=None):
@@ -250,29 +234,29 @@ class CourseOffering(models.Model):
 
     @profile
     def student_major_distribution(self, terms=None, graduated_major=False):
-        students = self.get_students(
-            terms=terms, is_alum=(graduated_major is True))
-        student_count = len(students)
+        major_filter = {
+            'user_id__in': self.get_students(
+                terms=terms, is_alum=(graduated_major is True))
+        }
 
-        major_filter = {'user_id__in': students}
         if graduated_major:
             major_filter['major__degree_level'] = 1
         else:
             major_filter['term__in'] = terms if terms else [self.term]
 
+        majors = StudentMajor.objects.filter(**major_filter)
+        majors_count = majors.count()
+
         return sorted(
             list(
-                StudentMajor.objects.filter(
-                    **major_filter
-                ).annotate(
+                majors.annotate(
                     major_name=F('major__major')
                 ).values(
                     'major_name'
                 ).annotate(
                     number_students=Count('major'),
                     percent_students=(
-                        (Count('major')/float(student_count)) * 100.0)
-                )),
+                        (Count('major') * 100.0 / float(majors_count))))),
             key=lambda k: k['percent_students'],
             reverse=True)
 
