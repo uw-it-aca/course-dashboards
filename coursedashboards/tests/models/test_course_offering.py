@@ -267,7 +267,6 @@ class TestCourseOffering(TransactionTestCase):
     def test_get_concurrent_courses(self):
         concurrent = self.spring_ess.concurrent_courses()
         self.assertEqual(len(concurrent), 2)
-        self.assertEqual(concurrent[0]['number_students'], 4)
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
@@ -283,7 +282,6 @@ class TestCourseOffering(TransactionTestCase):
     def test_graduated_majors(self):
         graduated_majors = self.winter_ess.get_graduated_majors()
         self.assertEqual(len(graduated_majors), 1)
-        self.assertEqual(graduated_majors[0]['number_students'], 1)
 
     def test_student_cgpa(self):
         gpas = self.winter_ess.get_gpas()
@@ -309,10 +307,8 @@ class TestCourseOffering(TransactionTestCase):
         self.assertEqual(len(majors), 2)
 
         self.assertEqual(majors[0]['major_name'], 'Computer Science')
-        self.assertEqual(majors[0]['number_students'], 2)
 
         self.assertEqual(majors[1]['major_name'], 'Pre Science')
-        self.assertEqual(majors[1]['number_students'], 2)
 
     def test_process_grade_totals(self):
 
