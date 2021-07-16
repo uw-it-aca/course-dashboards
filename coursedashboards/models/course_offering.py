@@ -192,11 +192,11 @@ class CourseOffering(models.Model):
 
     @profile
     def concurrent_courses(self, terms=None):
-        # all registrations for students in this course for the
-        # selected term
+        # all courses students in this offering for the given term
+        # are registered
         registrations = Registration.objects.filter(
             user_id__in=self.get_students(terms=terms))
-        course_total = registrations.count()
+        registrations_total = registrations.count()
         return sorted(
             list(
                 registrations.annotate(
@@ -210,17 +210,9 @@ class CourseOffering(models.Model):
                     'course_number',
                     'section_id'
                 ).annotate(
-                    mean_gpa=Subquery(
-                        Registration.objects.filter(
-                            course=OuterRef('course_id')
-                        ).annotate(
-                            mean_gpa=Avg('grade')
-                        ).values(
-                            'mean_gpa'
-                        )[:1]),
                     number_students=Count('course__id'),
-                    percent_students=(
-                        (Count('course') * 100.0 / float(course_total))))),
+                    percent_students=((Count('course') * 100.0
+                                       / float(registrations_total))))),
             key=lambda k: k['percent_students'],
             reverse=True)
 
