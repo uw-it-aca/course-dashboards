@@ -56,10 +56,37 @@ var registerEvents = function () {
             });
 
     $('div.historic-section')
-        .on(
-            'coda:HistoricCourseDataSuccess',
-            function (e, section_data, data) {
-                showHistoricCourseData(section_data, data);
+        .on('coda:HistoricCourseDataSuccess',
+            function (e, section_label, data) {
+                if (showHistoricCourseData(section_label, data)) {
+                    var filter = filterChoices();
+
+                    loadHistoricPerformanceData(section_label, filter);
+                    loadHistoricConcurrentCourses(section_label, filter);
+                    loadHistoricConcurrentCourseGPAs(section_label, filter);
+                    loadHistoricStudentMajors(section_label, filter);
+                    loadHistoricGraduatedMajors(section_label, filter);
+                }
+            })
+        .on('coda:HistoricPerformanceSuccess',
+            function (e, section_label, data) {
+                showHistoricPerformanceData(section_label, data);
+            })
+        .on('coda:HistoricConcurrentCoursesSuccess',
+            function (e, section_label, data) {
+                showHistoricConcurrentCourses(section_label, data);
+            })
+        .on('coda:HistoricConcurrentCourseGPAsSuccess',
+            function (e, section_label, data) {
+                showHistoricConcurrentCourseGPAs(section_label, data);
+            })
+        .on('coda:HistoricStudentMajorsSuccess',
+            function (e, section_label, data) {
+                showHistoricStudentMajors(section_label, data);
+            })
+        .on('coda:HistoricGraduatedMajorsSuccess',
+            function (e, section_label, data) {
+                showHistoricGraduatedMajors(section_label, data);
             })
         .on('click', '#myTab .all-courses', function (e) {
             var filter = filterChoices();

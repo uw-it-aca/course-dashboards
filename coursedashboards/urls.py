@@ -1,4 +1,7 @@
-from coursedashboards.views.api.offering.historical import HistoricalCourseData
+from coursedashboards.views.api.offering.historical import (
+    HistoricalPerformance, HistoricalCourseData, HistoricalConcurrentCourses,
+    HistoricalConcurrentCourseGPAs, HistoricalStudentMajors,
+    HistoricalGraduatedMajors)
 from django.urls import re_path
 from coursedashboards.views.api.offering.course import CourseData
 from coursedashboards.views.api.integration.offering_cgpa import OfferingCGPA
@@ -18,6 +21,21 @@ course_regex = r'^api/v1/course/(?P<year>\d{4})-'\
 urlpatterns = [
     # Home
     re_path(r'^$', index, name='home'),
+    re_path(course_regex + r'/past/performance/?',
+            HistoricalPerformance.as_view(),
+            name='historic_concurrent_courses'),
+    re_path(course_regex + r'/past/concurrent/?',
+            HistoricalConcurrentCourses.as_view(),
+            name='historic_concurrent_courses'),
+    re_path(course_regex + r'/past/gpas/?',
+            HistoricalConcurrentCourseGPAs.as_view(),
+            name='historic_concurrent_course_gpas'),
+    re_path(course_regex + r'/past/studentmajor/?',
+            HistoricalStudentMajors.as_view(),
+            name='historic_student_majors'),
+    re_path(course_regex + r'/past/graduatedmajor/?',
+            HistoricalGraduatedMajors.as_view(),
+            name='historic_graduated_major'),
     re_path(course_regex + r'/past/?',
             HistoricalCourseData.as_view(),
             name='historic_course_data'),

@@ -9,12 +9,14 @@ var ALL_MY_COURSES = "All My Courses";
 
 
 //Display data about the past offerings of selected course - called whenever selection changes
-var showHistoricCourseData = function (section_data, data) {
+var showHistoricCourseData = function (section_label, data) {
 
     // paint historic course selector
-    var selectors = $("#historic-data-selectors").html(),
-        selectorsTemplate = Handlebars.compile(selectors),
-        seen_quarter = [];
+    var historic = $("#historic-course-data").html(),
+        historicTemplate = Handlebars.compile(historic),
+        seen_quarter = [],
+        context,
+        parts;
 
     historic_years = [{year: ALL_YEARS, selected: (data.filter.year) ? 'selected' : '' }];
     historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
@@ -46,64 +48,154 @@ var showHistoricCourseData = function (section_data, data) {
         });
     });
 
-    $("#historic-selector-target").html(selectorsTemplate({
+    parts = section_label.split('-');
+    context = {
         past_quarters: historic_quarters,
         past_years: historic_years,
-        curriculum: section_data.curriculum,
-        course_number: section_data.course_number,
-        section_id: section_data.section_id,
+        curriculum: parts[2],
+        course_number: parts[3],
+        section_id: parts[4],
         instructed_sections: instructed_sections,
         only_my_courses: data.filter.only_instructed
-    }));
+    };
+
+    $("#historic-course-target").html(historicTemplate(context));
+
+    showHistoricPreviousInstructors(section_label, data);
 
     // paint past offerings info
     if (data.past_offerings.terms.length > 0) {
-        var historicPanel = $("#historic-course-panel").html(),
-            historicPanelTemplate = Handlebars.compile(historicPanel);
+        if (!shouldDisplayCourse(data)) {
+            var historicPanel = $("#no-display-historic-course-panel").html(),
+                historicPanelTemplate = Handlebars.compile(historicPanel);
 
-        historic = $("#historic-course-data").html();
-        historicTemplate = Handlebars.compile(historic);
-
-        $("#historic-course-target").html(historicTemplate({
-            common_majors: data.past_offerings.majors.slice(0, 20),
-            latest_majors: data.past_offerings.latest_majors.slice(0, 20),
-            common_courses: data.past_offerings.concurrent_courses.slice(0, 20),
-            selected_quarter: data.filter.quarter,
-            selected_year: data.filter.year,
-            instructors: getInstructorsByTerm(data.past_offerings.terms, data.sections),
-            display_course: shouldDisplayCourse(data)
-            //past_terms:window.section_data[index].past_offerings
-        }));
-
-        $("#historic-course-panel-target").html(historicPanelTemplate({
-            median_gpa: calculateMedianGPA(data.past_offerings.gpas),
-            median_course_grade: calculateCourseMedian(data.past_offerings.course_grades),
-            failed_percent: calculateFailedPercentage(data.past_offerings.course_grades),
-            total_students: data.past_offerings.enrollment,
-            section_count: data.past_offerings.terms.length,
-            gpa_distribution_time: 'historic'
-        }));
-
-        setup_exposures($("#historic-course-target"));
-
-        $('#historic-course-target [data-toggle="popover"]').popover();
-        $('#historic-course-target .popover-dismiss').popover({ trigger: 'focus'});
-        $('#historic-course-target .cumulative-popover')
-            .on('inserted.bs.popover', function () {
-                renderGPADisribution('historic-gpa-distribution',
-                                     data.past_offerings.gpas);
-            });
-
-        $('#historic-course-target .course-gpa-popover')
-            .on('inserted.bs.popover', function () {
-                renderGPADisribution('historic-course-gpa-distribution',
-                                     data.past_offerings.course_grades);
-            });
+            $("#historic-performance-panel").html(historicPanelTemplate())
+            return false
+        }
     } else {
         historic = $("#no-historic-course-data").html();
         historicTemplate = Handlebars.compile(historic);
 
         $("#historic-course-target").html(historicTemplate());
+        return false;
+    }
+
+    return true;
+};
+
+var loadHistoricPerformanceData = function (section_label, filter) {
+    var template = Handlebars.compile($('#historic-performance-template').html());
+
+    $('#historic-performance-panel').html(template());
+    getHistoricPerformanceData(section_label, filter);
+};
+
+var showHistoricPerformanceData = function (section_label, data) {
+    var template = Handlebars.compile($('#historic-performance-template').html()),
+        $panel = $('#historic-performance-panel');
+
+    $panel.html(template({
+        median_gpa: calculateMedianGPA(data.performance.gpas),
+        median_course_grade: calculateCourseMedian(data.performance.course_grades),
+        failed_percent: calculateFailedPercentage(data.performance.course_grades),
+        total_students: data.performance.enrollment,
+        section_count: data.performance.terms.length,
+        gpa_distribution_time: 'historic'}));
+
+    bind_events($panel, data.performance.gpas, data.performance.course_grades);
+};
+
+var loadHistoricConcurrentCourses = function (section_label, filter) {
+    var template = Handlebars.compile($("#historic-concurrent-courses-template").html());
+
+    $('#historic-concurrent-courses-panel').html(template());
+    getHistoricConcurrentCourses(section_label, filter);
+};
+
+var showHistoricConcurrentCourses = function (section_label, data) {
+    var template = Handlebars.compile($("#historic-concurrent-courses-template").html()),
+        $panel = $('#historic-concurrent-courses-panel');
+
+    $panel.html(template({
+        common_courses: data.concurrent_courses
+    }));
+
+    bind_events($panel);
+};
+
+var loadHistoricConcurrentCourseGPAs = function (section_label, filter) {
+    getHistoricConcurrentCourseGPAs(section_label, filter);
+};
+
+var showHistoricConcurrentCourseGPAs = function (section_label, data) {
+};
+
+var loadHistoricStudentMajors = function (section_label, filter) {
+    var template = Handlebars.compile($("#historic-course-major-template").html());
+
+    $('#historic-course-major-panel').html(template());
+    getHistoricStudentMajors(section_label, filter);
+};
+
+var showHistoricStudentMajors = function (section_label, data) {
+    var template = Handlebars.compile($("#historic-course-major-template").html()),
+        $panel = $('#historic-course-major-panel');
+
+    $panel.html(template({
+        common_majors: data.student_majors
+    }));
+
+    bind_events($panel);
+};
+
+var loadHistoricGraduatedMajors = function (section_label, filter) {
+    var template = Handlebars.compile($("#historic-grad-major-template").html());
+
+    $('#historic-grad-major-panel').html(template());
+    getHistoricGraduatedMajors(section_label, filter);
+};
+
+var showHistoricGraduatedMajors = function (section_label, data) {
+    var template = Handlebars.compile($("#historic-grad-major-template").html()),
+        $panel = $('#historic-grad-major-panel');
+
+    $panel.html(template({
+        latest_majors: data.graduated_majors
+    }));
+
+    bind_events($panel);
+};
+
+var showHistoricPreviousInstructors = function (section_label, data) {
+    var $panel = $('#historic-previous-instructors-panel');
+
+    $panel.html(
+        Handlebars.compile($('#historic-previous-instructors-template').html())({
+            instructors: getInstructorsByTerm(data.past_offerings.terms, data.sections)
+        }));
+
+    bind_events($panel);
+};
+
+
+var bind_events = function ($container, gpas, course_grades) {
+    setup_exposures($container);
+
+    $('[data-toggle="popover"]', $container).popover();
+    $('.popover-dismiss', $container).popover({ trigger: 'focus'});
+    if (gpas) {
+        $('.cumulative-popover', $container)
+            .on('inserted.bs.popover', function () {
+                renderGPADisribution('historic-gpa-distribution', gpas);
+            });
+    }
+
+    if (course_grades) {
+        $('.course-gpa-popover', $container)
+            .on('inserted.bs.popover', function () {
+                renderGPADisribution('historic-course-gpa-distribution',
+                                     course_grades);
+            });
     }
 };
 

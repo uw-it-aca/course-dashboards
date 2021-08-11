@@ -38,3 +38,9 @@ Handlebars.registerHelper('gt', function(lval, rval, options) {
 Handlebars.registerHelper('static', function(path) {
     return window.static_url + path;
 });
+
+Handlebars.registerHelper('defaultValue', function (value, defValue) {
+    var safe = value || defValue;
+
+    return new Handlebars.SafeString(safe);
+});

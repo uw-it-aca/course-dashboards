@@ -3,7 +3,6 @@ from coursedashboards.dao.user import get_current_user
 
 
 class HistoricalCourseData(CoDaEndpoint):
-
     def get_data(self, offering):
         instructor = get_current_user().uwnetid if (
             self.request.GET.get('instructed', '') in [
@@ -13,3 +12,64 @@ class HistoricalCourseData(CoDaEndpoint):
             past_year=self.request.GET.get('past_year', ''),
             past_quarter=self.request.GET.get('past_quarter', ''),
             instructor=instructor)
+
+
+class HistoricalPerformance(CoDaEndpoint):
+    def get_data(self, offering):
+        instructor = get_current_user().uwnetid if (
+            self.request.GET.get('instructed', '') in [
+                '1', 'true']) else None
+
+        return offering.past_offerings_performance_data(
+            past_year=self.request.GET.get('past_year', ''),
+            past_quarter=self.request.GET.get('past_quarter', ''),
+            instructor=instructor)
+
+
+class HistoricalConcurrentCourses(CoDaEndpoint):
+    def get_data(self, offering):
+        instructor = get_current_user().uwnetid if (
+            self.request.GET.get('instructed', '') in [
+                '1', 'true']) else None
+
+        return offering.past_offerings_concurrent_courses(
+            past_year=self.request.GET.get('past_year', ''),
+            past_quarter=self.request.GET.get('past_quarter', ''),
+            instructor=instructor)
+
+
+class HistoricalConcurrentCourseGPAs(CoDaEndpoint):
+    def get_data(self, offering):
+        instructor = get_current_user().uwnetid if (
+            self.request.GET.get('instructed', '') in [
+                '1', 'true']) else None
+
+        return offering.past_offerings_concurrent_course_gpas(
+            past_year=self.request.GET.get('past_year', ''),
+            past_quarter=self.request.GET.get('past_quarter', ''),
+            instructor=instructor)
+
+
+class HistoricalStudentMajors(CoDaEndpoint):
+    def get_data(self, offering):
+        instructor = get_current_user().uwnetid if (
+            self.request.GET.get('instructed', '') in [
+                '1', 'true']) else None
+
+        return offering.past_offerings_student_majors(
+            past_year=self.request.GET.get('past_year', ''),
+            past_quarter=self.request.GET.get('past_quarter', ''),
+            instructor=instructor)
+
+
+class HistoricalGraduatedMajors(CoDaEndpoint):
+    def get_data(self, offering):
+        instructor = get_current_user().uwnetid if (
+            self.request.GET.get('instructed', '') in [
+                '1', 'true']) else None
+
+        return offering.past_offerings_graduated_majors(
+            past_year=self.request.GET.get('past_year', ''),
+            past_quarter=self.request.GET.get('past_quarter', ''),
+            instructor=instructor)
+
