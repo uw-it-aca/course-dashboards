@@ -386,26 +386,6 @@ class CourseOffering(models.Model):
 
         return json_obj
 
-#    @profile
-#    def set_past_offering_enrollment_count(self, past_obj, terms=None):
-#        past_obj['enrollment'] = self.get_enrollment_count(terms)
-
-    @profile
-    def set_past_offering_instructors(self, past_obj, terms=None):
-        past_obj['instructors'] = self.get_instructors(terms)
-
-#    @profile
-#    def set_past_offering_majors(self, past_obj, terms=None):
-#        past_obj['majors'] = self.get_majors(terms)
-
-#    @profile
-#    def set_past_concurrent_courses(self, past_obj, terms=None):
-#        past_obj['concurrent_courses'] = self.concurrent_courses(terms)
-
-#    @profile
-#    def set_past_latest_majors(self, past_obj, terms=None):
-#        past_obj['latest_majors'] = self.get_graduated_majors(terms)
-
     @profile
     def set_past_course_grades(self, past_obj, terms=None):
         past_obj['course_grades'] = self.get_grades(terms)
@@ -413,44 +393,6 @@ class CourseOffering(models.Model):
     @profile
     def set_past_median_gpa(self, past_obj, terms=None):
         past_obj['gpas'] = self.get_gpas(terms)
-
-#    @profile
-#    def set_past_offering_data(self, past_obj, terms):
-#        threads = []
-
-#        t = Thread(target=self.set_past_offering_enrollment_count,
-#                   args=(past_obj, terms,))
-#        threads.append(t)
-#        t.start()
-
-#        t = Thread(target=self.set_past_course_grades,
-#                   args=(past_obj, terms,))
-#        threads.append(t)
-#        t.start()
-
-#        if bool(getattr(settings, "HISTORIC_CGPA_ENABLED", True)):
-#            t = Thread(target=self.set_past_median_gpa,
-#                       args=(past_obj, terms,))
-#            threads.append(t)
-#            t.start()
-
-#        t = Thread(target=self.set_past_offering_majors,
-#                   args=(past_obj, terms,))
-#        threads.append(t)
-#        t.start()
-
-#        t = Thread(target=self.set_past_concurrent_courses,
-#                   args=(past_obj, terms,))
-#        threads.append(t)
-#        t.start()
-
-#        t = Thread(target=self.set_past_latest_majors,
-#                   args=(past_obj, terms,))
-#        threads.append(t)
-#        t.start()
-
-#        for t in threads:
-#            t.join()
 
     @profile
     def set_past_offering_performance_data(self, past_obj, terms):

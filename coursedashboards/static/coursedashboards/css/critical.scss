@@ -356,7 +356,21 @@ a {
 
 .loading-placeholder {
     display: inline-block;
-    background-color: lightgray;
+    border-radius: 3px;
+    background-image: repeating-linear-gradient(
+        45deg,
+        #ececec,
+        #ececec 10px,
+        #dedede 10px,
+        #dedede 20px
+    );
+    background-size: 1000px 1000px;
+    animation: barberpole 30s linear infinite;
+}
+
+@keyframes barberpole {
+    from { background-position: -500px 0; }
+    to   { background-position: 0 0;}
 }
 
 /***** EVERYTHING ELSE *****/
