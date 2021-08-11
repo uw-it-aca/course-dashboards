@@ -40,7 +40,5 @@ Handlebars.registerHelper('static', function(path) {
 });
 
 Handlebars.registerHelper('defaultValue', function (value, defValue) {
-    var safe = value || defValue;
-
-    return new Handlebars.SafeString(safe);
+    return new Handlebars.SafeString((typeof value === "undefined") ? defValue : value);
 });

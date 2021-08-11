@@ -61,8 +61,6 @@ var showHistoricCourseData = function (section_label, data) {
 
     $("#historic-course-target").html(historicTemplate(context));
 
-    showHistoricPreviousInstructors(section_label, data);
-
     // paint past offerings info
     if (data.past_offerings.terms.length > 0) {
         if (!shouldDisplayCourse(data)) {
@@ -72,6 +70,8 @@ var showHistoricCourseData = function (section_label, data) {
             $("#historic-performance-panel").html(historicPanelTemplate())
             return false
         }
+
+        showHistoricPreviousInstructors(section_label, data);
     } else {
         historic = $("#no-historic-course-data").html();
         historicTemplate = Handlebars.compile(historic);
