@@ -42,3 +42,10 @@ Handlebars.registerHelper('static', function(path) {
 Handlebars.registerHelper('defaultValue', function (value, defValue) {
     return new Handlebars.SafeString((typeof value === "undefined") ? defValue : value);
 });
+
+Handlebars.registerHelper('is_defined', function(val, options) {
+    if (typeof val === "undefined") {
+        return options.inverse(this);
+    }
+    return options.fn(this);
+});
