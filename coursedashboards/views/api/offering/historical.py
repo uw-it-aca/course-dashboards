@@ -72,4 +72,3 @@ class HistoricalGraduatedMajors(CoDaEndpoint):
             past_year=self.request.GET.get('past_year', ''),
             past_quarter=self.request.GET.get('past_quarter', ''),
             instructor=instructor)
-

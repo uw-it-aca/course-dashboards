@@ -67,8 +67,8 @@ var showHistoricCourseData = function (section_label, data) {
             var historicPanel = $("#no-display-historic-course-panel").html(),
                 historicPanelTemplate = Handlebars.compile(historicPanel);
 
-            $("#historic-performance-panel").html(historicPanelTemplate())
-            return false
+            $("#historic-performance-panel").html(historicPanelTemplate());
+            return false;
         }
 
         showHistoricPreviousInstructors(section_label, data);
