@@ -23,6 +23,7 @@ var showCourseData = function (label) {
         currentTemplate = Handlebars.compile(current),
         section = getSectionDataByLabel(label),
         terms = [],
+        courses = section.concurrent_courses,
         current_course_panel = (compare_terms(section.year,
                                               section.quarter.toLowerCase(),
                                               window.term.year,
@@ -43,9 +44,15 @@ var showCourseData = function (label) {
         }
     });
 
+    if (courses.length
+        && courses[0].curriculum == section.curriculum
+        && courses[0].course_number == section.course_number) {
+        courses = courses.slice(1);
+    }
+
     $("#current-course-target").html(currentTemplate({
         section_label: section.section_label,
-        concurrent_courses: section.concurrent_courses,
+        concurrent_courses: courses,
         current_majors: section.current_student_majors,
         curriculum: section.curriculum,
         course_number: section.course_number,
@@ -56,20 +63,20 @@ var showCourseData = function (label) {
     }));
 
     if (current_course_panel) {
-        var currentPanel = $("#current-course-panel").html(),
-            currentPanelTemplate = Handlebars.compile(currentPanel);
+        var performancePanel = $("#current-performance-template").html(),
+            performanceTemplate = Handlebars.compile(performancePanel);
 
-        $("#current-data-panel").html(currentPanelTemplate({
+        $("#current-performance-panel").html(performanceTemplate({
             current_median: section.current_median ? section.current_median : 'N/A',
             current_num_registered: section.current_enrollment,
             current_capacity:section.limit_estimate_enrollment,
             current_repeat_students:section.current_repeating
         }));
     } else {
-        var historicPanel = $("#historic-course-panel").html(),
-            historicPanelTemplate = Handlebars.compile(historicPanel);
+        var performancePanel = $("#historic-performance-template").html(),
+            performanceTemplate = Handlebars.compile(performancePanel);
 
-        $("#current-data-panel").html(historicPanelTemplate({
+        $("#current-performance-panel").html(performanceTemplate({
             median_gpa: section.current_median ? (section.current_median) : 'N/A',
             median_course_grade: section.median_course_grade ? (section.median_course_grade) : 'N/A',
             failed_percent: calculateFailedPercentage(section.course_grades),

@@ -114,20 +114,32 @@ var loadHistoricConcurrentCourses = function (section_label, filter) {
 
 var showHistoricConcurrentCourses = function (section_label, data) {
     var template = Handlebars.compile($("#historic-concurrent-courses-template").html()),
-        $panel = $('#historic-concurrent-courses-panel');
+        $panel = $('#historic-concurrent-courses-panel'),
+        courses = data.concurrent_courses,
+        parts = section_label.split('-');
+
+    if (courses.length
+        && courses[0].curriculum == parts[2]
+        && courses[0].course_number == parts[3]) {
+        courses = courses.slice(1);
+    }
 
     $panel.html(template({
-        common_courses: data.concurrent_courses
+        common_courses: courses
     }));
 
     bind_events($panel);
+
+    getHistoricCourseGPAs(section_label, data.concurrent_courses);
 };
 
-var loadHistoricConcurrentCourseGPAs = function (section_label, filter) {
-    getHistoricConcurrentCourseGPAs(section_label, filter);
-};
+var showHistoricCourseGPAs = function (section_label, data) {
+    $.each(data.gpas, function () {
+        var $span = $('[id="' + this.curriculum +'-' + this.course_number + '-gpa"]'),
+            html = '(' + this.grade + ')';
 
-var showHistoricConcurrentCourseGPAs = function (section_label, data) {
+        $span.html(html)
+    });
 };
 
 var loadHistoricStudentMajors = function (section_label, filter) {

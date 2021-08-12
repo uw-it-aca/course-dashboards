@@ -81,13 +81,18 @@ var getHistoricConcurrentCourses = function (section_label, filter) {
     _getHistoricData(url, section_label, 'ConcurrentCourses');
 };
 
-var getHistoricConcurrentCourseGPAs = function (section_label, filter) {
-    var url = "/api/v1/course/" + section_label + '/past/gpas' +
-        '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-        '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-        '&instructed=' + (filter && filter.only_instructed ? 'true' : '');
+var getHistoricCourseGPAs = function (section_label, courses) {
+    var url = "/api/v1/course/" + section_label + '/past/gpas?courses=';
 
-    _getHistoricData(url, section_label, 'ConcurrentCourseGPAs');
+    $.each(courses, function (i) {
+        if (i) {
+            url += ',';
+        }
+
+        url += this.curriculum + '-' + this.course_number
+    });
+
+    _getHistoricData(url, section_label, 'CourseGPAs');
 };
 
 var getHistoricStudentMajors = function (section_label, filter) {

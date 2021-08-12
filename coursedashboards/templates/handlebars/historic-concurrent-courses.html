@@ -2,21 +2,21 @@
 <script id="historic-concurrent-courses-template" type="text/x-handlebars-template">
     <div class="list col">
         <h4 id="historic_common_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Get a sense of what other courses your students are taking compared to the last time you taught the course."></i></span></h4>
-        {{#if common_courses}}
-        {{#each common_courses}}
+        {{#is_defined common_courses}}
         <ol id="historic_concurrent_courses" class="list-unstyled" aria-labelledby="historic_common_courses">
+        {{#each common_courses}}
             <li>
-              <strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat curriculum course_number section_id}}"> {{curriculum}}-{{course_number}}-{{section_id}} </a> </span><span id="{{curriculum}}-{{course_number}}-{{section_id}}-gpa">{{# if mean_gpa}}({{toFixed mean_gpa 2}}){{/if}}</span>
+              <strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat curriculum course_number section_id}}"> {{curriculum}}-{{course_number}} </a> </span><span id="{{curriculum}}-{{course_number}}-gpa"></span>
             </li>
            {{/each}}
        </ol>
        {{else}}
+       <div class="loading-placeholder" style="height: .9em; width: 2em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 7em;"></div>
        <br /><div class="loading-placeholder" style="height: .9em; width: 2em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 7em;"></div>
        <br /><div class="loading-placeholder" style="height: .9em; width: 2em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 7em;"></div>
        <br /><div class="loading-placeholder" style="height: .9em; width: 2em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 7em;"></div>
        <br /><div class="loading-placeholder" style="height: .9em; width: 2em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 7em;"></div>
-       <br /><div class="loading-placeholder" style="height: .9em; width: 2em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 7em;"></div>
-       {{/if}}
+       {{/is_defined}}
        <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> historic concurrent courses taken</span>...</a></div>
     </div>
 </script>

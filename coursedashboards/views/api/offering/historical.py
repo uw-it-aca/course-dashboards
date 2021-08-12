@@ -38,16 +38,10 @@ class HistoricalConcurrentCourses(CoDaEndpoint):
             instructor=instructor)
 
 
-class HistoricalConcurrentCourseGPAs(CoDaEndpoint):
+class HistoricalCourseGPAs(CoDaEndpoint):
     def get_data(self, offering):
-        instructor = get_current_user().uwnetid if (
-            self.request.GET.get('instructed', '') in [
-                '1', 'true']) else None
-
-        return offering.past_offerings_concurrent_course_gpas(
-            past_year=self.request.GET.get('past_year', ''),
-            past_quarter=self.request.GET.get('past_quarter', ''),
-            instructor=instructor)
+        return offering.past_offerings_course_gpas(
+            courses=self.request.GET.get('courses', ''))
 
 
 class HistoricalStudentMajors(CoDaEndpoint):

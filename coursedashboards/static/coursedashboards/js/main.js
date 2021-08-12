@@ -63,7 +63,6 @@ var registerEvents = function () {
 
                     loadHistoricPerformanceData(section_label, filter);
                     loadHistoricConcurrentCourses(section_label, filter);
-                    loadHistoricConcurrentCourseGPAs(section_label, filter);
                     loadHistoricStudentMajors(section_label, filter);
                     loadHistoricGraduatedMajors(section_label, filter);
                 }
@@ -76,9 +75,9 @@ var registerEvents = function () {
             function (e, section_label, data) {
                 showHistoricConcurrentCourses(section_label, data);
             })
-        .on('coda:HistoricConcurrentCourseGPAsSuccess',
+        .on('coda:HistoricCourseGPAsSuccess',
             function (e, section_label, data) {
-                showHistoricConcurrentCourseGPAs(section_label, data);
+                showHistoricCourseGPAs(section_label, data);
             })
         .on('coda:HistoricStudentMajorsSuccess',
             function (e, section_label, data) {

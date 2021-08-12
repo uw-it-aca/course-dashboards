@@ -1,6 +1,6 @@
 from coursedashboards.views.api.offering.historical import (
     HistoricalPerformance, HistoricalCourseData, HistoricalConcurrentCourses,
-    HistoricalConcurrentCourseGPAs, HistoricalStudentMajors,
+    HistoricalCourseGPAs, HistoricalStudentMajors,
     HistoricalGraduatedMajors)
 from django.urls import re_path
 from coursedashboards.views.api.offering.course import CourseData
@@ -28,8 +28,8 @@ urlpatterns = [
             HistoricalConcurrentCourses.as_view(),
             name='historic_concurrent_courses'),
     re_path(course_regex + r'/past/gpas/?',
-            HistoricalConcurrentCourseGPAs.as_view(),
-            name='historic_concurrent_course_gpas'),
+            HistoricalCourseGPAs.as_view(),
+            name='historic_course_gpas'),
     re_path(course_regex + r'/past/studentmajor/?',
             HistoricalStudentMajors.as_view(),
             name='historic_student_majors'),

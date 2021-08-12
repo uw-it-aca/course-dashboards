@@ -567,18 +567,24 @@ class CourseOffering(models.Model):
         }
 
     @profile
-    def past_offerings_concurrent_course_gpas(
-            self, past_year='', past_quarter='', instructor=None):
-        terms = self._terms_from_search_filter(
-            past_year, past_quarter, instructor)
+    def past_offerings_course_gpas(self, courses):
+        gpas = []
+        for course in courses.split(','):
+            cur, num = course.split('-')
+            try:
+                print("looking for {}-{}".format(cur, int(num)))
+                g = CourseGradeAverage.objects.get(
+                    curriculum=cur, course_number=int(num))
+                gpas.append({
+                    'curriculum': cur,
+                    'course_number': num,
+                    'grade': g.grade
+                })
+            except CourseGradeAverage.DoesNotExist:
+                pass
 
         return {
-            'gpas': self.concurrent_courses(terms),
-            'filter': {
-                'year': past_year,
-                'quarter': past_quarter,
-                'only_instructed': instructor is not None
-            }
+            'gpas': gpas
         }
 
     @profile
