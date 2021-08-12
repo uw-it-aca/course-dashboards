@@ -118,9 +118,9 @@ var showHistoricConcurrentCourses = function (section_label, data) {
         courses = data.concurrent_courses,
         parts = section_label.split('-');
 
-    if (courses.length
-        && courses[0].curriculum == parts[2]
-        && courses[0].course_number == parts[3]) {
+    if (courses.length &&
+            courses[0].curriculum == parts[2] &&
+            courses[0].course_number == parts[3]) {
         courses = courses.slice(1);
     }
 
@@ -138,7 +138,7 @@ var showHistoricCourseGPAs = function (section_label, data) {
         var $span = $('[id="' + this.curriculum +'-' + this.course_number + '-gpa"]'),
             html = '(' + this.grade + ')';
 
-        $span.html(html)
+        $span.html(html);
     });
 };
 

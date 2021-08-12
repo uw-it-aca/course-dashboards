@@ -89,7 +89,7 @@ var getHistoricCourseGPAs = function (section_label, courses) {
             url += ',';
         }
 
-        url += this.curriculum + '-' + this.course_number
+        url += this.curriculum + '-' + this.course_number;
     });
 
     _getHistoricData(url, section_label, 'CourseGPAs');

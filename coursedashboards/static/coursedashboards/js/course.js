@@ -27,7 +27,8 @@ var showCourseData = function (label) {
         current_course_panel = (compare_terms(section.year,
                                               section.quarter.toLowerCase(),
                                               window.term.year,
-                                              window.term.quarter.toLowerCase()) >= 0);
+                                              window.term.quarter.toLowerCase()) >= 0),
+        performanceTemplate;
 
     $.each(window.section_data, function () {
         if (this.curriculum == section.curriculum &&
@@ -44,9 +45,9 @@ var showCourseData = function (label) {
         }
     });
 
-    if (courses.length
-        && courses[0].curriculum == section.curriculum
-        && courses[0].course_number == section.course_number) {
+    if (courses.length &&
+            courses[0].curriculum == section.curriculum &&
+            courses[0].course_number == section.course_number) {
         courses = courses.slice(1);
     }
 
@@ -63,9 +64,7 @@ var showCourseData = function (label) {
     }));
 
     if (current_course_panel) {
-        var performancePanel = $("#current-performance-template").html(),
-            performanceTemplate = Handlebars.compile(performancePanel);
-
+        performanceTemplate = Handlebars.compile($("#current-performance-template").html());
         $("#current-performance-panel").html(performanceTemplate({
             current_median: section.current_median ? section.current_median : 'N/A',
             current_num_registered: section.current_enrollment,
@@ -73,9 +72,7 @@ var showCourseData = function (label) {
             current_repeat_students:section.current_repeating
         }));
     } else {
-        var performancePanel = $("#historic-performance-template").html(),
-            performanceTemplate = Handlebars.compile(performancePanel);
-
+        performanceTemplate = Handlebars.compile($("#historic-performance-template").html());
         $("#current-performance-panel").html(performanceTemplate({
             median_gpa: section.current_median ? (section.current_median) : 'N/A',
             median_course_grade: section.median_course_grade ? (section.median_course_grade) : 'N/A',
