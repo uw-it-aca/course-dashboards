@@ -3,7 +3,6 @@ from django.db.models import (
     Count, Sum, F, Avg, Subquery, OuterRef, FloatField)
 from statistics import median
 from statistics import StatisticsError
-from collections import defaultdict
 from django.db import models
 from coursedashboards.models.instructor import Instructor
 from coursedashboards.models.course import Course
@@ -463,12 +462,16 @@ class CourseOffering(models.Model):
         return sections
 
     @profile
+    def _term_names(self, terms):
+        return ["{}".format(t) for t in Term.objects.filter(id__in=terms)]
+
+    @profile
     def get_past_offerings(self, terms):
         """
         List of past course offerings
         """
         return {
-            'terms': ["{}".format(Term.objects.get(id=t)) for t in terms],
+            'terms': self._term_names(terms),
             'enrollment': self.get_enrollment_count(terms)
         }
 
@@ -479,7 +482,7 @@ class CourseOffering(models.Model):
         """
         offerings = {
             'enrollment': self.get_enrollment_count(terms),
-            'terms': ["{}".format(Term.objects.get(id=t)) for t in terms]
+            'terms': self._term_names(terms)
         }
 
         self.set_past_offering_performance_data(offerings, terms)
@@ -506,7 +509,7 @@ class CourseOffering(models.Model):
         if instructor is not None:
             filter_parms &= models.Q(user__uwnetid=instructor)
 
-        return Instructor.objects.filter(
+        x = Instructor.objects.filter(
             filter_parms
         ).exclude(
             term=self.term
@@ -514,6 +517,8 @@ class CourseOffering(models.Model):
         ).values_list(
             'term', flat=True
         )
+        print("LEN OF TERMS IS {}".format(len(x)))
+        return x
 
     def past_offerings_json_object(
             self, past_year='', past_quarter='', instructor=None):
@@ -559,6 +564,10 @@ class CourseOffering(models.Model):
             self, past_year='', past_quarter='', instructor=None):
         terms = self._terms_from_search_filter(
             past_year, past_quarter, instructor)
+
+        courses = self.concurrent_courses(terms)
+        print("PAST CONCURRENT TERMS: {} ".format(terms))
+        print("PAST CONCURRENT COURSES: {} ".format(courses))
 
         return {
             'concurrent_courses': self.concurrent_courses(terms),

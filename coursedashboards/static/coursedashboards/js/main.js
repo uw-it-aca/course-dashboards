@@ -49,10 +49,12 @@ var registerEvents = function () {
                 showCourseData(label);
             })
         .on(
-            'change', '#current-course-target select[name="course_quarters"]',
+            'change', 'select[name="course_quarters"]',
             function (e) {
-                $('#course_quarters').html('');
-                displaySelectedCourse();
+                var id = $('option:selected', $(this)).val();
+                fetchCourseData(id);
+                //$('#course_quarters').html('');
+                //displaySelectedCourse();
             });
 
     $('div.historic-section')

@@ -24,6 +24,14 @@ Handlebars.registerHelper('formatName', function(name) {
     }
 });
 
+Handlebars.registerHelper('toLowerCase', function(str) {
+  return str.toLowerCase();
+});
+
+Handlebars.registerHelper('toUpperCase', function(str) {
+  return str.toUpperCase();
+});
+
 Handlebars.registerHelper('myPlanFormat', function(curriculum, course_number, section_id) {
     return curriculum + course_number + section_id;
 });
