@@ -53,8 +53,6 @@ var registerEvents = function () {
             function (e) {
                 var id = $('option:selected', $(this)).val();
                 fetchCourseData(id);
-                //$('#course_quarters').html('');
-                //displaySelectedCourse();
             });
 
     $('div.historic-section')
