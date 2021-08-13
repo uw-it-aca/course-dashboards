@@ -509,7 +509,7 @@ class CourseOffering(models.Model):
         if instructor is not None:
             filter_parms &= models.Q(user__uwnetid=instructor)
 
-        x = Instructor.objects.filter(
+        return Instructor.objects.filter(
             filter_parms
         ).exclude(
             term=self.term
@@ -517,8 +517,6 @@ class CourseOffering(models.Model):
         ).values_list(
             'term', flat=True
         )
-        print("LEN OF TERMS IS {}".format(len(x)))
-        return x
 
     def past_offerings_json_object(
             self, past_year='', past_quarter='', instructor=None):
@@ -565,10 +563,6 @@ class CourseOffering(models.Model):
         terms = self._terms_from_search_filter(
             past_year, past_quarter, instructor)
 
-        courses = self.concurrent_courses(terms)
-        print("PAST CONCURRENT TERMS: {} ".format(terms))
-        print("PAST CONCURRENT COURSES: {} ".format(courses))
-
         return {
             'concurrent_courses': self.concurrent_courses(terms),
             'filter': {
@@ -584,7 +578,6 @@ class CourseOffering(models.Model):
         for course in courses.split(','):
             cur, num = course.split('-')
             try:
-                print("looking for {}-{}".format(cur, int(num)))
                 g = CourseGradeAverage.objects.get(
                     curriculum=cur, course_number=int(num))
                 gpas.append({
