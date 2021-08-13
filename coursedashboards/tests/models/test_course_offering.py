@@ -266,7 +266,7 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_get_concurrent_courses(self):
         concurrent = self.spring_ess.concurrent_courses()
-        self.assertEqual(len(concurrent), 2)
+        self.assertEqual(len(concurrent), 1)
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
