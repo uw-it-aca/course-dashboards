@@ -23,7 +23,6 @@ var showCourseData = function (label) {
         currentTemplate = Handlebars.compile(current),
         section = getSectionDataByLabel(label),
         terms = [],
-        courses = section.concurrent_courses,
         current_course_panel = (compare_terms(section.year,
                                               section.quarter.toLowerCase(),
                                               window.term.year,
@@ -45,15 +44,9 @@ var showCourseData = function (label) {
         }
     });
 
-    if (courses.length &&
-            courses[0].curriculum == section.curriculum &&
-            courses[0].course_number == section.course_number) {
-        courses = courses.slice(1);
-    }
-
     $("#current-course-target").html(currentTemplate({
         section_label: section.section_label,
-        concurrent_courses: courses,
+        concurrent_courses: section.concurrent_courses,
         current_majors: section.current_student_majors,
         curriculum: section.curriculum,
         course_number: section.course_number,

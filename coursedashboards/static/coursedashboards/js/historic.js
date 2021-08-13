@@ -114,18 +114,10 @@ var loadHistoricConcurrentCourses = function (section_label, filter) {
 
 var showHistoricConcurrentCourses = function (section_label, data) {
     var template = Handlebars.compile($("#historic-concurrent-courses-template").html()),
-        $panel = $('#historic-concurrent-courses-panel'),
-        courses = data.concurrent_courses,
-        parts = section_label.split('-');
-
-    if (courses.length &&
-            courses[0].curriculum == parts[2] &&
-            courses[0].course_number == parts[3]) {
-        courses = courses.slice(1);
-    }
+        $panel = $('#historic-concurrent-courses-panel');
 
     $panel.html(template({
-        common_courses: courses
+        common_courses: data.concurrent_courses
     }));
 
     bind_events($panel);

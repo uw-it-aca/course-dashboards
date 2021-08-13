@@ -194,20 +194,23 @@ class CourseOffering(models.Model):
     def concurrent_courses(self, terms=None):
         # all courses students in this offering for the given term
         # are registered
+        students = self.get_students(terms=terms)
         registrations = Registration.objects.filter(
-            user_id__in=self.get_students(terms=terms))
+            user_id__in=students
+        ).exclude(
+            course=self.course
+        )
+
         registrations_total = registrations.count()
         return list(
             registrations.annotate(
                 title=F('course__course_title'),
                 curriculum=F('course__curriculum'),
-                course_number=F('course__course_number'),
-                section_id=F('course__section_id')
+                course_number=F('course__course_number')
             ).values(
                 'title',
                 'curriculum',
-                'course_number',
-                'section_id'
+                'course_number'
             ).annotate(
                 percent_students=((Count('course') * 100.0
                                    / float(registrations_total)))
