@@ -509,18 +509,16 @@ class CourseOffering(models.Model):
         if instructor is not None:
             filter_parms &= models.Q(user__uwnetid=instructor)
 
-        return Instructor.objects.filter(
+        term_ids = Instructor.objects.filter(
             filter_parms
         ).exclude(
             term=self.term
-        ).values(
-            'term'
-        ).distinct(
-        ).order_by(
-            'term'
         ).values_list(
             'term', flat=True
-        )[:20]
+        ).distinct()
+
+        return [t.id for t in sorted(
+            Term.objects.filter(id__in=term_ids), reverse=True)][:20]
 
     def past_offerings_json_object(
             self, past_year='', past_quarter='', instructor=None):
