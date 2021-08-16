@@ -513,10 +513,14 @@ class CourseOffering(models.Model):
             filter_parms
         ).exclude(
             term=self.term
+        ).values(
+            'term'
         ).distinct(
+        ).order_by(
+            'term'
         ).values_list(
             'term', flat=True
-        )
+        )[:20]
 
     def past_offerings_json_object(
             self, past_year='', past_quarter='', instructor=None):
