@@ -18,7 +18,7 @@ var showHistoricCourseData = function (section_label, data) {
         context,
         parts;
 
-    historic_years = [{year: ALL_YEARS, selected: (data.filter.year) ? 'selected' : '' }];
+    historic_years = [];
     historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
     instructed_sections = [ALL_MY_COURSES];
     $.each(data.sections, function (year, quarters) {
@@ -47,6 +47,9 @@ var showHistoricCourseData = function (section_label, data) {
             }
         });
     });
+
+    historic_years.sort().reverse();
+    historic_years.unshift({year: ALL_YEARS, selected: (data.filter.year) ? 'selected' : '' });
 
     parts = section_label.split('-');
     context = {
@@ -99,7 +102,7 @@ var showHistoricPerformanceData = function (section_label, data) {
         median_course_grade: calculateCourseMedian(data.performance.course_grades),
         failed_percent: calculateFailedPercentage(data.performance.course_grades),
         total_students: data.performance.enrollment,
-        section_count: data.performance.terms.length,
+        section_count: data.performance.offering_count,
         gpa_distribution_time: 'historic'}));
 
     bind_events($panel, data.performance.gpas, data.performance.course_grades);

@@ -215,7 +215,7 @@ class CourseOffering(models.Model):
                                    / float(registrations_total)))
             ).order_by(
                 'percent_students',
-            ).reverse()[:20])
+            ))
 
     @profile
     def student_majors_for_term(self, terms=None):
@@ -415,24 +415,22 @@ class CourseOffering(models.Model):
             t.join()
 
     @profile
-    def get_past_sections(self):
+    def get_past_sections(self, terms=None):
         """
         List of past course sections
         """
-        filter_parms = {
-            'course': self.course
-        }
+        filter_parms = self._filter_parms(terms)
 
         if settings.DEBUG:
             self._explain("get_past_sections",
                           Instructor.objects.filter(
-                              **filter_parms
+                              filter_parms
                           ).select_related(
                               'term', 'user'
                           ).explain())
 
         instructors = Instructor.objects.filter(
-            **filter_parms
+            filter_parms
         ).select_related(
             'term', 'user'
         )
@@ -462,17 +460,14 @@ class CourseOffering(models.Model):
         return sections
 
     @profile
-    def _term_names(self, terms):
-        return ["{}".format(t) for t in Term.objects.filter(id__in=terms)]
-
-    @profile
     def get_past_offerings(self, terms):
         """
         List of past course offerings
         """
         return {
-            'terms': self._term_names(terms),
-            'enrollment': self.get_enrollment_count(terms)
+            'enrollment': self.get_enrollment_count(terms),
+            'terms': [
+                "{}".format(t) for t in Term.objects.filter(id__in=terms)]
         }
 
     @profile
@@ -482,7 +477,7 @@ class CourseOffering(models.Model):
         """
         offerings = {
             'enrollment': self.get_enrollment_count(terms),
-            'terms': self._term_names(terms)
+            'offering_count': len(terms)
         }
 
         self.set_past_offering_performance_data(offerings, terms)
@@ -517,6 +512,7 @@ class CourseOffering(models.Model):
             'term', flat=True
         ).distinct()
 
+        # 20 (5 year) most recent
         return [t.id for t in sorted(
             Term.objects.filter(id__in=term_ids), reverse=True)][:20]
 
@@ -527,7 +523,7 @@ class CourseOffering(models.Model):
 
         json_obj = {
             'past_offerings': self.get_past_offerings(terms),
-            'sections': self.get_past_sections(),
+            'sections': self.get_past_sections(terms),
             'filter': {
                 'year': past_year,
                 'quarter': past_quarter,
