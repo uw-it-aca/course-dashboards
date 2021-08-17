@@ -215,7 +215,7 @@ class CourseOffering(models.Model):
                                    / float(registrations_total)))
             ).order_by(
                 'percent_students',
-            ))
+            ))[:20]
 
     @profile
     def student_majors_for_term(self, terms=None):
