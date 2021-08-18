@@ -240,7 +240,7 @@ class CourseOffering(models.Model):
             major_filter['term__in'] = terms if terms else [self.term]
 
         majors = StudentMajor.objects.filter(**major_filter)
-        majors_count = majors.count()
+        majors_count = float(majors.count())
 
         return list(
             majors.annotate(
@@ -248,11 +248,10 @@ class CourseOffering(models.Model):
             ).values(
                 'major_name'
             ).annotate(
-                percent_students=((Count('major') * 100.0
-                                   / float(majors_count)))
+                percent_students=((Count('major') * 100.0 / majors_count))
             ).order_by(
-                'percent_students'
-            ).reverse()[:20])
+                '-percent_students'
+            )[:20])
 
     @profile
     def get_graduated_majors(self, terms=None):
