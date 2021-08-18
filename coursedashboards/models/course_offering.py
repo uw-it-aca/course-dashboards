@@ -204,11 +204,15 @@ class CourseOffering(models.Model):
 
         return list(registrations.annotate(
             title=F('course__course_title'),
+            curriculum=F('course__curriculum'),
+            course_number=F('course__course_number'),
             course_ref=Concat('course__curriculum', Value('-'),
                               'course__course_number',
                               output_field=models.CharField())
         ).values(
             'title',
+            'curriculum',
+            'course_number',
             'course_ref'
         ).annotate(
             percent_students=((Count('course_ref') * 100.0) / student_count)
