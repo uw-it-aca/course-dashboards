@@ -215,7 +215,8 @@ class CourseOffering(models.Model):
             'course_number',
             'course_ref'
         ).annotate(
-            percent_students=((Count('course_ref') * 100.0) / student_count)
+            course_students=Count('course_ref'),
+            percent_students=Count('course_ref') * 100.0 / student_count
         ).order_by(
             '-percent_students')[:20])
 
