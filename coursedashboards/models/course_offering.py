@@ -574,7 +574,11 @@ class CourseOffering(models.Model):
     def past_offerings_course_gpas(self, courses):
         gpas = []
         for course in courses.split(','):
-            cur, num = course.split('-')
+            try:
+                cur, num = course.split('-')
+            except Exception:
+                continue
+
             try:
                 g = CourseGradeAverage.objects.get(
                     curriculum=cur, course_number=int(num))
