@@ -8,7 +8,10 @@ Handlebars.registerHelper('pluralize', function(number, single, plural) {
 Handlebars.registerHelper('roundPercentage', function(percentage) {
     if(percentage < 1){
         return "<1";
+    } else if (percentage > 100) {
+        return "100";
     }
+
     return Math.round(percentage);
 });
 

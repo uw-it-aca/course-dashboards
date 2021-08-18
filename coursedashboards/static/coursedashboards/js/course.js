@@ -29,7 +29,7 @@ var showCourseData = function (label) {
                                               window.term.quarter.toLowerCase()) >= 0),
         performanceTemplate;
 
-    if (!current_course_panel && typeof section.course_grades === 'undefined') {
+    if (!current_course_panel && !section.loaded) {
         fetchCourseData(label);
         return;
     }

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db.models import (
-    Count, Sum, F, Avg, Subquery, OuterRef, FloatField)
+    Count, Sum, F, Avg, Subquery, OuterRef, FloatField, Value)
+from django.db.models.functions import Concat
 from statistics import median
 from statistics import StatisticsError
 from django.db import models
@@ -194,28 +195,25 @@ class CourseOffering(models.Model):
         # all courses students in this offering for the given term
         # are registered
         students = self.get_students(terms=terms)
+        student_count = float(students.distinct().count())
         registrations = Registration.objects.filter(
             user_id__in=students
         ).exclude(
             course=self.course
         )
 
-        registrations_total = registrations.count()
-        return list(
-            registrations.annotate(
-                title=F('course__course_title'),
-                curriculum=F('course__curriculum'),
-                course_number=F('course__course_number')
-            ).values(
-                'title',
-                'curriculum',
-                'course_number'
-            ).annotate(
-                percent_students=((Count('course') * 100.0
-                                   / float(registrations_total)))
-            ).order_by(
-                'percent_students',
-            ))[:20]
+        return list(registrations.annotate(
+            title=F('course__course_title'),
+            course_ref=Concat('course__curriculum', Value('-'),
+                              'course__course_number',
+                              output_field=models.CharField())
+        ).values(
+            'title',
+            'course_ref'
+        ).annotate(
+            percent_students=((Count('course_ref') * 100.0) / student_count)
+        ).order_by(
+            '-percent_students')[:20])
 
     @profile
     def student_majors_for_term(self, terms=None):
