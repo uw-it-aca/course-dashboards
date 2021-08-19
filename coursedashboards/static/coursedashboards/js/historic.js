@@ -14,14 +14,14 @@ var showHistoricCourseData = function (section_label, data) {
     // paint historic course selector
     var historic = $("#historic-course-data").html(),
         historicTemplate = Handlebars.compile(historic),
-        seen_quarter = [],
         context,
         parts;
 
     if (!window.historic_terms) {
         window.historic_terms = {
             years: [],
-            quarters: [{quarter: ALL_QUARTERS}]
+            quarters: [ALL_QUARTERS],
+            raw: []
         };
 
         instructed_sections = [ALL_MY_COURSES];
@@ -31,17 +31,17 @@ var showHistoricCourseData = function (section_label, data) {
                     return true;
                 }
 
+                window.historic_terms.raw.push({
+                    year: year,
+                    quarter: quarter
+                });
+
                 if (window.historic_terms.years.indexOf(year) < 0) {
-                    window.historic_terms.years.push({
-                        year: year
-                    });
+                    window.historic_terms.years.push(year);
                 }
 
-                if (seen_quarter.indexOf(quarter) < 0) {
-                    seen_quarter.push(quarter);
-                    window.historic_terms.quarters.push({
-                        quarter: quarter
-                    });
+                if (window.historic_terms.quarters.indexOf(quarter) < 0) {
+                    window.historic_terms.quarters.push(quarter);
                 }
 
                 if (instructors.indexOf(window.user.netid) >= 0) {
@@ -54,7 +54,7 @@ var showHistoricCourseData = function (section_label, data) {
         });
 
         window.historic_terms.years.sort().reverse();
-        window.historic_terms.years.unshift({year: ALL_YEARS});
+        window.historic_terms.years.unshift(ALL_YEARS);
     }
 
     parts = section_label.split('-');
@@ -70,13 +70,39 @@ var showHistoricCourseData = function (section_label, data) {
 
     $("#historic-course-target").html(historicTemplate(context));
 
-    // select filter term
+    // select filter terms and set appropriate options
     if (data.filter.year) {
         $('#historic_filter_year').val(data.filter.year);
+        $.each(window.historic_terms.raw, function () {
+            var $option = $('#historic_filter_quarter option[value="' + this.quarter + '"]');
+
+            if (this.year === data.filter.year) {
+                $option.removeAttr('disabled', 'disabled');
+            } else {
+                $option.attr('disabled', 'disabled');
+            }
+        });
+    } else {
+        $('#historic_filter_year').val(ALL_YEARS);
+        $('#historic_filter_quarter option').removeAttr('disabled');
     }
 
     if (data.filter.quarter) {
         $('#historic_filter_quarter').val(data.filter.quarter);
+        $.each(window.historic_terms.raw, function () {
+            var $option = $('#historic_filter_year option[value="' + this.year + '"]');
+
+            if (this.quarter === data.filter.quarter) {
+                $option.removeAttr('disabled', 'disabled');
+            } else {
+                $option.attr('disabled', 'disabled');
+            }
+        });
+
+
+    } else {
+        $('#historic_filter_quarter').val(ALL_QUARTERS);
+        $('#historic_filter_year').removeAttr('disabled');
     }
 
     // paint past offerings info
