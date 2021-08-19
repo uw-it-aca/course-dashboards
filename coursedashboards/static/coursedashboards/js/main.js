@@ -57,10 +57,8 @@ var registerEvents = function () {
 
     $('div.historic-section')
         .on('coda:HistoricCourseDataSuccess',
-            function (e, section_label, data) {
+            function (e, section_label, data, filter) {
                 if (showHistoricCourseData(section_label, data)) {
-                    var filter = filterChoices();
-
                     loadHistoricPerformanceData(section_label, filter);
                     loadHistoricConcurrentCourses(section_label, filter);
                     loadHistoricStudentMajors(section_label, filter);

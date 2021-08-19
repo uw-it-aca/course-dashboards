@@ -35,10 +35,7 @@ var getHistoricCourseData = function (section_label, filter) {
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + section_label + '/past' +
-            '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-            '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-            '&instructed=' + (filter && filter.only_instructed ? 'true' : ''),
+        url: "/api/v1/course/" + section_label + '/past?' + _url_search_terms_from_filter(filter),
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
@@ -50,10 +47,10 @@ var getHistoricCourseData = function (section_label, filter) {
                 'value': totalTime
             });
 
-            historicCacheData(section_label, filter, results);
+            historicCacheData(section_label, filter, results, filter);
 
             $('div.historic-section').trigger(
-                'coda:HistoricCourseDataSuccess', [section_label, results]);
+                'coda:HistoricCourseDataSuccess', [section_label, results, filter]);
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);
@@ -65,19 +62,15 @@ var getHistoricCourseData = function (section_label, filter) {
 };
 
 var getHistoricPerformanceData = function (section_label, filter) {
-    var url = "/api/v1/course/" + section_label + '/past/performance' +
-        '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-        '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-        '&instructed=' + (filter && filter.only_instructed ? 'true' : '');
+    var url = "/api/v1/course/" + section_label + '/past/performance?' +
+        _url_search_terms_from_filter(filter);
 
     _getHistoricData(url, section_label, 'Performance');
 };
 
 var getHistoricConcurrentCourses = function (section_label, filter) {
-    var url = "/api/v1/course/" + section_label + '/past/concurrent' +
-        '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-        '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-        '&instructed=' + (filter && filter.only_instructed ? 'true' : '');
+    var url = "/api/v1/course/" + section_label + '/past/concurrent?' +
+        _url_search_terms_from_filter(filter);
 
     _getHistoricData(url, section_label, 'ConcurrentCourses');
 };
@@ -97,19 +90,15 @@ var getHistoricCourseGPAs = function (section_label, courses) {
 };
 
 var getHistoricStudentMajors = function (section_label, filter) {
-    var url = "/api/v1/course/" + section_label + '/past/studentmajor' +
-        '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-        '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-        '&instructed=' + (filter && filter.only_instructed ? 'true' : '');
+    var url = "/api/v1/course/" + section_label + '/past/studentmajor?' +
+        _url_search_terms_from_filter(filter);
 
     _getHistoricData(url, section_label, 'StudentMajors');
 };
 
 var getHistoricGraduatedMajors = function (section_label, filter) {
-    var url = "/api/v1/course/" + section_label + '/past/graduatedmajor' +
-        '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-        '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-        '&instructed=' + (filter && filter.only_instructed ? 'true' : '');
+    var url = "/api/v1/course/" + section_label + '/past/graduatedmajor?' +
+        _url_search_terms_from_filter(filter);
 
     _getHistoricData(url, section_label, 'GraduatedMajors');
 };
@@ -139,6 +128,11 @@ var _getHistoricData = function (url, section_label, metric) {
     });
 };
 
+var _url_search_terms_from_filter = function (filter) {
+    return ['past_year=' + ((filter && filter.year !== undefined) ? filter.year : ''),
+            'past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : ''),
+            'instructor=' + (filter && filter.only_instructed ? window.window.user.netid : '')].join('&');
+};
 
 var startLoadingHistoricCourseData = function () {
     $(".section-container.historic-section").addClass('loading');
