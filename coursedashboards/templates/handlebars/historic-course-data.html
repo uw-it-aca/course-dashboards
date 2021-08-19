@@ -22,7 +22,7 @@
                      <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
                      <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter" aria-controls="historic-course-target">
                          {{#each past_quarters}}
-                             <option data-label="{{this}}">{{this}}</option>
+                             <option data-label="{{this}}" value="{{this}}">{{this}}</option>
                          {{/each}}
                      </select>
                   </div>
@@ -30,7 +30,7 @@
                       <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
                       <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year" aria-controls="historic-course-target">
                          {{#each past_years}}
-                             <option data-label="{{this}}">{{this}}</option>
+                             <option data-label="{{this}}" value="{{this}}">{{this}}</option>
                          {{/each}}
                       </select>
                   </div>

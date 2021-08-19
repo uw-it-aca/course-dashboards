@@ -27,10 +27,6 @@ var showHistoricCourseData = function (section_label, data) {
         instructed_sections = [ALL_MY_COURSES];
         $.each(data.sections, function (year, quarters) {
             $.each(quarters, function (quarter, instructors) {
-                if (data.past_offerings.terms.indexOf(year + '-' + quarter) < 0) {
-                    return true;
-                }
-
                 window.historic_terms.raw.push({
                     year: year,
                     quarter: quarter
