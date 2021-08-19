@@ -20,10 +20,11 @@ var historicCacheData = function (section_label, filter, results) {
 };
 
 var fetchHistoricCourseData = function (section_label, filter) {
-    if (historicCacheData(section_label, filter)) {
+    var cached = historicCacheData(section_label, filter);
+
+    if (cached) {
         $('div.historic-section').trigger(
-            'coda:HistoricCourseDataSuccess',
-            [section_label, historicCacheData(section_label, filter)]);
+            'coda:HistoricCourseDataSuccess', [section_label, cached]);
     } else {
         getHistoricCourseData(section_label, filter);
     }

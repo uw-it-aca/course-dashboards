@@ -61,6 +61,11 @@ class CourseOffering(models.Model):
         )
 
     @profile
+    def get_instructors(self, terms=None):
+        filter_parms = self._filter_parms(terms)
+        return Instructor.objects.filter(filter_parms)
+
+    @profile
     def get_student_count(self, terms=None):
         return float(self.get_registrations(terms=terms).count())
 
@@ -147,23 +152,6 @@ class CourseOffering(models.Model):
         ).filter(
             is_repeat=True
         ).count()
-
-    @profile
-    def get_instructors(self, terms=None, is_alum=None):
-        return [{
-            'uwnetid': inst.user.uwnetid,
-            'display_name': inst.user.display_name,
-            'preferred_first_name': inst.user.preferred_first_name,
-            'preferred_middle_name': inst.user.preferred_middle_name,
-            'preferred_surname': inst.user.preferred_surname,
-            'email': inst.user.email,
-            'is_student': inst.user.is_student,
-            'is_staff': inst.user.is_staff,
-            'is_employee': inst.user.is_employee,
-            'is_alum': inst.user.is_alum,
-            'is_faculty': inst.user.is_faculty
-        } for inst in Instructor.objects.filter(
-            self._filter_parms(terms, is_alum))]
 
     @profile
     def get_enrollment_count(self, terms=None, is_alum=None):
@@ -421,43 +409,15 @@ class CourseOffering(models.Model):
         """
         List of past course sections
         """
-        filter_parms = self._filter_parms(terms)
-
-        if settings.DEBUG:
-            self._explain("get_past_sections",
-                          Instructor.objects.filter(
-                              filter_parms
-                          ).select_related(
-                              'term', 'user'
-                          ).explain())
-
-        instructors = Instructor.objects.filter(
-            filter_parms
-        ).select_related(
-            'term', 'user'
-        )
-
         sections = {}
-        for i in instructors:
+        for i in self.get_instructors(terms):
             if i.term.year not in sections:
                 sections[i.term.year] = {}
 
             if i.term.quarter not in sections[i.term.year]:
                 sections[i.term.year][i.term.quarter] = []
 
-            sections[i.term.year][i.term.quarter].append({
-                'uwnetid': i.user.uwnetid,
-                'display_name': i.user.display_name,
-                'preferred_first_name': i.user.preferred_first_name,
-                'preferred_middle_name': i.user.preferred_middle_name,
-                'preferred_surname': i.user.preferred_surname,
-                'email': i.user.email,
-                'is_student': i.user.is_student,
-                'is_staff': i.user.is_staff,
-                'is_employee': i.user.is_employee,
-                'is_alum': i.user.is_alum,
-                'is_faculty': i.user.is_faculty
-            })
+            sections[i.term.year][i.term.quarter].append(i.user.to_json())
 
         return sections
 

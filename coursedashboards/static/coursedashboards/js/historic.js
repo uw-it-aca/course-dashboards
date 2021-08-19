@@ -18,43 +18,49 @@ var showHistoricCourseData = function (section_label, data) {
         context,
         parts;
 
-    historic_years = [];
-    historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
-    instructed_sections = [ALL_MY_COURSES];
-    $.each(data.sections, function (year, quarters) {
-        if (historic_years.indexOf(year) < 0) {
-            historic_years.push({
-                year: year,
-                selected: (data.filter.year === year) ? 'selected' : ''
+    if (!window.historic_terms) {
+        window.historic_terms = {
+            years: [],
+            quarters: [{quarter: ALL_QUARTERS}]
+        };
+
+        instructed_sections = [ALL_MY_COURSES];
+        $.each(data.sections, function (year, quarters) {
+            $.each(quarters, function (quarter, instructors) {
+                if (data.past_offerings.terms.indexOf(year + '-' + quarter) < 0) {
+                    return true;
+                }
+
+                if (window.historic_terms.years.indexOf(year) < 0) {
+                    window.historic_terms.years.push({
+                        year: year
+                    });
+                }
+
+                if (seen_quarter.indexOf(quarter) < 0) {
+                    seen_quarter.push(quarter);
+                    window.historic_terms.quarters.push({
+                        quarter: quarter
+                    });
+                }
+
+                if (instructors.indexOf(window.user.netid) >= 0) {
+                    instructed_sections.push({
+                        'year': s.year,
+                        'quarter': s.quarter
+                    });
+                }
             });
-        }
-
-        $.each(quarters, function (quarter, instructors) {
-            if (seen_quarter.indexOf(quarter) < 0) {
-                seen_quarter.push(quarter);
-                historic_quarters.push({
-                    quarter: quarter,
-                    selected: (data.filter.quarter === quarter) ? 'selected' : ''
-                });
-            }
-
-            if (instructors.indexOf(window.user.netid) >= 0) {
-                instructed_sections.push({
-                    'year': s.year,
-                    'quarter': s.quarter,
-                    'selected': (data.filter.only_instructed) ? 'selected' : ''
-                });
-            }
         });
-    });
 
-    historic_years.sort().reverse();
-    historic_years.unshift({year: ALL_YEARS, selected: (data.filter.year) ? 'selected' : '' });
+        window.historic_terms.years.sort().reverse();
+        window.historic_terms.years.unshift({year: ALL_YEARS});
+    }
 
     parts = section_label.split('-');
     context = {
-        past_quarters: historic_quarters,
-        past_years: historic_years,
+        past_quarters: window.historic_terms.quarters,
+        past_years: window.historic_terms.years,
         curriculum: parts[2],
         course_number: parts[3],
         section_id: parts[4],
@@ -63,6 +69,15 @@ var showHistoricCourseData = function (section_label, data) {
     };
 
     $("#historic-course-target").html(historicTemplate(context));
+
+    // select filter term
+    if (data.filter.year) {
+        $('#historic_filter_year').val(data.filter.year);
+    }
+
+    if (data.filter.quarter) {
+        $('#historic_filter_quarter').val(data.filter.quarter);
+    }
 
     // paint past offerings info
     if (data.past_offerings.terms.length > 0) {
