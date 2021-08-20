@@ -9,7 +9,7 @@ var ALL_MY_COURSES = "All My Courses";
 
 
 //Display data about the past offerings of selected course - called whenever selection changes
-var showHistoricCourseData = function (section_label, data) {
+var showHistoricCourseData = function (section_label, data, filter) {
 
     // paint historic course selector
     var historic = $("#historic-course-data").html(),
@@ -17,14 +17,105 @@ var showHistoricCourseData = function (section_label, data) {
         context,
         parts;
 
+    if (filter && filter.only_instructed) {
+        // builds window.historic_instructed_terms since initial load is all instructed courses
+        setupHistoricInstructedSelector(data);
+    } else {
+        // builds window.historic_terms since initial load is all terms
+        setupHistoricTermSelector(data);
+    }
+
+    parts = section_label.split('-');
+    context = {
+        past_quarters: window.historic_terms.quarters,
+        past_years: window.historic_terms.years,
+        curriculum: parts[2],
+        course_number: parts[3],
+        section_id: parts[4],
+        instructed_sections: window.historic_instructed_terms,
+        only_my_courses: data.filter.only_instructed
+    };
+
+    $("#historic-course-target").html(historicTemplate(context));
+
+    if (filter && filter.only_instructed) {
+        var value = (data.filter.year) ? data.filter.year + '-' + data.filter.quarter : ALL_MY_COURSES;
+
+        $('#historic-course-target #historic_filter_instructed').val(value);
+    } else {
+        // select filter terms and set appropriate options
+        if (data.filter.year) {
+            $('#historic_filter_year').val(data.filter.year);
+            $.each(window.historic_terms.raw, function () {
+                var $option = $('#historic_filter_quarter option[value="' + this.quarter + '"]');
+
+                if (this.year === data.filter.year) {
+                    $option.removeAttr('disabled', 'disabled');
+                } else {
+                    $option.attr('disabled', 'disabled');
+                }
+            });
+        } else {
+            $('#historic_filter_year').val(ALL_YEARS);
+            $('#historic_filter_quarter option').removeAttr('disabled');
+        }
+
+        if (data.filter.quarter) {
+            $('#historic_filter_quarter').val(data.filter.quarter);
+            $.each(window.historic_terms.raw, function () {
+                var $option = $('#historic_filter_year option[value="' + this.year + '"]');
+
+                if (this.quarter === data.filter.quarter) {
+                    $option.removeAttr('disabled', 'disabled');
+                } else {
+                    $option.attr('disabled', 'disabled');
+                }
+            });
+        } else {
+            $('#historic_filter_quarter').val(ALL_QUARTERS);
+            $('#historic_filter_year').removeAttr('disabled');
+        }
+    }
+
+    // paint past offerings info
+    if (data.past_offerings.terms.length > 0) {
+        if (!shouldDisplayCourse(data)) {
+            var historicPanel = $("#no-display-historic-course-panel").html(),
+                historicPanelTemplate = Handlebars.compile(historicPanel);
+
+            $("#historic-performance-panel").html(historicPanelTemplate());
+            return false;
+        }
+
+        showHistoricPreviousInstructors(section_label, data);
+    } else {
+        historic = $("#no-historic-course-data").html();
+        historicTemplate = Handlebars.compile(historic);
+
+        $("#historic-course-target").html(historicTemplate());
+        return false;
+    }
+
+    return true;
+};
+
+var setupHistoricInstructedSelector = function (data) {
+    if (!window.historic_instructed_terms) {
+        window.historic_instructed_terms = [];
+        $.each(data.past_offerings.terms, function () {
+            window.historic_instructed_terms.push(this);
+        });
+    }
+};
+
+var setupHistoricTermSelector = function (data) {
     if (!window.historic_terms) {
         window.historic_terms = {
             years: [],
-            quarters: [ALL_QUARTERS],
+            quarters: [],
             raw: []
         };
 
-        instructed_sections = [ALL_MY_COURSES];
         $.each(data.sections, function (year, quarters) {
             $.each(quarters, function (quarter, instructors) {
                 window.historic_terms.raw.push({
@@ -50,77 +141,7 @@ var showHistoricCourseData = function (section_label, data) {
         });
 
         window.historic_terms.years.sort().reverse();
-        window.historic_terms.years.unshift(ALL_YEARS);
     }
-
-    parts = section_label.split('-');
-    context = {
-        past_quarters: window.historic_terms.quarters,
-        past_years: window.historic_terms.years,
-        curriculum: parts[2],
-        course_number: parts[3],
-        section_id: parts[4],
-        instructed_sections: instructed_sections,
-        only_my_courses: data.filter.only_instructed
-    };
-
-    $("#historic-course-target").html(historicTemplate(context));
-
-    // select filter terms and set appropriate options
-    if (data.filter.year) {
-        $('#historic_filter_year').val(data.filter.year);
-        $.each(window.historic_terms.raw, function () {
-            var $option = $('#historic_filter_quarter option[value="' + this.quarter + '"]');
-
-            if (this.year === data.filter.year) {
-                $option.removeAttr('disabled', 'disabled');
-            } else {
-                $option.attr('disabled', 'disabled');
-            }
-        });
-    } else {
-        $('#historic_filter_year').val(ALL_YEARS);
-        $('#historic_filter_quarter option').removeAttr('disabled');
-    }
-
-    if (data.filter.quarter) {
-        $('#historic_filter_quarter').val(data.filter.quarter);
-        $.each(window.historic_terms.raw, function () {
-            var $option = $('#historic_filter_year option[value="' + this.year + '"]');
-
-            if (this.quarter === data.filter.quarter) {
-                $option.removeAttr('disabled', 'disabled');
-            } else {
-                $option.attr('disabled', 'disabled');
-            }
-        });
-
-
-    } else {
-        $('#historic_filter_quarter').val(ALL_QUARTERS);
-        $('#historic_filter_year').removeAttr('disabled');
-    }
-
-    // paint past offerings info
-    if (data.past_offerings.terms.length > 0) {
-        if (!shouldDisplayCourse(data)) {
-            var historicPanel = $("#no-display-historic-course-panel").html(),
-                historicPanelTemplate = Handlebars.compile(historicPanel);
-
-            $("#historic-performance-panel").html(historicPanelTemplate());
-            return false;
-        }
-
-        showHistoricPreviousInstructors(section_label, data);
-    } else {
-        historic = $("#no-historic-course-data").html();
-        historicTemplate = Handlebars.compile(historic);
-
-        $("#historic-course-target").html(historicTemplate());
-        return false;
-    }
-
-    return true;
 };
 
 var loadHistoricPerformanceData = function (section_label, filter) {

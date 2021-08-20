@@ -58,7 +58,7 @@ var registerEvents = function () {
     $('div.historic-section')
         .on('coda:HistoricCourseDataSuccess',
             function (e, section_label, data, filter) {
-                if (showHistoricCourseData(section_label, data)) {
+                if (showHistoricCourseData(section_label, data, filter)) {
                     loadHistoricPerformanceData(section_label, filter);
                     loadHistoricConcurrentCourses(section_label, filter);
                     loadHistoricStudentMajors(section_label, filter);
@@ -97,6 +97,17 @@ var registerEvents = function () {
             var filter = filterChoices(
                 (this.name === 'historic_filter_year') ? this.value : null,
                 (this.name === 'historic_filter_quarter') ? this.value : null);
+
+            fetchHistoricCourseData(getSelectedCourseLabel(), filter);
+        })
+        .on('change', '#mycourses #historic_filter_instructed', function (e) {
+            var filter = { only_instructed: true },
+                parts = this.value.split('-');
+
+            if (parts.length == 2) {
+                filter['year'] = parts[0];
+                filter['quarter'] = parts[1];
+            }
 
             fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });

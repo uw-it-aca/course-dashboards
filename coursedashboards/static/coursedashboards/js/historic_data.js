@@ -131,7 +131,7 @@ var _getHistoricData = function (url, section_label, metric) {
 var _url_search_terms_from_filter = function (filter) {
     return ['past_year=' + ((filter && filter.year !== undefined) ? filter.year : ''),
             'past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : ''),
-            'instructor=' + (filter && filter.only_instructed ? window.window.user.netid : '')].join('&');
+            'instructed=' + (filter && filter.only_instructed ? 'true' : '')].join('&');
 };
 
 var startLoadingHistoricCourseData = function () {

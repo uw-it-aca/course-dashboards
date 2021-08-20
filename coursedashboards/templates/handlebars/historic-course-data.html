@@ -21,28 +21,30 @@
                   <div class="d-inline-block">
                      <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
                      <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter" aria-controls="historic-course-target">
+                         <option data-label="All Quarters" value="All Quarters">All Quarters</option>
                          {{#each past_quarters}}
-                             <option data-label="{{this}}" value="{{this}}">{{this}}</option>
+                         <option data-label="{{this}}" value="{{this}}">{{this}}</option>
                          {{/each}}
                      </select>
                   </div>
                   <div class="d-inline-block">
                       <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
                       <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year" aria-controls="historic-course-target">
-                         {{#each past_years}}
-                             <option data-label="{{this}}" value="{{this}}">{{this}}</option>
-                         {{/each}}
+                           <option data-label="All Years" value="All Years">All Years</option>
+                           {{#each past_years}}
+                           <option data-label="{{this}}" value="{{this}}">{{this}}</option>
+                           {{/each}}
                       </select>
                   </div>
               </div>
               <div class="tab-pane  {{#if only_my_courses}} active {{/if}}" id="mycourses" role="tabpanel">
                   <div class="d-inline-block">
-                      <label for="historic_filter_taught" class="visually-hidden">Filter by only your past courses:</label>
-                      <select class="form-control form-control-sm historic-filter" name="historic_filter_taught" id="historic_filter_taught" aria-controls="historic-course-target">
-                            <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
-                            {{#each instructed_sections}}
-                              <option value=>{{this.quarter}} {{this.year}}</option>
-                          {{/each}}
+                      <label for="historic_filter_instructed" class="visually-hidden">Filter by only your past courses:</label>
+                      <select class="form-control form-control-sm historic-filter" name="historic_filter_instructed" id="historic_filter_instructed" aria-controls="historic-course-target">
+                             <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
+                             {{#each instructed_sections}}
+                             <option value="{{this}}">{{this}}</option>
+                             {{/each}}
                         </select>
                  </div>
               </div>
