@@ -105,8 +105,8 @@ var registerEvents = function () {
                 parts = this.value.split('-');
 
             if (parts.length == 2) {
-                filter['year'] = parts[0];
-                filter['quarter'] = parts[1];
+                filter.year = parts[0];
+                filter.quarter = parts[1];
             }
 
             fetchHistoricCourseData(getSelectedCourseLabel(), filter);
