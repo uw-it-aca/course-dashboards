@@ -8,7 +8,10 @@ Handlebars.registerHelper('pluralize', function(number, single, plural) {
 Handlebars.registerHelper('roundPercentage', function(percentage) {
     if(percentage < 1){
         return "<1";
+    } else if (percentage > 100) {
+        return "100";
     }
+
     return Math.round(percentage);
 });
 
@@ -24,6 +27,14 @@ Handlebars.registerHelper('formatName', function(name) {
     }
 });
 
+Handlebars.registerHelper('toLowerCase', function(str) {
+  return str.toLowerCase();
+});
+
+Handlebars.registerHelper('toUpperCase', function(str) {
+  return str.toUpperCase();
+});
+
 Handlebars.registerHelper('myPlanFormat', function(curriculum, course_number, section_id) {
     return curriculum + course_number + section_id;
 });
@@ -37,4 +48,15 @@ Handlebars.registerHelper('gt', function(lval, rval, options) {
 
 Handlebars.registerHelper('static', function(path) {
     return window.static_url + path;
+});
+
+Handlebars.registerHelper('defaultValue', function (value, defValue) {
+    return new Handlebars.SafeString((typeof value === "undefined") ? defValue : value);
+});
+
+Handlebars.registerHelper('is_defined', function(val, options) {
+    if (typeof val === "undefined") {
+        return options.inverse(this);
+    }
+    return options.fn(this);
 });

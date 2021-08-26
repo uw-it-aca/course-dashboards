@@ -9,101 +9,280 @@ var ALL_MY_COURSES = "All My Courses";
 
 
 //Display data about the past offerings of selected course - called whenever selection changes
-var showHistoricCourseData = function (section_data, data) {
+var showHistoricCourseData = function (section_label, data, filter) {
 
     // paint historic course selector
-    var selectors = $("#historic-data-selectors").html(),
-        selectorsTemplate = Handlebars.compile(selectors),
-        seen_quarter = [];
+    var historic = $("#historic-course-data").html(),
+        historicTemplate = Handlebars.compile(historic),
+        context,
+        parts;
 
-    historic_years = [{year: ALL_YEARS, selected: (data.filter.year) ? 'selected' : '' }];
-    historic_quarters = [{quarter: ALL_QUARTERS, selected: (data.filter.quarter === '') ? 'selected' : ''}];
-    instructed_sections = [ALL_MY_COURSES];
-    $.each(data.sections, function (year, quarters) {
-        if (historic_years.indexOf(year) < 0) {
-            historic_years.push({
-                year: year,
-                selected: (data.filter.year === year) ? 'selected' : ''
+    if (filter && filter.only_instructed) {
+        // builds window.historic_instructed_terms since initial load is all instructed courses
+        setupHistoricInstructedSelector(data);
+    } else {
+        // builds window.historic_terms since initial load is all terms
+        setupHistoricTermSelector(data);
+    }
+
+    parts = section_label.split('-');
+    context = {
+        past_quarters: window.historic_terms.quarters,
+        past_years: window.historic_terms.years,
+        curriculum: parts[2],
+        course_number: parts[3],
+        section_id: parts[4],
+        instructed_sections: window.historic_instructed_terms,
+        only_my_courses: data.filter.only_instructed
+    };
+
+    $("#historic-course-target").html(historicTemplate(context));
+
+    if (filter && filter.only_instructed) {
+        var value = (data.filter.year) ? data.filter.year + '-' + data.filter.quarter : ALL_MY_COURSES;
+
+        $('#historic-course-target #historic_filter_instructed').val(value);
+    } else {
+        // select filter terms and set appropriate options
+        if (data.filter.year) {
+            $('#historic_filter_year').val(data.filter.year);
+            $('#historic_filter_quarter option').slice(1).attr('disabled', 'disabled');
+            $.each(window.historic_terms.raw, function () {
+                var $option = $('#historic_filter_quarter option[value="' + this.quarter + '"]');
+
+                if (this.year === data.filter.year) {
+                    $option.removeAttr('disabled', 'disabled');
+                }
             });
+        } else {
+            $('#historic_filter_year').val(ALL_YEARS);
+            $('#historic_filter_quarter option').removeAttr('disabled');
         }
 
-        $.each(quarters, function (quarter, instructors) {
-            if (seen_quarter.indexOf(quarter) < 0) {
-                seen_quarter.push(quarter);
-                historic_quarters.push({
-                    quarter: quarter,
-                    selected: (data.filter.quarter === quarter) ? 'selected' : ''
-                });
-            }
+        if (data.filter.quarter) {
+            $('#historic_filter_quarter').val(data.filter.quarter);
+            $('#historic_filter_year option').slice(1).attr('disabled', 'disabled');
+            $.each(window.historic_terms.raw, function () {
+                var $option = $('#historic_filter_year option[value="' + this.year + '"]');
 
-            if (instructors.indexOf(window.user.netid) >= 0) {
-                instructed_sections.push({
-                    'year': s.year,
-                    'quarter': s.quarter,
-                    'selected': (data.filter.only_instructed) ? 'selected' : ''
-                });
-            }
-        });
-    });
-
-    $("#historic-selector-target").html(selectorsTemplate({
-        past_quarters: historic_quarters,
-        past_years: historic_years,
-        curriculum: section_data.curriculum,
-        course_number: section_data.course_number,
-        section_id: section_data.section_id,
-        instructed_sections: instructed_sections,
-        only_my_courses: data.filter.only_instructed
-    }));
+                if (this.quarter === data.filter.quarter) {
+                    $option.removeAttr('disabled', 'disabled');
+                }
+            });
+        } else {
+            $('#historic_filter_quarter').val(ALL_QUARTERS);
+            $('#historic_filter_year').removeAttr('disabled');
+        }
+    }
 
     // paint past offerings info
     if (data.past_offerings.terms.length > 0) {
-        var historicPanel = $("#historic-course-panel").html(),
-            historicPanelTemplate = Handlebars.compile(historicPanel);
+        if (!shouldDisplayCourse(data)) {
+            var historicPanel = $("#no-display-historic-course-panel").html(),
+                historicPanelTemplate = Handlebars.compile(historicPanel);
 
-        historic = $("#historic-course-data").html();
-        historicTemplate = Handlebars.compile(historic);
+            $("#historic-performance-panel").html(historicPanelTemplate());
+            return false;
+        }
 
-        $("#historic-course-target").html(historicTemplate({
-            common_majors: data.past_offerings.majors.slice(0, 20),
-            latest_majors: data.past_offerings.latest_majors.slice(0, 20),
-            common_courses: data.past_offerings.concurrent_courses.slice(0, 20),
-            selected_quarter: data.filter.quarter,
-            selected_year: data.filter.year,
-            instructors: getInstructorsByTerm(data.past_offerings.terms, data.sections),
-            display_course: shouldDisplayCourse(data)
-            //past_terms:window.section_data[index].past_offerings
-        }));
-
-        $("#historic-course-panel-target").html(historicPanelTemplate({
-            median_gpa: calculateMedianGPA(data.past_offerings.gpas),
-            median_course_grade: calculateCourseMedian(data.past_offerings.course_grades),
-            failed_percent: calculateFailedPercentage(data.past_offerings.course_grades),
-            total_students: data.past_offerings.enrollment,
-            section_count: data.past_offerings.terms.length,
-            gpa_distribution_time: 'historic'
-        }));
-
-        setup_exposures($("#historic-course-target"));
-
-        $('#historic-course-target [data-toggle="popover"]').popover();
-        $('#historic-course-target .popover-dismiss').popover({ trigger: 'focus'});
-        $('#historic-course-target .cumulative-popover')
-            .on('inserted.bs.popover', function () {
-                renderGPADisribution('historic-gpa-distribution',
-                                     data.past_offerings.gpas);
-            });
-
-        $('#historic-course-target .course-gpa-popover')
-            .on('inserted.bs.popover', function () {
-                renderGPADisribution('historic-course-gpa-distribution',
-                                     data.past_offerings.course_grades);
-            });
+        showHistoricPreviousInstructors(section_label, data);
     } else {
         historic = $("#no-historic-course-data").html();
         historicTemplate = Handlebars.compile(historic);
 
         $("#historic-course-target").html(historicTemplate());
+        return false;
+    }
+
+    return true;
+};
+
+var setupHistoricInstructedSelector = function (data) {
+    if (!window.historic_instructed_terms) {
+        window.historic_instructed_terms = [];
+        $.each(data.past_offerings.terms, function () {
+            window.historic_instructed_terms.push(this);
+        });
+    }
+};
+
+var setupHistoricTermSelector = function (data) {
+    if (!window.historic_terms) {
+        window.historic_terms = {
+            years: [],
+            quarters: [],
+            raw: []
+        };
+
+        $.each(data.sections, function (year, quarters) {
+            $.each(quarters, function (quarter, instructors) {
+                window.historic_terms.raw.push({
+                    year: year,
+                    quarter: quarter
+                });
+
+                if (window.historic_terms.years.indexOf(year) < 0) {
+                    window.historic_terms.years.push(year);
+                }
+
+                if (window.historic_terms.quarters.indexOf(quarter) < 0) {
+                    window.historic_terms.quarters.push(quarter);
+                }
+
+                if (instructors.indexOf(window.user.netid) >= 0) {
+                    instructed_sections.push({
+                        'year': s.year,
+                        'quarter': s.quarter
+                    });
+                }
+            });
+        });
+
+        window.historic_terms.years.sort().reverse();
+    }
+};
+
+var loadHistoricPerformanceData = function (section_label, filter) {
+    var cached_data = _preloadHistoricPanel(
+        'historic-performance-panel', section_label, filter,
+        'historic-performance-template');
+
+    if (cached_data) {
+        showHistoricPerformanceData(section_label, cached_data);
+    } else {
+        getHistoricPerformanceData(section_label, filter);
+    }
+};
+
+var showHistoricPerformanceData = function (section_label, data) {
+    var $panel = _postloadHistoricPanel(
+        'historic-performance-panel',
+        section_label, data.filter, data,
+        'historic-performance-template',
+        {
+            median_gpa: calculateMedianGPA(data.performance.gpas),
+            median_course_grade: calculateCourseMedian(data.performance.course_grades),
+            failed_percent: calculateFailedPercentage(data.performance.course_grades),
+            total_students: data.performance.enrollment,
+            section_count: data.performance.offering_count,
+            gpa_distribution_time: 'historic'
+        });
+
+    bind_events($panel, data.performance.gpas, data.performance.course_grades);
+};
+
+var loadHistoricConcurrentCourses = function (section_label, filter) {
+    var cached_data = _preloadHistoricPanel(
+        'historic-concurrent-courses-panel', section_label, filter,
+        'historic-concurrent-courses-template');
+
+    if (cached_data) {
+        showHistoricConcurrentCourses(section_label, cached_data);
+    } else {
+        getHistoricConcurrentCourses(section_label, filter);
+    }
+};
+
+var showHistoricConcurrentCourses = function (section_label, data) {
+    var $panel = _postloadHistoricPanel(
+        'historic-concurrent-courses-panel',
+        section_label, data.filter, data,
+        'historic-concurrent-courses-template',
+        {
+            common_courses: data.concurrent_courses
+        });
+
+    bind_events($panel);
+
+    getHistoricCourseGPAs(section_label, data.concurrent_courses);
+};
+
+var showHistoricCourseGPAs = function (section_label, data) {
+    $.each(data.gpas, function () {
+        var $span = $('[id="' + this.curriculum +'-' + this.course_number + '-gpa"]'),
+            html = '(' + this.grade + ')';
+
+        $span.html(html);
+    });
+};
+
+var loadHistoricStudentMajors = function (section_label, filter) {
+    var cached_data = _preloadHistoricPanel(
+        'historic-course-major-panel', section_label, filter,
+        'historic-course-major-template');
+
+    if (cached_data) {
+        showHistoricStudentMajors(section_label, cached_data);
+    } else {
+        getHistoricStudentMajors(section_label, filter);
+    }
+};
+
+var showHistoricStudentMajors = function (section_label, data) {
+    var $panel = _postloadHistoricPanel(
+        'historic-course-major-panel',
+        section_label, data.filter, data,
+        'historic-course-major-template',
+        {
+            common_majors: data.student_majors
+        });
+
+    bind_events($panel);
+};
+
+var loadHistoricGraduatedMajors = function (section_label, filter) {
+    var cached_data = _preloadHistoricPanel(
+        'historic-grad-major-panel', section_label, filter,
+        'historic-grad-major-template');
+
+    if (cached_data) {
+        showHistoricGraduatedMajors(section_label, cached_data);
+    } else {
+        getHistoricGraduatedMajors(section_label, filter);
+    }
+};
+
+var showHistoricGraduatedMajors = function (section_label, data) {
+    var $panel = _postloadHistoricPanel(
+        'historic-grad-major-panel',
+        section_label, data.filter, data,
+        'historic-grad-major-template',
+        {
+            latest_majors: data.graduated_majors
+        });
+
+    bind_events($panel);
+};
+
+var showHistoricPreviousInstructors = function (section_label, data) {
+    var $panel = $('#historic-previous-instructors-panel');
+
+    $panel.html(
+        Handlebars.compile($('#historic-previous-instructors-template').html())({
+            instructors: getInstructorsByTerm(data.past_offerings.terms, data.sections)
+        }));
+
+    bind_events($panel);
+};
+
+var bind_events = function ($container, gpas, course_grades) {
+    setup_exposures($container);
+
+    $('[data-toggle="popover"]', $container).popover();
+    $('.popover-dismiss', $container).popover({ trigger: 'focus'});
+    if (gpas) {
+        $('.cumulative-popover', $container)
+            .on('inserted.bs.popover', function () {
+                renderGPADisribution('historic-gpa-distribution', gpas);
+            });
+    }
+
+    if (course_grades) {
+        $('.course-gpa-popover', $container)
+            .on('inserted.bs.popover', function () {
+                renderGPADisribution('historic-course-gpa-distribution',
+                                     course_grades);
+            });
     }
 };
 
@@ -150,46 +329,6 @@ var setup_exposures = function ($container) {
             return false;
         }
     });
-};
-
-//Calculates all of the common major/course lists based on historic selections
-var calculateCommon = function (past_offerings, list_type, name_type) {
-    var obj = {},
-        original_objects = {};
-
-    var term_obj = past_offerings[list_type];
-
-    for (var m = 0; m < term_obj.length; m++) {
-        if (obj.hasOwnProperty(term_obj[m][name_type])) {
-            obj[term_obj[m][name_type]] += term_obj[m].number_students;
-        } else {
-            obj[term_obj[m][name_type]] = term_obj[m].number_students;
-            original_objects[term_obj[m][name_type]] = term_obj[m];
-        }
-    }
-
-    var result = sortObj(obj, past_offerings.enrollment, name_type);
-
-    if (name_type === "course"){
-        for(var i = 0; i < result.length; i++){
-            result[i].title = original_objects[result[i].course].title;
-        }
-    }
-
-    return result;
-};
-
-//order majors/courses by number of students
-var sortObj = function (arr, total_students, name_type) {
-    var sorted = [];
-
-    for (var i in arr) {
-        if (name_type == "major")
-            sorted.push({"major":i, "number_students":arr[i], "percent_students": ((arr[i]/total_students)*100).toFixed(2)});
-        else
-            sorted.push({"course":i, "number_students":arr[i], "percent_students": ((arr[i]/total_students)*100).toFixed(2)});
-    }
-    return reverseSortByNumStudents(sorted);
 };
 
 var getInstructorsByTerm = function (term_list, sections) {
@@ -280,4 +419,41 @@ var isInstructor = function (data) {
     }
 
     return false;
+};
+
+var _preloadHistoricPanel = function (panel_id, section_label, filter, template_id) {
+    var template = Handlebars.compile($('#' + template_id).html()),
+        panel_class_name = _getHistoricPanelClassName(panel_id, section_label, filter),
+        cached_data = null;
+
+    $('#' + panel_id).html(template()).addClass(panel_class_name);
+
+    return window.historic_data_cache.hasOwnProperty(panel_class_name) ? window.historic_data_cache[panel_class_name] : null;
+};
+
+var _postloadHistoricPanel = function (panel_id, section_label, filter, data, template_id, context) {
+    var template = Handlebars.compile($('#' + template_id).html()),
+        panel_class_name = _getHistoricPanelClassName(panel_id, section_label, filter),
+        $panel = $('.' + panel_class_name);
+
+    $panel.html(template(context));
+
+    window.historic_data_cache[panel_class_name] = data;
+
+    return $panel;
+};
+
+var _getHistoricPanelClassName = function (panel_id, section_label, filter) {
+    var mashup = panel_id + section_label + '/' +
+        (((typeof filter !== 'undefined') && filter.year) ? filter.year : '') + '/' +
+        (((typeof filter !== 'undefined') && filter.quarter) ? filter.quarter : '') + '/' + 
+        (((typeof filter !== 'undefined') && filter.instructed) ? filter.instructed : '');
+
+    return "historic_" + Math.abs(
+        mashup.split("").reduce(
+            function (a, b) {
+                a = ((a << 5) - a) + b.charCodeAt(0);
+                return a & a;
+            }, 0)
+    );
 };

@@ -26,7 +26,13 @@ var showCourseData = function (label) {
         current_course_panel = (compare_terms(section.year,
                                               section.quarter.toLowerCase(),
                                               window.term.year,
-                                              window.term.quarter.toLowerCase()) >= 0);
+                                              window.term.quarter.toLowerCase()) >= 0),
+        performanceTemplate;
+
+    if (!current_course_panel && !section.loaded) {
+        fetchCourseData(label);
+        return;
+    }
 
     $.each(window.section_data, function () {
         if (this.curriculum == section.curriculum &&
@@ -56,23 +62,19 @@ var showCourseData = function (label) {
     }));
 
     if (current_course_panel) {
-        var currentPanel = $("#current-course-panel").html(),
-            currentPanelTemplate = Handlebars.compile(currentPanel);
-
-        $("#current-data-panel").html(currentPanelTemplate({
+        performanceTemplate = Handlebars.compile($("#current-performance-template").html());
+        $("#current-performance-panel").html(performanceTemplate({
             current_median: section.current_median ? section.current_median : 'N/A',
             current_num_registered: section.current_enrollment,
             current_capacity:section.limit_estimate_enrollment,
             current_repeat_students:section.current_repeating
         }));
     } else {
-        var historicPanel = $("#historic-course-panel").html(),
-            historicPanelTemplate = Handlebars.compile(historicPanel);
-
-        $("#current-data-panel").html(historicPanelTemplate({
+        performanceTemplate = Handlebars.compile($("#historic-performance-template").html());
+        $("#current-performance-panel").html(performanceTemplate({
             median_gpa: section.current_median ? (section.current_median) : 'N/A',
             median_course_grade: section.median_course_grade ? (section.median_course_grade) : 'N/A',
-            failed_percent: calculateFailedPercentage(section.course_grades),
+            failed_percent: section.course_grades ? calculateFailedPercentage(section.course_grades) : 'N/A',
             total_students: section.current_enrollment,
             section_count: 1,
             gpa_distribution_time: 'past'

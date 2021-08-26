@@ -20,10 +20,11 @@ var historicCacheData = function (section_label, filter, results) {
 };
 
 var fetchHistoricCourseData = function (section_label, filter) {
-    if (historicCacheData(section_label, filter)) {
+    var cached = historicCacheData(section_label, filter);
+
+    if (cached) {
         $('div.historic-section').trigger(
-            'coda:HistoricCourseDataSuccess',
-            [section_label, historicCacheData(section_label, filter)]);
+            'coda:HistoricCourseDataSuccess', [section_label, cached, filter]);
     } else {
         getHistoricCourseData(section_label, filter);
     }
@@ -34,10 +35,7 @@ var getHistoricCourseData = function (section_label, filter) {
     var startTime = Date.now();
 
     $.ajax({
-        url: "/api/v1/course/" + section_label + '/past' +
-            '?past_year=' + ((filter && filter.year !== undefined) ? filter.year : '') +
-            '&past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : '') +
-            '&instructed=' + (filter && filter.only_instructed ? 'true' : ''),
+        url: "/api/v1/course/" + section_label + '/past?' + _url_search_terms_from_filter(filter),
         dataType: "JSON",
         type: "GET",
         accepts: {html: "text/html"},
@@ -49,10 +47,10 @@ var getHistoricCourseData = function (section_label, filter) {
                 'value': totalTime
             });
 
-            historicCacheData(section_label, filter, results);
+            historicCacheData(section_label, filter, results, filter);
 
             $('div.historic-section').trigger(
-                'coda:HistoricCourseDataSuccess', [section_label, results]);
+                'coda:HistoricCourseDataSuccess', [section_label, results, filter]);
         },
         error: function(xhr, status, error) {
             console.log('ERROR (' + status + '): ' + error);
@@ -63,10 +61,91 @@ var getHistoricCourseData = function (section_label, filter) {
     });
 };
 
+var getHistoricPerformanceData = function (section_label, filter) {
+    var url = "/api/v1/course/" + section_label + '/past/performance?' +
+        _url_search_terms_from_filter(filter);
+
+    _getHistoricData(url, section_label, 'Performance');
+};
+
+var getHistoricConcurrentCourses = function (section_label, filter) {
+    var url = "/api/v1/course/" + section_label + '/past/concurrent?' +
+        _url_search_terms_from_filter(filter);
+
+    _getHistoricData(url, section_label, 'ConcurrentCourses');
+};
+
+var getHistoricCourseGPAs = function (section_label, courses) {
+    var url = "/api/v1/course/" + section_label + '/past/gpas?courses=';
+
+    $.each(courses, function (i) {
+        if (i) {
+            url += ',';
+        }
+
+        url += this.curriculum + '-' + this.course_number;
+    });
+
+    _getHistoricData(url, section_label, 'CourseGPAs');
+};
+
+var getHistoricStudentMajors = function (section_label, filter) {
+    var url = "/api/v1/course/" + section_label + '/past/studentmajor?' +
+        _url_search_terms_from_filter(filter);
+
+    _getHistoricData(url, section_label, 'StudentMajors');
+};
+
+var getHistoricGraduatedMajors = function (section_label, filter) {
+    var url = "/api/v1/course/" + section_label + '/past/graduatedmajor?' +
+        _url_search_terms_from_filter(filter);
+
+    _getHistoricData(url, section_label, 'GraduatedMajors');
+};
+
+var _getHistoricData = function (url, section_label, metric) {
+    var startTime = Date.now();
+
+    $.ajax({
+        url: url,
+        dataType: "JSON",
+        type: "GET",
+        accepts: {html: "text/html"},
+        success: function(results) {
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'historic_studentmajor_data', {
+                'eventLabel': section_label,
+                'value': totalTime
+            });
+
+            $('div.historic-section').trigger(
+                'coda:Historic' + metric + 'Success', [section_label, results]);
+        },
+        error: function(xhr, status, error) {
+            console.log('ERROR (' + status + '): ' + error);
+        }
+    });
+};
+
+var _url_search_terms_from_filter = function (filter) {
+    return ['past_year=' + ((filter && filter.year !== undefined) ? filter.year : ''),
+            'past_quarter=' + ((filter && filter.quarter !== undefined) ? filter.quarter : ''),
+            'instructed=' + (filter && filter.only_instructed ? 'true' : '')].join('&');
+};
+
 var startLoadingHistoricCourseData = function () {
     $(".section-container.historic-section").addClass('loading');
 };
 
 var stopLoadingHistoricCourseData = function () {
+    $(".section-container.historic-section").removeClass('loading');
+};
+
+var startLoadingHistoricPerformanceData = function () {
+    $(".section-container.historic-section").addClass('loading');
+};
+
+var stopLoadingHistoricPerformanceData = function () {
     $(".section-container.historic-section").removeClass('loading');
 };

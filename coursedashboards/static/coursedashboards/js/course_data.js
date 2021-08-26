@@ -5,12 +5,20 @@
 
 
 var setSectionDataByLabel = function (label, section) {
+    var is_loaded = false;
+
     $.each(window.section_data, function (i) {
         if (this.section_label == label) {
             window.section_data[i] = section;
+            is_loaded = true;
             return false;
         }
     });
+
+    if (!is_loaded) {
+        section.section_label = section_label;
+        window.section_data.push(section);
+    }
 };
 
 var fetchCourseData = function (label) {

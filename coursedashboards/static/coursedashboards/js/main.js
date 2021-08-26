@@ -4,6 +4,8 @@
 
 
 $(document).ready(function () {
+    window.historic_data_cache = {};
+
     displayPageHeader();
 
     if ($(".course-select").length === 0) {
@@ -49,17 +51,41 @@ var registerEvents = function () {
                 showCourseData(label);
             })
         .on(
-            'change', '#current-course-target select[name="course_quarters"]',
+            'change', 'select[name="course_quarters"]',
             function (e) {
-                $('#course_quarters').html('');
-                displaySelectedCourse();
+                var id = $('option:selected', $(this)).val();
+                fetchCourseData(id);
             });
 
     $('div.historic-section')
-        .on(
-            'coda:HistoricCourseDataSuccess',
-            function (e, section_data, data) {
-                showHistoricCourseData(section_data, data);
+        .on('coda:HistoricCourseDataSuccess',
+            function (e, section_label, data, filter) {
+                if (showHistoricCourseData(section_label, data, filter)) {
+                    loadHistoricPerformanceData(section_label, filter);
+                    loadHistoricConcurrentCourses(section_label, filter);
+                    loadHistoricStudentMajors(section_label, filter);
+                    loadHistoricGraduatedMajors(section_label, filter);
+                }
+            })
+        .on('coda:HistoricPerformanceSuccess',
+            function (e, section_label, data) {
+                showHistoricPerformanceData(section_label, data);
+            })
+        .on('coda:HistoricConcurrentCoursesSuccess',
+            function (e, section_label, data) {
+                showHistoricConcurrentCourses(section_label, data);
+            })
+        .on('coda:HistoricCourseGPAsSuccess',
+            function (e, section_label, data) {
+                showHistoricCourseGPAs(section_label, data);
+            })
+        .on('coda:HistoricStudentMajorsSuccess',
+            function (e, section_label, data) {
+                showHistoricStudentMajors(section_label, data);
+            })
+        .on('coda:HistoricGraduatedMajorsSuccess',
+            function (e, section_label, data) {
+                showHistoricGraduatedMajors(section_label, data);
             })
         .on('click', '#myTab .all-courses', function (e) {
             var filter = filterChoices();
@@ -73,6 +99,17 @@ var registerEvents = function () {
             var filter = filterChoices(
                 (this.name === 'historic_filter_year') ? this.value : null,
                 (this.name === 'historic_filter_quarter') ? this.value : null);
+
+            fetchHistoricCourseData(getSelectedCourseLabel(), filter);
+        })
+        .on('change', '#mycourses #historic_filter_instructed', function (e) {
+            var filter = { only_instructed: true },
+                parts = this.value.split('-');
+
+            if (parts.length == 2) {
+                filter.year = parts[0];
+                filter.quarter = parts[1];
+            }
 
             fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });

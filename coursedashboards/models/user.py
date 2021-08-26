@@ -30,6 +30,21 @@ class User(models.Model):
     is_alum = models.BooleanField(default=False)
     is_faculty = models.BooleanField(default=False)
 
+    def to_json(self):
+        return {
+            'uwnetid': self.uwnetid,
+            'display_name': self.display_name,
+            'preferred_first_name': self.preferred_first_name,
+            'preferred_middle_name': self.preferred_middle_name,
+            'preferred_surname': self.preferred_surname,
+            'email': self.email,
+            'is_student': self.is_student,
+            'is_staff': self.is_staff,
+            'is_employee': self.is_employee,
+            'is_alum': self.is_alum,
+            'is_faculty': self.is_faculty
+        }
+
 
 class QuarterGPA(models.Model):
     user = models.ForeignKey(User,

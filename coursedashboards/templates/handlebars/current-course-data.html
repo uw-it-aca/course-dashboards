@@ -8,7 +8,7 @@
             <label for="my_courses" class="visually-hidden">My Courses:</label>
             <select class="form-control form-control-sm" name="course_quarters" id="course_quarters" aria-contols="current-quarter-target">
               {{#each terms}}
-              <option data-year="{{year}}" data-quarter="{{quarter}}"{{#if selected}} selected{{/if}}>{{quarter}} {{year}}{{#if current}} (current){{/if}}</option>
+              <option value="{{year}}-{{toLowerCase quarter}}-{{toUpperCase ../curriculum}}-{{../course_number}}-{{../section_id}}"{{#if selected}} selected{{/if}}>{{quarter}} {{year}}{{#if current}} (current){{/if}}</option>
               {{/each}}
             </select>
         </div>
@@ -21,13 +21,13 @@
     </div>
 </div>
 {{#if display_course}}
-<div id="current-data-panel"></div>
+<div id="current-performance-panel"></div>
 <div class="row ">
   <div class="list col" aria-labelledby="current_concurrent_courses">
     <h4 id="current_concurrent_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Make connections between your course and other courses your students are taking. The number in parenthesis is the median grade of the course. This provides insight into the difficulty of your students' course load."></i></span><br><small>When taking the course</small></h4>
     <ol class="list-unstyled">
       {{#each concurrent_courses}}
-      <li><strong>{{ roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat curriculum course_number section_id}}"> {{curriculum}}-{{course_number}}-{{section_id}} </a> </span> {{# if mean_gpa}}({{toFixed mean_gpa 2}}){{/if}}</li>
+      <li><strong>{{ roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat curriculum course_number section_id}}"> {{course_ref}} </a> </span><span id="{{course_ref}}-gpa"></span>
       {{/each}}
     </ol>
     <div><a href="#" class="toggle-show" data-toggle-length-max=20>Show more<span class="sr-only"> concurrent courses taken this quarter</span>...</a></div>
@@ -51,33 +51,5 @@
 <li>To protect you and your colleagues' privacy, we do not show data for a single course, unless it's a course you've taught.</li></ul></p>
 </div>
 {{/if}}
-</script>
-
-
-<script id="current-course-panel" type="text/x-handlebars-template">
-<div class="current-data-row row">
-  <div class="current-enrollment course-data-widget col">
-    <div class="d-inline-block course-data-items">
-      <div class="course-data-description">Currently Registered</div>
-      <div class="course-data-number" title="{{current_num_registered}} of {{current_capacity}} registered students">{{current_num_registered}}/{{current_capacity}}<i class="ion-ios-people" aria-hidden="true"></i></div>
-    </div>
-  </div>
-  <div class="current-enrollment course-data-widget col">
-    <div class="d-inline-block course-data-items">
-      <div class="course-data-description">Repeating Students<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Repeating Students" data-content="This is the number of students who have received a grade in a previous offering of the course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
-      <div class="course-data-number" title="{{current_repeat_students}} repeating students">{{current_repeat_students}}<i class="ion-android-refresh" aria-hidden="true"></i></div>
-    </div>
-  </div>
-</div>
-<div class="current-data-row row">
-  <div class="current-median course-data-widget col">
-    <div class="d-inline-block course-data-items">
-      <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumulative GPA" data-content="This is the midpoint of the cumulative GPAs of the students who are currently in your class.  If the median is lower than past offerings, spend more time on the most challenging topics."></i></span></div>
-      <div class="course-data-number" title="{{current_median}} Median Cumulative GPA">{{current_median}}<i class="ion-stats-bars cumulative-popover" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="current-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
-    </div>
-  </div>
-  <div id="x-current-course-grade-distribution" class="placeholder-col col">
-  </div>
-</div>
 </script>
 {% endverbatim %}

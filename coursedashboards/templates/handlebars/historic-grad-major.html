@@ -1,0 +1,20 @@
+{% verbatim %}
+<script id="historic-grad-major-template" type="text/x-handlebars-template">
+     <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Learn what your students go on to major in. Is your course a 'gateway' course to a particular field of study?"></i></span><br><small>Upon graduation</small></h4>
+    {{#is_defined latest_majors}}
+     <ol class="list-unstyled" aria-labelledby="historic_declared_majors_graduation">
+        {{#each latest_majors}}
+        <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major_name}} </span></li>
+        {{/each}}
+        <li class="small">Total will not add up to 100% if students have yet to graduate.</li>
+    </ol>
+    {{else}}
+      <div class="loading-placeholder" style="height: .9em; width: 1em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 10em;"></div>
+      <br /><div class="loading-placeholder" style="height: .9em; width: 1em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 10em;"></div>
+      <br /><div class="loading-placeholder" style="height: .9em; width: 1em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 10em;"></div>
+      <br /><div class="loading-placeholder" style="height: .9em; width: 1em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 10em;"></div>
+      <br /><div class="loading-placeholder" style="height: .9em; width: 1em;"></div> &nbsp;<div class="loading-placeholder" style="height: .9em; width: 10em;"></div>
+    {{/is_defined}}
+    <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> declared majors upon graduation</span>...</a></div>
+</script>
+{% endverbatim %}
