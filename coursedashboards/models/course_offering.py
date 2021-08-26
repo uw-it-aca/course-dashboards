@@ -72,7 +72,8 @@ class CourseOffering(models.Model):
     @profile
     def get_gpas(self, terms=None):
         registrations = Registration.objects.filter(
-            user_id__in=self.get_students(terms=terms)
+            user_id__in=self.get_students(terms=terms),
+            term__term_key__lt=self.term.term_key
         ).values(
             'grade', 'credits', 'user'
         ).annotate(
@@ -302,8 +303,8 @@ class CourseOffering(models.Model):
     def set_json_course_grades(self, json_obj):
         grades = self.get_grades()
         json_obj['course_grades'] = grades
-        json_obj['median_course_grade'] = self.get_cumulative_median_gpa(
-            grades)
+        json_obj[
+            'median_course_grade'] = self.get_cumulative_median_gpa(grades)
 
     def set_json_concurrent_courses(self, json_obj):
         json_obj['concurrent_courses'] = self.concurrent_courses()

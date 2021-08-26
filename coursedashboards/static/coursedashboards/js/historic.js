@@ -155,15 +155,17 @@ var showHistoricPerformanceData = function (section_label, data) {
     var template = Handlebars.compile($('#historic-performance-template').html()),
         $panel = $('#historic-performance-panel');
 
-    $panel.html(template({
-        median_gpa: calculateMedianGPA(data.performance.gpas),
-        median_course_grade: calculateCourseMedian(data.performance.course_grades),
-        failed_percent: calculateFailedPercentage(data.performance.course_grades),
-        total_students: data.performance.enrollment,
-        section_count: data.performance.offering_count,
-        gpa_distribution_time: 'historic'}));
+    if ($('.historic-enrollment', $panel).length == 1) {
+        $panel.html(template({
+            median_gpa: calculateMedianGPA(data.performance.gpas),
+            median_course_grade: calculateCourseMedian(data.performance.course_grades),
+            failed_percent: calculateFailedPercentage(data.performance.course_grades),
+            total_students: data.performance.enrollment,
+            section_count: data.performance.offering_count,
+            gpa_distribution_time: 'historic'}));
 
-    bind_events($panel, data.performance.gpas, data.performance.course_grades);
+        bind_events($panel, data.performance.gpas, data.performance.course_grades);
+    }
 };
 
 var loadHistoricConcurrentCourses = function (section_label, filter) {
