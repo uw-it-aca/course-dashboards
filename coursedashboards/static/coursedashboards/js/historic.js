@@ -145,43 +145,44 @@ var setupHistoricTermSelector = function (data) {
 };
 
 var loadHistoricPerformanceData = function (section_label, filter) {
-    var template = Handlebars.compile($('#historic-performance-template').html());
-
-    $('#historic-performance-panel').html(template());
+    _preloadHistoricPanel('historic-performance-panel',
+                          section_label, filter,
+                          'historic-performance-template');
     getHistoricPerformanceData(section_label, filter);
 };
 
 var showHistoricPerformanceData = function (section_label, data) {
-    var template = Handlebars.compile($('#historic-performance-template').html()),
-        $panel = $('#historic-performance-panel');
-
-    if ($('.historic-enrollment', $panel).length == 1) {
-        $panel.html(template({
+    var $panel = _postloadHistoricPanel(
+        'historic-performance-panel',
+        section_label, data.filter,
+        'historic-performance-template',
+        {
             median_gpa: calculateMedianGPA(data.performance.gpas),
             median_course_grade: calculateCourseMedian(data.performance.course_grades),
             failed_percent: calculateFailedPercentage(data.performance.course_grades),
             total_students: data.performance.enrollment,
             section_count: data.performance.offering_count,
-            gpa_distribution_time: 'historic'}));
+            gpa_distribution_time: 'historic'
+        });
 
-        bind_events($panel, data.performance.gpas, data.performance.course_grades);
-    }
+    bind_events($panel, data.performance.gpas, data.performance.course_grades);
 };
 
 var loadHistoricConcurrentCourses = function (section_label, filter) {
-    var template = Handlebars.compile($("#historic-concurrent-courses-template").html());
-
-    $('#historic-concurrent-courses-panel').html(template());
+    _preloadHistoricPanel('historic-concurrent-courses-panel',
+                          section_label, filter,
+                          'historic-concurrent-courses-template');
     getHistoricConcurrentCourses(section_label, filter);
 };
 
 var showHistoricConcurrentCourses = function (section_label, data) {
-    var template = Handlebars.compile($("#historic-concurrent-courses-template").html()),
-        $panel = $('#historic-concurrent-courses-panel');
-
-    $panel.html(template({
-        common_courses: data.concurrent_courses
-    }));
+    var $panel = _postloadHistoricPanel(
+        'historic-concurrent-courses-panel',
+        section_label, data.filter,
+        'historic-concurrent-courses-template',
+        {
+            common_courses: data.concurrent_courses
+        });
 
     bind_events($panel);
 
@@ -198,37 +199,39 @@ var showHistoricCourseGPAs = function (section_label, data) {
 };
 
 var loadHistoricStudentMajors = function (section_label, filter) {
-    var template = Handlebars.compile($("#historic-course-major-template").html());
-
-    $('#historic-course-major-panel').html(template());
+    _preloadHistoricPanel('historic-course-major-panel',
+                          section_label, filter,
+                          'historic-course-major-template');
     getHistoricStudentMajors(section_label, filter);
 };
 
 var showHistoricStudentMajors = function (section_label, data) {
-    var template = Handlebars.compile($("#historic-course-major-template").html()),
-        $panel = $('#historic-course-major-panel');
-
-    $panel.html(template({
-        common_majors: data.student_majors
-    }));
+    var $panel = _postloadHistoricPanel(
+        'historic-course-major-panel',
+        section_label, data.filter,
+        'historic-course-major-template',
+        {
+            common_majors: data.student_majors
+        });
 
     bind_events($panel);
 };
 
 var loadHistoricGraduatedMajors = function (section_label, filter) {
-    var template = Handlebars.compile($("#historic-grad-major-template").html());
-
-    $('#historic-grad-major-panel').html(template());
+    _preloadHistoricPanel('historic-grad-major-panel',
+                          section_label, filter, 
+                          'historic-grad-major-template');
     getHistoricGraduatedMajors(section_label, filter);
 };
 
 var showHistoricGraduatedMajors = function (section_label, data) {
-    var template = Handlebars.compile($("#historic-grad-major-template").html()),
-        $panel = $('#historic-grad-major-panel');
-
-    $panel.html(template({
-        latest_majors: data.graduated_majors
-    }));
+    var $panel = _postloadHistoricPanel(
+        'historic-grad-major-panel',
+        section_label, data.filter,
+        'historic-grad-major-template',
+        {
+            latest_majors: data.graduated_majors
+        });
 
     bind_events($panel);
 };
@@ -243,7 +246,6 @@ var showHistoricPreviousInstructors = function (section_label, data) {
 
     bind_events($panel);
 };
-
 
 var bind_events = function ($container, gpas, course_grades) {
     setup_exposures($container);
@@ -309,46 +311,6 @@ var setup_exposures = function ($container) {
             return false;
         }
     });
-};
-
-//Calculates all of the common major/course lists based on historic selections
-var calculateCommon = function (past_offerings, list_type, name_type) {
-    var obj = {},
-        original_objects = {};
-
-    var term_obj = past_offerings[list_type];
-
-    for (var m = 0; m < term_obj.length; m++) {
-        if (obj.hasOwnProperty(term_obj[m][name_type])) {
-            obj[term_obj[m][name_type]] += term_obj[m].number_students;
-        } else {
-            obj[term_obj[m][name_type]] = term_obj[m].number_students;
-            original_objects[term_obj[m][name_type]] = term_obj[m];
-        }
-    }
-
-    var result = sortObj(obj, past_offerings.enrollment, name_type);
-
-    if (name_type === "course"){
-        for(var i = 0; i < result.length; i++){
-            result[i].title = original_objects[result[i].course].title;
-        }
-    }
-
-    return result;
-};
-
-//order majors/courses by number of students
-var sortObj = function (arr, total_students, name_type) {
-    var sorted = [];
-
-    for (var i in arr) {
-        if (name_type == "major")
-            sorted.push({"major":i, "number_students":arr[i], "percent_students": ((arr[i]/total_students)*100).toFixed(2)});
-        else
-            sorted.push({"course":i, "number_students":arr[i], "percent_students": ((arr[i]/total_students)*100).toFixed(2)});
-    }
-    return reverseSortByNumStudents(sorted);
 };
 
 var getInstructorsByTerm = function (term_list, sections) {
@@ -439,4 +401,42 @@ var isInstructor = function (data) {
     }
 
     return false;
+};
+
+var _preloadHistoricPanel = function (panel_id, section_label, filter, template_id) {
+    var template = Handlebars.compile($('#' + template_id).html());
+
+    $('#' + panel_id)
+        .html(template())
+        .addClass(_getHistoricPanelClassName(panel_id, section_label, filter));
+};
+
+var _postloadHistoricPanel = function (panel_id, section_label, filter, template_id, context) {
+    var template = Handlebars.compile($('#' + template_id).html()),
+        $panel = _getHistoricPanel(panel_id, section_label, filter);
+
+    $panel.html(template(context));
+
+    return $panel;
+};
+
+var _getHistoricPanel = function (panel_id, section_label, filter) {
+    return $('.' + _getHistoricPanelClassName(panel_id, section_label, filter));
+};
+
+var _getHistoricPanelClassName = function (panel_id, section_label, filter) {
+    var mashup = panel_id + section_label + '/' +
+        (((typeof filter !== 'undefined') && filter.year) ? filter.year : '') + '/' +
+        (((typeof filter !== 'undefined') && filter.quarter) ? filter.quarter : '') + '/' + 
+        (((typeof filter !== 'undefined') && filter.instructed) ? filter.instructed : '');
+
+    console.log('MASHUP: ' + mashup);
+
+    return "historic_" + Math.abs(
+        mashup.split("").reduce(
+            function (a, b) {
+                a = ((a << 5) - a) + b.charCodeAt(0);
+                return a & a;
+            }, 0)
+    );
 };
