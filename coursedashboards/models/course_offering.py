@@ -474,9 +474,18 @@ class CourseOffering(models.Model):
             'term', flat=True
         ).distinct()
 
-        # 20 (5 year) most recent
+        # by policy, only select past 20 terms (5 years)
+        oldest_term_year = self.term.year - 5
+        try:
+            last_term = Term.objects.get(
+                year=oldest_term_year, quarter=self.term.quarter)
+        except Term.DoesNotExist:
+            last_term = Term.objects.create(
+                year=oldest_term_year, quarter=self.term.quarter)
+
         return [t.id for t in sorted(
-            Term.objects.filter(id__in=term_ids), reverse=True)][:20]
+            Term.objects.filter(id__in=term_ids), reverse=True) if (
+                t >= last_term)]
 
     def past_offerings_json_object(
             self, past_year='', past_quarter='', instructor=None):
