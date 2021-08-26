@@ -72,8 +72,7 @@ class CourseOffering(models.Model):
     @profile
     def get_gpas(self, terms=None):
         registrations = Registration.objects.filter(
-            user_id__in=self.get_students(terms=terms),
-            term__term_key__lt=self.term.term_key
+            user_id__in=self.get_students(terms=terms)
         ).values(
             'grade', 'credits', 'user'
         ).annotate(
