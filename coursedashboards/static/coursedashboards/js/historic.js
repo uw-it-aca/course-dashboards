@@ -46,13 +46,12 @@ var showHistoricCourseData = function (section_label, data, filter) {
         // select filter terms and set appropriate options
         if (data.filter.year) {
             $('#historic_filter_year').val(data.filter.year);
+            $('#historic_filter_quarter option').slice(1).attr('disabled', 'disabled');
             $.each(window.historic_terms.raw, function () {
                 var $option = $('#historic_filter_quarter option[value="' + this.quarter + '"]');
 
                 if (this.year === data.filter.year) {
                     $option.removeAttr('disabled', 'disabled');
-                } else {
-                    $option.attr('disabled', 'disabled');
                 }
             });
         } else {
@@ -62,13 +61,12 @@ var showHistoricCourseData = function (section_label, data, filter) {
 
         if (data.filter.quarter) {
             $('#historic_filter_quarter').val(data.filter.quarter);
+            $('#historic_filter_year option').slice(1).attr('disabled', 'disabled');
             $.each(window.historic_terms.raw, function () {
                 var $option = $('#historic_filter_year option[value="' + this.year + '"]');
 
                 if (this.quarter === data.filter.quarter) {
                     $option.removeAttr('disabled', 'disabled');
-                } else {
-                    $option.attr('disabled', 'disabled');
                 }
             });
         } else {
