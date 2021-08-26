@@ -24,7 +24,7 @@ var fetchHistoricCourseData = function (section_label, filter) {
 
     if (cached) {
         $('div.historic-section').trigger(
-            'coda:HistoricCourseDataSuccess', [section_label, cached]);
+            'coda:HistoricCourseDataSuccess', [section_label, cached, filter]);
     } else {
         getHistoricCourseData(section_label, filter);
     }
