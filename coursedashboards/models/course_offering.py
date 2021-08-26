@@ -14,6 +14,7 @@ from coursedashboards.models.major import StudentMajor
 from coursedashboards.util.profile import (
     profile, log_profile_data, clear_prof_data)
 from threading import Thread
+from uw_sws.term import get_current_term
 import logging
 
 
@@ -475,7 +476,8 @@ class CourseOffering(models.Model):
         ).distinct()
 
         # by policy, only select past 20 terms (5 years)
-        oldest_term_year = self.term.year - 5
+        current_term = get_current_term()
+        oldest_term_year = current_term.year - 5
         try:
             last_term = Term.objects.get(
                 year=oldest_term_year, quarter=self.term.quarter)
