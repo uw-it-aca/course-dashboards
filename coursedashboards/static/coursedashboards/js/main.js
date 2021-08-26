@@ -4,6 +4,8 @@
 
 
 $(document).ready(function () {
+    window.historic_data_cache = {};
+
     displayPageHeader();
 
     if ($(".course-select").length === 0) {

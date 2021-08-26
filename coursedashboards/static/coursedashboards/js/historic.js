@@ -145,16 +145,21 @@ var setupHistoricTermSelector = function (data) {
 };
 
 var loadHistoricPerformanceData = function (section_label, filter) {
-    _preloadHistoricPanel('historic-performance-panel',
-                          section_label, filter,
-                          'historic-performance-template');
-    getHistoricPerformanceData(section_label, filter);
+    var cached_data = _preloadHistoricPanel(
+        'historic-performance-panel', section_label, filter,
+        'historic-performance-template');
+
+    if (cached_data) {
+        showHistoricPerformanceData(section_label, cached_data);
+    } else {
+        getHistoricPerformanceData(section_label, filter);
+    }
 };
 
 var showHistoricPerformanceData = function (section_label, data) {
     var $panel = _postloadHistoricPanel(
         'historic-performance-panel',
-        section_label, data.filter,
+        section_label, data.filter, data,
         'historic-performance-template',
         {
             median_gpa: calculateMedianGPA(data.performance.gpas),
@@ -169,16 +174,21 @@ var showHistoricPerformanceData = function (section_label, data) {
 };
 
 var loadHistoricConcurrentCourses = function (section_label, filter) {
-    _preloadHistoricPanel('historic-concurrent-courses-panel',
-                          section_label, filter,
-                          'historic-concurrent-courses-template');
-    getHistoricConcurrentCourses(section_label, filter);
+    var cached_data = _preloadHistoricPanel(
+        'historic-concurrent-courses-panel', section_label, filter,
+        'historic-concurrent-courses-template');
+
+    if (cached_data) {
+        showHistoricConcurrentCourses(section_label, cached_data);
+    } else {
+        getHistoricConcurrentCourses(section_label, filter);
+    }
 };
 
 var showHistoricConcurrentCourses = function (section_label, data) {
     var $panel = _postloadHistoricPanel(
         'historic-concurrent-courses-panel',
-        section_label, data.filter,
+        section_label, data.filter, data,
         'historic-concurrent-courses-template',
         {
             common_courses: data.concurrent_courses
@@ -199,16 +209,21 @@ var showHistoricCourseGPAs = function (section_label, data) {
 };
 
 var loadHistoricStudentMajors = function (section_label, filter) {
-    _preloadHistoricPanel('historic-course-major-panel',
-                          section_label, filter,
-                          'historic-course-major-template');
-    getHistoricStudentMajors(section_label, filter);
+    var cached_data = _preloadHistoricPanel(
+        'historic-course-major-panel', section_label, filter,
+        'historic-course-major-template');
+
+    if (cached_data) {
+        showHistoricStudentMajors(section_label, cached_data);
+    } else {
+        getHistoricStudentMajors(section_label, filter);
+    }
 };
 
 var showHistoricStudentMajors = function (section_label, data) {
     var $panel = _postloadHistoricPanel(
         'historic-course-major-panel',
-        section_label, data.filter,
+        section_label, data.filter, data,
         'historic-course-major-template',
         {
             common_majors: data.student_majors
@@ -218,16 +233,21 @@ var showHistoricStudentMajors = function (section_label, data) {
 };
 
 var loadHistoricGraduatedMajors = function (section_label, filter) {
-    _preloadHistoricPanel('historic-grad-major-panel',
-                          section_label, filter, 
-                          'historic-grad-major-template');
-    getHistoricGraduatedMajors(section_label, filter);
+    var cached_data = _preloadHistoricPanel(
+        'historic-grad-major-panel', section_label, filter,
+        'historic-grad-major-template');
+
+    if (cached_data) {
+        showHistoricGraduatedMajors(section_label, cached_data);
+    } else {
+        getHistoricGraduatedMajors(section_label, filter);
+    }
 };
 
 var showHistoricGraduatedMajors = function (section_label, data) {
     var $panel = _postloadHistoricPanel(
         'historic-grad-major-panel',
-        section_label, data.filter,
+        section_label, data.filter, data,
         'historic-grad-major-template',
         {
             latest_majors: data.graduated_majors
@@ -404,24 +424,25 @@ var isInstructor = function (data) {
 };
 
 var _preloadHistoricPanel = function (panel_id, section_label, filter, template_id) {
-    var template = Handlebars.compile($('#' + template_id).html());
+    var template = Handlebars.compile($('#' + template_id).html()),
+        panel_class_name = _getHistoricPanelClassName(panel_id, section_label, filter),
+        cached_data = null;
 
-    $('#' + panel_id)
-        .html(template())
-        .addClass(_getHistoricPanelClassName(panel_id, section_label, filter));
+    $('#' + panel_id).html(template()).addClass(panel_class_name);
+
+    return window.historic_data_cache.hasOwnProperty(panel_class_name) ? window.historic_data_cache[panel_class_name] : null;
 };
 
-var _postloadHistoricPanel = function (panel_id, section_label, filter, template_id, context) {
+var _postloadHistoricPanel = function (panel_id, section_label, filter, data, template_id, context) {
     var template = Handlebars.compile($('#' + template_id).html()),
-        $panel = _getHistoricPanel(panel_id, section_label, filter);
+        panel_class_name = _getHistoricPanelClassName(panel_id, section_label, filter),
+        $panel = $('.' + panel_class_name);
 
     $panel.html(template(context));
 
-    return $panel;
-};
+    window.historic_data_cache[panel_class_name] = data;
 
-var _getHistoricPanel = function (panel_id, section_label, filter) {
-    return $('.' + _getHistoricPanelClassName(panel_id, section_label, filter));
+    return $panel;
 };
 
 var _getHistoricPanelClassName = function (panel_id, section_label, filter) {
@@ -429,8 +450,6 @@ var _getHistoricPanelClassName = function (panel_id, section_label, filter) {
         (((typeof filter !== 'undefined') && filter.year) ? filter.year : '') + '/' +
         (((typeof filter !== 'undefined') && filter.quarter) ? filter.quarter : '') + '/' + 
         (((typeof filter !== 'undefined') && filter.instructed) ? filter.instructed : '');
-
-    console.log('MASHUP: ' + mashup);
 
     return "historic_" + Math.abs(
         mashup.split("").reduce(
