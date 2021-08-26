@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [master, develop, feature/historic-load-performance]
+    branches: [master, develop]
   pull_request:
     branches: [master, develop]
     types: [opened, reopened, synchronize]
@@ -123,6 +123,11 @@ jobs:
           commit_hash: ${{ needs.context.outputs.commit_hash }}
           git_repo_branch: ${{ needs.context.outputs.git_repo_branch }}
           gh_auth_token: ${{ secrets.GH_AUTH_TOKEN }}
+
+      - name: 'Surface context from executed build step'
+        id: context
+        shell: bash
+        run: echo "::set-output name=context::$(< ${CONTEXT_FILENAME})"
 
   housekeeping:
     if: github.event_name == 'push'
