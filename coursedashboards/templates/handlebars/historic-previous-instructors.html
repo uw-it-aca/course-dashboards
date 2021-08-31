@@ -1,0 +1,21 @@
+{% verbatim %}
+<script id="historic-previous-instructors-template" type="text/x-handlebars-template">
+    <div class="list previous-instructors col">
+       <h4 id="previous_instructors" class="list-header">Previous Instructors or TAs for this course<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Previous Instructors or TAs" data-content="Reach out to past instructors or TAs to share ideas and materials."></i></span></h4>
+       <!-- <div class="contact-year-{{ year }} contact-quarter-{{ quarter }}{{#gt @index 1}} visually-hidden{{/gt}}"> -->
+       <ol class="list-unstyled" aria-labelledby="previous_instructors">
+         {{#each instructors}}
+         <li>
+           <h5 class="text-capitalize">{{ quarter }} {{ year }}</h5>
+           <ol class="list-unstyled">
+             {{#each instructors}}
+             <li><a href="mailto:{{email}}">{{ formatName surname }}, {{ formatName first_name }}</a>{{#if is_faculty}} - Faculty{{else}}{{#if is_student}} - Grad Student{{else}}{{#if is_member}} - Former Faculty{{else}}{{#if is_alum}} - Former Grad Student{{/if}}{{/if}}{{/if}}{{/if}}</li>
+             {{/each}}
+           </ol>
+         </li>
+         {{/each}}
+       </ol>
+       <div><a href="#" class='toggle-show' data-toggle-length=4>Show more<span class="sr-only"> previous instructors</span>...</a></div>
+    </div>
+</script>
+{% endverbatim %}

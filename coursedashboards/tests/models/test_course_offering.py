@@ -1,7 +1,7 @@
 from unittest import TestCase
 from django.test import TransactionTestCase
 from coursedashboards.models import Course, Term, CourseOffering, User, \
-    Registration, Major, StudentMajor
+    Registration, Major, StudentMajor, Instructor
 
 
 class TestCourseOffering(TransactionTestCase):
@@ -61,6 +61,35 @@ class TestCourseOffering(TransactionTestCase):
         self.winter_ess.current_enrollment = 25
         self.winter_ess.limit_estimate_enrollment = 25
         self.winter_ess.save()
+
+        self.autumn_ess = CourseOffering()
+        self.autumn_ess.course = self.course
+        self.autumn_ess.term = self.autumn
+        self.autumn_ess.current_enrollment = 19
+        self.autumn_ess.limit_estimate_enrollment = 25
+        self.autumn_ess.save()
+
+        self.ess_instructor_user = User()
+        self.ess_instructor_user.uwnetid = "jinstructor"
+        self.ess_instructor_user.save()
+
+        self.ess_instructor = Instructor()
+        self.ess_instructor.user = self.ess_instructor_user
+        self.ess_instructor.course = self.course
+        self.ess_instructor.term = self.spring
+        self.ess_instructor.save()
+
+        self.ess_instructor2 = Instructor()
+        self.ess_instructor2.user = self.ess_instructor_user
+        self.ess_instructor2.course = self.course
+        self.ess_instructor2.term = self.winter
+        self.ess_instructor2.save()
+
+        self.ess_instructor3 = Instructor()
+        self.ess_instructor3.user = self.ess_instructor_user
+        self.ess_instructor3.course = self.course
+        self.ess_instructor3.term = self.autumn
+        self.ess_instructor3.save()
 
         self.majors = []
 
@@ -238,7 +267,6 @@ class TestCourseOffering(TransactionTestCase):
     def test_get_concurrent_courses(self):
         concurrent = self.spring_ess.concurrent_courses()
         self.assertEqual(len(concurrent), 1)
-        self.assertEqual(concurrent[0]['number_students'], 2)
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
@@ -254,7 +282,6 @@ class TestCourseOffering(TransactionTestCase):
     def test_graduated_majors(self):
         graduated_majors = self.winter_ess.get_graduated_majors()
         self.assertEqual(len(graduated_majors), 1)
-        self.assertEqual(graduated_majors[0]['number_students'], 1)
 
     def test_student_cgpa(self):
         gpas = self.winter_ess.get_gpas()
@@ -267,9 +294,8 @@ class TestCourseOffering(TransactionTestCase):
 
     def test_past_json(self):
         json = self.spring_ess.past_offerings_json_object()
-        json = json['past_offerings'][0]
-
-        self.assertEqual(json['enrollment'], 25)
+        self.assertEqual(len(json['past_offerings']['terms']), 2)
+        self.assertEqual(json['past_offerings']['enrollment'], 44)
 
     def test_get_grades(self):
         grades = self.winter_ess.get_grades()
@@ -280,11 +306,9 @@ class TestCourseOffering(TransactionTestCase):
 
         self.assertEqual(len(majors), 2)
 
-        self.assertEqual(majors[0]['major'], 'Computer Science')
-        self.assertEqual(majors[0]['number_students'], 2)
+        self.assertEqual(majors[0]['major_name'], 'Computer Science')
 
-        self.assertEqual(majors[1]['major'], 'Pre Science')
-        self.assertEqual(majors[1]['number_students'], 2)
+        self.assertEqual(majors[1]['major_name'], 'Pre Science')
 
     def test_process_grade_totals(self):
 
@@ -330,10 +354,16 @@ class TestCourseOffering(TransactionTestCase):
         for major in self.majors:
             major.delete()
 
+        self.ess_instructor.delete()
+        self.ess_instructor2.delete()
+        self.ess_instructor3.delete()
+        self.ess_instructor_user.delete()
+
         self.spring_cse.delete()
         self.cse_142.delete()
         self.spring_ess.delete()
         self.winter_ess.delete()
+        self.autumn_ess.delete()
         self.course.delete()
         self.spring.delete()
         self.winter.delete()

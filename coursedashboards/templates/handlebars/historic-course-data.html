@@ -1,100 +1,72 @@
 {% verbatim %}
 <script id="historic-course-data" type="text/x-handlebars-template">
-{{#if display_course}}
-<div id="historic-course-panel-target"></div>
+    <div class="row">
+      <div class="col">
+    <h3 id="historic_section_data">Historical Student Data {{curriculum}} {{course_number}} {{section_id}}</h3>
+      </div>
+    </div>
+    <div id="historic-selector-target" class="row">
+      <div class="historic-filters col tabs">
+          <ul class="nav nav-pills" id="myTab" role="tablist">
+              <li class="nav-item">
+                  <a class="nav-link all-courses nohref {{#if only_my_courses}} {{else}} active {{/if}}" id="allcourses-tab" role="button" aria-selected="true">All Courses</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link my-courses nohref {{#if only_my_courses}} active{{/if}}" id="mycourses-tab" role="button" aria-selected="false">Only My Courses</a>
+              </li>
+          </ul>
+            <!-- Tab panes -->
+          <div class="tab-content">
+              <div class="tab-pane  {{#if only_my_courses}} {{else}} active {{/if}}" id="allcourses" role="tabpanel">
+                  <div class="d-inline-block">
+                     <label for="historic_filter_quarter" class="visually-hidden">Filter historic data by quarter:</label>
+                     <select class="form-control form-control-sm historic-filter" name="historic_filter_quarter" id="historic_filter_quarter" aria-controls="historic-course-target">
+                         <option data-label="All Quarters" value="All Quarters">All Quarters</option>
+                         {{#each past_quarters}}
+                         <option data-label="{{this}}" value="{{this}}">{{this}}</option>
+                         {{/each}}
+                     </select>
+                  </div>
+                  <div class="d-inline-block">
+                      <label for="historic_filter_year" class="visually-hidden">Filter historic data by year (past 5 years):</label>
+                      <select class="form-control  form-control-sm historic-filter" name="historic_filter_year" id="historic_filter_year" aria-controls="historic-course-target">
+                           <option data-label="All Years" value="All Years">All Years</option>
+                           {{#each past_years}}
+                           <option data-label="{{this}}" value="{{this}}">{{this}}</option>
+                           {{/each}}
+                      </select>
+                  </div>
+              </div>
+              <div class="tab-pane  {{#if only_my_courses}} active {{/if}}" id="mycourses" role="tabpanel">
+                  <div class="d-inline-block">
+                      <label for="historic_filter_instructed" class="visually-hidden">Filter by only your past courses:</label>
+                      <select class="form-control form-control-sm historic-filter" name="historic_filter_instructed" id="historic_filter_instructed" aria-controls="historic-course-target">
+                             <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
+                             {{#each instructed_sections}}
+                             <option value="{{this}}">{{this}}</option>
+                             {{/each}}
+                        </select>
+                 </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div id="historic-performance-panel"></div>
+    <div class="row">
+      <div id="historic-course-major-panel" class="list col"></div>
+      <div id="historic-grad-major-panel" class="list col"></div>
+    </div>
+    <div id="historic-concurrent-courses-panel" class="row"></div>
+    <div id="historic-previous-instructors-panel" class="row"></div>
+</script>
 
-<div class="row">
-    <div class="list col">
-        <h4 id="historic_declared_majors_course" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Compare the proportion of certain majors in your class to past offerings and track shifts over time in the 'popularity' of your class for certain majors."></i></span> <br><small>When taking the course</small></h4>
-        <ol class="list-unstyled" aria-labelledby="historic_declared_majors_course">
-            {{#each common_majors}}
-           <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
-           {{/each}}
-       </ol>
-       <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> declared majors while taking the course</span>...</a></div>
-    </div>
-    <div class="list col">
-        <h4 id="historic_declared_majors_graduation" class="list-header">Declared Majors<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Declared Majors" data-content="Learn what your students go on to major in. Is your course a 'gateway' course to a particular field of study?"></i></span><br><small>Upon graduation</small></h4>
-        <ol class="list-unstyled" aria-labelledby="historic_declared_majors_graduation">
-           {{#each latest_majors}}
-           <li><strong>{{roundPercentage percent_students}}%</strong> <span class="text-lowercase">{{major}} </span></li>
-           {{/each}}
-           <li class="small">Total will not add up to 100% if students have yet to graduate.</li>
-       </ol>
-       <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> declared majors upon graduation</span>...</a></div>
-    </div>
-</div>
-<div class="row">
-    <div class="list col">
-        <h4 id="historic_common_courses" class="list-header">Concurrent Courses<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Concurrent Courses" data-content="Get a sense of what other courses your students are taking compared to the last time you taught the course."></i></span></h4>
-        <ol class="list-unstyled" aria-labelledby="historic_common_courses">
-            {{#each common_courses}}
-           <li><strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat course}}"> {{course}} </a> </span></li>
-           {{/each}}
-       </ol>
-       <div><a href="#" class='toggle-show' data-toggle-length-max=20>Show more<span class="sr-only"> historic concurrent courses taken</span>...</a></div>
-    </div>
-</div>
-<div class="row">
-    <div class="list previous-instructors col">
-       <h4 id="previous_instructors" class="list-header">Previous Instructors or TAs for this course<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Previous Instructors or TAs" data-content="Reach out to past instructors or TAs to share ideas and materials."></i></span></h4>
-       <!-- <div class="contact-year-{{ year }} contact-quarter-{{ quarter }}{{#gt @index 1}} visually-hidden{{/gt}}"> -->
-       <ol class="list-unstyled" aria-labelledby="previous_instructors">
-         {{#each instructors}}
-         <li>
-           <h5>{{ quarter }} {{ year }}</h5>
-           <ol class="list-unstyled">
-             {{#each instructors}}
-             <li><a href="mailto:{{email}}">{{ formatName surname }}, {{ formatName first_name }}</a>{{#if is_faculty}} - Faculty{{else}}{{#if is_student}} - Grad Student{{else}}{{#if is_member}} - Former Faculty{{else}}{{#if is_alum}} - Former Grad Student{{/if}}{{/if}}{{/if}}{{/if}}</li>
-             {{/each}}
-           </ol>
-         </li>
-         {{/each}}
-       </ol>
-       <div><a href="#" class='toggle-show' data-toggle-length=4>Show more<span class="sr-only"> previous instructors</span>...</a></div>
-    </div>
-
-</div>
-{{else}}
+<script id="no-display-historic-course-panel" type="text/x-handlebars-template">
 <div class="coda-alert alert alert-info" role="alert">
     <p>The query you requested will not generate data for one of the following reasons:
 
 <ul><li>The course you've selected has fewer than 5 students. To protect students' privacy, we do not show data on courses with fewer than 5 students enrolled.</li>
 
 <li>To protect you and your colleagues' privacy, we do not show data for a single course, unless it's a course you've taught.</li></ul></p>
-</div>
-{{/if}}
-</script>
-
-
-<script id="historic-course-panel" type="text/x-handlebars-template">
-<div class="historic-data-row row">
-    <div class="historic-enrollment course-data-widget col">
-        <div class="d-inline-block course-data-items">
-            <div class="course-data-description">Students / {{section_count}} Offering{{pluralize section_count '' 's'}}</div>
-            <div class="course-data-number" title="{{total_students}} students enrolled">{{total_students}}<i class="ion-ios-people" aria-hidden="true"></i></div>
-        </div>
-    </div>
-    <div class="historic-failure course-data-widget col">
-        <div class="d-inline-block course-data-items">
-            <div class="course-data-description">Percent Failure<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Percent Failure" data-content="This is the percent of students who received a 0.0 in the course(s) based on the time frame selected above.  Get a sense of how much time you should spend on challenging topics, considering how much students have struggled with the course in the past."></i></span></div>
-            <div class="course-data-number" title="{{failed_percent}}% of students failed this course">{{failed_percent}}%<i class="ion-ios-flag" aria-hidden="true"></i></div>
-        </div>
-    </div>
-</div>
-<div class="historic-data-row row">
-    <div class="historic-median course-data-widget col">
-        <div class="d-inline-block course-data-items">
-            <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumumlative GPA" data-content="This is the midpoint of the cumulative GPAs of the students based on the time frame selected above."></i></span></div>
-            <div class="course-data-number" title="{{median_gpa}} Median Cumulative GPA">{{median_gpa}}<i class="ion-stats-bars cumulative-popover" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="{{gpa_distribution_time}}-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
-        </div>
-    </div>
-    <div class="historic-median course-data-widget col">
-        <div class="d-inline-block course-data-items">
-            <div class="course-data-description">Median Course Grade<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Course Grade" data-content="This is the midpoint of the final course grades based on the time frame selected above.  If you've taught the class before, use this data to assess the impact of pedagogical or curricular tweaks you've made."></i></span></div>
-          <div class="course-data-number" title="{{median_course_grade}} Median course grade">{{median_course_grade}}<i class="ion-stats-bars course-gpa-popover" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Course Grade Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="{{gpa_distribution_time}}-course-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
-        </div>
-    </div>
 </div>
 </script>
 
