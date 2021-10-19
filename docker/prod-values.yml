@@ -3,13 +3,6 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 6
 targetAverageUtilization: 100
-resources:
-  limits:
-    cpu: 512m
-    memory: 1024Mi
-  requests:
-    cpu: 256m
-    memory: 512Mi
 ingress:
   enabled: true
   type: nginx
@@ -65,6 +58,13 @@ cronjob:
       schedule: "15 4 * * *"
       command: ["/scripts/management_command.sh"]
       args: ["load_data_for_term"]
+      resources:
+        limits:
+          cpu: 750m
+          memory: 768Mi
+        requests:
+          cpu: 500m
+          memory: 256Mi
 certs:
   mounted: true
   certPath: /certs/coda.uw.edu-uwca.cert
