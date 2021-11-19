@@ -1,7 +1,7 @@
 {% verbatim %}
 <script id="current-course-data" type="text/x-handlebars-template">
 <div class="current-top-row row">
-    <div class="col">
+    <div class="col-8">
         <h3 id="current_section_data">My data for {{curriculum}} {{course_number}} {{section_id}}</h3>
         <input type="hidden" id="current_course_label" value="{{section_label}}">
         <div class="d-inline-block past-quarter-select">
@@ -13,7 +13,7 @@
             </select>
         </div>
     </div>
-    <div class=col>
+    <div class="col-4">
     <ul class="list-unstyled course-links col">
         <li><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}" title="View course details in Teaching page"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Course details<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>
         {{#if canvas_course_url}}<li><a href="{{canvas_course_url}}"><i class="fa fa-book" aria-hidden="true"></i> Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>{{/if}}
