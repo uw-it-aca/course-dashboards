@@ -190,7 +190,7 @@ var firstCourseRecentQuarter = function (course) {
 };
 
 var compare_terms = function (a_year, a_quarter, b_year, b_quarter) {
-    var quarters = ['autumn', 'summer', 'spring', 'winter'],
+    var quarters = ['winter', 'spring', 'summer', 'autumn'],
         y = a_year - b_year;
 
     return (y !== 0) ? y : (quarters.indexOf(a_quarter.toLowerCase()) -
