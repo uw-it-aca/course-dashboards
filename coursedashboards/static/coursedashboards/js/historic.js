@@ -379,7 +379,7 @@ var getInstructorsByTerm = function (term_list, sections) {
         });
         return o;
     }).sort(function (a, b) {
-        return compare_terms(a.year, a.quarter, b.year, b.quarter);
+        return compare_terms(a.year, a.quarter, b.year, b.quarter) * -1;
     });
 };
 
