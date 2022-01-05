@@ -23,10 +23,8 @@ var showCourseData = function (label) {
         currentTemplate = Handlebars.compile(current),
         section = getSectionDataByLabel(label),
         terms = [],
-        current_course_panel = (compare_terms(section.year,
-                                              section.quarter.toLowerCase(),
-                                              window.term.year,
-                                              window.term.quarter.toLowerCase()) >= 0),
+        current_course_panel = (compare_terms(section.year, section.quarter,
+                                              window.term.year, window.term.quarter) === 0),
         performanceTemplate;
 
     if (!current_course_panel && !section.loaded) {
@@ -56,6 +54,8 @@ var showCourseData = function (label) {
         curriculum: section.curriculum,
         course_number: section.course_number,
         section_id: section.section_id,
+        year: section.year,
+        quarter: section.quarter,
         terms: terms,
         canvas_course_url: section.canvas_course_url,
         display_course: section.display_course
