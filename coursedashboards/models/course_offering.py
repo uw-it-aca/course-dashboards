@@ -193,7 +193,6 @@ class CourseOffering(models.Model):
         if not terms:
             registration_filter['term'] = self.term
 
-        import pdb; pdb.set_trace()
         registrations = Registration.objects.filter(
             **registration_filter
         ).exclude(
