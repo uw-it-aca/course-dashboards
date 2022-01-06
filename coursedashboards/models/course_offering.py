@@ -185,8 +185,16 @@ class CourseOffering(models.Model):
         # are registered
         students = self.get_students(terms=terms)
         student_count = float(students.distinct().count())
+
+        registration_filter = {
+            'user_id__in': students
+        }
+
+        if not terms:
+            registration_filter['term'] = self.term
+
         registrations = Registration.objects.filter(
-            user_id__in=students
+            **registration_filter
         ).exclude(
             course=self.course
         )

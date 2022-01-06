@@ -21,6 +21,13 @@ class TestCourseOffering(TransactionTestCase):
         self.cse_142.course_title = "COMPUTER PROGRAMMING I"
         self.cse_142.save()
 
+        self.hcde_503 = Course()
+        self.hcde_503.curriculum = "HCDE"
+        self.hcde_503.section_id = "A"
+        self.hcde_503.course_number = 503
+        self.hcde_503.course_title = "Navigating Design in Organizations"
+        self.hcde_503.save()
+
         self.spring = Term()
         self.spring.quarter = Term.SPRING
         self.spring.year = 2016
@@ -68,6 +75,13 @@ class TestCourseOffering(TransactionTestCase):
         self.autumn_ess.current_enrollment = 19
         self.autumn_ess.limit_estimate_enrollment = 25
         self.autumn_ess.save()
+
+        self.summer_hcde = CourseOffering()
+        self.summer_hcde.course = self.hcde_503
+        self.summer_hcde.term = self.summer
+        self.summer_hcde.current_enrollment = 19
+        self.summer_hcde.limit_estimate_enrollment = 25
+        self.summer_hcde.save()
 
         self.ess_instructor_user = User()
         self.ess_instructor_user.uwnetid = "jinstructor"
@@ -169,16 +183,34 @@ class TestCourseOffering(TransactionTestCase):
 
         reg = Registration()
         reg.grade = 2.8
+        reg.course = self.hcde_503
+        reg.term = self.summer
+        reg.credits = 5
+        reg.user = self.students[1]
+        reg.save()
+        self.registrations.append(reg)
+
+        reg = Registration()
+        reg.grade = 2.8
         reg.course = self.course
         reg.term = self.autumn
         reg.credits = 5
-        reg.user = self.students[3]
+        reg.user = self.students[2]
         reg.save()
         self.registrations.append(reg)
 
         reg = Registration()
         reg.grade = 2.9
         reg.course = self.course
+        reg.term = self.summer
+        reg.credits = 5
+        reg.user = self.students[3]
+        reg.save()
+        self.registrations.append(reg)
+
+        reg = Registration()
+        reg.grade = 2.8
+        reg.course = self.hcde_503
         reg.term = self.summer
         reg.credits = 5
         reg.user = self.students[3]
@@ -267,6 +299,12 @@ class TestCourseOffering(TransactionTestCase):
     def test_get_concurrent_courses(self):
         concurrent = self.spring_ess.concurrent_courses()
         self.assertEqual(len(concurrent), 1)
+
+    def test_get_concurrent_courses_for_terms(self):
+        concurrent = self.spring_ess.concurrent_courses(
+            terms=[self.autumn, self.winter,
+                   self.spring, self.summer])
+        self.assertEqual(len(concurrent), 2)
 
     def test_get_students(self):
         spring_students = self.spring_ess.get_students()
