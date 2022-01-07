@@ -190,7 +190,9 @@ class CourseOffering(models.Model):
             'user_id__in': students
         }
 
-        if not terms:
+        if terms:
+            registration_filter['term__in'] = terms
+        else:
             registration_filter['term'] = self.term
 
         registrations = Registration.objects.filter(
