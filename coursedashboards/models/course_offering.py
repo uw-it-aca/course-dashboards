@@ -184,24 +184,31 @@ class CourseOffering(models.Model):
         # all courses students in this offering for the given term
         # are registered
         students = self.get_students(terms=terms)
-        student_count = float(students.distinct().count())
+        all_students = None
+        all_registrations = None
 
-        registration_filter = {
-            'user_id__in': students
-        }
+        for term in terms if terms else [ self.term ]:
+            students = self.get_students(terms=[term])
+            if not all_students:
+                all_students = students
+            else:
+                all_students |= students
 
-        if terms:
-            registration_filter['term__in'] = terms
-        else:
-            registration_filter['term'] = self.term
+            registrations = Registration.objects.filter(
+                user_id__in=students,
+                term=term
+            ).exclude(
+                course=self.course
+            )
 
-        registrations = Registration.objects.filter(
-            **registration_filter
-        ).exclude(
-            course=self.course
-        )
+            if all_registrations is None:
+                all_registrations = registrations
+            else:
+                all_registrations |= registrations
 
-        return list(registrations.annotate(
+        student_count = float(all_students.distinct().count())
+
+        return list(all_registrations.annotate(
             title=F('course__course_title'),
             curriculum=F('course__curriculum'),
             course_number=F('course__course_number'),
