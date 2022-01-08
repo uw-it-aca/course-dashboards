@@ -187,7 +187,7 @@ class CourseOffering(models.Model):
         all_students = None
         all_registrations = None
 
-        for term in terms if terms else [self.term] :
+        for term in terms if terms else [self.term]:
             students = self.get_students(terms=[term])
             if not all_students:
                 all_students = students
