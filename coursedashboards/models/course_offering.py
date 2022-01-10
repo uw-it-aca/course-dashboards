@@ -187,13 +187,12 @@ class CourseOffering(models.Model):
         student_count = 0.0
 
         for term in terms if terms else [self.term]:
-            student_ids = self.get_students(terms=[term])
-            if student_ids.count():
-                student_count += student_ids.count()
-                reg_filter |= (Q(term=term) & Q(user_id__in=student_ids))
+            for current in Registration.objects.filter(
+                    course=self.course, term=term):
+                student_count += 1.0
+                reg_filter |= (Q(term=term) & Q(user_id=current.user_id))
 
-            registrations = Registration.objects.filter(
-                reg_filter).exclude(course=self.course)
+        registrations = Registration.objects.filter(reg_filter)
 
         return list(registrations.annotate(
             title=F('course__course_title'),
@@ -202,6 +201,8 @@ class CourseOffering(models.Model):
             course_ref=Concat('course__curriculum', Value('-'),
                               'course__course_number',
                               output_field=models.CharField())
+        ).exclude(
+            course=self.course
         ).values(
             'title',
             'curriculum',
