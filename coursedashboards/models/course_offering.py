@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db.models import (
-    Count, Sum, F, Avg, Subquery, OuterRef, FloatField, Value)
+    Q, Count, Sum, F, Avg, Subquery, OuterRef, FloatField, Value)
 from django.db.models.functions import Concat
 from statistics import median
 from statistics import StatisticsError
@@ -40,15 +40,15 @@ class CourseOffering(models.Model):
 
     @profile
     def _filter_parms(self, terms=None, is_alum=None):
-        term_filter = models.Q(course=self.course)
+        term_filter = Q(course=self.course)
 
         if terms:
-            term_filter &= models.Q(term__in=terms)
+            term_filter &= Q(term__in=terms)
         else:
-            term_filter &= models.Q(term=self.term)
+            term_filter &= Q(term=self.term)
 
         if is_alum:
-            term_filter &= models.Q(user__is_alum=1)
+            term_filter &= Q(user__is_alum=1)
 
         return term_filter
 
@@ -183,32 +183,19 @@ class CourseOffering(models.Model):
     def concurrent_courses(self, terms=None):
         # all courses students in this offering for the given term
         # are registered
-        students = self.get_students(terms=terms)
-        all_students = None
-        all_registrations = None
+        reg_filter = Q()
+        student_count = 0.0
 
         for term in terms if terms else [self.term]:
-            students = self.get_students(terms=[term])
-            if not all_students:
-                all_students = students
-            else:
-                all_students |= students
+            student_ids = self.get_students(terms=[term])
+            if student_ids.count():
+                student_count += student_ids.count()
+                reg_filter |= (Q(term=term) & Q(user_id__in=student_ids))
 
             registrations = Registration.objects.filter(
-                user_id__in=students,
-                term=term
-            ).exclude(
-                course=self.course
-            )
+                reg_filter).exclude(course=self.course)
 
-            if all_registrations is None:
-                all_registrations = registrations
-            else:
-                all_registrations |= registrations
-
-        student_count = float(all_students.distinct().count())
-
-        return list(all_registrations.annotate(
+        return list(registrations.annotate(
             title=F('course__course_title'),
             curriculum=F('course__curriculum'),
             course_number=F('course__course_number'),
@@ -467,22 +454,22 @@ class CourseOffering(models.Model):
     def _terms_from_search_filter(
             self, past_year='', past_quarter='', instructor=None):
         # build filter for past offerings
-        filter_parms = models.Q(course=self.course)
+        filter_parms = Q(course=self.course)
 
         try:
-            filter_parms &= models.Q(term__year=int(past_year))
+            filter_parms &= Q(term__year=int(past_year))
         except ValueError:
             pass
 
         try:
             quarter = past_quarter.lower()
             if quarter in ['winter', 'spring', 'summer', 'autumn']:
-                filter_parms &= models.Q(term__quarter=quarter)
+                filter_parms &= Q(term__quarter=quarter)
         except Exception:
             pass
 
         if instructor is not None:
-            filter_parms &= models.Q(user__uwnetid=instructor)
+            filter_parms &= Q(user__uwnetid=instructor)
 
         term_ids = Instructor.objects.filter(
             filter_parms
