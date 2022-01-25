@@ -6,7 +6,7 @@
         <ol id="historic_concurrent_courses" class="list-unstyled" aria-labelledby="historic_common_courses">
         {{#each common_courses}}
             <li>
-              <strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/student/myplan/course/{{myPlanFormat curriculum course_number section_id}}"> {{course_ref}} </a> </span><span id="{{course_ref}}-gpa"></span>
+              <strong>{{roundPercentage percent_students}}%</strong> <span> <a title="{{title}}" target="_blank" href="https://myplan.uw.edu/course/#/courses/{{myPlanFormat curriculum course_number section_id}}"> {{course_ref}} </a> </span><span id="{{course_ref}}-gpa"></span>
             </li>
            {{/each}}
        </ol>

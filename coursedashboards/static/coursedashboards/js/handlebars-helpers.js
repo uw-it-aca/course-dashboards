@@ -36,7 +36,7 @@ Handlebars.registerHelper('toUpperCase', function(str) {
 });
 
 Handlebars.registerHelper('myPlanFormat', function(curriculum, course_number, section_id) {
-    return curriculum + course_number + section_id;
+    return curriculum + ' ' + course_number;
 });
 
 Handlebars.registerHelper('gt', function(lval, rval, options) {
