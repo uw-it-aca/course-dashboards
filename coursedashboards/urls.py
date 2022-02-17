@@ -5,18 +5,19 @@ from coursedashboards.views.api.offering.historical import (
 from django.urls import re_path
 from coursedashboards.views.api.offering.course import CourseData
 from coursedashboards.views.api.integration.offering_cgpa import OfferingCGPA
-from coursedashboards.views.api.integration.offering_fail_rate import \
-    OfferingFailRate
-from coursedashboards.views.api.integration.offering_majors import \
-    OfferingMajors
+from coursedashboards.views.api.integration.offering_fail_rate import (
+    OfferingFailRate)
+from coursedashboards.views.api.integration.offering_majors import (
+    OfferingMajors)
 from coursedashboards.views.index import index
 from coursedashboards.views.page import user_login, logout
 
-course_regex = r'^api/v1/course/(?P<year>\d{4})-'\
-               r'(?P<quarter>[A-Za-z]+)-'\
-               r'(?P<curriculum>[&% 0-9A-Za-z]+)-'\
-               r'(?P<course_number>\d{3})-'\
-               r'(?P<section_id>[A-Za-z][0-9A-Za-z]?)'
+course_regex = (
+    r'^api/v1/course/(?P<year>\d{4})-'
+    r'(?P<quarter>[A-Za-z]+)-'
+    r'(?P<curriculum>[&% 0-9A-Za-z]+)-'
+    r'(?P<course_number>\d{3})-'
+    r'(?P<section_id>[A-Za-z][0-9A-Za-z]?)')
 
 urlpatterns = [
     # Home

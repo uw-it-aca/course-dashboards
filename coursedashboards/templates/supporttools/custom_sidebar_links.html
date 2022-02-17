@@ -6,6 +6,10 @@
     {% if user_override_url %}
     <li><a href="{{ user_override_url }}">{{ userservice_link|default:"User Override" }}</a></li>
     {% endif %}
+    {% url 'manage_persistent_messages' as manage_messages_url %}
+    {% if manage_messages_urls %}
+    <li><a href="{{ manage_messages_url }}">{{ persistent_message_link|default:"Persistent Messages" }}</a></li>
+    {% endif %}
 </ul>
 
 

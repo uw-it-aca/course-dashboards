@@ -40,6 +40,7 @@ setup(
         'UW-Django-SAML2>=1.5.1,<2.0',
         'Django-SupportTools>=3.4,<4.0',
         'djangorestframework==3.11.2',
+        'Django-Persistent-Message',
         'statistics',
         'mysqlclient==1.3.14',
     ],
