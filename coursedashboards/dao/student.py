@@ -1,3 +1,6 @@
+# Copyright 2022 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from coursedashboards.models import CourseMedianGPA
 from uw_sws.enrollment import get_grades_by_regid_and_term, \
     get_enrollment_by_regid_and_term, enrollment_search_by_regid
