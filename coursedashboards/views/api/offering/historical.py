@@ -1,3 +1,6 @@
+# Copyright 2022 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 from coursedashboards.views.api.endpoint import CoDaEndpoint
 from coursedashboards.dao.user import get_current_user
 
