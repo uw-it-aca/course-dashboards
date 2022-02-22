@@ -1,6 +1,6 @@
-[![Build Status](https://api.travis-ci.org/uw-it-aca/course-dashboards.svg?branch=develop)](https://travis-ci.org/uw-it-aca/course-dashboards)
-[![Coverage Status](https://coveralls.io/repos/uw-it-aca/course-dashboards/badge.png?branch=develop)](https://coveralls.io/r/uw-it-aca/course-dashboards?branch=develop)
+# Course Dashboards
 
+[![Build Status](https://github.com/uw-it-aca/course-dashboards/workflows/Build%2C%20Test%20and%20Deploy/badge.svg?branch=main)](https://github.com/uw-it-aca/course-dashboards/actions)
+[![Coverage Status](https://coveralls.io/repos/github/uw-it-aca/course-dashboards/badge.svg?branch=main)](https://coveralls.io/github/uw-it-aca/course-dashboards?branch=main)
 
-# Course-Dashboards
-This is the repository for the course dashboards project, a pilot project at the University of Washington designed to provide instructors with additional insight into their courses.
+This is the repository for Instructor Course Dashboards, a project at the University of Washington designed to provide instructors with additional insight into their courses.

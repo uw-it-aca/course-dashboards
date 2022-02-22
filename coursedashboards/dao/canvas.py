@@ -1,3 +1,6 @@
+# Copyright 2022 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 from uw_canvas.courses import Courses as CanvasCourses
 from restclients_core.exceptions import DataFailureException
