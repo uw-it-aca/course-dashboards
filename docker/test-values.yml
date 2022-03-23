@@ -93,8 +93,6 @@ externalSecrets:
       data:
         - name: django-secret
           property: django-secret
-        - name: django-secret
-          property: django-secret
     - name: test.coda.uw.edu-canvas-secrets
       externalKey: axdd/kv/data/coda/shared/secrets
       data:
