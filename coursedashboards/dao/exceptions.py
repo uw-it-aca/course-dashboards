@@ -39,3 +39,8 @@ class MalformedOrInconsistentUser(Exception):
 class MissingNetIDException(Exception):
     """Missing or Invalid NetID"""
     pass
+
+
+class NoTermAfterCurrent(Exception):
+    """No course data for term after current"""
+    pass
