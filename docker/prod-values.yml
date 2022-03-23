@@ -102,6 +102,13 @@ externalSecrets:
       data:
         - name: django-secret
           property: django-secret
+    - name: coda.uw.edu-canvas-secrets
+      externalKey: axdd/kv/data/coda/shared/secrets
+      data:
+        - name: canvas-account-id
+          property: canvas-account-id
+        - name: canvas-api-token
+          property: canvas-api-token
     - name: coda.uw.edu-sql-secrets
       externalKey: axdd/kv/data/coda/prod/sql-secrets
       data:
@@ -132,6 +139,14 @@ environmentVariablesSecrets:
     name: DJANGO_SECRET
     secretName: coda.uw.edu-secrets
     secretKey: django-secret
+  canvasAccountID:
+    name: CANVAS_ACCOUNT_ID
+    secretName: coda.uw.edu-canvas-secrets
+    secretKey: canvas-account-id
+  canvasAPIToken:
+    name: CANVAS_OAUTH_BEARER
+    secretName: coda.uw.edu-canvas-secrets
+    secretKey: canvas-api-token
   SAMLServiceProviderCert:
     name: SP_CERT
     secretName: coda.uw.edu-ic-certs
