@@ -11,7 +11,8 @@ from coursedashboards.models import (
     Registration, Major, StudentMajor)
 from coursedashboards.dao.exceptions import (
     MalformedOrInconsistentUser)
-from coursedashboards.dao.term import get_given_and_previous_quarters
+from coursedashboards.dao.term import (
+    get_given_and_previous_quarters, get_term_after_current)
 from coursedashboards.dao.pws import get_person_by_netid
 from coursedashboards.dao.gws import get_effective_members
 from coursedashboards.dao.user import user_from_person
@@ -23,7 +24,8 @@ from coursedashboards.dao.enrollment import (
 from coursedashboards.dao.registration import (
     get_active_registrations_for_section)
 from coursedashboards.dao.canvas import canvas_course_url_from_section
-from restclients_core.exceptions import DataFailureException
+from restclients_core.exceptions import (
+    DataFailureException, NoTermAfterCurrent)
 
 
 logger = logging.getLogger(__name__)
@@ -39,6 +41,9 @@ class Command(BaseCommand):
         parser.add_argument(
             '--previous', dest='previous_terms', default=0, type=int,
             help='count of previous terms to include')
+        parser.add_argument(
+            '--next', action='store_true',
+            help='Include next term if appropriate')
         parser.add_argument(
             '--instructor', dest='instructor', default='',
             help='netid or uw group containing instructors to load')
@@ -59,6 +64,13 @@ class Command(BaseCommand):
 
         sws_terms = get_given_and_previous_quarters(
             term_string, options.get('previous_terms'))
+
+        if options.get('next'):
+            try:
+                sws_terms.append(get_term_after_current(sws_terms[-1]))
+            except NoTermAfterCurrent:
+                pass
+
         for sws_term in sws_terms:
             logger.info('loading term: {},{}'.format(
                 sws_term.quarter, sws_term.year))

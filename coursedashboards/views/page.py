@@ -7,8 +7,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from coursedashboards.dao.user import get_current_user
 from coursedashboards.dao.term import (
-    get_current_coda_term, get_given_and_previous_quarters)
-from coursedashboards.dao.exceptions import MissingNetIDException
+    get_current_coda_term, get_given_and_previous_quarters,
+    get_term_from_quarter_string, get_term_after_current)
+from coursedashboards.dao.exceptions import (
+    MissingNetIDException, NoTermAfterCurrent)
 from coursedashboards.models import Term, Instructor, CourseOffering
 from django.contrib.auth import logout as django_logout
 
@@ -50,9 +52,8 @@ def page(request,
         sections = []
         historical = {}
 
-        for sws_term in get_given_and_previous_quarters(
-                "{},{}".format(cur_term.year, cur_term.quarter),
-                HISTORIC_TERM_COUNT + 1):
+        for sws_term in get_page_terms(
+                "{},{}".format(cur_term.year, cur_term.quarter)):
             term, created = Term.objects.get_or_create(
                 year=sws_term.year, quarter=sws_term.quarter)
 
@@ -77,6 +78,19 @@ def page(request,
         context['no_courses'] = True
 
     return render(request, template, context)
+
+
+def get_page_terms(cur_term_name):
+    terms = get_given_and_previous_quarters(
+        cur_term_name, HISTORIC_TERM_COUNT + 1)
+
+    try:
+        cur_term = get_term_from_quarter_string(cur_term_name)
+        terms.append(get_term_after_current(cur_term))
+    except NoTermAfterCurrent:
+        pass
+
+    return terms
 
 
 def user_login(request):
