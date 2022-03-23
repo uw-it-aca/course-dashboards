@@ -108,7 +108,7 @@ var setupHistoricInstructedSelector = function (data) {
 
 var currentOrLaterTerm = function (year, quarter) {
     return (compare_terms(year, quarter, window.term.year, window.term.quarter) >= 0);
-}
+};
 
 var setupHistoricTermSelector = function (data) {
     if (!window.historic_terms) {

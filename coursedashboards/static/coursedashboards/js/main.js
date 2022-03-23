@@ -184,7 +184,7 @@ var firstCourseRecentQuarter = function (course) {
 
         if (compare_terms(first_recent_section_data.year,
                           first_recent_section_data.quarter,
-                          window.term.year, window.term.quarter) == 0) {
+                          window.term.year, window.term.quarter) === 0) {
             return false;
         }
     });
