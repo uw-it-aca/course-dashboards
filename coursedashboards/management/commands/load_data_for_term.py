@@ -10,7 +10,7 @@ from coursedashboards.models import (
     Term, Instructor, Course, CourseOffering,
     Registration, Major, StudentMajor)
 from coursedashboards.dao.exceptions import (
-    MalformedOrInconsistentUser)
+    MalformedOrInconsistentUser, NoTermAfterCurrent)
 from coursedashboards.dao.term import (
     get_given_and_previous_quarters, get_term_after_current)
 from coursedashboards.dao.pws import get_person_by_netid
@@ -24,8 +24,7 @@ from coursedashboards.dao.enrollment import (
 from coursedashboards.dao.registration import (
     get_active_registrations_for_section)
 from coursedashboards.dao.canvas import canvas_course_url_from_section
-from restclients_core.exceptions import (
-    DataFailureException, NoTermAfterCurrent)
+from restclients_core.exceptions import DataFailureException
 
 
 logger = logging.getLogger(__name__)
