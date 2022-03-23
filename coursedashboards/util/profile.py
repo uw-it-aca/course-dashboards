@@ -1,3 +1,6 @@
+# Copyright 2022 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 import time
 from django.conf import settings
 from functools import wraps

@@ -1,3 +1,6 @@
+# Copyright 2022 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Contains the custom exceptions used by the restclients.
 """
@@ -35,4 +38,9 @@ class MalformedOrInconsistentUser(Exception):
 
 class MissingNetIDException(Exception):
     """Missing or Invalid NetID"""
+    pass
+
+
+class NoTermAfterCurrent(Exception):
+    """No course data for term after current"""
     pass

@@ -1,3 +1,6 @@
+# Copyright 2022 UW-IT, University of Washington
+# SPDX-License-Identifier: Apache-2.0
+
 """
 This module direct interfaces with restclient for the term data
 """
@@ -5,7 +8,7 @@ This module direct interfaces with restclient for the term data
 import logging
 from datetime import datetime, timedelta
 import pytz
-import coursedashboards
+from coursedashboards.dao.exceptions import NoTermAfterCurrent
 from coursedashboards.dao import is_using_file_dao
 from django.utils import timezone
 from coursedashboards.models import Term
@@ -177,8 +180,8 @@ def get_given_and_previous_quarters(quarter_string, num):
     Returns the requested and previous num uw_sws.models.Term objects
     in a chronologically sorted list
     """
-    sws_term = get_term_from_quarter_string(quarter_string)\
-        if quarter_string else get_current_term()
+    sws_term = get_term_from_quarter_string(quarter_string) if (
+        quarter_string) else get_current_term()
     sws_terms = [sws_term]
     for x in range(num):
         try:
@@ -522,3 +525,12 @@ def current_terms_prefetch(request):
         methods.append(_get_term_method(year+1, 'spring'))
 
     return methods
+
+
+def get_term_after_current(current_term_name):
+    next_term = get_term_after(current_term_name)
+    date = datetime.date(datetime.now())
+    if date > next_term.registration_period2_start:
+        return next_term
+
+    raise NoTermAfterCurrent()

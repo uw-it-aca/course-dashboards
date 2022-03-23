@@ -106,6 +106,10 @@ var setupHistoricInstructedSelector = function (data) {
     }
 };
 
+var currentOrLaterTerm = function (year, quarter) {
+    return (compare_terms(year, quarter, window.term.year, window.term.quarter) >= 0);
+};
+
 var setupHistoricTermSelector = function (data) {
     if (!window.historic_terms) {
         window.historic_terms = {
@@ -116,6 +120,10 @@ var setupHistoricTermSelector = function (data) {
 
         $.each(data.sections, function (year, quarters) {
             $.each(quarters, function (quarter, instructors) {
+                if (currentOrLaterTerm(year, quarter)) {
+                    return true;
+                }
+
                 window.historic_terms.raw.push({
                     year: year,
                     quarter: quarter

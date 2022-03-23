@@ -57,7 +57,7 @@ cronjob:
     - name: load-term-data
       schedule: "15 4 * * *"
       command: ["/scripts/management_command.sh"]
-      args: ["load_data_for_term"]
+      args: ["load_data_for_term --next"]
       resources:
         limits:
           cpu: 750m

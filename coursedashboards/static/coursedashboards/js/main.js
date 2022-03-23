@@ -176,13 +176,16 @@ var firstCourseRecentQuarter = function (course) {
 
         if (!first_recent_section_data) {
             first_recent_section_data = this;
-        } else if (compare_terms(this.year, this.quarter,
-                                 first_recent_section_data.year,
-                                 first_recent_section_data.quarter) > 0 &&
-                   compare_terms(first_recent_section_data.year,
+        } else if (compare_terms(first_recent_section_data.year,
                                  first_recent_section_data.quarter,
                                  window.term.year, window.term.quarter) <= 0) {
             first_recent_section_data = this;
+        }
+
+        if (compare_terms(first_recent_section_data.year,
+                          first_recent_section_data.quarter,
+                          window.term.year, window.term.quarter) === 0) {
+            return false;
         }
     });
 
