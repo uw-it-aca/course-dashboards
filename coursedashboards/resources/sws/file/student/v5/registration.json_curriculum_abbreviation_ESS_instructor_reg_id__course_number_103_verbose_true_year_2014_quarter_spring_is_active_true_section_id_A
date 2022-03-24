@@ -1,0 +1,25 @@
+{
+    "Current": {
+        "ChangedSinceDate": "",
+        "CourseNumber": "103",
+        "CurriculumAbbreviation": "ESS",
+        "Href": "/student/v5/registration.json?year=2014&quarter=spring&curriculum_abbreviation=ESS&course_number=103&section_id=A&reg_id=&is_active=true&instructor_reg_id=&verbose=&changed_since_date=&transcriptable_course=&page_start=&page_size=",
+        "InstructorRegID": "",
+        "IsActive": true,
+        "PageSize": null,
+        "PageStart": null,
+        "Quarter": "spring",
+        "RegID": null,
+        "SectionID": "A",
+        "TranscriptableCourse": "",
+        "Verbose": false,
+        "Year": 2014
+    },
+    "Next": null,
+    "PageSize": null,
+    "PageStart": null,
+    "Previous": null,
+    "Registrations": [
+{"AccessDateRangeEnd":"","AccessDateRangeStart":"","Auditor":false,"Credits":"5","DuplicateCode":"0","EducationUnitType":null,"EndDate":"","FeeBaseType":"","Grade":"HW","GradeDate":"","GradeDocumentID":"6401030007","GradingSystem":null,"HonorsCourse":false,"Href":"\/student\/v5\/registration\/2014,spring,ESS,103,A,1000000000000000000000000000EFBD,0.json","Instructor":null,"IsActive":true,"IsCredit":true,"IsIndependentStart":false,"Metadata":"RegistrationSourceLocation=SDB;","Person":{"Href":"\/student\/v5\/person\/1000000000000000000000000000EFBD.json","Name":"J Average 40AC","RegID":"1000000000000000000000000000EFBD"},"RepeatCourse":false,"RepositoryTimeStamp":"8\/23\/2017 8:32:13 AM","RequestDate":"","RequestStatus":"","Section":{"Href":"\/student\/v5\/course\/2014,spring,ESS,103\/A.json","CourseNumber":"103","CurriculumAbbreviation":"ESS","Quarter":"spring","SectionID":"A","Year":2014},"StartDate":"","VariableCredit":false,"WritingCourse":false}
+    ]
+}

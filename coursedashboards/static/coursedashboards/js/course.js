@@ -24,7 +24,7 @@ var showCourseData = function (label) {
         section = getSectionDataByLabel(label),
         terms = [],
         current_course_panel = (compare_terms(section.year, section.quarter,
-                                              window.term.year, window.term.quarter) === 0),
+                                              window.term.year, window.term.quarter) >= 0),
         performanceTemplate;
 
     if (!current_course_panel && !section.loaded) {
