@@ -26,7 +26,7 @@ class Introduction(APIView):
 
         if seen:
             user.intro_modal = version
-            #user.save()
+            user.save()
 
         return JsonResponse({
             'seen': user.intro_modal > 0,
