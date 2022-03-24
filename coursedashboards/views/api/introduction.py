@@ -39,5 +39,3 @@ class Introduction(APIView):
             raise PermissionDenied()
 
         return user
-
-
