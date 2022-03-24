@@ -8,6 +8,13 @@ $(document).ready(function () {
 
     displayPageHeader();
 
+    if (window.user.intro_modal == 0) {
+        var source = $("#coda-introductory-modal").html();
+        var template = Handlebars.compile(source);
+        $(template({ netid: window.user.netid })).appendTo('body');
+        $("#coda_intro_modal").modal({ backdrop: 'static' });
+    }
+
     if ($(".course-select").length === 0) {
         return;
     }
