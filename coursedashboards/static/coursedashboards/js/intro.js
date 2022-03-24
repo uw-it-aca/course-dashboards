@@ -6,7 +6,7 @@
 var INTRODUCTION_VERSION = 1;
 
 var displayWelcomeModal = function () {
-    if (window.user.intro_modal == 0) {
+    if (window.user.intro_modal === 0) {
         var source = $("#coda-introductory-modal").html(),
             template = Handlebars.compile(source);
 
@@ -20,7 +20,7 @@ var displayWelcomeModal = function () {
 
 var registerWelcomeModalEvents = function () {
     $('body').on('hidden.bs.modal', '#coda_intro_modal', markIntroductionSeen);
-}
+};
 
 
 var markIntroductionSeen = function () {
@@ -43,4 +43,4 @@ var markIntroductionSeen = function () {
             $body.trigger('endorse:IntroductionSeenFailure', [error]);
         }
     });
-}
+};
