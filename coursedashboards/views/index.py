@@ -3,6 +3,7 @@
 
 from django.contrib.auth.decorators import login_required
 from coursedashboards.views.page import page
+from coursedashboards.dao.message import get_persistent_messages
 
 
 @login_required
@@ -18,5 +19,8 @@ def index(request, year=None, quarter=None,
         "section_label": section_label,
         "sections": sections,
     }
+
+    context['messages'] = get_persistent_messages(params=context)
+    print("CONTEXT CONTEXT: {}".format(context))
 
     return page(request, context, template='index.html')

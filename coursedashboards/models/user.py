@@ -33,6 +33,9 @@ class User(models.Model):
     is_alum = models.BooleanField(default=False)
     is_faculty = models.BooleanField(default=False)
 
+    # app state
+    intro_modal = models.PositiveSmallIntegerField(default=0)
+
     def to_json(self):
         return {
             'uwnetid': self.uwnetid,

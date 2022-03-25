@@ -9,6 +9,7 @@
     </head>
 
 <body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
+    {% csrf_token %}
     <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
         <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
         </div>
@@ -48,8 +49,10 @@
 {% include "handlebars/historic-grad-major.html" %}
 {% include "handlebars/historic-performance.html" %}
 {% include "handlebars/historic-previous-instructors.html" %}
+{% include "handlebars/intro_modal.html" %}
 <script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
+<script src="{% static "coursedashboards/js/intro.js" %}"></script>
 <script src="{% static "coursedashboards/js/course.js" %}"></script>
 <script src="{% static "coursedashboards/js/course_select.js" %}"></script>
 <script src="{% static "coursedashboards/js/course_data.js" %}"></script>

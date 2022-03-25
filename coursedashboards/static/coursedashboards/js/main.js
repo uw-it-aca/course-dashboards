@@ -12,6 +12,8 @@ $(document).ready(function () {
         return;
     }
 
+    displayWelcomeModal();
+
     displayCourseSelector(courseHash());
 
     if (courseHash()) {

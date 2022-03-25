@@ -1,6 +1,7 @@
 # Copyright 2022 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from django.conf import settings
 from uw_saml.utils import is_member_of_group
 from uw_pws import PWS
 from coursedashboards.util.settings import (
@@ -29,3 +30,7 @@ def can_override_user(request):
 
 def can_proxy_restclient(request, service, url):
     return is_member_of_group(request, get_coda_admin_group())
+
+
+def can_manage_persistent_messages(request):
+    return is_member_of_group(request, settings.CODA_ADMIN_GROUP)

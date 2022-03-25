@@ -27,6 +27,7 @@ def page(request,
         context["user"] = {
             "netid": user.uwnetid,
             "session_key": request.session.session_key,
+            "intro_modal": user.intro_modal
         }
     except MissingNetIDException:
         # below is placeholder if login fails...
