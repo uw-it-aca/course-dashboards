@@ -17,6 +17,7 @@ INSTALLED_APPS += [
     'coursedashboards',
     'userservice',
     'supporttools',
+    'persistent_message',
     'rest_framework.authtoken',
 ]
 
@@ -63,6 +64,7 @@ COMPRESS_JS_FILTERS = [
 USERSERVICE_VALIDATION_MODULE = "coursedashboards.userservice_validation.validate"
 USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
+PERSISTENT_MESSAGE_AUTH_MODULE = 'coursedashboards.authorization.can_manage_persistent_messages'
 AUTHZ_GROUP_BACKEND = 'authz_group.authz_implementation.uw_group_service.UWGroupService'
 
 if not os.getenv("ENV") == "localdev":

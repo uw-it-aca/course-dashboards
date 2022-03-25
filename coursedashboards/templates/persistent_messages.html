@@ -1,0 +1,9 @@
+{% for level, msgs in messages.items %}
+<div class="alert coda-alert alert-{{ level }} hidden-print" role="alert">
+    {% for msg in msgs %}
+    <div class="container coda-alert-text">
+        <i class="fa fa-{% if level == 'success' %}check-circle{% endif %}{% if level == 'info' %}exclamation-circle{% endif %}{% if level == 'warning' %}exclamation-triangle{% endif %}{% if level == 'danger' %}minus-circle{% endif %} fa-lg"></i> <span class="coda-persistent-message">{{ msg }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}

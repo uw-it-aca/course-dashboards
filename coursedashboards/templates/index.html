@@ -4,7 +4,8 @@
 
 <script>
     window.user = {
-        "netid": "{{ user.netid }}"
+        "netid": "{{ user.netid }}",
+        "intro_modal": {{ user.intro_modal }}
     };
     window.term = {
         "year": "{{year}}",
@@ -17,7 +18,9 @@
 </script>
 
 <!-- MAIN CONTENT BELOW THE BANNER -->
+
   	<main class="coda-wrapper" role="main">
+      {% include "persistent_messages.html" %}
     		<div class="main-content row" id="maincontent"> 
               {% if no_courses %}
               <div class="col-12">
