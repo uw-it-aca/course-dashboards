@@ -46,6 +46,11 @@ class Command(BaseCommand):
         parser.add_argument(
             '--instructor', dest='instructor', default='',
             help='netid or uw group containing instructors to load')
+        parser.add_argument(
+            '--force',
+            action='store_true',
+            help='Ignore change since date, loading all relevant courses',
+        )
 
     def handle(self, *args, **options):
         logger.debug(
@@ -77,7 +82,7 @@ class Command(BaseCommand):
             term, created = Term.objects.get_or_create(
                 quarter=sws_term.quarter, year=sws_term.year)
             changed_since = term.last_queried
-            if not changed_since:
+            if options['force'] or not changed_since:
                 delta = timedelta(days=365)
                 changed_since = sws_term.first_day_quarter - delta
 
