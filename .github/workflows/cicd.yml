@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [main, master, develop]
+    branches: [main, develop, feature/django-container-1-4-1]
   pull_request:
     branches: [main, master, develop]
     types: [opened, reopened, synchronize]
@@ -97,9 +97,9 @@ jobs:
           coverage combine
           coveralls
 
-      - name: Push Image to GCR
+      - name: Push Image to GAR
         if: github.event_name == 'push'
-        uses: uw-it-aca/actions/gcr-push@main
+        uses: uw-it-aca/actions/gar-push@feature/google-artifact-registry
         with:
           image_tag: ${{ needs.context.outputs.image_tag }}
           gcp_json_key: ${{ secrets.GCP_JSON_KEY }}
@@ -121,7 +121,7 @@ jobs:
       - name: Deployment Pipeline
         id: deploy
         if: >-
-          contains(fromJSON('["main", "master", "develop"]'),
+          contains(fromJSON('["main", "develop", "feature/django-container-1-4-1"]'),
             needs.context.outputs.git_repo_branch)
         uses: uw-it-aca/actions/cicd-deploy@main
         with:

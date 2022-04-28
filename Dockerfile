@@ -1,3 +1,5 @@
+ARG DJANGO_CONTAINER_VERSION=1.4.1
+
 FROM gcr.io/uwit-mci-axdd/django-container:1.3.8 as app-container
 
 USER root
@@ -22,7 +24,7 @@ RUN chmod u+x /scripts/app_start.sh
 
 RUN . /app/bin/activate && python manage.py compress -f && python manage.py collectstatic --noinput
 
-FROM gcr.io/uwit-mci-axdd/django-test-container:1.3.8 as app-test-container
+FROM gcr.io/uwit-mci-axdd/django-test-container:${DJANGO_CONTAINER_VERSION} as app-test-container
 
 COPY --from=app-container /app/ /app/
 COPY --from=app-container /static/ /static/
