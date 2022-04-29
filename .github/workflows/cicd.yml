@@ -103,7 +103,7 @@ jobs:
         with:
           image_tag: ${{ needs.context.outputs.image_tag }}
           gcp_json_key: ${{ secrets.GCP_JSON_KEY }}
-          registry_host: 'us-docker.pkg.dev'
+          registry_hostname: 'us-docker.pkg.dev'
 
   deploy:
     if: github.event_name == 'push'
@@ -151,4 +151,4 @@ jobs:
           gh_auth_token: ${{ secrets.GH_AUTH_TOKEN }}
           registry_password: ${{ secrets.GCP_JSON_KEY }}
           context: ${{ needs.deploy.outputs.context }}
-          registry_host: 'us-docker.pkg.dev'
+          registry_hostname: 'us-docker.pkg.dev'
