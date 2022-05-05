@@ -103,7 +103,6 @@ jobs:
         with:
           image_tag: ${{ needs.context.outputs.image_tag }}
           gcp_json_key: ${{ secrets.GCP_JSON_KEY }}
-          registry_hostname: us-docker.pkg.dev
 
   deploy:
     if: github.event_name == 'push'
@@ -124,7 +123,7 @@ jobs:
         if: >-
           contains(fromJSON('["main", "develop", "feature/django-container-1-4-1"]'),
             needs.context.outputs.git_repo_branch)
-        uses: uw-it-aca/actions/cicd-deploy@main
+        uses: uw-it-aca/actions/cicd-deploy@feature/google-artifact-registry
         with:
           release_name: ${{ env.RELEASE_NAME }}
           commit_hash: ${{ needs.context.outputs.commit_hash }}
@@ -151,4 +150,3 @@ jobs:
           gh_auth_token: ${{ secrets.GH_AUTH_TOKEN }}
           registry_password: ${{ secrets.GCP_JSON_KEY }}
           context: ${{ needs.deploy.outputs.context }}
-          registry_hostname: us-docker.pkg.dev
