@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='registration',
             name='is_repeat',
-            field=models.NullBooleanField(),
+            field=models.BooleanField(null=True),
         ),
     ]
