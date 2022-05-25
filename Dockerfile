@@ -3,15 +3,16 @@ ARG DJANGO_CONTAINER_VERSION=1.4.1
 FROM gcr.io/uwit-mci-axdd/django-container:${DJANGO_CONTAINER_VERSION} as app-container
 
 USER root
+
 RUN apt-get update && apt-get install mysql-client libmysqlclient-dev libpq-dev -y
+
 USER acait
 
-ADD --chown=acait:acait coursedashboards/VERSION /app/coursedashboards/
-ADD --chown=acait:acait setup.py /app/
-ADD --chown=acait:acait requirements.txt /app/
+ADD --chown=acait:acait . /app/
+ADD --chown=acait:acait docker/ /app/project/
 
-RUN . /app/bin/activate && pip install -r requirements.txt
-RUN . /app/bin/activate && pip install mysqlclient
+RUN /app/bin/pip install -r requirements.txt
+RUN /app/bin/pip install mysqlclient
 
 RUN . /app/bin/activate && pip install nodeenv && nodeenv -p &&\
     npm install -g npm &&\

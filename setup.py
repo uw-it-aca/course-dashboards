@@ -24,8 +24,8 @@ setup(
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
-        'Django~=2.2',
-        'django-compressor==2.2',
+        'Django~=3.2',
+        'django-compressor',
         'django-pyscss',
         'django_mobileesp',
         'uw-memcached-clients~=1.0',
@@ -44,7 +44,7 @@ setup(
         'statistics',
         'mysqlclient==1.3.14',
     ],
-    license='Apache License, Version 2.0',  # example license
+    license='Apache License, Version 2.0',
     description='A Django App for viewing course data',
     long_description=README,
     url=url,
@@ -55,6 +55,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.8',
     ],
 )
