@@ -7,7 +7,7 @@ import Customize from "../pages/customize.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/vue",
     name: "Home",
     component: Home,
   },

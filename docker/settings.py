@@ -19,13 +19,34 @@ INSTALLED_APPS += [
     'supporttools',
     'persistent_message',
     'rest_framework.authtoken',
+    'webpack_loader',
 ]
+
+# Location of stats file that can be accessed during local development and 
+# collected from during production build process
+if os.getenv("ENV") == "localdev":
+    WEBPACK_LOADER = {
+        'DEFAULT': {
+            'STATS_FILE': os.path.join(BASE_DIR, 'coursedashboards/static/webpack-stats.json'),
+        }
+    }
+else:
+    WEBPACK_LOADER = {
+        'DEFAULT': {
+            'STATS_FILE': os.path.join(BASE_DIR, '/static/webpack-stats.json'),
+        }
+    }
+
+# If you have file data, define the path here
+# DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
+
+GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", default=" ")
 
 MIDDLEWARE += [
     'userservice.user.UserServiceMiddleware',
 ]
 
-TEMPLATES[0]['DIRS'] = ['/app/coursedashboards/templates/']
+TEMPLATES[0]['DIRS'] = ['/app/coursedashboards/templates/', '/app/coursedashboards/templates_vue/']
 TEMPLATES[0]['OPTIONS']['context_processors'] += [
     'django.template.context_processors.i18n',
     'django.template.context_processors.media',
@@ -33,6 +54,12 @@ TEMPLATES[0]['OPTIONS']['context_processors'] += [
     'django.template.context_processors.tz',
     'supporttools.context_processors.supportools_globals',
     'supporttools.context_processors.has_less_compiled',
+    'django.template.context_processors.debug',
+    'django.template.context_processors.request',
+    'django.contrib.auth.context_processors.auth',
+    'django.contrib.messages.context_processors.messages',
+    'coursedashboards.context_processors.google_analytics',
+    'coursedashboards.context_processors.django_debug',
 ]
 
 COMPRESS_ENABLED = True

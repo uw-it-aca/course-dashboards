@@ -41,9 +41,10 @@ setup(
         'djangorestframework==3.11.2',
         'Django-Persistent-Message',
         'statistics',
+        'django-webpack-loader'
     ],
     license='Apache License, Version 2.0',
-    description='A Django App for viewing course data',
+    description='A Django/Vue App for viewing course data',
     long_description=README,
     url=url,
     classifiers=[

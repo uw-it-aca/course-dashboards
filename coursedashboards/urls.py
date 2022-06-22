@@ -16,6 +16,8 @@ from coursedashboards.views.api.introduction import Introduction
 from coursedashboards.views.index import index
 from coursedashboards.views.page import user_login, logout
 
+from coursedashboards.views.pages_vue import DefaultPageView
+
 course_regex = (
     r'^api/v1/course/(?P<year>\d{4})-'
     r'(?P<quarter>[A-Za-z]+)-'
@@ -25,6 +27,7 @@ course_regex = (
 
 urlpatterns = [
     # Home
+    re_path(r'^vue', DefaultPageView.as_view()),
     re_path(r'^$', index, name='home'),
     re_path(r'api/v1/user/(?P<netid>[a-z][a-z0-9\-\_\.]{,127})/introduction',
             Introduction.as_view(),

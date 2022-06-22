@@ -2,17 +2,42 @@ version: '3.4'
 
 services:
   app:
+    build:
+      context: .
+      target: app-container
+    restart: always
+    container_name: coursedashboards_app
     environment:
+      - GOOGLE_ANALYTICS_KEY=${GOOGLE_ANALYTICS_KEY}
       - ENV=localdev
       - PORT=8000
       - AUTH=SAML_MOCK
       - CODA_PROFILE=TRUE
-    restart: always
-    container_name: app-coda
-    build:
-      context: .
-      target: app-container
     volumes:
       - ./coursedashboards:/app/coursedashboards
+      - statics-volume:/static
     ports:
-      - "8000:8000"
+      - "${RUNSERVER_PORT:-8000}:8000"
+    stdin_open: true
+    tty: true
+  node-bundler:
+    build:
+      context: .
+      target: node-bundler
+    restart: always
+    container_name: coursedashboards_node
+    ports:
+      - "${BUNDLE_ANALYZER_PORT:-8888}:8888" # Required when environment.BUNDLE_ANALYZER is true
+    environment:
+      VUE_DEVTOOLS: "True"
+      BUNDLE_ANALYZER: "True"
+    volumes:
+      - ./coursedashboards:/app/coursedashboards # expose main django app so webpack-loader can output bundles here
+      - ./coursedashboards_vue:/app/coursedashboards_vue
+      - statics-volume:/static
+    command: npx webpack --watch --mode=development
+    stdin_open: true
+    tty: true
+volumes:
+  statics-volume:
+
