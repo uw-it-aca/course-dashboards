@@ -1,0 +1,52 @@
+@use "sass:map";
+@import "axdd-components/src/assets/css/custom";
+
+$enable-cssgrid: true;
+
+// override max width of containers
+// $container-max-widths: map.merge($container-max-widths, (xl: 1400px, xxl: 1600px));
+
+// compass custom colors
+$custom-colors: (
+  "test": red,
+);
+
+// axdd-components + pathways custom colors
+$theme-colors: map-merge($theme-colors, $custom-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop(
+  $utilities-colors,
+  rgba-css-var,
+  "$key",
+  "text"
+);
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+
+// axdd-component utilitities
+$utilities: (
+  "background-color": (
+    property: background-color,
+    class: bg,
+    state: hover focus,
+    values:
+      map-merge(
+        $theme-colors,
+        (
+          "body": $body-bg,
+          "white": $white,
+          "transparent": transparent,
+        )
+      ),
+  ),
+);
+
+// additional non-bootstrap styles
+
+.blah {
+  color: purple;
+}
+
+// import bootstrap and bootstrap-icons
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
