@@ -1,8 +1,12 @@
 <template>
-  <axdd-topbar :app-name="'Course Dashboards'" :user-name="'javerage'">
+  <axdd-topbar
+    :app-name="'Course Dashboards'"
+    :user-name="this.user.netid"
+  >
     <template #main>
       <slot name="content" />
     </template>
+    <template #footer />
   </axdd-topbar>
 </template>
 
@@ -23,11 +27,11 @@ export default {
     return {
       // minimum application setup overrides
       appName: "CODA",
-      // automatically set year
-      currentYear: new Date().getFullYear(),
+      user: null,
     };
   },
   created: function () {
+    this.user = JSON.parse(document.getElementById('user').textContent);
     // constructs page title in the following format "Page Title - AppName"
     document.title = this.pageTitle + " - " + this.appName;
   },

@@ -13,6 +13,7 @@ from coursedashboards.views.api.integration.offering_fail_rate import (
 from coursedashboards.views.api.integration.offering_majors import (
     OfferingMajors)
 from coursedashboards.views.api.introduction import Introduction
+from coursedashboards.views.index_vue import index_vue
 from coursedashboards.views.index import index
 from coursedashboards.views.page import user_login, logout
 
@@ -27,7 +28,7 @@ course_regex = (
 
 urlpatterns = [
     # Home
-    re_path(r'^vue', DefaultPageView.as_view()),
+    re_path(r'^vue', index_vue),
     re_path(r'^$', index, name='home'),
     re_path(r'api/v1/user/(?P<netid>[a-z][a-z0-9\-\_\.]{,127})/introduction',
             Introduction.as_view(),

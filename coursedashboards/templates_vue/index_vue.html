@@ -16,6 +16,13 @@
 
     {% render_bundle 'main' 'css' %}
 
+    {{ user|json_script:"user" }}
+    {{ quarter|json_script:"quarter" }}
+    {{ year|json_script:"year" }}
+    {{ sections|json_script:"section_data" }}
+    {{ historic_sections|json_script:"section_historic_data" }}
+    <!--  {}|json_script:"historic_data"  -->
+    
 </head>
 
 <body {% if google_analytics %}data-google-analytics="{{ google_analytics }}"{% endif %} {% if logout_url %}data-logout-url="{{ logout_url }}"{% endif %} data-django-debug="{{ django_debug|lower}}" class="bg-light">
