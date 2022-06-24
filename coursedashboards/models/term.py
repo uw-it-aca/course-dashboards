@@ -32,7 +32,7 @@ class Term(models.Model):
         return self.year * 10 + self._quarter_to_int(self.quarter)
 
     def save(self, *args, **kwargs):
-        if self.term_key is 0:
+        if not self.term_key:
             self.term_key = self.get_term_key()
 
         super(Term, self).save(*args, **kwargs)

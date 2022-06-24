@@ -49,7 +49,7 @@ externalService:
 repo: coda
 instance: test
 image:
-  repository: gcr.io/uwit-mci-axdd/coda
+  repository: us-docker.pkg.dev/uwit-mci-axdd/containers/coda
   tag: IMAGE_TAG
 memcached:
   enabled: true
@@ -62,9 +62,9 @@ metrics:
     enabled: true
 certs:
   mounted: true
-  certPath: /certs/coda-test.s.uw.edu-uwca.cert
-  keyPath: /certs/coda-test.s.uw.edu-uwca.key
-  secretName: test.coda.uw.edu-uwca-certs
+  certPath: /certs/test.coda.uw.edu.cert
+  keyPath: /certs/test.coda.uw.edu.key
+  secretName: test.coda.uw.edu-ic-certs
 environmentVariables:
   - name: ENV
     value: dev
@@ -107,18 +107,13 @@ externalSecrets:
           property: sql_user
         - name: password
           property: sql_pass
-    - name: test.coda.uw.edu-uwca-certs
-      externalKey: axdd/kv/data/coda/test/uwca-certs
-      data:
-        - name: coda-test.s.uw.edu-uwca.key
-          property: key
-        - name: coda-test.s.uw.edu-uwca.cert
-          property: cert
     - name: test.coda.uw.edu-ic-certs
       externalKey: axdd/kv/data/coda/test/ic-certs
       data:
         - name: test.coda.uw.edu.cert
           property: cert
+        - name: test.coda.uw.edu.key
+          property: key
     - name: test.coda.uw.edu-uw-idp-cert
       externalKey: axdd/kv/data/idp-cert
       data:
