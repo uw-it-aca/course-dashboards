@@ -109,10 +109,10 @@ jobs:
 
     needs: [context, build]
 
-    outputs:
-      context: ${{ steps.deploy.outputs.context }}
-
     runs-on: ubuntu-20.04
+
+    outputs:
+      context: ${{ steps.context.outputs.context }}
 
     steps:
       - name: Checkout Repo
