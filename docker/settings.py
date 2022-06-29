@@ -19,7 +19,6 @@ INSTALLED_APPS += [
     'supporttools',
     'persistent_message',
     'rest_framework.authtoken',
-    'webpack_loader',
 ]
 
 # Location of stats file that can be accessed during local development and 
