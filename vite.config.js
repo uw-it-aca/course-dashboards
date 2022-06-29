@@ -17,7 +17,7 @@ export default defineConfig({
     },
     outDir: './coursedashboards/static/', // NOTE: '/static/'
     assetsDir: 'coursedashboards/assets', // NOTE: '/static/coursedashboards/assets/xxxx.js'
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
   base: "/static/", // MARK: allows for proper css url path creation
   // root: "./coursedashboards_vue",
