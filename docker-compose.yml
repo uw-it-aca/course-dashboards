@@ -32,12 +32,11 @@ services:
       VUE_DEVTOOLS: "True"
       BUNDLE_ANALYZER: "True"
     volumes:
-      - ./coursedashboards:/app/coursedashboards # expose main django app so webpack-loader can output bundles here
+      - ./coursedashboards:/app/coursedashboards # expose main django app so vite can output bundles here
       - ./coursedashboards_vue:/app/coursedashboards_vue
       - statics-volume:/static
-    command: npx webpack --watch --mode=development
+    command: npm run watch
     stdin_open: true
     tty: true
 volumes:
   statics-volume:
-

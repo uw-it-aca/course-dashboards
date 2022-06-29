@@ -27,13 +27,12 @@ ADD . /app/
 
 ARG VUE_DEVTOOLS
 ENV VUE_DEVTOOLS=$VUE_DEVTOOLS
-RUN npx webpack --mode=production
+RUN npm run build
 
 FROM app-prewebpack-container as app-container
 
 COPY --chown=acait:acait --from=node-bundler /app/coursedashboards/static /app/coursedashboards/static
 
-# RUN . /app/bin/activate && python manage.py compress -f && python manage.py collectstatic --noinput
 RUN /app/bin/python manage.py collectstatic --noinput
 
 FROM gcr.io/uwit-mci-axdd/django-test-container:${DJANGO_CONTAINER_VERSION} as app-test-container

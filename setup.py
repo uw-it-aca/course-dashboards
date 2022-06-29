@@ -6,9 +6,9 @@ See the README on `GitHub
 <https://github.com/uw-it-aca/course-dashboards>`_.
 """
 
-
 # The VERSION file is created by travis-ci, based on the tag name
-version_path = 'coursedashboards/VERSION'
+version_path = "coursedashboards/VERSION"
+print(os.path.join(os.path.dirname(__file__), version_path))
 VERSION = open(os.path.join(os.path.dirname(__file__), version_path)).read()
 VERSION = VERSION.replace("\n", "")
 
@@ -41,7 +41,6 @@ setup(
         'djangorestframework==3.11.2',
         'Django-Persistent-Message',
         'statistics',
-        'django-webpack-loader'
     ],
     license='Apache License, Version 2.0',
     description='A Django/Vue App for viewing course data',

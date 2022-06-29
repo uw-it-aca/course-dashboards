@@ -11,6 +11,6 @@ module.exports = {
   env: {
     "vue/setup-compiler-macros": true,
     node: true,
-    jest: true,
+    //jest: true,
   },
 };

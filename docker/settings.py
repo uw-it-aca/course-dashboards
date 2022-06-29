@@ -38,7 +38,7 @@ else:
     }
 
 # If you have file data, define the path here
-# DATA_ROOT = os.path.join(BASE_DIR, "app_name/data")
+# DATA_ROOT = os.path.join(BASE_DIR, "coursedashboards/data")
 
 GOOGLE_ANALYTICS_KEY = os.getenv("GOOGLE_ANALYTICS_KEY", default=" ")
 
