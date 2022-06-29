@@ -2,10 +2,9 @@
   "name": "coursedashboards",
   "version": "1.0.0",
   "description": "coursedashboards some description text",
-  "main": "webpack.config.js",
   "scripts": {
     "build": "vite build",
-    "watch": "vite build --watch",
+    "watch": "vite build --watch --mode development",
     "test": "vitest --environment jsdom",
     "coverage": "vitest run --coverage",
     "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
