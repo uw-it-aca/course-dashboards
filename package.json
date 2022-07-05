@@ -22,10 +22,10 @@
   "homepage": "https://github.com/uw-it-aca/course-dashboards#readme",
   "dependencies": {
     "@popperjs/core": "^2.9.2",
-    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#task/profile-comp",
+    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#develop",
     "axios": "^0.27.2",
-    "bootstrap": "^5.1.3",
-    "bootstrap-icons": "^1.6.0",
+    "bootstrap": "^5.2.0-beta1",
+    "bootstrap-icons": "^1.8.3",
     "jquery": "^3.6.0",
     "vue": "^3.2.33",
     "vue-gtag-next": "^1.14.0",
