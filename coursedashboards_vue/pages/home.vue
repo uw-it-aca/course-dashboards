@@ -8,6 +8,7 @@
     </template>
 
     <template #content>
+      <intro-modal />
       <content-main />
     </template>
   </layout>
@@ -16,12 +17,14 @@
 <script>
 import Layout from "../layout.vue";
 import ContentMain from '../components/content-main.vue';
+import IntroModal from '../components/intro-modal.vue';
 
 export default {
   name: "PagesHome",
   components: {
-    layout: Layout,
+    'layout': Layout,
     'content-main': ContentMain,
+    'intro-modal': IntroModal,
   },
   data() {
     return {

@@ -79,6 +79,7 @@ def page(request,
     except Instructor.DoesNotExist:
         context['no_courses'] = True
 
+    print("CONTEXT CONTEXT: {}".format(context))
     return render(request, template, context)
 
 

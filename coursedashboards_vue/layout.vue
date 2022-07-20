@@ -1,7 +1,9 @@
 <template>
   <axdd-topbar
-    :app-name="'Course Dashboards'"
-    :user-name="this.user.netid"
+    :app-name="appName"
+    :app-root-url="appRootUrl"
+    :user-name="user.netid"
+    :sign-out-url="signOutUrl"
   >
     <template #main>
       <slot name="content" />
@@ -27,7 +29,9 @@ export default {
     return {
       // minimum application setup overrides
       appName: "CODA",
+      appRootUrl: "/",
       user: null,
+      signOutUrl: "/logout",
     };
   },
   created: function () {

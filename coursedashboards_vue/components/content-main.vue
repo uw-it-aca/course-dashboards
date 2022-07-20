@@ -1,57 +1,108 @@
 <template>
   <div>
-    <h2 class="my-4">
-      Course Dashboard for
-      <div class="dropdown d-inline-block">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          {{ currentCourse.section_label }}
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li
-            v-for="(course, index) in courses.filter((c) => c != currentCourse)"
-            :key="index"
-            @click="currentCourse = course"
-          >
-            <a class="dropdown-item" href="#">
-              {{ course.section_label }}
-            </a>
-          </li>
-        </ul>
-      </div>
-    </h2>
-    
-    <router-view></router-view>
+    <div v-if="chosenCourse">
+      <h2 class="my-4">
+        Course Dashboard for
+        <div class="dropdown d-inline-block">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ courseSelectionLabel(chosenCourse) }}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li
+              v-for="(course, index) in currentCourses.filter((c) => c != chosenCourse)"
+              :key="index"
+              @click="chosenCourse = course"
+            >
+              <a class="dropdown-item" href="#">
+                {{ courseSelectionLabel(course) }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </h2> 
+      
+      <router-view v-slot="{ Component }">
+        <!-- <Transition name="fade" mode="out-in"> -->
+          <KeepAlive max="5">
+            <component :is="Component" :key="$route.fullPath" />
+          </KeepAlive>
+        <!-- </Transition> -->
+      </router-view>
+    </div>
+    <div v-else-if="currentCourses.length == 0">
+      <p>
+        We're sorry, but it does not appear you have instructed any courses recently.
+      </p>
+    </div>
+    <div v-else>
+        This course does not exist or you are not the instructor of this course.
+    </div>
   </div>
 </template>
 
 <script>
+import { toSectionLabel } from '../utils';
 export default {
   name: "ContentMain",
   data() {
     return {
-      currentCourse: null,
-      courses: null,
+      chosenCourse: null,
+      courses: [],
+      year: 0,
+      quarter: '',
     };
   },
   watch: {
-    currentCourse(newCourse) {
-      this.$router.push('/vue/' + newCourse.section_label);
+    chosenCourse(newCourse) {
+      // In case there is an invalid course label entered
+      // the chosenCourse will be null and we do nothing.
+      if (newCourse) {
+        this.$router.push('/' + newCourse.section_label);
+      }
     }
   },
   methods: {
     compareLowerCase(s1, s2) {
       return s1.toLowerCase() == s2.toLowerCase();
     },
+    courseSelectionLabel(course) {
+      return course.curriculum + ' ' + course.course_number + ' ' + course.section_id + ' - ' + course.course_title;
+    },
+  },
+  computed: {
+    currentCourses() {
+      return this.courses.filter(section => {
+        return section.year == this.year && this.compareLowerCase(section.quarter, this.quarter)
+      })
+    },
   },
   created: function () {
-    const year = JSON.parse(document.getElementById('year').textContent);
-    const quarter = JSON.parse(document.getElementById('quarter').textContent);
-    
-    let section_data = JSON.parse(document.getElementById('section_data').textContent);
-    this.courses = section_data.filter((section) => {
-      return section.year == year && this.compareLowerCase(section.quarter, quarter)
-    });
-    this.currentCourse = this.courses[0];
+    this.year = JSON.parse(document.getElementById('year').textContent);
+    this.quarter = JSON.parse(document.getElementById('quarter').textContent);
+    this.courses = JSON.parse(document.getElementById('section_data').textContent);
+
+    if (JSON.stringify(this.$route.params) == '{}') {
+      if (this.currentCourses.length > 0) {
+        this.chosenCourse = this.currentCourses[0];
+      }
+    } else {
+      let sectionLabel = toSectionLabel(this.$route.params);
+      this.chosenCourse = this.currentCourses.find(course => {
+        return course.section_label == sectionLabel;
+      });
+    }
   },
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -18,6 +18,12 @@ const app = createApp(App);
 const gaCode = document.body.getAttribute("data-google-analytics");
 const debugMode = document.body.getAttribute("data-django-debug");
 
+// Set csrftoken for all subsequent axios requests
+// Probably a better way to do this with axios.create()
+import axios from "axios";
+const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+axios.defaults.headers.common["X-CSRFToken"] = csrftoken;
+
 app.config.productionTip = false;
 
 // vue-gtag-next

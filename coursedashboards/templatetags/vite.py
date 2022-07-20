@@ -1,6 +1,6 @@
 # PROJECT_ROOT/templatetags/vite.py
 
-from os import path
+import os
 import json
 from django import template
 from django.conf import settings
@@ -12,9 +12,12 @@ register = template.Library()
 
 def vite_manifest(entries_names):
 
-    # this is essential for a working bundler
-    application_name = 'coursedashboards'
-    manifest_filepath = path.join(application_name, 'static/manifest.json')
+    # path to the manifest.json (relative if localdev, /static if not)
+    manifest_filepath = getattr(
+        settings,
+        "VITE_MANIFEST_PATH",
+        os.path.join(os.sep, "static", "manifest.json"),
+    )
 
     with open(manifest_filepath) as fp:
         manifest = json.load(fp)
@@ -30,12 +33,14 @@ def vite_manifest(entries_names):
 
             chunk = manifest[name]
 
-            import_scripts, import_styles = _process_entries(chunk.get('imports', []))
+            import_scripts, import_styles = _process_entries(
+                chunk.get("imports", [])
+            )
             scripts += import_scripts
             styles += import_styles
 
-            scripts += [chunk['file']]
-            styles += [css for css in chunk.get('css', [])]
+            scripts += [chunk["file"]]
+            styles += [css for css in chunk.get("css", [])]
 
             _processed.add(name)
 

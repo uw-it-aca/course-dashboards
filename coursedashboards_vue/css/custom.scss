@@ -59,6 +59,10 @@ $utilities: (
   color: purple;
 }
 
+i.clickable {
+  cursor: pointer;
+}
+
 // import bootstrap and bootstrap-icons
 @import "bootstrap/scss/bootstrap";
 @import "bootstrap-icons/font/bootstrap-icons.css";
