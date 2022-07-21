@@ -4,28 +4,31 @@
       <h2 class="my-4">
         Course Dashboard for
         <div class="dropdown d-inline-block">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ courseSelectionLabel(chosenCourse) }}
+          <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <MqResponsive target="mobile" class="d-inline-block">
+              {{ chosenCourse.curriculum + " " + chosenCourse.course_number + " " + chosenCourse.section_id }}
+            </MqResponsive>
+            <MqResponsive target="tablet+" class="d-inline-block">
+              {{ courseSelectionLabel(chosenCourse) }}
+            </MqResponsive>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li
-              v-for="(course, index) in currentCourses.filter((c) => c != chosenCourse)"
-              :key="index"
-              @click="chosenCourse = course"
-            >
+            <li v-for="(course, index) in currentCourses.filter((c) => c != chosenCourse)" :key="index"
+              @click="chosenCourse = course">
               <a class="dropdown-item" href="#">
                 {{ courseSelectionLabel(course) }}
               </a>
             </li>
           </ul>
         </div>
-      </h2> 
-      
+      </h2>
+
       <router-view v-slot="{ Component }">
         <!-- <Transition name="fade" mode="out-in"> -->
-          <KeepAlive max="5">
-            <component :is="Component" :key="$route.fullPath" />
-          </KeepAlive>
+        <KeepAlive max="5">
+          <component :is="Component" :key="$route.fullPath" />
+        </KeepAlive>
         <!-- </Transition> -->
       </router-view>
     </div>
@@ -35,15 +38,20 @@
       </p>
     </div>
     <div v-else>
-        This course does not exist or you are not the instructor of this course.
+      This course does not exist or you are not the instructor of this course.
     </div>
   </div>
 </template>
 
 <script>
+import { MqResponsive } from "vue3-mq";
 import { toSectionLabel } from '../utils';
 export default {
   name: "ContentMain",
+  components: {
+    MqResponsive,
+  },
+  inject: ["mq"],
   data() {
     return {
       chosenCourse: null,
@@ -75,6 +83,10 @@ export default {
         return section.year == this.year && this.compareLowerCase(section.quarter, this.quarter)
       })
     },
+    currentMq() {
+      console.log(this.mq.current);
+      return this.mq.current;
+    }
   },
   created: function () {
     this.year = JSON.parse(document.getElementById('year').textContent);

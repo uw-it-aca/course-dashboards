@@ -16,8 +16,8 @@
 
 <script>
 import Layout from "../layout.vue";
-import ContentMain from '../components/content-main.vue';
-import IntroModal from '../components/intro-modal.vue';
+import ContentMain from '../components/ContentMain.vue';
+import IntroModal from '../components/IntroModal.vue';
 
 export default {
   name: "PagesHome",

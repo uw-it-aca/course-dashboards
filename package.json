@@ -26,6 +26,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0-beta1",
     "bootstrap-icons": "^1.8.3",
+    "d3": "^7.6.1",
     "jquery": "^3.6.0",
     "vue": "^3.2.33",
     "vue-gtag-next": "^1.14.0",

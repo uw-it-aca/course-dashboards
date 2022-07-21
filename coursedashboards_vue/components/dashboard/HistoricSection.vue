@@ -3,10 +3,8 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-6">
-        <SectionProperty
-          :propertyTitle="'Students / ' + performance.offering_count + ' Offerings'"
-          :property="performance.enrollment"
-        >
+        <SectionProperty :propertyTitle="'Students / ' + performance.offering_count + ' Offerings'"
+          :property="performance.enrollment">
           <template #property-icon>
             <i class="bi bi-people-fill" />
           </template>
@@ -30,7 +28,7 @@
             <i class="bi bi-info-circle-fill" />
           </template>
           <template #property-icon>
-            <i class="bi bi-bar-chart-fill"></i>
+            <Histogram :data="performance.gpas" />
           </template>
         </SectionProperty>
       </div>
@@ -47,33 +45,37 @@
     </div>
     <div class="row mt-3">
       <div class="col-sm-6">
-        <CourseMajorList
-          title="Declared Majors"
-          subtitle="When taking the course"
-          :items="studentMajorsList"
-        >
-        </CourseMajorList>
+        <SectionList title="Declared Majors" subtitle="When taking the course" infoTitle="Declared Majors"
+          infoContent="Compare the proportion of certain majors in your class...">
+          <template #content>
+            <PercentList :items="studentMajorsList">
+            </PercentList>
+          </template>
+        </SectionList>
       </div>
       <div class="col-sm-6">
-        <CourseMajorList
-          title="Declared Majors"
-          subtitle="Upon Graduation"
-          :items="graduatedMajorsList"
-        >
-        </CourseMajorList>
+        <SectionList title="Declared Majors" subtitle="Upon Graduation" infoTitle="Declared Majors"
+          infoContent="Compare the proportion of certain majors in your class...">
+          <template #content>
+            <PercentList :items="graduatedMajorsList">
+            </PercentList>
+          </template>
+        </SectionList>
       </div>
-    </div> 
+    </div>
   </div>
 </template>
 
 <script>
 import { get } from "axios";
-import SectionProperty from "../components/section-property.vue";
-import CourseMajorList from "../components/course-major-list.vue";
+import SectionProperty from "./SectionProperty.vue";
+import SectionList from "./SectionList.vue";
+import PercentList from "./PercentList.vue";
+import Histogram from "../popover/Histogram.vue";
 export default {
   name: "HistoricSection",
   async setup(props) {
-    
+
     const pastPerformanceRes = await get("api/v1/course/" + props.sectionLabel + "/past/performance");
     const performance = pastPerformanceRes.data.performance;
 
@@ -92,14 +94,16 @@ export default {
   },
   components: {
     SectionProperty,
-    CourseMajorList,
-  },
+    SectionList,
+    PercentList,
+    Histogram
+},
   props: {
     sectionLabel: String,
   },
   computed: {
     medianGpas() {
-      return this.median(this.performance.gpas); 
+      return this.median(this.performance.gpas);
     },
     medianCourseGrades() {
       return this.median(this.performance.course_grades);
@@ -124,13 +128,13 @@ export default {
       return Math.round(
         this.performance.course_grades.filter((grade) => grade <= 0.7).length /
         this.performance.course_grades.length * 100
-      ) 
+      )
     },
   },
   methods: {
     median(arr) {
       const mid = Math.floor(arr.length / 2),
-      nums = [...arr].sort((a, b) => a - b);
+        nums = [...arr].sort((a, b) => a - b);
       return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
     },
   },

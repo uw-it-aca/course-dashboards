@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import CurrentSection from "./current-section.vue";
-import HistoricSection from "./historic-section.vue";
-import { toSectionLabel } from "../utils";
+import CurrentSection from "../dashboard/CurrentSection.vue";
+import HistoricSection from "../dashboard/HistoricSection.vue";
+import { toSectionLabel } from "../../utils";
 export default {
   name: "CourseDashboard",
   components: {

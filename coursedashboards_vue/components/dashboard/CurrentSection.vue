@@ -12,7 +12,9 @@
       <div class="col-sm-6">
         <SectionProperty propertyTitle="Repeating Students" :property="data.current_repeating">
           <template #title-icon>
-            <i class="bi bi-info-circle-fill" />
+            <PopoverIcon title="ASD" content="ASDASD">
+              <i class="bi bi-info-circle-fill" />
+            </PopoverIcon>
           </template>
           <template #property-icon>
             <i class="bi bi-arrow-clockwise" />
@@ -24,7 +26,9 @@
       <div class="col-sm-6">
         <SectionProperty propertyTitle="Median Cumulative GPA" :property="data.current_median">
           <template #title-icon>
-            <i class="bi bi-info-circle-fill" />
+            <PopoverIcon title="ASD" content="ASDASD">
+              <i class="bi bi-info-circle-fill" />
+            </PopoverIcon>
           </template>
           <template #property-icon>
             <i class="bi bi-bar-chart-fill"></i>
@@ -34,20 +38,22 @@
     </div>
     <div class="row mt-3">
       <div class="col-sm-6">
-        <CourseMajorList
-          title="Concurrent Courses"
-          subtitle="When taking the course"
-          :items="concurrentCourses"
-        >
-        </CourseMajorList>
+        <SectionList title="Concurrent Courses" subtitle="When taking the course" infoTitle="Concurrent Courses"
+          infoContent="Compare the proportion of certain majors in your class...">
+          <template #content>
+            <PercentList :items="concurrentCourses">
+            </PercentList>
+          </template>
+        </SectionList>
       </div>
       <div class="col-sm-6">
-        <CourseMajorList
-          title="Declared Majors"
-          subtitle="When taking the course"
-          :items="currentStudentMajors"
-        >
-        </CourseMajorList>
+        <SectionList title="Declared Majors" subtitle="When taking the course" infoTitle="Declared Majors"
+          infoContent="Compare the proportion of certain majors in your class...">
+          <template #content>
+            <PercentList :items="currentStudentMajors">
+            </PercentList>
+          </template>
+        </SectionList>
       </div>
     </div>
   </div>
@@ -55,12 +61,14 @@
 
 <script>
 import { get } from "axios";
-import SectionProperty from "../components/section-property.vue";
-import CourseMajorList from "../components/course-major-list.vue";
+import SectionProperty from "./SectionProperty.vue";
+import SectionList from "./SectionList.vue";
+import PercentList from "./PercentList.vue";
+import PopoverIcon from "../popover/PopoverIcon.vue";
 export default {
   name: "CurrentSection",
   async setup(props) {
-    
+
     const res = await get("api/v1/course/" + props.sectionLabel);
     const data = await res.data;
     return {
@@ -69,15 +77,16 @@ export default {
   },
   components: {
     SectionProperty,
-    CourseMajorList,
+    SectionList,
+    PercentList,
+    PopoverIcon,
   },
   props: {
     sectionLabel: String,
-
   },
   computed: {
     registeredString() {
-      return this.data.current_enrollment + " / " + this.data.limit_estimate_enrollment; 
+      return this.data.current_enrollment + " / " + this.data.limit_estimate_enrollment;
     },
     currentStudentMajors() {
       return this.data.current_student_majors.slice(0).map(obj => {

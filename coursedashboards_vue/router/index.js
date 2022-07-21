@@ -2,9 +2,9 @@ import { createWebHistory, createRouter } from "vue-router";
 import { trackRouter } from "vue-gtag-next";
 
 // page components
-import Home from "../pages/home.vue";
-import Customize from "../pages/customize.vue";
-import CourseDashboard from "../components/course-dashboard.vue";
+import Home from "../pages/Home.vue";
+import Customize from "../pages/Customize.vue";
+import CourseDashboard from "../components/dashboard/CourseDashboard.vue";
 
 const routes = [
   {
