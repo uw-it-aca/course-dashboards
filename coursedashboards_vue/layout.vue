@@ -28,10 +28,10 @@ export default {
   data() {
     return {
       // minimum application setup overrides
-      appName: "CODA",
+      appName: "Course Dashboard",
       appRootUrl: "/",
       user: null,
-      signOutUrl: "/logout",
+      signOutUrl: "/saml/logout",
     };
   },
   created: function () {
