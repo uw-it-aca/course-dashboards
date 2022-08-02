@@ -1,8 +1,7 @@
 <template>
   <div>
     <div v-if="chosenCourse">
-      <h2 class="my-4">
-        <p>{{ mq }}</p>
+      <h1 class="my-4">
         Course Dashboard for:
         <div class="d-inline-block">
           <select
@@ -55,7 +54,7 @@
             </li>
           </ul>
         </div>
-      </h2>
+      </h1>
 
       <router-view v-slot="{ Component }">
         <!-- <Transition name="fade" mode="out-in"> -->
