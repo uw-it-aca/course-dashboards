@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-sm-12 col-lg-6 mb-4">
+    <div class="col-sm-12 col-lg-6 mb-4 border-end">
       <Suspense>
         <current-section :section-label="sectionLabel" />
         <template #fallback> Loading... </template>
