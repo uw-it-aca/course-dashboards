@@ -3,7 +3,6 @@
 
 from userservice.user import UserService
 from django.conf import settings
-from authz_group import Group
 from uw_gws import GWS
 
 
@@ -25,6 +24,5 @@ def is_in_admin_group(group_key):
     if not actual_user:
         raise Exception("No user in session")
 
-    g = Group()
     group_name = getattr(settings, group_key)
-    return g.is_member_of_group(actual_user, group_name)
+    return GWS().is_member_of_group(actual_user, group_name)

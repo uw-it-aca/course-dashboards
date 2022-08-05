@@ -17,7 +17,7 @@ class Registration(models.Model):
                                db_index=True)
     grade = models.CharField(max_length=5, null=True)
     credits = models.CharField(max_length=5, null=True)
-    is_repeat = models.NullBooleanField()
+    is_repeat = models.BooleanField(null=True)
 
     class Meta:
         db_table = 'Registration'
