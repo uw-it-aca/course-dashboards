@@ -1,30 +1,55 @@
 <template>
-  <div class="modal fade" id="introModal" tabindex="-1" aria-labelledby="introModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div
+    class="modal fade"
+    id="introModal"
+    tabindex="-1"
+    aria-labelledby="introModalLabel"
+    aria-hidden="true"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+  >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="introModalLabel">Welcome to CODA</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <p>
-            Course Dashboard (CODA) is a course statistics dashboard that offers insights on the courses you teach:
+            Course Dashboard (CODA) is a course statistics dashboard that offers
+            insights on the courses you teach:
           </p>
-          <h5>Student Engagement</h5>
+          <h5>
+            Student Engagement
+            <i class="bi bi-mortarboard" />
+          </h5>
           <p>
-            Knowing your current students' majors and other courses they are taking helps you make connections between student interests and your course’s subject matter. 
+            Knowing your current students' majors and other courses they are
+            taking helps you make connections between student interests and your
+            course’s subject matter.
           </p>
           <h5>First Time Teaching a Course</h5>
           <p>
-            View your course's past offerings median final grade and student failure percentage to get an idea of how the course is typically graded.
+            View your course's past offerings median final grade and student
+            failure percentage to get an idea of how the course is typically
+            graded.
           </p>
           <h5>Student Success</h5>
           <p>
-            Compare your current students' average cumulative GPA with those of past offerings to determine how much time you should spend on the most challenging topics.
+            Compare your current students' average cumulative GPA with those of
+            past offerings to determine how much time you should spend on the
+            most challenging topics.
           </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            OK
+          </button>
         </div>
       </div>
     </div>
@@ -32,51 +57,40 @@
 </template>
 
 <script>
-import { Modal } from 'bootstrap';
-import { get, post } from 'axios';
+import { Modal } from "bootstrap";
+import courseDataMixin from "../mixins/courseDataMixin";
 export default {
   name: "IntroModal",
+  mixins: [courseDataMixin],
   data() {
     return {
-      netid: '',
+      netid: "",
       introductionVersion: 1,
     };
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     closeModal() {
-      post(this.introductionApiURL, {
-          'seen': true,
-          'version': this.introductionVersion,
-        }).then(res => {
-          // console.log()
-        });
+      this.setIntroModalSeen(this.netid);
     },
   },
-  computed: {
-    introductionApiURL() {
-      return '/api/v1/user/' + this.netid + '/introduction';
-    }
-  },
-  created: function () {
-  },
+  created: function () {},
   mounted: function () {
-    const modalEl = document.getElementById('introModal');
+    const modalEl = document.getElementById("introModal");
     const modal = new Modal(modalEl);
-    const user = JSON.parse(document.getElementById('user').textContent);
+    const user = JSON.parse(document.getElementById("user").textContent);
     this.netid = user.netid;
 
-    get(this.introductionApiURL)
-      .then(res => {
-        if (!res.data.seen) {
-          modal.show();
-        }
-      });
-    
-    modalEl.addEventListener('hidden.bs.modal', event => {
+    // Mixin
+    this.getIntroModalStatus(this.netid).then((res) => {
+      if (!res.data.seen) {
+        modal.show();
+      }
+    });
+
+    modalEl.addEventListener("hidden.bs.modal", (event) => {
       this.closeModal();
-    })
+    });
   },
 };
 </script>

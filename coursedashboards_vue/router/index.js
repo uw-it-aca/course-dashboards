@@ -14,10 +14,10 @@ const routes = [
     component: Home,
     children: [
       {
-        path: ':year(\\d{4})-:quarter([A-Za-z]+)-:curriculum([&% 0-9A-Za-z]+)-:course_number(\\d{3})-:section_id([A-Za-z][0-9A-Za-z]?)',
+        path: ":year(\\d{4})-:quarter([A-Za-z]+)-:curriculum([&% 0-9A-Za-z]+)-:course_number(\\d{3})-:section_id([A-Za-z][0-9A-Za-z]?)",
         component: CourseDashboard,
       },
-    ]
+    ],
   },
   {
     path: "/customize",
@@ -25,12 +25,6 @@ const routes = [
     component: Customize,
     pathToRegexpOptions: { strict: true },
   },
-  // {
-  //   path: "/:pathMatch(.*)*",
-  //   name: "PageNotFound",
-  //   component: Cu,
-  //   pathToRegexpOptions: { strict: true },
-  // },
 ];
 
 const router = createRouter({

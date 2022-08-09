@@ -7,52 +7,16 @@
           <select
             class="form-select form-select-lg mb-3"
             aria-label=".form-select-lg example"
-            @change="onChange($event)"
+            v-model="chosenCourse"
           >
             <option
               v-for="(course, index) in currentCourses"
               :key="index"
-              value="1"
+              :value="course"
             >
               {{ courseSelectionLabel(course) }}
             </option>
           </select>
-        </div>
-
-        <div class="dropdown d-inline-block">
-          <button
-            class="btn btn-outline-dark dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <MqResponsive target="mdMinus" class="d-inline-block">
-              {{
-                chosenCourse.curriculum +
-                " " +
-                chosenCourse.course_number +
-                " " +
-                chosenCourse.section_id
-              }}
-            </MqResponsive>
-            <MqResponsive target="lgPlus" class="d-inline-block">
-              {{ courseSelectionLabel(chosenCourse) }}
-            </MqResponsive>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li
-              v-for="(course, index) in currentCourses.filter(
-                (c) => c != chosenCourse
-              )"
-              :key="index"
-              @click="chosenCourse = course"
-            >
-              <a class="dropdown-item" href="#">
-                {{ courseSelectionLabel(course) }}
-              </a>
-            </li>
-          </ul>
         </div>
       </h1>
 
@@ -78,7 +42,7 @@
 
 <script>
 import { MqResponsive } from "vue3-mq";
-import { toSectionLabel } from "../utils";
+import { toSectionLabel } from "../helpers/utils";
 export default {
   name: "ContentMain",
   components: {

@@ -18,26 +18,17 @@
 <script>
 import CurrentSection from "../dashboard/CurrentSection.vue";
 import HistoricSection from "../dashboard/HistoricSection.vue";
-import { toSectionLabel } from "../../utils";
+import { toSectionLabel } from "../../helpers/utils";
 export default {
   name: "CourseDashboard",
   components: {
     "current-section": CurrentSection,
     "historic-section": HistoricSection,
   },
-  data() {
-    return {
-      asd: "",
-      count: 0,
-    };
-  },
-  methods: {},
-  watch: {},
   computed: {
     sectionLabel() {
       return toSectionLabel(this.$route.params);
     },
   },
-  created: function () {},
 };
 </script>
