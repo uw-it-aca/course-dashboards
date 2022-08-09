@@ -21,6 +21,16 @@ const courseDataMixin = {
         this.$_getAxiosConfig()
       );
     },
+    setIntroModalSeen: async function (uwnetid) {
+      return axios.post(
+        "/api/v1/user/" + uwnetid + "/introduction",
+        {
+          seen: true,
+          introductionVersion: 1,
+        },
+        this.$_getAxiosConfig()
+      );
+    },
     // saveStudent: async function (systemkey, programs) {
     //   return axios.post(
     //     "/api/internal/student/save/",
