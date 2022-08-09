@@ -28,7 +28,7 @@
             <i class="bi bi-info-circle-fill" />
           </template>
           <template #property-icon>
-            <Histogram :data="performance.gpas" />
+            <Histogram :data="performance.gpas" id="med-gpa" />
           </template>
         </SectionProperty>
       </div>
