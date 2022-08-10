@@ -5,6 +5,7 @@
     :user-name="user.netid"
     :sign-out-url="signOutUrl"
   >
+    <template #profile> username, signout </template>
     <template #main>
       <slot name="content" />
     </template>
