@@ -5,6 +5,7 @@ from coursedashboards.views.api.endpoint import CoDaEndpoint
 from uw_person_client.clients.mock_client import MockedUWPersonClient
 from uw_person_client.clients.core_client import UWPersonClient
 from uw_person_client.exceptions import PersonNotFoundException
+import math
 import os
 
 
@@ -36,15 +37,13 @@ class CourseProfileData(CoDaEndpoint):
         xfer = 0
         disability = 0
         probation = 0
-        n = 0
 
         client = MockedUWPersonClient() if (
-            os.getenv('ENV', 'localdev') == "localdev") else UWPersonClient()
+            os.getenv('ENV') == "localdev") else UWPersonClient()
 
         for r in offering.get_registrations():
             try:
                 person = client.get_person_by_uwnetid(r.user.uwnetid)
-                n += 1
             except PersonNotFoundException:
                 continue
 
@@ -74,14 +73,14 @@ class CourseProfileData(CoDaEndpoint):
                 pass
 
         return {
-            'eop-percent': self._percent(eop, n),
-            'transfer-percent': self._percent(xfer, n),
-            'disability-percent': self._percent(disability, n),
-            'probation-percent': self._percent(probation, n)
+            'eop-percent': self._percent(eop, offering),
+            'transfer-percent': self._percent(xfer, offering),
+            'disability-percent': self._percent(disability, offering),
+            'probation-percent': self._percent(probation, offering)
         }
 
     def _on_probation(self, term, transcripts):
-        term_quarter = self.TERMS.index(term.quarter)
+        term_quarter = self.TERMS.index(term.quarter) + 1
         for transcript in transcripts:
             if (transcript.tran_term.quarter == term_quarter
                     and transcript.tran_term.year == term.year):
@@ -89,5 +88,7 @@ class CourseProfileData(CoDaEndpoint):
 
         return False
 
-    def _percent(self, c, n):
-        return str(100 * float(c)/float(n)) if n else 0
+    def _percent(self, c, offering):
+        pct = 100 * float(c)/float(offering.current_enrollment) if (
+            offering.current_enrollment > 0) else 0
+        return "0" if pct == 0 else str(math.floor(pct * 10) / 10)
