@@ -51,6 +51,12 @@ var registerEvents = function () {
             'coda:CurrentCourseDataSuccess',
             function (e, label) {
                 showCourseData(label);
+                fetchCourseStudentData(label);
+            })
+        .on(
+            'coda:CurrentCourseStudentDataSuccess',
+            function (e, data) {
+                showCourseStudentData(data);
             })
         .on(
             'change', 'select[name="course_quarters"]',

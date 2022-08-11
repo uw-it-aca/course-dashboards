@@ -61,3 +61,28 @@ var startLoadingCourseData = function () {
 var stopLoadingCourseData = function () {
     $(".section-container.current-section").removeClass('loading');
 };
+
+var fetchCourseStudentData = function (label) {
+    var startTime = Date.now();
+
+    $.ajax({
+        url: "/api/v1/course/" + label + '/student',
+        dataType: "JSON",
+        type: "GET",
+        accepts: {html: "text/html"},
+        success: function(results) {
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'course_student_data', {
+                'eventLabel': label,
+                'value': totalTime
+            });
+
+            $('div.current-section').trigger(
+                'coda:CurrentCourseStudentDataSuccess', [results]);
+        },
+        error: function(xhr, status, error) {
+            console.log('ERROR (' + status + '): ' + error);
+        }
+    });
+};

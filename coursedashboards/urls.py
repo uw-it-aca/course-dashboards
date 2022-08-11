@@ -7,6 +7,7 @@ from coursedashboards.views.api.offering.historical import (
     HistoricalGraduatedMajors)
 from django.urls import re_path
 from coursedashboards.views.api.offering.course import CourseData
+from coursedashboards.views.api.offering.profile import CourseProfileData
 from coursedashboards.views.api.integration.offering_cgpa import OfferingCGPA
 from coursedashboards.views.api.integration.offering_fail_rate import (
     OfferingFailRate)
@@ -50,6 +51,9 @@ urlpatterns = [
     re_path(course_regex + r'$',
             CourseData.as_view(),
             name='course_data_for_term'),
+    re_path(course_regex + r'/student$',
+            CourseProfileData.as_view(),
+            name='course_student_data_for_term'),
     re_path(course_regex + r'/majors/(?P<num_majors>\d)$',
             OfferingMajors.as_view(),
             name='course_majors'),
