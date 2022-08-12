@@ -80,6 +80,14 @@ environmentVariables:
     value: EVAL
   - name: CANVAS_ENV
     value: EVAL
+  - name: AXDD_PERSON_CLIENT_ENV
+    value: PROD
+  - name: UW_PERSON_DB_HOSTNAME
+    value: 172.18.1.67
+  - name: UW_PERSON_DB_PORT
+    value: '5432'
+  - name: UW_PERSON_DB_DATABASE
+    value: uw-person-prod
   - name: AUTH
     value: SAML
   - name: CLUSTER_CNAME
@@ -89,33 +97,37 @@ externalSecrets:
   enabled: true
   secrets:
     - name: test.coda.uw.edu-secrets
-      externalKey: axdd/kv/data/coda/test/secrets
+      externalKey: coda/test/secrets
       data:
         - name: django-secret
           property: django-secret
-    - name: test.coda.uw.edu-canvas-secrets
-      externalKey: axdd/kv/data/coda/shared/secrets
+    - name: test.coda.uw.edu-shared-secrets
+      externalKey: coda/shared/secrets
       data:
         - name: canvas-account-id
           property: canvas-account-id
         - name: canvas-api-token
           property: canvas-api-token
+        - name: person-db-user
+          property: person-db-user
+        - name: person-db-pass
+          property: person-db-pass
     - name: test.coda.uw.edu-sql-secrets
-      externalKey: axdd/kv/data/coda/test/sql-secrets
+      externalKey: coda/test/sql-secrets
       data:
         - name: username
           property: sql_user
         - name: password
           property: sql_pass
     - name: test.coda.uw.edu-ic-certs
-      externalKey: axdd/kv/data/coda/test/ic-certs
+      externalKey: coda/test/ic-certs
       data:
         - name: test.coda.uw.edu.cert
           property: cert
         - name: test.coda.uw.edu.key
           property: key
     - name: test.coda.uw.edu-uw-idp-cert
-      externalKey: axdd/kv/data/idp-cert
+      externalKey: idp-cert
       data:
         - name: uw-idp-cert
           property: cert
@@ -127,12 +139,20 @@ environmentVariablesSecrets:
     secretKey: django-secret
   canvasAccountID:
     name: CANVAS_ACCOUNT_ID
-    secretName: test.coda.uw.edu-canvas-secrets
+    secretName: test.coda.uw.edu-shared-secrets
     secretKey: canvas-account-id
   canvasAPIToken:
     name: CANVAS_OAUTH_BEARER
-    secretName: test.coda.uw.edu-canvas-secrets
+    secretName: test.coda.uw.edu-shared-secrets
     secretKey: canvas-api-token
+  personDBUser:
+    name: UW_PERSON_DB_USERNAME
+    secretName: test.coda.uw.edu-shared-secrets
+    secretKey: person-db-user
+  personDBPass:
+    name: UW_PERSON_DB_PASSWORD
+    secretName: test.coda.uw.edu-shared-secrets
+    secretKey: person-db-pass
   SAMLServiceProviderCert:
     name: SP_CERT
     secretName: test.coda.uw.edu-ic-certs

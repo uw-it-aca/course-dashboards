@@ -136,3 +136,36 @@ var displayCourse = function (label) {
 var firstLetterUppercase = function (word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 };
+
+var showCourseStudentData = function (data) {
+    var valueTemplate = Handlebars.compile($("#enrollment_profile_value").html()),
+        attributes = {
+            'eop-percent': {
+                element_class: 'enrollment-eop-percent',
+                meaning: 'in the Early Opportunity Program'
+            },
+            'transfer-percent': {
+                element_class: 'enrollment-transfer-percent',
+                meaning: 'are transfer students'
+            },
+            'disability-percent': {
+                element_class: 'enrollment-disability-percent',
+                meaning: 'have disabilities'
+            },
+            'probation-percent': {
+                element_class: 'enrollment-probation-percent',
+                meaning: 'are on academic probation'
+            }
+        };
+
+    $.each(attributes, function (k, v) {
+        var $id = $('.' + v.element_class);
+
+        if ($id.length && data.hasOwnProperty(k)) {
+            $id.html(valueTemplate({
+                percentage: data[k],
+                meaning: v.meaning
+            }));
+        }
+    });
+};
