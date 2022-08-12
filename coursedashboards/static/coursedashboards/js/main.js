@@ -51,7 +51,10 @@ var registerEvents = function () {
             'coda:CurrentCourseDataSuccess',
             function (e, label) {
                 showCourseData(label);
-                fetchCourseStudentData(label);
+
+                if ($(".enrollment-profile-value").length) {
+                    fetchCourseStudentData(label);
+                }
             })
         .on(
             'coda:CurrentCourseStudentDataSuccess',
