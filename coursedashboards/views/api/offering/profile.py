@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from coursedashboards.views.api.endpoint import CoDaEndpoint
+from uw_sws.models import Term
 from uw_person_client.clients.mock_client import MockedUWPersonClient
 from uw_person_client.clients.core_client import UWPersonClient
 from uw_person_client.exceptions import PersonNotFoundException
@@ -29,8 +30,6 @@ class CourseProfileData(CoDaEndpoint):
     # https://studentdata.washington.edu/sdb-code-manual/
     #     student/sdb-scholarship-codes/
     PROBATION_CODES = ['2', '3', '4', '7', '81', '82']
-
-    TERMS = ['winter', 'spring', 'summer', 'autumn']
 
     def get_data(self, offering):
         eop = 0
@@ -80,7 +79,7 @@ class CourseProfileData(CoDaEndpoint):
         }
 
     def _on_probation(self, term, transcripts):
-        term_quarter = self.TERMS.index(term.quarter) + 1
+        term_quarter = Term._quarter_to_int(term.quarter)
         for transcript in transcripts:
             if (transcript.tran_term.quarter == term_quarter
                     and transcript.tran_term.year == term.year):
