@@ -4,7 +4,7 @@
       <span class="text-black-50">
         {{ propertyTitle }}
       </span>
-      <div class="d-inline-block text-primary">
+      <div class="d-inline-block text-primary ms-1">
         <slot name="title-icon" />
       </div>
     </div>

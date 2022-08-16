@@ -9,14 +9,14 @@
     </ul>
     <button
       v-if="length < items.length"
-      class="btn btn-small btn-primary"
+      class="btn btn-link btn-small p-0"
       @click="viewAll"
     >
       Show more...
     </button>
     <button
       v-else-if="length == items.length && length > 5"
-      class="btn btn-small btn-primary"
+      class="btn btn-link btn-small p-0"
       @click="viewLess"
     >
       Show less...

@@ -1,6 +1,6 @@
 <template>
-  <h2>
-    Current Section
+  <h2 class="h3 fw-bold">
+    My Data for <span class="text-danger">POL S 201 A</span>
     <a
       class="float-end fs-5"
       href="https://my.uw.edu/teaching/"
@@ -13,6 +13,25 @@
       > -->
     </a>
   </h2>
+
+  <div>select menu</div>
+  <div class="alert alert-dark-beige border-0 small" role="alert">
+    <p>
+      The query you requested will not generate data for one of the following
+      reasons:
+    </p>
+    <ul>
+      <li>
+        The course you've selected has fewer than 5 students. To protect
+        students' privacy, we do not show data on courses with fewer than 5
+        students enrolled.
+      </li>
+      <li>
+        To protect you and your colleagues' privacy, we do not show data for a
+        single course, unless it's a course you've taught.
+      </li>
+    </ul>
+  </div>
 
   <div class="row">
     <div class="col-sm-6">
@@ -43,13 +62,20 @@
         </template>
       </SectionProperty>
     </div>
-  </div>
-  <div class="row">
+
     <div class="col-sm-6">
       <SectionProperty
-        propertyTitle="Median Cumulative GPA"
-        :property="data.current_median"
+        :propertyTitle="'Students / 3 Offerings'"
+        :property="777"
       >
+        <template #property-icon>
+          <i class="bi bi-people-fill" />
+        </template>
+      </SectionProperty>
+    </div>
+
+    <div class="col-sm-6">
+      <SectionProperty propertyTitle="Median Cumulative GPA" :property="dfsa">
         <template #title-icon>
           <PopoverIcon
             title="Median Cumulative GPA"
@@ -63,8 +89,31 @@
         </template>
       </SectionProperty>
     </div>
+
+    <div class="col-sm-6">
+      <SectionProperty propertyTitle="Percent Failure" :property="'10%'">
+        <template #title-icon>
+          <i class="bi bi-info-circle-fill" />
+        </template>
+        <template #property-icon>
+          <i class="bi bi-flag-fill" />
+        </template>
+      </SectionProperty>
+    </div>
+
+    <div class="col-sm-6">
+      <SectionProperty propertyTitle="Median Course Grade" :property="234">
+        <template #title-icon>
+          <i class="bi bi-info-circle-fill" />
+        </template>
+        <template #property-icon>
+          <i class="bi bi-bar-chart-fill"></i>
+        </template>
+      </SectionProperty>
+    </div>
   </div>
-  <div class="row mt-3">
+
+  <div class="row mt-5">
     <div class="col-sm-6">
       <SectionList
         title="Concurrent Courses"
