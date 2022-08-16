@@ -55,9 +55,7 @@
     </div>
   </div>
 
-
-
-  <div class="row mt-3">
+  <div class="row mt-5">
     <div class="col-sm-6">
       <SectionList
         title="Declared Majors"
@@ -80,6 +78,35 @@
         <template #content>
           <PercentList :items="graduatedMajorsList"> </PercentList>
         </template>
+      </SectionList>
+    </div>
+    <div class="col-sm-12">
+      <SectionList
+        title="Concurrent courses"
+        infoTitle="Concurrent courses"
+        infoContent="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident accusamus cum eius suscipit, ex explicabo magnam, deleniti perspiciatis iste hic dignissimos ducimus officia nemo pariatur nisi magni quo autem accusantium?"
+      >
+        <template #content
+          >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident
+          accusamus cum eius suscipit, ex explicabo magnam, deleniti
+          perspiciatis iste hic dignissimos ducimus officia nemo pariatur nisi
+          magni quo autem accusantium?</template
+        >
+      </SectionList>
+    </div>
+
+    <div class="col-sm-12">
+      <SectionList
+        title="Previous Instructors or TAs for this course"
+        infoTitle="Previous Instructors or TAs"
+        infoContent="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident accusamus cum eius suscipit, ex explicabo magnam, deleniti perspiciatis iste hic dignissimos ducimus officia nemo pariatur nisi magni quo autem accusantium?"
+      >
+        <template #content
+          >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident
+          accusamus cum eius suscipit, ex explicabo magnam, deleniti
+          perspiciatis iste hic dignissimos ducimus officia nemo pariatur nisi
+          magni quo autem accusantium?</template
+        >
       </SectionList>
     </div>
   </div>

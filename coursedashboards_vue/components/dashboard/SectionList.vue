@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="mb-5">
     <div>
       <span class="fs-6 fw-bold">{{ title }}</span>
-      <div class="d-inline-block text-primary">
+      <div class="d-inline-block text-primary ms-1">
         <PopoverIcon :title="infoTitle" :content="infoContent">
           <i class="bi bi-info-circle-fill" />
         </PopoverIcon>
@@ -30,17 +30,12 @@ export default {
     infoContent: String,
   },
   data() {
-    return {
-    };
+    return {};
   },
-  computed: {
-  },
-  methods: {
-  },
-  created: function () {
-  },
+  computed: {},
+  methods: {},
+  created: function () {},
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
