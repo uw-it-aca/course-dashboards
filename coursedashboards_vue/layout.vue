@@ -5,7 +5,18 @@
     :user-name="user.netid"
     :sign-out-url="signOutUrl"
   >
-    <template #profile> username, signout </template>
+    <template #profile>
+      <a
+        href="https://my.uw.edu/profile"
+        title="View MyUW Profile"
+        class="text-light-gray"
+      >
+        <i class="bi bi-person-fill me-1" />{{ user.netid }}
+      </a>
+      <a :href="signOutUrl" class="float-end text-light-gray" title="Sign out">
+        <i class="bi bi-box-arrow-in-right me-1" />Sign out
+      </a>
+    </template>
     <template #main>
       <slot name="content" />
     </template>

@@ -24,7 +24,7 @@
             Course Dashboard (CODA) is a course statistics dashboard that offers
             insights on the courses you teach:
           </p>
-          <h5>
+          <h5 class="fw-bold">
             Student Engagement
             <i class="bi bi-mortarboard" />
           </h5>
@@ -33,13 +33,13 @@
             taking helps you make connections between student interests and your
             course’s subject matter.
           </p>
-          <h5>First Time Teaching a Course</h5>
+          <h5 class="fw-bold">First Time Teaching a Course</h5>
           <p>
             View your course's past offerings median final grade and student
             failure percentage to get an idea of how the course is typically
             graded.
           </p>
-          <h5>Student Success</h5>
+          <h5 class="fw-bold">Student Success</h5>
           <p>
             Compare your current students' average cumulative GPA with those of
             past offerings to determine how much time you should spend on the

@@ -1,5 +1,56 @@
 <template>
   <h2>Historic Section</h2>
+  <div class="d-flex">
+    <ul class="nav nav-pills">
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          data-bs-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-expanded="false"
+          >All Offerings</a
+        >
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">All Offerings</a></li>
+          <li><a class="dropdown-item" href="#">Only My Offerings</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          data-bs-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-expanded="false"
+          >All Quarters</a
+        >
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">All Quarters</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item" href="#">Autumn</a></li>
+          <li><a class="dropdown-item" href="#">Winter</a></li>
+          <li><a class="dropdown-item" href="#">Spring</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          data-bs-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-expanded="false"
+          >All Years</a
+        >
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">All Years</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item" href="#">2013</a></li>
+          <li><a class="dropdown-item" href="#">2014</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
   <div class="row">
     <div class="col-sm-6">
       <SectionProperty
@@ -19,7 +70,12 @@
         :property="failureRate + '%'"
       >
         <template #title-icon>
-          <i class="bi bi-info-circle-fill" />
+          <PopoverIcon
+            title="Percent Failure"
+            content="This is the percent of students who received a 0.0 in the course(s) based on the time frame selected above.  Get a sense of how much time you should spend on challenging topics, considering how much students have struggled with the course in the past."
+          >
+            <i class="bi bi-info-circle-fill" />
+          </PopoverIcon>
         </template>
         <template #property-icon>
           <i class="bi bi-flag-fill" />
@@ -55,8 +111,6 @@
     </div>
   </div>
 
-
-
   <div class="row mt-3">
     <div class="col-sm-6">
       <SectionList
@@ -91,6 +145,8 @@ import SectionProperty from "./SectionProperty.vue";
 import SectionList from "./SectionList.vue";
 import PercentList from "./PercentList.vue";
 import Histogram from "../popover/Histogram.vue";
+import PopoverIcon from "../popover/PopoverIcon.vue";
+import { TabsList, TabsDisplay, TabsItem, TabsPanel } from "axdd-components";
 export default {
   name: "HistoricSection",
   async setup(props) {
@@ -121,6 +177,11 @@ export default {
     SectionList,
     PercentList,
     Histogram,
+    PopoverIcon,
+    "axdd-tabs-list": TabsList,
+    "axdd-tabs-display": TabsDisplay,
+    "axdd-tabs-item": TabsItem,
+    "axdd-tabs-panel": TabsPanel,
   },
   props: {
     sectionLabel: String,

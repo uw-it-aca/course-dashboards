@@ -1,5 +1,18 @@
 <template>
-  <h2>Current Section</h2>
+  <h2>
+    Current Section
+    <a
+      class="float-end fs-5"
+      href="https://my.uw.edu/teaching/"
+      target="_blank"
+      title="View course details in Teaching page"
+    >
+      <i class="bi bi-box-arrow-up-right me-1" />Course Details
+      <!-- <span class="sr-only">
+        for {{ curriculum }} {{ course_number }} {{ section_id }}</span
+      > -->
+    </a>
+  </h2>
 
   <div class="row">
     <div class="col-sm-6">
@@ -18,7 +31,10 @@
         :property="data.current_repeating"
       >
         <template #title-icon>
-          <PopoverIcon title="ASD" content="ASDASD">
+          <PopoverIcon
+            title="Repeating Students"
+            content="This is the number of students who have received a grade in a previous offering of the course.  Help gauge the amount of support you should provide your students, especially for required courses."
+          >
             <i class="bi bi-info-circle-fill" />
           </PopoverIcon>
         </template>
@@ -35,7 +51,10 @@
         :property="data.current_median"
       >
         <template #title-icon>
-          <PopoverIcon title="ASD" content="ASDASD">
+          <PopoverIcon
+            title="Median Cumulative GPA"
+            content="This is the midpoint of the cumulative GPAs of the students who are currently in your class.  If the median is lower than past offerings, spend more time on the most challenging topics."
+          >
             <i class="bi bi-info-circle-fill" />
           </PopoverIcon>
         </template>
@@ -51,7 +70,7 @@
         title="Concurrent Courses"
         subtitle="When taking the course"
         infoTitle="Concurrent Courses"
-        infoContent="Compare the proportion of certain majors in your class..."
+        infoContent="Make connections between your course and other courses your students are taking. The number in parenthesis is the median grade of the course. This provides insight into the difficulty of your students' course load."
       >
         <template #content>
           <PercentList :items="concurrentCourses"> </PercentList>
@@ -63,7 +82,7 @@
         title="Declared Majors"
         subtitle="When taking the course"
         infoTitle="Declared Majors"
-        infoContent="Compare the proportion of certain majors in your class..."
+        infoContent="Make the topics you teach more engaging for non-majors who are taking your course."
       >
         <template #content>
           <PercentList :items="currentStudentMajors"> </PercentList>
