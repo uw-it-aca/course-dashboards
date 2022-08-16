@@ -207,7 +207,6 @@ import SectionList from "./SectionList.vue";
 import PercentList from "./PercentList.vue";
 import Histogram from "../popover/Histogram.vue";
 import PopoverIcon from "../popover/PopoverIcon.vue";
-import { TabsList, TabsDisplay, TabsItem, TabsPanel } from "axdd-components";
 export default {
   name: "HistoricSection",
   async setup(props) {
@@ -243,10 +242,6 @@ export default {
     PercentList,
     Histogram,
     PopoverIcon,
-    "axdd-tabs-list": TabsList,
-    "axdd-tabs-display": TabsDisplay,
-    "axdd-tabs-item": TabsItem,
-    "axdd-tabs-panel": TabsPanel,
   },
   props: {
     sectionLabel: String,
