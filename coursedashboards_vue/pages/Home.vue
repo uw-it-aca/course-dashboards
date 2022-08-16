@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      pageTitle: "Course Dashboard",
+      pageTitle: "Home",
     };
   },
   methods: {},
