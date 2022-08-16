@@ -1,5 +1,34 @@
 <template>
-  <h2>Historic Section</h2>
+  <h2 class="h3 fw-bold">
+    Historical Student Data <span class="text-danger">POL S 201 A</span>
+  </h2>
+
+  <div class="mb-5">
+    <axdd-tabs-list :tabs-id="'example'">
+      <template #items>
+        <axdd-tabs-item
+          :tabs-id="'courseSelector'"
+          :panel-id="'allCourses'"
+          :active-tab="true"
+          >All Courses</axdd-tabs-item
+        >
+        <axdd-tabs-item :tabs-id="'courseSelector'" :panel-id="'myCourses'"
+          >Only My Courses</axdd-tabs-item
+        >
+      </template>
+    </axdd-tabs-list>
+    <axdd-tabs-display :tabs-id="'courseSelector'">
+      <template #panels>
+        <axdd-tabs-panel :panel-id="'allCourses'" :active-panel="true">
+          all courses select menu
+        </axdd-tabs-panel>
+        <axdd-tabs-panel :panel-id="'myCourses'">
+          my course select menu
+        </axdd-tabs-panel>
+      </template>
+    </axdd-tabs-display>
+  </div>
+
   <div class="row">
     <div class="col-sm-6">
       <SectionProperty
@@ -15,20 +44,6 @@
     </div>
     <div class="col-sm-6">
       <SectionProperty
-        propertyTitle="Percent Failure"
-        :property="failureRate + '%'"
-      >
-        <template #title-icon>
-          <i class="bi bi-info-circle-fill" />
-        </template>
-        <template #property-icon>
-          <i class="bi bi-flag-fill" />
-        </template>
-      </SectionProperty>
-    </div>
-
-    <div class="col-sm-6">
-      <SectionProperty
         propertyTitle="Median Cumulative GPA"
         :property="medianGpas"
       >
@@ -37,6 +52,19 @@
         </template>
         <template #property-icon>
           <Histogram :data="performance.gpas" />
+        </template>
+      </SectionProperty>
+    </div>
+    <div class="col-sm-6">
+      <SectionProperty
+        propertyTitle="Percent Failure"
+        :property="failureRate + '%'"
+      >
+        <template #title-icon>
+          <i class="bi bi-info-circle-fill" />
+        </template>
+        <template #property-icon>
+          <i class="bi bi-flag-fill" />
         </template>
       </SectionProperty>
     </div>
@@ -114,6 +142,9 @@
 
 <script>
 import { get } from "axios";
+
+import { TabsList, TabsDisplay, TabsItem, TabsPanel } from "axdd-components";
+
 import SectionProperty from "./SectionProperty.vue";
 import SectionList from "./SectionList.vue";
 import PercentList from "./PercentList.vue";
@@ -144,6 +175,10 @@ export default {
     };
   },
   components: {
+    "axdd-tabs-list": TabsList,
+    "axdd-tabs-display": TabsDisplay,
+    "axdd-tabs-item": TabsItem,
+    "axdd-tabs-panel": TabsPanel,
     SectionProperty,
     SectionList,
     PercentList,
