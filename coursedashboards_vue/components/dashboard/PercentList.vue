@@ -12,14 +12,14 @@
       class="btn btn-small btn-primary"
       @click="viewAll"
     >
-      View all
+      Show more...
     </button>
     <button
       v-else-if="length == items.length && length > 5"
       class="btn btn-small btn-primary"
       @click="viewLess"
     >
-      View less
+      Show less...
     </button>
   </div>
 </template>

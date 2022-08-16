@@ -2,7 +2,7 @@
   <div>
     <div v-if="chosenCourse">
       <h1 class="my-4">
-        Course Dashboard for:
+        Course:
         <div class="d-inline-block">
           <select
             class="form-select form-select-lg mb-3"

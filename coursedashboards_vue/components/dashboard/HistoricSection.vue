@@ -26,8 +26,7 @@
         </template>
       </SectionProperty>
     </div>
-  </div>
-  <div class="row">
+
     <div class="col-sm-6">
       <SectionProperty
         propertyTitle="Median Cumulative GPA"
@@ -55,6 +54,9 @@
       </SectionProperty>
     </div>
   </div>
+
+
+
   <div class="row mt-3">
     <div class="col-sm-6">
       <SectionList
