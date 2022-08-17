@@ -6,16 +6,26 @@
     :sign-out-url="signOutUrl"
   >
     <template #profile>
-      <a
-        href="https://my.uw.edu/profile"
-        title="View MyUW Profile"
-        class="text-light-gray"
-      >
-        <i class="bi bi-person-fill me-1" />{{ user.netid }}
-      </a>
-      <a :href="signOutUrl" class="float-end text-light-gray" title="Sign out">
-        <i class="bi bi-box-arrow-in-right me-1" />Sign out
-      </a>
+      <div class="d-flex">
+        <div class="flex-fill">
+          <a
+            href="https://my.uw.edu/profile"
+            title="View MyUW Profile"
+            class="text-light-gray"
+          >
+            <i class="bi bi-person-fill me-1" />{{ user.netid }}
+          </a>
+        </div>
+        <div class="flex-fill text-end">
+          <a
+            :href="signOutUrl"
+            class="float-end text-light-gray"
+            title="Sign out"
+          >
+            <i class="bi bi-box-arrow-in-right me-1" />Sign out
+          </a>
+        </div>
+      </div>
     </template>
     <template #main>
       <slot name="content" />

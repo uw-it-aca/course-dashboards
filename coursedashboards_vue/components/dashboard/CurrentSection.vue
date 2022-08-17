@@ -20,7 +20,7 @@
       The query you requested will not generate data for one of the following
       reasons:
     </p>
-    <ul>
+    <ul class="mb-0">
       <li>
         The course you've selected has fewer than 5 students. To protect
         students' privacy, we do not show data on courses with fewer than 5

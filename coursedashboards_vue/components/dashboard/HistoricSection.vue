@@ -81,6 +81,13 @@
     </axdd-tabs-display>
   </div>
 
+  <div class="alert alert-dark-beige border-0 small" role="alert">
+    <p class="mb-0">
+      The query you requested will not generate data. This is a new course, and
+      there is no historical information to draw upon.
+    </p>
+  </div>
+
   <div class="row">
     <div class="col-sm-6">
       <SectionProperty
