@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="border border-light p-3 mb-3 rounded-3">
     <div class="">
       <span class="text-black-50">
         {{ propertyTitle }}
@@ -15,28 +15,28 @@
         <slot name="property-icon" />
       </div>
     </div>
+    <div>
+      <slot name="property-content" />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "SectionProperty",
-  components: {
-  },
+  components: {},
   props: {
     propertyTitle: String,
     property: [String, Number],
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     asd() {
-      console.log('asd');
-    }
+      console.log("asd");
+    },
   },
-  created: function () {
-  },
+  created: function () {},
 };
 </script>

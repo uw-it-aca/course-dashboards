@@ -3,82 +3,30 @@
     Historical Student Data <span class="text-danger">POL S 201 A</span>
   </h2>
 
-  <div class="d-flex">
-    <ul class="nav nav-pills">
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown"
-          href="#"
-          role="button"
-          aria-expanded="false"
-          >All Offerings</a
-        >
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">All Offerings</a></li>
-          <li><a class="dropdown-item" href="#">Only My Offerings</a></li>
-        </ul>
-      </li>
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown"
-          href="#"
-          role="button"
-          aria-expanded="false"
-          >All Quarters</a
-        >
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">All Quarters</a></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#">Autumn</a></li>
-          <li><a class="dropdown-item" href="#">Winter</a></li>
-          <li><a class="dropdown-item" href="#">Spring</a></li>
-        </ul>
-      </li>
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown"
-          href="#"
-          role="button"
-          aria-expanded="false"
-          >All Years</a
-        >
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">All Years</a></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#">2013</a></li>
-          <li><a class="dropdown-item" href="#">2014</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-
-  <div class="mb-5">
-    <axdd-tabs-list :tabs-id="'example'">
-      <template #items>
-        <axdd-tabs-item
-          :tabs-id="'courseSelector'"
-          :panel-id="'allCourses'"
-          :active-tab="true"
-          >All Courses</axdd-tabs-item
-        >
-        <axdd-tabs-item :tabs-id="'courseSelector'" :panel-id="'myCourses'"
-          >Only My Courses</axdd-tabs-item
-        >
-      </template>
-    </axdd-tabs-list>
-    <axdd-tabs-display :tabs-id="'courseSelector'">
-      <template #panels>
-        <axdd-tabs-panel :panel-id="'allCourses'" :active-panel="true">
-          all courses select menu
-        </axdd-tabs-panel>
-        <axdd-tabs-panel :panel-id="'myCourses'">
-          my course select menu
-        </axdd-tabs-panel>
-      </template>
-    </axdd-tabs-display>
+  <div class="row mb-5">
+    <div class="col">
+      <select class="form-select form-select-sm" aria-label="">
+        <option selected>All Courses</option>
+        <option value="1">Only My Courses</option>
+      </select>
+    </div>
+    <div class="col">
+      <select class="form-select form-select-sm" aria-label="">
+        <option selected>All Quarters</option>
+        <option value="1">Autumn</option>
+        <option value="2">Winter</option>
+        <option value="3">Spring</option>
+        <option value="4">Summer</option>
+      </select>
+    </div>
+    <div class="col">
+      <select class="form-select form-select-sm" aria-label="">
+        <option selected>All Years</option>
+        <option value="1">2022</option>
+        <option value="2">2021</option>
+        <option value="3">2020</option>
+      </select>
+    </div>
   </div>
 
   <div class="alert alert-dark-beige border-0 small" role="alert">

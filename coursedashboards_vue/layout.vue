@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       // minimum application setup overrides
-      appName: "Course Dashboard",
+      appName: "CODA",
       appRootUrl: "/",
       user: null,
       signOutUrl: "/saml/logout",
