@@ -53,13 +53,13 @@ var registerEvents = function () {
                 showCourseData(label);
 
                 if ($(".enrollment-profile-value").length) {
-                    fetchCourseStudentData(label);
+                    fetchCourseProfileData(label);
                 }
             })
         .on(
-            'coda:CurrentCourseStudentDataSuccess',
+            'coda:CurrentCourseProfileDataSuccess',
             function (e, data) {
-                showCourseStudentData(data);
+                showCourseProfileData(data);
             })
         .on(
             'change', 'select[name="course_quarters"]',

@@ -51,7 +51,7 @@ urlpatterns = [
     re_path(course_regex + r'$',
             CourseData.as_view(),
             name='course_data_for_term'),
-    re_path(course_regex + r'/student$',
+    re_path(course_regex + r'/profile$',
             CourseProfileData.as_view(),
             name='course_student_data_for_term'),
     re_path(course_regex + r'/majors/(?P<num_majors>\d)$',
