@@ -88,6 +88,5 @@ class CourseProfileData(CoDaEndpoint):
         return False
 
     def _percent(self, c, offering):
-        pct = 100 * float(c)/float(offering.current_enrollment) if (
-            offering.current_enrollment > 0) else 0
-        return "0" if pct == 0 else str(math.floor(pct * 10) / 10)
+        return 100 * float(c)/float(offering.current_enrollment) if (
+            offering.current_enrollment > 0) else 0.0

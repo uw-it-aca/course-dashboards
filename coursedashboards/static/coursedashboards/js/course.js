@@ -137,7 +137,7 @@ var firstLetterUppercase = function (word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
-var showCourseStudentData = function (data) {
+var showCourseProfileData = function (data) {
     var valueTemplate = Handlebars.compile($("#enrollment_profile_value").html()),
         attributes = {
             'eop-percent': {
