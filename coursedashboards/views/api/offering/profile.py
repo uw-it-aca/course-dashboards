@@ -6,8 +6,11 @@ from uw_sws.models import Term
 from uw_person_client.clients.mock_client import MockedUWPersonClient
 from uw_person_client.clients.core_client import UWPersonClient
 from uw_person_client.exceptions import PersonNotFoundException
-import math
+import logging
 import os
+
+
+logger = logging.getLogger(__name__)
 
 
 class CoDaUWPersonClient(UWPersonClient):
@@ -44,32 +47,37 @@ class CourseProfileData(CoDaEndpoint):
             try:
                 person = client.get_person_by_uwnetid(r.user.uwnetid)
             except PersonNotFoundException:
+                logger.error("person service person not found: {}".format(
+                    r.user.uwnetid))
+                continue
+            except AttributeError as ex:
+                logger.error("person service error: {}".format(ex))
                 continue
 
             try:
                 if person.student.disability_ind:
                     disability += 1
-            except KeyError:
-                pass
+            except (KeyError, AttributeError) as ex:
+                logger.error("person reference: {}".format(ex))
 
             try:
                 if str(person.student.special_program_code) in self.EOP_CODES:
                     eop += 1
-            except KeyError:
-                pass
+            except (KeyError, AttributeError) as ex:
+                logger.error("person reference: {}".format(ex))
 
             try:
                 if len(person.student.transfers):
                     xfer += 1
-            except KeyError:
-                pass
+            except (KeyError, AttributeError) as ex:
+                logger.error("person reference: {}".format(ex))
 
             try:
                 if self._on_probation(
                         offering.term, person.student.transcripts):
                     probation += 1
-            except KeyError:
-                pass
+            except (KeyError, AttributeError) as ex:
+                logger.error("person reference: {}".format(ex))
 
         return {
             'eop-percent': self._percent(eop, offering),
