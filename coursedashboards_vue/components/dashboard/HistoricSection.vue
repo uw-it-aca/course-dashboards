@@ -5,13 +5,17 @@
 
   <div class="row mb-5">
     <div class="col-4 border-end">
-      <select class="form-select form-select-sm" aria-label="">
-        <option selected>All Courses</option>
-        <option value="1">Only My Courses</option>
+      <select
+        v-model="selectedOption"
+        class="form-select form-select-sm"
+        aria-label=""
+      >
+        <option value="allCourses" selected>All Courses</option>
+        <option value="myCourses">Only My Courses</option>
       </select>
     </div>
     <div class="col-6">
-      <div class="d-flex">
+      <div v-if="selectedOption === 'allCourses'" class="d-flex">
         <select class="form-select form-select-sm me-2" aria-label="">
           <option selected>All Quarters</option>
           <option value="1">Autumn</option>
@@ -26,7 +30,7 @@
           <option value="3">2020</option>
         </select>
       </div>
-      <div>
+      <div v-else>
         <select class="form-select form-select-sm" aria-label="">
           <option disabled>Autumn 2022 (current)</option>
           <option value="1">Spring 2022</option>
@@ -161,7 +165,7 @@
 <script>
 import { get } from "axios";
 
-import { TabsList, TabsDisplay, TabsItem, TabsPanel } from "axdd-components";
+//import { TabsList, TabsDisplay, TabsItem, TabsPanel } from "axdd-components";
 
 import SectionProperty from "./SectionProperty.vue";
 import SectionList from "./SectionList.vue";
@@ -194,10 +198,6 @@ export default {
     };
   },
   components: {
-    "axdd-tabs-list": TabsList,
-    "axdd-tabs-display": TabsDisplay,
-    "axdd-tabs-item": TabsItem,
-    "axdd-tabs-panel": TabsPanel,
     SectionProperty,
     SectionList,
     PercentList,
@@ -246,8 +246,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      selectedOption: "allCourses", // default
+    };
   },
-  created: function () {},
 };
 </script>
