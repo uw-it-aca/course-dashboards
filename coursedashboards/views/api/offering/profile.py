@@ -79,10 +79,17 @@ class CourseProfileData(CoDaEndpoint):
         }
 
     def _on_probation(self, term, transcripts):
-        term_quarter = Term._quarter_to_int(term.quarter)
-        for transcript in transcripts:
-            if (transcript.tran_term.quarter == term_quarter
-                    and transcript.tran_term.year == term.year):
+        term_key = self._term_key(
+            term.year, Term._quarter_to_int(term.quarter))
+        transcript_terms = {}
+        for i, transcript in enumerate(transcripts):
+            transcript_terms[self._term_key(
+                transcript.tran_term.year, transcript.tran_term.quarter)] = i
+
+        for term in sorted(
+                transcript_terms.items(), key=lambda x: x[0], reverse=True):
+            if term[0] < term_key:
+                transcript = transcripts[term[1]]
                 return str(transcript.scholarship_type) in self.PROBATION_CODES
 
         return False
@@ -90,3 +97,6 @@ class CourseProfileData(CoDaEndpoint):
     def _percent(self, c, offering):
         return 100 * float(c)/float(offering.current_enrollment) if (
             offering.current_enrollment > 0) else 0.0
+
+    def _term_key(self, year, quarter):
+        return year * 10 + quarter
