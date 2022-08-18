@@ -61,7 +61,7 @@
       </SectionProperty>
     </div>
     <div class="col-sm-6">
-      <SectionProperty propertyTitle="Median Cumulative GPA" :property="dfsa">
+      <SectionProperty propertyTitle="Median Cumulative GPA" :property="'10%'">
         <template #title-icon>
           <PopoverIcon
             title="Median Cumulative GPA"
