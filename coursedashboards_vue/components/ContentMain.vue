@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="chosenCourse">
-      <h1 class="my-4">
-        Course:
+      <h1 class="h2 my-4 fw-bold">
+        Course Dashboard for
         <div class="d-inline-block">
           <select
-            class="form-select form-select-lg mb-3"
-            aria-label=".form-select-lg example"
+            class="form-select form-select mb-3"
+            aria-label=""
             v-model="chosenCourse"
           >
             <option

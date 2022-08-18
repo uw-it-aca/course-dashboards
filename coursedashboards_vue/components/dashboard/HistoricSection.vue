@@ -4,28 +4,34 @@
   </h2>
 
   <div class="row mb-5">
-    <div class="col">
+    <div class="col-4 border-end">
       <select class="form-select form-select-sm" aria-label="">
         <option selected>All Courses</option>
         <option value="1">Only My Courses</option>
       </select>
     </div>
-    <div class="col">
-      <select class="form-select form-select-sm" aria-label="">
-        <option selected>All Quarters</option>
-        <option value="1">Autumn</option>
-        <option value="2">Winter</option>
-        <option value="3">Spring</option>
-        <option value="4">Summer</option>
-      </select>
-    </div>
-    <div class="col">
-      <select class="form-select form-select-sm" aria-label="">
-        <option selected>All Years</option>
-        <option value="1">2022</option>
-        <option value="2">2021</option>
-        <option value="3">2020</option>
-      </select>
+    <div class="col-6">
+      <div class="d-flex">
+        <select class="form-select form-select-sm me-2" aria-label="">
+          <option selected>All Quarters</option>
+          <option value="1">Autumn</option>
+          <option value="2">Winter</option>
+          <option value="3">Spring</option>
+          <option value="4">Summer</option>
+        </select>
+        <select class="form-select form-select-sm" aria-label="">
+          <option selected>All Years</option>
+          <option value="1">2022</option>
+          <option value="2">2021</option>
+          <option value="3">2020</option>
+        </select>
+      </div>
+      <div>
+        <select class="form-select form-select-sm" aria-label="">
+          <option disabled>Autumn 2022 (current)</option>
+          <option value="1">Spring 2022</option>
+        </select>
+      </div>
     </div>
   </div>
 
