@@ -121,14 +121,8 @@ var displayCourse = function (label) {
         return false;
     }
 
-    if (section_data && section_data.loaded) {
-        showCourseData(label);
-    } else {
-        fetchCourseData(label);
-    }
-
+    fetchCourseData(label);
     fetchHistoricCourseData(section_data.section_label);
-
     return true;
 };
 
@@ -136,6 +130,7 @@ var displayCourse = function (label) {
 var firstLetterUppercase = function (word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
 };
+
 
 var showCourseProfileData = function (data) {
     var valueTemplate = Handlebars.compile($("#enrollment_profile_value").html()),
@@ -157,6 +152,10 @@ var showCourseProfileData = function (data) {
                 meaning: 'are on academic probation'
             }
         };
+
+    if (!data) {
+        return false;
+    }
 
     $.each(attributes, function (k, v) {
         var $id = $('.' + v.element_class);

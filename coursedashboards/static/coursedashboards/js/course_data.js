@@ -22,9 +22,16 @@ var setSectionDataByLabel = function (label, section) {
 };
 
 var fetchCourseData = function (label) {
-    startLoadingCourseData();
+    var startTime = Date.now(),
+        section_data = getSectionDataByLabel(label);
 
-    var startTime = Date.now();
+    if (section_data && section_data.loaded) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseDataSuccess', [label]);
+        return;
+    }
+
+    startLoadingCourseData();
 
     $.ajax({
         url: "/api/v1/course/" + label,
@@ -65,6 +72,12 @@ var stopLoadingCourseData = function () {
 var fetchCourseProfileData = function (label) {
     var startTime = Date.now();
 
+    if (getCourseProfileData(label)) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseProfileDataSuccess', [getCourseProfileData(label)]);
+        return;
+    }
+
     $.ajax({
         url: "/api/v1/course/" + label + '/profile',
         dataType: "JSON",
@@ -78,6 +91,8 @@ var fetchCourseProfileData = function (label) {
                 'value': totalTime
             });
 
+            setCourseProfileData(label, results);
+
             $('div.current-section').trigger(
                 'coda:CurrentCourseProfileDataSuccess', [results]);
         },
@@ -85,4 +100,16 @@ var fetchCourseProfileData = function (label) {
             console.log('ERROR (' + status + '): ' + error);
         }
     });
+};
+
+var setCourseProfileData = function (label, profile_data) {
+    window.profile_data[label] = profile_data;
+};
+
+var getCourseProfileData = function (label) {
+    if (window.profile_data.hasOwnProperty(label)) {
+        return window.profile_data[label];
+    }
+
+    return false;
 };
