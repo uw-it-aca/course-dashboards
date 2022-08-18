@@ -89,17 +89,22 @@ $info-circle: #8f9bcc;
                 }
             }
         }
-        .enrollment-profile-value {
-            float: left;
-            width: 4.25rem;
-            text-align: right;
-            padding-right: 1em;
-            div { display: inline-block; }
-            i { padding-left: 0; }
-            .loading-placeholder { width: 1.5em; height: 1em; }
+        .enrollment-profile {
+            margin-top: -20px;
+            .enrollment-profile-value {
+                float: left;
+                /*width: 4.25rem;
+                text-align: right;*/
+                padding-right: 0.5rem;
+                font-weight:bold;
+                div { display: inline-block; }
+                .loading-placeholder { width: 1.5em; height: 1em; }
+            }
+            .enrollment-profile-label {
+                i { padding-left: 0; }
+            }
         }
     }
-    .enrollment-profile { margin-top: -5px; }
     .historic-section {
         .historic-filters {
             margin-top: .5rem;
