@@ -53,6 +53,9 @@ class CourseProfileData(CoDaEndpoint):
             except AttributeError as ex:
                 logger.error("person service error: {}".format(ex))
                 continue
+            except Exception as ex:
+                logger.exception("person service: {}".format(ex))
+                continue
 
             try:
                 if person.student.disability_ind:
