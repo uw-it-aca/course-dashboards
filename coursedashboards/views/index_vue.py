@@ -19,6 +19,7 @@ def index_vue(request, year=None, quarter=None,
         "section_label": section_label,
         "sections": sections,
     }
+    print(context)
 
     context['messages'] = get_persistent_messages(params=context)
     print("CONTEXT CONTEXT: {}".format(context))

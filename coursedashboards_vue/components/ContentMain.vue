@@ -9,12 +9,17 @@
             aria-label=""
             v-model="chosenCourse"
           >
-            <option
+            <!-- <option
               v-for="(course, index) in currentCourses"
               :key="index"
               :value="course"
+            > -->
+            <option
+              v-for="(courses, course_id) in uniqueSections"
+              :key="course_id"
+              :value="courses[courses.length - 1]"
             >
-              {{ courseSelectionLabel(course) }}
+              {{ courseSelectionLabel(courses[0]) }}
             </option>
           </select>
         </div>
@@ -28,7 +33,7 @@
         <!-- </Transition> -->
       </router-view>
     </div>
-    <div v-else-if="currentCourses.length == 0">
+    <div v-else-if="courses.length == 0">
       <p>
         We're sorry, but it does not appear you have instructed any courses
         recently.
@@ -61,6 +66,7 @@ export default {
     chosenCourse(newCourse) {
       // In case there is an invalid course label entered
       // the chosenCourse will be null and we do nothing.
+      console.log(newCourse);
       if (newCourse) {
         this.$router.push("/" + newCourse.section_label);
       }
@@ -86,17 +92,30 @@ export default {
     },
   },
   computed: {
-    currentCourses() {
+    firstCourseRecentQuarter() {
+      const mostRecentCourse = this.courses[this.courses.length - 1];
       return this.courses.filter((section) => {
         return (
-          section.year == this.year &&
-          this.compareLowerCase(section.quarter, this.quarter)
+          section.year == mostRecentCourse.year &&
+          this.compareLowerCase(section.quarter, mostRecentCourse.quarter)
         );
-      });
+      })[0];
     },
     currentMq() {
       console.log(this.mq.current);
       return this.mq.current;
+    },
+    uniqueSections() {
+      return this.courses.slice().reduce((prev, curr) => {
+        const course_id =
+          curr.curriculum + "-" + curr.course_number + "-" + curr.section_id;
+        if (prev[course_id] == undefined) {
+          prev[course_id] = [curr];
+        } else {
+          prev[course_id].push(curr);
+        }
+        return prev;
+      }, {});
     },
   },
   created: function () {
@@ -105,14 +124,15 @@ export default {
     this.courses = JSON.parse(
       document.getElementById("section_data").textContent
     );
+    console.log(this.courses);
 
     if (JSON.stringify(this.$route.params) == "{}") {
-      if (this.currentCourses.length > 0) {
-        this.chosenCourse = this.currentCourses[0];
+      if (this.courses.length > 0) {
+        this.chosenCourse = this.firstCourseRecentQuarter;
       }
     } else {
       let sectionLabel = toSectionLabel(this.$route.params);
-      this.chosenCourse = this.currentCourses.find((course) => {
+      this.chosenCourse = this.courses.slice().find((course) => {
         return course.section_label == sectionLabel;
       });
     }

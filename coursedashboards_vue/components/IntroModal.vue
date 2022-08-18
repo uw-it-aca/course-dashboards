@@ -73,21 +73,19 @@ export default {
   },
   created: function () {},
   mounted: function () {
-    const modalEl = document.getElementById("introModal");
-    const modal = new Modal(modalEl);
-    const user = JSON.parse(document.getElementById("user").textContent);
-    this.netid = user.netid;
-
-    // Mixin
-    this.getIntroModalStatus(this.netid).then((res) => {
-      if (!res.data.seen) {
-        modal.show();
-      }
-    });
-
-    modalEl.addEventListener("hidden.bs.modal", (event) => {
-      this.closeModal();
-    });
+    // const modalEl = document.getElementById("introModal");
+    // const modal = new Modal(modalEl);
+    // const user = JSON.parse(document.getElementById("user").textContent);
+    // this.netid = user.netid;
+    // // Mixin
+    // this.getIntroModalStatus(this.netid).then((res) => {
+    //   if (!res.data.seen) {
+    //     modal.show();
+    //   }
+    // });
+    // modalEl.addEventListener("hidden.bs.modal", (event) => {
+    //   this.closeModal();
+    // });
   },
 };
 </script>
