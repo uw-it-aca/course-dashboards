@@ -10,5 +10,5 @@ MockDAO.register_mock_path(join(abspath(dirname(__file__)), "resources"))
 try:
     MockedUWPersonClient.register_mock_path(join(
         abspath(dirname(__file__)), "resources/uw_person_client/fixtures"))
-except:
+except Exception:
     pass
