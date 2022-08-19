@@ -4,6 +4,7 @@
 from django.http import HttpResponse, JsonResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.exceptions import APIException
 from coursedashboards.models import Term, Course, CourseOffering
 from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
 
@@ -58,3 +59,9 @@ class CoDaAPI(APIView):
 
     def course_offering_not_found(self):
         return HttpResponse(content="Course Offering not found!", status=543)
+
+
+class UpStreamErrorException(APIException):
+    status_code = 502
+    default_detail = 'Server received an invalid response from upstream server'
+    default_code = 'upstream_error'

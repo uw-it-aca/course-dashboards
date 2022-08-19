@@ -135,34 +135,30 @@ var firstLetterUppercase = function (word) {
 var showCourseProfileData = function (data) {
     var valueTemplate = Handlebars.compile($("#enrollment_profile_value").html()),
         attributes = {
-            'eop-percent': {
+            'eop': {
                 element_class: 'enrollment-eop-percent',
                 meaning: 'in the Early Opportunity Program'
             },
-            'transfer-percent': {
+            'transfer': {
                 element_class: 'enrollment-transfer-percent',
                 meaning: 'are transfer students'
             },
-            'disability-percent': {
+            'disability': {
                 element_class: 'enrollment-disability-percent',
                 meaning: 'have disabilities'
             },
-            'probation-percent': {
+            'probation': {
                 element_class: 'enrollment-probation-percent',
                 meaning: 'are on academic probation'
             }
         };
 
-    if (!data) {
-        return false;
-    }
-
     $.each(attributes, function (k, v) {
         var $id = $('.' + v.element_class);
 
-        if ($id.length && data.hasOwnProperty(k)) {
+        if ($id.length) {
             $id.html(valueTemplate({
-                percentage: data[k],
+                percentage: (data && data.hasOwnProperty(k)) ? data[k].percent : -1,
                 meaning: v.meaning
             }));
         }

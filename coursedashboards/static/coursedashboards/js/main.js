@@ -62,6 +62,11 @@ var registerEvents = function () {
                 showCourseProfileData(data);
             })
         .on(
+            'coda:CurrentCourseProfileDataFailure',
+            function (e, data) {
+                showCourseProfileData();
+            })
+        .on(
             'change', 'select[name="course_quarters"]',
             function (e) {
                 var id = $('option:selected', $(this)).val();
