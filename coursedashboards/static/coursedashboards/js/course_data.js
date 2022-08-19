@@ -97,7 +97,8 @@ var fetchCourseProfileData = function (label) {
                 'coda:CurrentCourseProfileDataSuccess', [results]);
         },
         error: function(xhr, status, error) {
-            console.log('ERROR (' + status + '): ' + error);
+            $('div.current-section').trigger(
+                'coda:CurrentCourseProfileDataFailure', [error]);
         }
     });
 };
