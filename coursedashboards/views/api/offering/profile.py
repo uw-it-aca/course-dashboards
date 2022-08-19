@@ -46,10 +46,10 @@ class CourseProfileData(CoDaEndpoint):
                         r.user.uwnetid))
                     raise
 
-                eop        += self._inc(self._is_eop, person, offering)
-                xfer       += self._inc(self._is_transfer, person, offering)
+                eop += self._inc(self._is_eop, person, offering)
+                xfer += self._inc(self._is_transfer, person, offering)
                 disability += self._inc(self._is_disability, person, offering)
-                probation  += self._inc(self._on_probation, person, offering)
+                probation += self._inc(self._on_probation, person, offering)
 
             return {
                 'eop': {
