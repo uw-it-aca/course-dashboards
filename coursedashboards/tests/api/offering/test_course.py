@@ -140,4 +140,3 @@ class TestCourseAPIs(CodaApiTest):
 
         payload = json.loads(response.content)
         gpas = payload['gpas']
-
