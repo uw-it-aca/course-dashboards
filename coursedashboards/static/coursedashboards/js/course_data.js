@@ -37,7 +37,7 @@ var fetchCourseData = function (label) {
         url: "/api/v1/course/" + label,
         dataType: "JSON",
         type: "GET",
-        accepts: {html: "text/html"},
+        accepts: {text: "application/json"},
         success: function(results) {
             results.loaded = true;
             setSectionDataByLabel(label, results);
@@ -82,7 +82,7 @@ var fetchCourseProfileData = function (label) {
         url: "/api/v1/course/" + label + '/profile',
         dataType: "JSON",
         type: "GET",
-        accepts: {html: "text/html"},
+        accepts: {text: "application/json"},
         success: function(results) {
             var totalTime = Date.now() - startTime;
 

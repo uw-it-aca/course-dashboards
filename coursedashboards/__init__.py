@@ -7,8 +7,5 @@ from os.path import join, abspath, dirname
 
 MockDAO.register_mock_path(join(abspath(dirname(__file__)), "resources"))
 
-try:
-    MockedUWPersonClient.register_mock_path(join(
-        abspath(dirname(__file__)), "resources/uw_person_client/fixtures"))
-except Exception:
-    pass
+MockedUWPersonClient.register_mock_path(join(
+    abspath(dirname(__file__)), "resources/uw_person_client/fixtures"))
