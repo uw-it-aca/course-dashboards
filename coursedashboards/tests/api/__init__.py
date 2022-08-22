@@ -42,7 +42,6 @@ class CodaApiTest(TransactionTestCase):
         self.client = Client()
         self.request = RequestFactory().get("/")
         self.middleware = UserServiceMiddleware()
-
         call_command('load_data_for_term', '--previous=4', '--next')
 
     def set_user(self, username):

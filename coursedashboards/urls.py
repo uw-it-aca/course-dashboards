@@ -32,7 +32,7 @@ urlpatterns = [
             name='coda_introduction'),
     re_path(course_regex + r'/past/performance/?',
             HistoricalPerformance.as_view(),
-            name='historic_concurrent_courses'),
+            name='historic_course_performance'),
     re_path(course_regex + r'/past/concurrent/?',
             HistoricalConcurrentCourses.as_view(),
             name='historic_concurrent_courses'),

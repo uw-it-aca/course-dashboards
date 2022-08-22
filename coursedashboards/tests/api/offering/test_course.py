@@ -7,6 +7,10 @@ import json
 
 class TestCourseAPIs(CodaApiTest):
 
+    course = {
+        'year': '2014', 'quarter': 'winter', 'curriculum': "POL S",
+        'course_number': "201", 'section_id': "A"}
+
     def get_course_response(self, *args, **kwargs):
         return self.get_response_by_reverse(
             'course_data_for_term', *args, **kwargs)
@@ -15,11 +19,33 @@ class TestCourseAPIs(CodaApiTest):
         return self.get_response_by_reverse(
             'course_student_data_for_term', *args, **kwargs)
 
+    def get_historic_course_response(self, *args, **kwargs):
+        return self.get_response_by_reverse(
+            'historic_course_data', *args, **kwargs)
+
+    def get_past_performance_response(self, *args, **kwargs):
+        return self.get_response_by_reverse(
+            'historic_course_performance', *args, **kwargs)
+
+    def get_past_concurrent_response(self, *args, **kwargs):
+        return self.get_response_by_reverse(
+            'historic_concurrent_courses', *args, **kwargs)
+
+    def get_student_major_response(self, *args, **kwargs):
+        return self.get_response_by_reverse(
+            'historic_student_majors', *args, **kwargs)
+
+    def get_graduated_major_response(self, *args, **kwargs):
+        return self.get_response_by_reverse(
+            'historic_graduated_major', *args, **kwargs)
+
+    def get_historic_gpas_response(self, *args, **kwargs):
+        return self.get_response_by_reverse(
+            'historic_course_gpas', *args, **kwargs)
+
     def test_course_api(self):
         self.set_user('bill')
-        response = self.get_course_response(kwargs={
-            'year': '2014', 'quarter': 'winter', 'curriculum': "POL S",
-            'course_number': "201", 'section_id': "A"})
+        response = self.get_course_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
 
@@ -31,9 +57,7 @@ class TestCourseAPIs(CodaApiTest):
 
     def test_profile(self):
         self.set_user('bill')
-        response = self.get_profile_response(kwargs={
-            'year': '2014', 'quarter': 'winter', 'curriculum': "POL S",
-            'course_number': "201", 'section_id': "A"})
+        response = self.get_profile_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
 
@@ -45,3 +69,75 @@ class TestCourseAPIs(CodaApiTest):
         self.assertEquals(profile['transfer']['n'], 15)
         self.assertEquals(profile['disability']['n'], 12)
         self.assertEquals(profile['probation']['n'], 4)
+
+    def test_historic_course_api(self):
+        self.set_user('bill')
+        response = self.get_historic_course_response(kwargs=self.course)
+
+        self.assertEquals(response.status_code, 200)
+
+        payload = json.loads(response.content)
+        past_offerings = payload['past_offerings']
+        sections = payload['sections']
+
+        self.assertEquals(len(past_offerings['terms']), 4)
+        self.assertEquals(past_offerings['enrollment'], 584)
+        self.assertEquals(len(sections), 2)
+        self.assertEquals(len(sections['2013']), 3)
+        self.assertEquals(len(sections['2014']), 1)
+
+    def test_past_performance_api(self):
+        self.set_user('bill')
+        response = self.get_past_performance_response(kwargs=self.course)
+
+        self.assertEquals(response.status_code, 200)
+
+        payload = json.loads(response.content)
+        performance = payload['performance']
+
+        self.assertEquals(performance['enrollment'], 584)
+        self.assertEquals(performance['offering_count'], 4)
+        self.assertEquals(len(performance['course_grades']), 554)
+
+    def test_past_concurrent_api(self):
+        self.set_user('bill')
+        response = self.get_past_concurrent_response(kwargs=self.course)
+
+        self.assertEquals(response.status_code, 200)
+
+        payload = json.loads(response.content)
+        concurrent = payload['concurrent_courses']
+
+        self.assertEquals(len(concurrent), 3)
+
+    def test_past_student_major_api(self):
+        self.set_user('bill')
+        response = self.get_student_major_response(kwargs=self.course)
+
+        self.assertEquals(response.status_code, 200)
+
+        payload = json.loads(response.content)
+        majors = payload['student_majors']
+
+        self.assertEquals(len(majors), 20)
+
+    def test_past_graduated_major_api(self):
+        self.set_user('bill')
+        response = self.get_graduated_major_response(kwargs=self.course)
+
+        self.assertEquals(response.status_code, 200)
+
+        payload = json.loads(response.content)
+        majors = payload['graduated_majors']
+
+        self.assertEquals(len(majors), 20)
+
+    def test_past_historic_gpas_api(self):
+        self.set_user('bill')
+        response = self.get_historic_gpas_response(kwargs=self.course)
+
+        self.assertEquals(response.status_code, 200)
+
+        payload = json.loads(response.content)
+        gpas = payload['gpas']
+
