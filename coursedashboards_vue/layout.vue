@@ -27,6 +27,20 @@
         </div>
       </div>
     </template>
+    <template #bar>
+      <div class="bg-light-purple p-2 text-dark">
+        <div class="container-xl">
+          <div class="col-12 py-2">
+            <h2>Set your students up for success</h2>
+            <p>
+              It is every instructor's legal and university obligation to ensure
+              that class resources are accessible for all students. Get started
+              now with the course preparation checklist.
+            </p>
+          </div>
+        </div>
+      </div>
+    </template>
     <template #main>
       <slot name="content" />
     </template>
