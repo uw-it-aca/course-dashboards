@@ -27,7 +27,7 @@
         </div>
       </div>
     </template>
-    <template #bar>
+    <template v-if="showGradContent" #bar>
       <div class="bg-light-purple p-2 text-dark">
         <div class="container-xl">
           <div class="col-12 py-2">
@@ -68,6 +68,7 @@ export default {
       appRootUrl: "/",
       user: null,
       signOutUrl: "/saml/logout",
+      showGradContent: true,
     };
   },
   created: function () {
