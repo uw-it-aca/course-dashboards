@@ -408,6 +408,21 @@ a {
 }
 
 
+/* DRS banner */
+.drs_banner {
+    background-color: #E4DFEA;
+    border-bottom: 3px solid lightgrey;
+    padding: 20px 50px 5px; 
+    .drs_banner_missing {
+        h4 span.drs_missing_notice { color: #8A3736; }
+        h4 span.drs_missing_exposure {
+            font-size: 1.4em;
+            cursor: pointer;
+        }
+    }
+}
+
+
  /* ==========================================================================
    SMALL SCREEN: need to revisit for SCSS
    ========================================================================== */

@@ -163,4 +163,13 @@ var showCourseProfileData = function (data) {
             }));
         }
     });
+
+    if (data.hasOwnProperty('disability')) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseProfileDisability', [data.disability]);
+    }
+};
+
+
+var showCourseProfileDisability = function (disability) {
 };

@@ -62,6 +62,11 @@ var registerEvents = function () {
                 showCourseProfileData(data);
             })
         .on(
+            'coda:CurrentCourseProfileDisability',
+            function (e, data) {
+                showCourseProfileDisability(data);
+            })
+        .on(
             'coda:CurrentCourseProfileDataFailure',
             function (e, data) {
                 showCourseProfileData();
@@ -129,6 +134,24 @@ var registerEvents = function () {
 
             fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });
+
+    $('.drs_banner')
+        .on(
+            'click', 'span.drs_missing_exposure', function (e) {
+                var $this = $(this),
+                    $i = $('i', $this),
+                    $content = $('.drs_banner_missing_content');
+
+                if ($i.hasClass('drs_missing_hidden')) {
+                    $i.removeClass('fa-angle-right drs_missing_hidden');
+                    $i.addClass('fa-angle-down');
+                    $content.removeClass('visually-hidden');
+                } else {
+                    $i.removeClass('fa-angle-down');
+                    $i.addClass('fa-angle-right  drs_missing_hidden');
+                    $content.addClass('visually-hidden');
+                }
+            });
 };
 
 
