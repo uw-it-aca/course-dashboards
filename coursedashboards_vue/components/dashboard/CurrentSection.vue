@@ -1,6 +1,6 @@
 <template>
   <h2 class="h3 fw-bold">
-    My Data for <span class="text-danger">POL S 201 A</span>
+    My Data for <span class="text-danger">{{  }}</span>
     <a
       class="float-end fs-5"
       href="https://my.uw.edu/teaching/"

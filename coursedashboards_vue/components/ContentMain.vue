@@ -7,17 +7,13 @@
           <select
             class="form-select form-select mb-3"
             aria-label=""
-            v-model="chosenCourse"
+            @change="setChosenCourse"
+            :value="chosenCourseLabel"
           >
-            <!-- <option
-              v-for="(course, index) in currentCourses"
-              :key="index"
-              :value="course"
-            > -->
             <option
               v-for="(courses, course_id) in uniqueSections"
               :key="course_id"
-              :value="courses[courses.length - 1]"
+              :value="course_id"
             >
               {{ courseSelectionLabel(courses[0]) }}
             </option>
@@ -66,7 +62,6 @@ export default {
     chosenCourse(newCourse) {
       // In case there is an invalid course label entered
       // the chosenCourse will be null and we do nothing.
-      console.log(newCourse);
       if (newCourse) {
         this.$router.push("/" + newCourse.section_label);
       }
@@ -87,8 +82,12 @@ export default {
         course.course_title
       );
     },
-    onChange(event) {
-      console.log(event.target.value);
+    setChosenCourse(e) {
+      const courseLabel = e.target.value;
+      this.chosenCourse =
+        this.uniqueSections[courseLabel][
+          this.uniqueSections[courseLabel].length - 1
+        ];
     },
   },
   computed: {
@@ -101,10 +100,6 @@ export default {
         );
       })[0];
     },
-    currentMq() {
-      console.log(this.mq.current);
-      return this.mq.current;
-    },
     uniqueSections() {
       return this.courses.slice().reduce((prev, curr) => {
         const course_id =
@@ -116,6 +111,15 @@ export default {
         }
         return prev;
       }, {});
+    },
+    chosenCourseLabel() {
+      return (
+        this.chosenCourse.curriculum +
+        "-" +
+        this.chosenCourse.course_number +
+        "-" +
+        this.chosenCourse.section_id
+      );
     },
   },
   created: function () {
