@@ -80,6 +80,8 @@ environmentVariables:
     value: EVAL
   - name: CANVAS_ENV
     value: EVAL
+  - name: BOOKSTORE_ENV
+    value: PROD
   - name: AXDD_PERSON_CLIENT_ENV
     value: PROD
   - name: UW_PERSON_DB_HOSTNAME

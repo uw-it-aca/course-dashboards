@@ -36,6 +36,7 @@ setup(
         'UW-RestClients-GWS~=2.3',
         'UW-RestClients-Django-Utils~=2.3',
         'UW-RestClients-Canvas~=1.2',
+        'UW-RestClients-Bookstore~=1.1',
         'UW-Django-SAML2~=1.5',
         'Django-SupportTools~=3.5',
         'djangorestframework==3.11.2',
