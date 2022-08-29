@@ -6,17 +6,17 @@ encapsulates the interactions with the Bookstore web service.
 """
 
 from uw_bookstore import Bookstore
+from uw_sws.section import get_section_by_label
 
 
-def get_textbook_by_schedule(schedule):
+def get_books_for_offering(offering):
     """
-    returns textbooks for a valid schedule
+    returns textbooks for a given course
     """
-    return Bookstore().get_books_for_schedule(schedule)
-
-
-def get_order_url_by_schedule(schedule):
-    """
-    returns a link to the bookstore ordering page for a given schedule
-    """
-    return Bookstore().get_url_for_schedule(schedule)
+    section_label = "{},{},{},{}/{}".format(
+        offering.term.year, offering.term.quarter,
+        offering.course.curriculum, offering.course.course_number,
+        offering.course.section_id)
+    section = get_section_by_label(section_label)
+    return Bookstore().get_books_by_quarter_sln(
+        offering.term.quarter, section.sln)

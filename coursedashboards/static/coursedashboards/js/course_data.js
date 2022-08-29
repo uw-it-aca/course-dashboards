@@ -114,3 +114,49 @@ var getCourseProfileData = function (label) {
 
     return false;
 };
+
+var fetchCourseTextbookData = function (label) {
+    var startTime = Date.now();
+
+    if (getCourseTextbookData(label)) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseTextbookDataSuccess', [getCourseTextbookData(label)]);
+        return;
+    }
+
+    $.ajax({
+        url: "/api/v1/course/" + label + '/textbooks',
+        dataType: "JSON",
+        type: "GET",
+        accepts: {text: "application/json"},
+        success: function(results) {
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'course_textbook_data', {
+                'eventLabel': label,
+                'value': totalTime
+            });
+
+            setCourseTextbookData(label, results);
+
+            $('div.current-section').trigger(
+                'coda:CurrentCourseTextbookDataSuccess', [results]);
+        },
+        error: function(xhr, status, error) {
+            $('div.current-section').trigger(
+                'coda:CurrentCourseTextbookDataFailure', [error]);
+        }
+    });
+};
+
+var setCourseTextbookData = function (label, textbook_data) {
+    window.textbook_data[label] = textbook_data;
+};
+
+var getCourseTextbookData = function (label) {
+    if (window.textbook_data.hasOwnProperty(label)) {
+        return window.textbook_data[label];
+    }
+
+    return false;
+};

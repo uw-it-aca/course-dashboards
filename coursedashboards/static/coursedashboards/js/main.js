@@ -55,6 +55,8 @@ var registerEvents = function () {
                 if ($(".enrollment-profile-value").length) {
                     fetchCourseProfileData(label);
                 }
+
+                updateDRSPanel(label);
             })
         .on(
             'coda:CurrentCourseProfileDataSuccess',
@@ -62,14 +64,24 @@ var registerEvents = function () {
                 showCourseProfileData(data);
             })
         .on(
-            'coda:CurrentCourseProfileDisability',
-            function (e, data) {
-                showCourseProfileDisability(data);
-            })
-        .on(
             'coda:CurrentCourseProfileDataFailure',
             function (e, data) {
                 showCourseProfileData();
+            })
+        .on(
+            'coda:CurrentCourseTextbookDataSuccess',
+            function (e, data) {
+                showCourseTextbookData(data);
+            })
+        .on(
+            'coda:CurrentCourseTextbookDataFailure',
+            function (e, data) {
+                showCourseTextbookData();
+            })
+        .on(
+            'coda:CurrentCourseProfileDisability',
+            function (e, data) {
+                showCourseProfileDisability(data);
             })
         .on(
             'change', 'select[name="course_quarters"]',
