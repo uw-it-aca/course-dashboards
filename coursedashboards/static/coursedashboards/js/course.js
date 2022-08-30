@@ -174,7 +174,7 @@ var updateDRSPanel = function (label) {
     var section_data = getSectionDataByLabel(label);
 
     $('.drs_banner_missing').addClass('visually-hidden');
-    if (_isCurrentTerm(section_data)) {
+    if (!_isPastTerm(section_data)) {
         fetchCourseTextbookData(label);
     }
 };
@@ -199,4 +199,10 @@ var showCourseProfileDisability = function (disability) {
 var _isCurrentTerm = function (section_data) {
     return (section_data.year == window.term.year &&
             section_data.quarter.toLowerCase() == window.term.quarter.toLowerCase());
+};
+
+
+var _isPastTerm = function (section_data) {
+    return compare_terms(section_data.year, section_data.quarter,
+                         window.term.year, window.term.quarter) < 0;
 };
