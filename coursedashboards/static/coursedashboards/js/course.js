@@ -39,8 +39,7 @@ var showCourseData = function (label) {
             terms.push({
                 year: this.year,
                 quarter: firstLetterUppercase(this.quarter),
-                current: (this.year == window.term.year &&
-                          this.quarter.toLowerCase() == window.term.quarter.toLowerCase()),
+                current: _isCurrentTerm(this),
                 selected: (this.year == section.year &&
                            this.quarter.toLowerCase() == section.quarter.toLowerCase())
             });
@@ -171,5 +170,33 @@ var showCourseProfileData = function (data) {
 };
 
 
+var updateDRSPanel = function (label) {
+    var section_data = getSectionDataByLabel(label);
+
+    $('.drs_banner_missing').addClass('visually-hidden');
+    if (_isCurrentTerm(section_data)) {
+        fetchCourseTextbookData(label);
+    }
+};
+
+
+var showCourseTextbookData = function (data) {
+    var $drs_missing = $('.drs_banner_missing');
+
+    if (data && data.hasOwnProperty('textbooks') && data.textbooks.length > 0) {
+        $('.drs_missing_textbooks', $drs_missing).addClass('visually-hidden');
+    } else {
+        $drs_missing.removeClass('visually-hidden');
+        $('.drs_missing_textbooks', $drs_missing).removeClass('visually-hidden');
+    }
+};
+
+
 var showCourseProfileDisability = function (disability) {
+};
+
+
+var _isCurrentTerm = function (section_data) {
+    return (section_data.year == window.term.year &&
+            section_data.quarter.toLowerCase() == window.term.quarter.toLowerCase());
 };
