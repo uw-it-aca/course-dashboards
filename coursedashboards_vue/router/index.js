@@ -5,6 +5,8 @@ import { trackRouter } from "vue-gtag-next";
 import Home from "../pages/Home.vue";
 import Customize from "../pages/Customize.vue";
 import CourseDashboard from "../components/dashboard/CourseDashboard.vue";
+import CurrentSection from "../components/dashboard/CurrentSection.vue";
+import HistoricData from "../components/dashboard/HistoricSection.vue";
 
 const routes = [
   {
@@ -15,7 +17,10 @@ const routes = [
     children: [
       {
         path: ":year(\\d{4})-:quarter([A-Za-z]+)-:curriculum([&% 0-9A-Za-z]+)-:course_number(\\d{3})-:section_id([A-Za-z][0-9A-Za-z]?)",
-        component: CourseDashboard,
+        components: {
+          MyData: CurrentSection,
+          // HistoricData: HistoricData,
+        },
       },
     ],
   },

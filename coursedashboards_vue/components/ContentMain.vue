@@ -20,14 +20,7 @@
           </select>
         </div>
       </h1>
-
-      <router-view v-slot="{ Component }">
-        <!-- <Transition name="fade" mode="out-in"> -->
-        <KeepAlive max="5">
-          <component :is="Component" :key="$route.fullPath" />
-        </KeepAlive>
-        <!-- </Transition> -->
-      </router-view>
+      <CourseDashboard />
     </div>
     <div v-else-if="courses.length == 0">
       <p>
@@ -44,10 +37,12 @@
 <script>
 import { MqResponsive } from "vue3-mq";
 import { toSectionLabel } from "../helpers/utils";
+import CourseDashboard from "./dashboard/CourseDashboard.vue";
 export default {
   name: "ContentMain",
   components: {
     MqResponsive,
+    CourseDashboard,
   },
   inject: ["mq"],
   data() {
