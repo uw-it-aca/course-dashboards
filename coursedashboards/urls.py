@@ -15,56 +15,86 @@ from coursedashboards.views.api.integration.offering_fail_rate import (
 from coursedashboards.views.api.integration.offering_majors import (
     OfferingMajors)
 from coursedashboards.views.api.introduction import Introduction
+from coursedashboards.views.index_vue import index_vue
 from coursedashboards.views.index import index
 from coursedashboards.views.page import user_login, logout
 
-course_regex = (
+from coursedashboards.views.pages_vue import DefaultPageView
+from django.views.generic import TemplateView
+from django.conf import settings
+
+course_regex = (r'^(?P<year>\d{4})-'
+    r'(?P<quarter>[A-Za-z]+)-'
+    r'(?P<curriculum_abbr>[&% 0-9A-Za-z]+)-'
+    r'(?P<course_number>\d{3})-'
+    r'(?P<sections>[A-Za-z][0-9A-Za-z]?)$')
+
+course_api_regex = (
     r'^api/v1/course/(?P<year>\d{4})-'
     r'(?P<quarter>[A-Za-z]+)-'
     r'(?P<curriculum>[&% 0-9A-Za-z]+)-'
     r'(?P<course_number>\d{3})-'
     r'(?P<section_id>[A-Za-z][0-9A-Za-z]?)')
 
-urlpatterns = [
+# start with an empty url array
+urlpatterns = []
+
+# add debug routes for developing error pages
+if settings.DEBUG:
+    urlpatterns += [
+        re_path(
+            r"^500$",
+            TemplateView.as_view(template_name="500_vue.html"),
+            name="500_response",
+        ),
+        re_path(
+            r"^404$",
+            TemplateView.as_view(template_name="404_vue.html"),
+            name="404_response",
+        ),
+    ]
+
+urlpatterns += [
     # Home
-    re_path(r'^$', index, name='home'),
+    re_path(r'(^$|customize|page2)', index_vue),
+    re_path(course_regex, index_vue),
     re_path(r'api/v1/user/(?P<netid>[a-z][a-z0-9\-\_\.]{,127})/introduction',
             Introduction.as_view(),
             name='coda_introduction'),
-    re_path(course_regex + r'/past/performance/?',
+    re_path(course_api_regex + r'/past/performance/?',
             HistoricalPerformance.as_view(),
             name='historic_course_performance'),
-    re_path(course_regex + r'/past/concurrent/?',
+    re_path(course_api_regex + r'/past/concurrent/?',
             HistoricalConcurrentCourses.as_view(),
             name='historic_concurrent_courses'),
-    re_path(course_regex + r'/past/gpas/?',
+    re_path(course_api_regex + r'/past/gpas/?',
             HistoricalCourseGPAs.as_view(),
             name='historic_course_gpas'),
-    re_path(course_regex + r'/past/studentmajor/?',
+    re_path(course_api_regex + r'/past/studentmajor/?',
             HistoricalStudentMajors.as_view(),
             name='historic_student_majors'),
-    re_path(course_regex + r'/past/graduatedmajor/?',
+    re_path(course_api_regex + r'/past/graduatedmajor/?',
             HistoricalGraduatedMajors.as_view(),
             name='historic_graduated_major'),
-    re_path(course_regex + r'/past/?',
+    re_path(course_api_regex + r'/past/?',
             HistoricalCourseData.as_view(),
             name='historic_course_data'),
-    re_path(course_regex + r'$',
+    re_path(course_api_regex + r'$',
             CourseData.as_view(),
             name='course_data_for_term'),
-    re_path(course_regex + r'/profile$',
+    re_path(course_api_regex + r'/profile$',
             CourseProfileData.as_view(),
             name='course_student_data_for_term'),
-    re_path(course_regex + r'/textbooks$',
+    re_path(course_api_regex + r'/textbooks$',
             CourseTextbookData.as_view(),
             name='course_textbook_data_for_term'),
-    re_path(course_regex + r'/majors/(?P<num_majors>\d)$',
+    re_path(course_api_regex + r'/majors/(?P<num_majors>\d)$',
             OfferingMajors.as_view(),
             name='course_majors'),
-    re_path(course_regex + r'/fail_rate$',
+    re_path(course_api_regex + r'/fail_rate$',
             OfferingFailRate.as_view(),
             name='course_fail_rate'),
-    re_path(course_regex + r'/cgpa$',
+    re_path(course_api_regex + r'/cgpa$',
             OfferingCGPA.as_view(),
             name='course_cgpa'),
     re_path(r'^login', user_login),

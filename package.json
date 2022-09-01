@@ -1,0 +1,60 @@
+{
+  "name": "coursedashboards",
+  "version": "1.0.0",
+  "description": "coursedashboards some description text",
+  "scripts": {
+    "build": "vite build",
+    "watch": "vite build --watch --mode development",
+    "test": "vitest --environment jsdom",
+    "coverage": "vitest run --coverage",
+    "eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
+    "stylelint": "stylelint '**/*.{vue,scss}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uw-it-aca/course-dashboards.git"
+  },
+  "author": "Your Name Here",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uw-it-aca/course-dashboards/issues"
+  },
+  "homepage": "https://github.com/uw-it-aca/course-dashboards#readme",
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "@vueuse/integrations": "^9.1.1",
+    "axdd-components": "git+https://github.com/uw-it-aca/axdd-components.git#develop",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.0",
+    "bootstrap-icons": "^1.8.3",
+    "d3": "^7.6.1",
+    "jquery": "^3.6.0",
+    "vue": "^3.2.33",
+    "vue-gtag-next": "^1.14.0",
+    "vue-router": "^4.0.14",
+    "vue3-cookies": "^1.0.6",
+    "vue3-mq": "^3.1.0",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^4.1.3",
+    "@rushstack/eslint-patch": "^1.1.3",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/test-utils": "^2.0.0-rc.20",
+    "c8": "^7.11.0",
+    "eslint": "^8.13.0",
+    "eslint-plugin-vue": "^8.2.0",
+    "jsdom": "^19.0.0",
+    "postcss-html": "^1.4.1",
+    "prettier": "^2.3.2",
+    "sass": "^1.32.13",
+    "stylelint": "^14.7.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-recommended-scss": "^6.0.0",
+    "stylelint-config-recommended-vue": "^1.4.0",
+    "stylelint-config-standard-scss": "^3.0.0",
+    "vite": "^2.9.7",
+    "vitest": "^0.10.2"
+  }
+}

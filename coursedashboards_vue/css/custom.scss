@@ -1,0 +1,74 @@
+@use "sass:map";
+@import "axdd-components/src/assets/css/theme";
+
+// https://getbootstrap.com/docs/5.1/customize/options/
+// TODO: enable bootstrap options for the app
+// $enable-cssgrid: true;
+// $enable-gradients: true;
+
+// app custom colors
+$custom-colors: (
+  "foo": red,
+  "bar": lime,
+  "light-purple": $purple-100,
+);
+
+// bootstrap theme + utility merging
+$theme-colors: map-merge($theme-colors, $custom-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop(
+  $utilities-colors,
+  rgba-css-var,
+  "$key",
+  "text"
+);
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+
+$utilities: (
+  // MARK: bg-color-hover (changes bg-color on hover)
+  "background-color":
+    (
+      property: background-color,
+      class: bg,
+      state: hover focus,
+      values:
+        map-merge(
+          $theme-colors,
+          (
+            "body": $body-bg,
+            "white": $white,
+            "transparent": transparent,
+          )
+        ),
+    ),
+  // MARK: text-color-hover (changes text-color on hover)
+  "color":
+    (
+      property: color,
+      class: text,
+      state: hover focus,
+      values:
+        map-merge(
+          $theme-colors,
+          (
+            "white": $white,
+            "transparent": transparent,
+          )
+        ),
+    )
+);
+
+// additional non-bootstrap styles
+
+.blah {
+  color: purple;
+}
+
+i.clickable {
+  cursor: pointer;
+}
+
+// import bootstrap and bootstrap-icons
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";

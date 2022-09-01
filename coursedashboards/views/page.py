@@ -26,7 +26,8 @@ def page(request,
         user = get_current_user()
         context["user"] = {
             "netid": user.uwnetid,
-            "session_key": request.session.session_key,
+            # TODO: Do we need this to be public? I can't find any use of it within the client
+            # "session_key": request.session.session_key,
             "intro_modal": user.intro_modal
         }
     except MissingNetIDException:
@@ -68,9 +69,9 @@ def page(request,
                 sections.append(offering.brief_json_object())
                 historical[course_label] = {}
 
-        context['sections'] = json.dumps(sections, cls=DjangoJSONEncoder)
-        context['historic_sections'] = json.dumps(
-            historical, cls=DjangoJSONEncoder)
+        context['sections'] = json.loads(json.dumps(sections, cls=DjangoJSONEncoder))
+        context['historic_sections'] = json.loads(json.dumps(
+            historical, cls=DjangoJSONEncoder))
 
         if len(sections) == 0:
             context['no_courses'] = True
@@ -78,6 +79,7 @@ def page(request,
     except Instructor.DoesNotExist:
         context['no_courses'] = True
 
+    print("CONTEXT CONTEXT: {}".format(context))
     return render(request, template, context)
 
 
