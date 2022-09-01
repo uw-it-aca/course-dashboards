@@ -9,14 +9,18 @@
       </div>
     </div>
     <div class="fs-1">
-      <span v-if="property != null" v-text="property"></span>
-      <span v-else>N/A</span>
-      <div class="d-inline-block text-black-50 fs-3">
+      <div v-if="loading" class="d-inline-block w-50">
+        <p class="placeholder-glow">
+          <span class="placeholder col-12"></span>
+        </p>
+      </div>
+      <slot v-else name="property-content" />
+      <!-- <span v-if="loading">Loading</span>
+      <span v-else-if="property != null" v-text="property"></span>
+      <span v-else>N/A</span> -->
+      <div class="d-inline-block text-black-50 fs-3 ms-1">
         <slot name="property-icon" />
       </div>
-    </div>
-    <div>
-      <slot name="property-content" />
     </div>
   </div>
 </template>
@@ -27,7 +31,8 @@ export default {
   components: {},
   props: {
     propertyTitle: String,
-    property: [String, Number],
+    // property: [String, Number],
+    loading: Boolean,
   },
   data() {
     return {};

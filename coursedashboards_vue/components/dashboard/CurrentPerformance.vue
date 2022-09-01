@@ -3,30 +3,58 @@
     <div class="col-sm-6">
       <SectionProperty
         propertyTitle="Currently Registered"
-        :property="registeredString"
+        :loading="!courseIsFinished"
       >
+        <template #property-content>
+          {{
+            courseData.current_enrollment +
+            " / " +
+            courseData.limit_estimate_enrollment
+          }}
+        </template>
         <template #property-icon>
           <i class="bi bi-people-fill" />
         </template>
-        <template #property-content>
-          <ul class="list-unstyled">
-            <li>
-              <p v-if="true">10%</p>
-              <p class="placeholder-glow" v-else>
-                <span class="placeholder col-12"></span>
-              </p>
-              EOP
-            </li>
-            <li>20% Transfer</li>
-            <li>2% Disabled</li>
-            <li>8% Academic Probation</li>
-            <li>20% Repeating Students</li>
-          </ul>
-        </template>
       </SectionProperty>
+      <ul class="list-unstyled">
+        <li>
+          <span v-if="!profileIsFinished" class="placeholder-glow placeholder"
+            >12%</span
+          >
+          <span v-else
+            >{{ Math.round(profileData.disability.percent, 2) }}%</span
+          >
+          Disability
+        </li>
+        <li>
+          <span v-if="!profileIsFinished" class="placeholder-glow placeholder"
+            >12%</span
+          >
+          <span v-else>{{ Math.round(profileData.eop.percent, 2) }}%</span> EOP
+        </li>
+        <li>
+          <span v-if="!profileIsFinished" class="placeholder-glow placeholder"
+            >12%</span
+          >
+          <span v-else
+            >{{ Math.round(profileData.probation.percent, 2) }}%</span
+          >
+          Probation
+        </li>
+        <li>
+          <span v-if="!profileIsFinished" class="placeholder-glow placeholder"
+            >12%</span
+          >
+          <span v-else>{{ Math.round(profileData.transfer.percent, 2) }}%</span>
+          transfer
+        </li>
+      </ul>
     </div>
     <div class="col-sm-6">
-      <SectionProperty propertyTitle="Median Cumulative GPA" :property="'10%'">
+      <SectionProperty
+        propertyTitle="Median Cumulative GPA"
+        :loading="!courseIsFinished"
+      >
         <template #title-icon>
           <PopoverIcon
             title="Median Cumulative GPA"
@@ -34,6 +62,13 @@
           >
             <i class="bi bi-info-circle-fill" />
           </PopoverIcon>
+        </template>
+        <template #property-content>
+          {{
+            courseData.current_enrollment +
+            " / " +
+            courseData.limit_estimate_enrollment
+          }}
         </template>
         <template #property-icon>
           <i class="bi bi-bar-chart-fill"></i>
@@ -58,15 +93,16 @@ import SectionProperty from "./SectionProperty.vue";
 import PopoverIcon from "../popover/PopoverIcon.vue";
 export default {
   name: "CurrentPerformance",
-  data() {
-    return {
-      courses: null,
-    };
-  },
   setup(props) {
-    const { data, isFinished } = useAxios("api/v1/course" + props.sectionLabel);
+    const { data: courseData, isFinished: courseIsFinished } = useAxios(
+      "api/v1/course" + props.sectionLabel
+    );
 
-    return { data, isFinished };
+    const { data: profileData, isFinished: profileIsFinished } = useAxios(
+      "api/v1/course" + props.sectionLabel + "/profile"
+    );
+
+    return { profileData, profileIsFinished, courseData, courseIsFinished };
   },
   components: {
     SectionProperty,
@@ -75,33 +111,24 @@ export default {
   props: {
     sectionLabel: String,
   },
+  methods: {},
   computed: {
-    registeredString() {
-      if (this.isFinished) {
-        return (
-          this.data.current_enrollment +
-          " / " +
-          this.data.limit_estimate_enrollment
-        );
-      }
-    },
-
-    currentStudentMajors() {
-      return this.data.current_student_majors.slice(0).map((obj) => {
-        return {
-          percent: obj.percent_students,
-          title: obj.major_name,
-        };
-      });
-    },
-    concurrentCourses() {
-      return this.data.concurrent_courses.slice(0).map((obj) => {
-        return {
-          percent: obj.percent_students,
-          title: obj.course_ref,
-        };
-      });
-    },
+    // currentStudentMajors() {
+    //   return this.data.current_student_majors.slice(0).map((obj) => {
+    //     return {
+    //       percent: obj.percent_students,
+    //       title: obj.major_name,
+    //     };
+    //   });
+    // },
+    // concurrentCourses() {
+    //   return this.data.concurrent_courses.slice(0).map((obj) => {
+    //     return {
+    //       percent: obj.percent_students,
+    //       title: obj.course_ref,
+    //     };
+    //   });
+    // },
   },
   created: function () {},
 };
