@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [main, develop, feature/django-container-1-4-1]
+    branches: [main, develop]
   pull_request:
     branches: [main, master, develop]
     types: [opened, reopened, synchronize]
@@ -109,19 +109,18 @@ jobs:
 
     needs: [context, build]
 
-    outputs:
-      context: ${{ steps.deploy.outputs.context }}
-
     runs-on: ubuntu-20.04
+
+    outputs:
+      context: ${{ steps.context.outputs.context }}
 
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
       - name: Deployment Pipeline
-        id: deploy
         if: >-
-          contains(fromJSON('["main", "develop", "feature/django-container-1-4-1"]'),
+          contains(fromJSON('["main", "develop"]'),
             needs.context.outputs.git_repo_branch)
         uses: uw-it-aca/actions/cicd-deploy@main
         with:

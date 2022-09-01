@@ -21,6 +21,5 @@ def index(request, year=None, quarter=None,
     }
 
     context['messages'] = get_persistent_messages(params=context)
-    print("CONTEXT CONTEXT: {}".format(context))
 
     return page(request, context, template='index.html')

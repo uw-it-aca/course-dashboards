@@ -90,6 +90,14 @@ USERSERVICE_VALIDATION_MODULE = "coursedashboards.authorization.validate_netid"
 USERSERVICE_OVERRIDE_AUTH_MODULE = "coursedashboards.authorization.can_override_user"
 RESTCLIENTS_ADMIN_AUTH_MODULE = "coursedashboards.authorization.can_proxy_restclient"
 
+# PDS config
+AXDD_PERSON_CLIENT_ENV = os.getenv('AXDD_PERSON_CLIENT_ENV', '')
+UW_PERSON_DB_USERNAME = os.getenv('UW_PERSON_DB_USERNAME', '')
+UW_PERSON_DB_PASSWORD = os.getenv('UW_PERSON_DB_PASSWORD', '')
+UW_PERSON_DB_HOSTNAME = os.getenv('UW_PERSON_DB_HOSTNAME', '')
+UW_PERSON_DB_DATABASE = os.getenv('UW_PERSON_DB_DATABASE', '')
+UW_PERSON_DB_PORT = os.getenv('UW_PERSON_DB_PORT', '')
+
 DETECT_USER_AGENTS = {
     "is_tablet": False,
     "is_mobile": False,
