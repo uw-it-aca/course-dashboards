@@ -414,7 +414,7 @@ a {
     background-color: #E4DFEA;
     border-bottom: 3px solid lightgrey;
     padding: 20px 50px 5px; 
-    .drs_missing_notice {
+    .drs_missing_notice { padding-bottom: .25rem;
         h4 { font-weight: 400; }
         h4 span.drs_missing_notice { xcolor: #8A3736; color: #990000; font-weight: 700; }
         h4 span.drs_exposure {
@@ -423,7 +423,7 @@ a {
             i { font-size: 1.3em; font-weight: 550; }
         }
         .drs_emphasis { font-weight: 700; }
-        .drs_missing_content { padding: 0 2em; }
+        .drs_missing_content { padding: 0 2rem; }
     }
 }
 
