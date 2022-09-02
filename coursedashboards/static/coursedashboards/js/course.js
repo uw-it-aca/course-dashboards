@@ -190,6 +190,7 @@ var showCourseTextbookData = function (label, data) {
     } else {
         $drs_missing_textbooks.html(template({
             sln: data ? data.sln : null,
+            campus: _bookstore_campus(data.campus),
             year: section_data.year,
             qtr: _timeschedule_quarter(section_data.quarter),
             curriculum: section_data.curriculum,
@@ -220,4 +221,9 @@ var _timeschedule_quarter = function (quarter) {
     return (quarter.toLowerCase() == 'autumn') ? 'AUT' :
         (quarter.toLowerCase() == 'winter') ? 'WIN' :
         (quarter.toLowerCase() == 'spring') ? 'SPR' : 'SUM';
+};
+
+var _bookstore_campus = function (campus) {
+    return (campus.toLowerCase() == 'bothell') ? 'bothell' :
+        (campus.toLowerCase() == 'tacoma') ? 'tacoma' : 'main';
 };
