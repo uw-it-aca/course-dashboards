@@ -4,7 +4,7 @@
 <html class="no-js" lang="en">
 
     <head>
-        {% include "include/head.html" %}
+      {% include "include/head.html" %}
     </head>
 
 <body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
@@ -12,7 +12,7 @@
     <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
         <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
         </div>
-
+        {% include "drs_banner.html" %}
     {% block web_content %}{% endblock %}
 
     </div> <!-- end of .page-wrap  -->
@@ -41,6 +41,7 @@
 {% include "handlebars/course-select.html" %}
 {% include "handlebars/current-course-data.html" %}
 {% include "handlebars/current-performance.html" %}
+{% include "handlebars/current-profile.html" %}
 {% include "handlebars/historic-course-data.html" %}
 {% include "handlebars/cannot-display-course.html" %}
 {% include "handlebars/historic-concurrent-courses.html" %}
@@ -49,6 +50,7 @@
 {% include "handlebars/historic-performance.html" %}
 {% include "handlebars/historic-previous-instructors.html" %}
 {% include "handlebars/intro_modal.html" %}
+{% include "handlebars/drs_banner_textbooks.html" %}
 <script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
 <script src="{% static "coursedashboards/js/main.js" %}"></script>
 <script src="{% static "coursedashboards/js/intro.js" %}"></script>

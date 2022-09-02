@@ -7,6 +7,8 @@ from coursedashboards.views.api.offering.historical import (
     HistoricalGraduatedMajors)
 from django.urls import re_path
 from coursedashboards.views.api.offering.course import CourseData
+from coursedashboards.views.api.offering.profile import CourseProfileData
+from coursedashboards.views.api.offering.textbooks import CourseTextbookData
 from coursedashboards.views.api.integration.offering_cgpa import OfferingCGPA
 from coursedashboards.views.api.integration.offering_fail_rate import (
     OfferingFailRate)
@@ -31,7 +33,7 @@ urlpatterns = [
             name='coda_introduction'),
     re_path(course_regex + r'/past/performance/?',
             HistoricalPerformance.as_view(),
-            name='historic_concurrent_courses'),
+            name='historic_course_performance'),
     re_path(course_regex + r'/past/concurrent/?',
             HistoricalConcurrentCourses.as_view(),
             name='historic_concurrent_courses'),
@@ -50,6 +52,12 @@ urlpatterns = [
     re_path(course_regex + r'$',
             CourseData.as_view(),
             name='course_data_for_term'),
+    re_path(course_regex + r'/profile$',
+            CourseProfileData.as_view(),
+            name='course_student_data_for_term'),
+    re_path(course_regex + r'/textbooks$',
+            CourseTextbookData.as_view(),
+            name='course_textbook_data_for_term'),
     re_path(course_regex + r'/majors/(?P<num_majors>\d)$',
             OfferingMajors.as_view(),
             name='course_majors'),

@@ -5,8 +5,14 @@ Handlebars.registerHelper('pluralize', function(number, single, plural) {
     return plural;
 });
 
-Handlebars.registerHelper('roundPercentage', function(percentage) {
-    if(percentage < 1){
+Handlebars.registerHelper('roundPercentage', function(percentage, c, n) {
+    if (c && n && n > 0) {
+        percentage = (100 * c) / n;
+    }
+
+    if(percentage === 0){
+        return "0";
+    } else if(percentage < 1){
         return "<1";
     } else if (percentage > 100) {
         return "100";
@@ -41,6 +47,13 @@ Handlebars.registerHelper('myPlanFormat', function(curriculum, course_number, se
 
 Handlebars.registerHelper('gt', function(lval, rval, options) {
     if (rval > lval) {
+        return options.inverse(this);
+    }
+    return options.fn(this);
+});
+
+Handlebars.registerHelper('ge', function(lval, rval, options) {
+    if (lval >= rval) {
         return options.inverse(this);
     }
     return options.fn(this);

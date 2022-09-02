@@ -10,6 +10,7 @@ $gold: #b7a57a;
 $lightgold: #e8e3d3;
 $metgold: #85754d;
 $link_focus: #b5754d;
+$link_color: #0c62B5;
 
 /*** colors ***/
 $uw-purple: #4b2e83;
@@ -176,7 +177,7 @@ h5 {
 
 /* Hyperlink style:*/
 a {
-	color:#0077c2;
+	color: $link_color;
 	&:focus, &:hover {
         color: $link_focus;
 	}
@@ -405,6 +406,25 @@ a {
 /* introductory modal */
 #coda_intro_modal {
     .modal-title { font-size: 1.6em; font-weight: bolder; }
+}
+
+
+/* DRS banner */
+.drs_banner {
+    background-color: #E4DFEA;
+    border-bottom: 3px solid lightgrey;
+    padding: 20px 50px 5px; 
+    .drs_missing_notice { padding-bottom: .25rem;
+        h4 { font-weight: 400; }
+        h4 span.drs_missing_notice { xcolor: #8A3736; color: #990000; font-weight: 700; }
+        h4 span.drs_exposure {
+            cursor: pointer;
+            color: $link_color;
+            i { font-size: 1.3em; font-weight: 550; }
+        }
+        .drs_emphasis { font-weight: 700; }
+        .drs_missing_content { padding: 0 2rem; }
+    }
 }
 
 

@@ -39,8 +39,7 @@ var showCourseData = function (label) {
             terms.push({
                 year: this.year,
                 quarter: firstLetterUppercase(this.quarter),
-                current: (this.year == window.term.year &&
-                          this.quarter.toLowerCase() == window.term.quarter.toLowerCase()),
+                current: _isCurrentTerm(this),
                 selected: (this.year == section.year &&
                            this.quarter.toLowerCase() == section.quarter.toLowerCase())
             });
@@ -121,18 +120,104 @@ var displayCourse = function (label) {
         return false;
     }
 
-    if (section_data && section_data.loaded) {
-        showCourseData(label);
-    } else {
-        fetchCourseData(label);
-    }
-
+    fetchCourseData(label);
     fetchHistoricCourseData(section_data.section_label);
-
     return true;
 };
 
 //Capitalize the first letter of a word
 var firstLetterUppercase = function (word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
+
+var showCourseProfileData = function (data) {
+    var valueTemplate = Handlebars.compile($("#enrollment_profile_value").html()),
+        attributes = {
+            'eop': {
+                element_class: 'enrollment-eop-percent',
+                meaning: 'in the Early Opportunity Program'
+            },
+            'transfer': {
+                element_class: 'enrollment-transfer-percent',
+                meaning: 'are transfer students'
+            },
+            'disability': {
+                element_class: 'enrollment-disability-percent',
+                meaning: 'have disabilities'
+            },
+            'probation': {
+                element_class: 'enrollment-probation-percent',
+                meaning: 'are on academic probation'
+            }
+        };
+
+    $.each(attributes, function (k, v) {
+        var $id = $('.' + v.element_class);
+
+        if ($id.length) {
+            $id.html(valueTemplate({
+                percentage: (data && data.hasOwnProperty(k)) ? data[k].percent : -1,
+                meaning: v.meaning
+            }));
+        }
+    });
+
+    if (data.hasOwnProperty('disability')) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseProfileDisability', [data.disability]);
+    }
+};
+
+
+var updateDRSPanel = function (label) {
+    var section_data = getSectionDataByLabel(label);
+
+    $('.drs_banner_missing').addClass('visually-hidden');
+    if (!_isPastTerm(section_data)) {
+        fetchCourseTextbookData(label);
+    }
+};
+
+
+var showCourseTextbookData = function (label, data) {
+    var section_data = getSectionDataByLabel(label),
+        $drs_missing_textbooks = $('.drs_missing_textbooks'),
+        template = Handlebars.compile($("#drs-banner-missing-textbooks").html());
+
+    if (data && data.hasOwnProperty('textbooks') && data.textbooks.length > 0) {
+        $drs_missing_textbooks.empty();
+    } else {
+        $drs_missing_textbooks.html(template({
+            sln: data ? data.sln : null,
+            year: section_data.year,
+            qtr: _timeschedule_quarter(section_data.quarter),
+            curriculum: section_data.curriculum,
+            course_number: section_data.course_number,
+            section_id: section_data.section_id
+        }));
+    }
+};
+
+
+var showCourseProfileDisability = function (disability) {
+};
+
+
+var _isCurrentTerm = function (section_data) {
+    return (section_data.year == window.term.year &&
+            section_data.quarter.toLowerCase() == window.term.quarter.toLowerCase());
+};
+
+
+var _isPastTerm = function (section_data) {
+    return compare_terms(section_data.year, section_data.quarter,
+                         window.term.year, window.term.quarter) < 0;
+};
+
+
+var _timeschedule_quarter = function (quarter) {
+    return (quarter.toLowerCase() == 'autumn') ? 'AUT' :
+        (quarter.toLowerCase() == 'winter') ? 'WIN' :
+        (quarter.toLowerCase() == 'spring') ? 'SPR' : 'SUM';
 };

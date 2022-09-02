@@ -2,8 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from restclients_core.dao import MockDAO
-import os
-from os.path import abspath, dirname
+from uw_person_client.clients.mock_client import MockedUWPersonClient
+from os.path import join, abspath, dirname
 
-MockDAO.register_mock_path(os.path.join(abspath(dirname(__file__)),
-                                        "resources"))
+MockDAO.register_mock_path(join(abspath(dirname(__file__)), "resources"))
+
+MockedUWPersonClient.register_mock_path(join(
+    abspath(dirname(__file__)), "resources/uw_person_client/fixtures"))

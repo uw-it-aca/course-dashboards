@@ -51,6 +51,37 @@ var registerEvents = function () {
             'coda:CurrentCourseDataSuccess',
             function (e, label) {
                 showCourseData(label);
+
+                if ($(".enrollment-profile-value").length) {
+                    fetchCourseProfileData(label);
+                }
+
+                updateDRSPanel(label);
+            })
+        .on(
+            'coda:CurrentCourseProfileDataSuccess',
+            function (e, data) {
+                showCourseProfileData(data);
+            })
+        .on(
+            'coda:CurrentCourseProfileDataFailure',
+            function (e, data) {
+                showCourseProfileData();
+            })
+        .on(
+            'coda:CurrentCourseTextbookDataSuccess',
+            function (e, label, data) {
+                showCourseTextbookData(label, data);
+            })
+        .on(
+            'coda:CurrentCourseTextbookDataFailure',
+            function (e, label, error) {
+                showCourseTextbookData(label);
+            })
+        .on(
+            'coda:CurrentCourseProfileDisability',
+            function (e, data) {
+                showCourseProfileDisability(data);
             })
         .on(
             'change', 'select[name="course_quarters"]',
@@ -115,6 +146,23 @@ var registerEvents = function () {
 
             fetchHistoricCourseData(getSelectedCourseLabel(), filter);
         });
+
+    $('.drs_banner')
+        .on(
+            'click', 'span.drs_missing_textbooks_exposure', function (e) {
+                var $i = $('i', $(this)),
+                    $content = $('.drs_missing_textbooks_content');
+
+                if ($content.hasClass('visually-hidden')) {
+                    $i.removeClass('fa-angle-right');
+                    $i.addClass('fa-angle-down');
+                    $content.removeClass('visually-hidden');
+                } else {
+                    $i.removeClass('fa-angle-down');
+                    $i.addClass('fa-angle-right');
+                    $content.addClass('visually-hidden');
+                }
+            });
 };
 
 

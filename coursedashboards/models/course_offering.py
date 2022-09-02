@@ -179,43 +179,36 @@ class CourseOffering(models.Model):
             'course'
         )
 
-    def _course_id(self, course):
-        return "{}-{}".format(course.curriculum, course.course_number)
-
     @profile
     def concurrent_courses(self, terms=None):
         # all courses students in this offering for the given term
         # are registered
-        reg_filter = Q()
         student_count = 0.0
-
+        all_courses = {}
         for term in terms if terms else [self.term]:
-            for current in Registration.objects.filter(
-                    course=self.course, term=term):
-                student_count += 1.0
-                reg_filter |= (Q(term=term) & Q(user_id=current.user_id))
+            regs = self.all_student_registrations(terms=[term])
+            student_count += regs.values('user_id').distinct().count()
+            for reg in regs:
+                try:
+                    all_courses[reg.course.id] += 1
+                except KeyError:
+                    all_courses[reg.course.id] = 1
 
-        registrations = Registration.objects.filter(reg_filter)
+        courses = []
+        for c in sorted(
+                all_courses.items(), key=lambda x: x[1], reverse=True)[1:21]:
+            course = Course.objects.get(id=c[0])
+            courses.append({
+                'course_ref': "{}-{}".format(
+                    course.curriculum, course.course_number),
+                'title': course.course_title,
+                'curriculum': course.curriculum,
+                'course_number': course.course_number,
+                'course_students': c[1],
+                'percent_students': c[1] * 100.0 / student_count
+            })
 
-        return list(registrations.annotate(
-            title=F('course__course_title'),
-            curriculum=F('course__curriculum'),
-            course_number=F('course__course_number'),
-            course_ref=Concat('course__curriculum', Value('-'),
-                              'course__course_number',
-                              output_field=models.CharField())
-        ).exclude(
-            course=self.course
-        ).values(
-            'title',
-            'curriculum',
-            'course_number',
-            'course_ref'
-        ).annotate(
-            course_students=Count('course_ref'),
-            percent_students=Count('course_ref') * 100.0 / student_count
-        ).order_by(
-            '-percent_students')[:20])
+        return courses
 
     @profile
     def student_majors_for_term(self, terms=None):

@@ -1,0 +1,14 @@
+{
+    "18519": [{
+                "isbn":"9781256396162",
+                "title":"Tutorials In Introductory Psychology",
+                "authors": [{"name":"Mcdermott"}],
+                "price":58.00,
+                "used_price":null,
+                "lowest_price": 58.00,
+                "highest_price": 58.00,
+                "required":true,
+                "notes":null,
+                "cover_image": null
+            }]
+}

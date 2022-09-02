@@ -1,0 +1,5 @@
+{% verbatim %}
+<script id="enrollment_profile_value" type="text/x-handlebars-template">
+    <div title="{{#ge percentage 0}}unknown{{else}}{{percentage}}{{/ge}} percent of students {{meaning}}">{{#ge percentage 0}}- {{else}}{{roundPercentage percentage}}{{/ge}}</div>%
+</script>
+{% endverbatim %}

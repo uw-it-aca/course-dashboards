@@ -22,15 +22,22 @@ var setSectionDataByLabel = function (label, section) {
 };
 
 var fetchCourseData = function (label) {
-    startLoadingCourseData();
+    var startTime = Date.now(),
+        section_data = getSectionDataByLabel(label);
 
-    var startTime = Date.now();
+    if (section_data && section_data.loaded) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseDataSuccess', [label]);
+        return;
+    }
+
+    startLoadingCourseData();
 
     $.ajax({
         url: "/api/v1/course/" + label,
         dataType: "JSON",
         type: "GET",
-        accepts: {html: "text/html"},
+        accepts: {text: "application/json"},
         success: function(results) {
             results.loaded = true;
             setSectionDataByLabel(label, results);
@@ -60,4 +67,96 @@ var startLoadingCourseData = function () {
 
 var stopLoadingCourseData = function () {
     $(".section-container.current-section").removeClass('loading');
+};
+
+var fetchCourseProfileData = function (label) {
+    var startTime = Date.now();
+
+    if (getCourseProfileData(label)) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseProfileDataSuccess', [getCourseProfileData(label)]);
+        return;
+    }
+
+    $.ajax({
+        url: "/api/v1/course/" + label + '/profile',
+        dataType: "JSON",
+        type: "GET",
+        accepts: {text: "application/json"},
+        success: function(results) {
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'course_profile_data', {
+                'eventLabel': label,
+                'value': totalTime
+            });
+
+            setCourseProfileData(label, results);
+
+            $('div.current-section').trigger(
+                'coda:CurrentCourseProfileDataSuccess', [results]);
+        },
+        error: function(xhr, status, error) {
+            $('div.current-section').trigger(
+                'coda:CurrentCourseProfileDataFailure', [error]);
+        }
+    });
+};
+
+var setCourseProfileData = function (label, profile_data) {
+    window.profile_data[label] = profile_data;
+};
+
+var getCourseProfileData = function (label) {
+    if (window.profile_data.hasOwnProperty(label)) {
+        return window.profile_data[label];
+    }
+
+    return false;
+};
+
+var fetchCourseTextbookData = function (label) {
+    var startTime = Date.now();
+
+    if (getCourseTextbookData(label)) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseTextbookDataSuccess', [label, getCourseTextbookData(label)]);
+        return;
+    }
+
+    $.ajax({
+        url: "/api/v1/course/" + label + '/textbooks',
+        dataType: "JSON",
+        type: "GET",
+        accepts: {text: "application/json"},
+        success: function(results) {
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'course_textbook_data', {
+                'eventLabel': label,
+                'value': totalTime
+            });
+
+            setCourseTextbookData(label, results);
+
+            $('div.current-section').trigger(
+                'coda:CurrentCourseTextbookDataSuccess', [label, results]);
+        },
+        error: function(xhr, status, error) {
+            $('div.current-section').trigger(
+                'coda:CurrentCourseTextbookDataFailure', [label, error]);
+        }
+    });
+};
+
+var setCourseTextbookData = function (label, textbook_data) {
+    window.textbook_data[label] = textbook_data;
+};
+
+var getCourseTextbookData = function (label) {
+    if (window.textbook_data.hasOwnProperty(label)) {
+        return window.textbook_data[label];
+    }
+
+    return false;
 };
