@@ -180,14 +180,22 @@ var updateDRSPanel = function (label) {
 };
 
 
-var showCourseTextbookData = function (data) {
-    var $drs_missing = $('.drs_banner_missing');
+var showCourseTextbookData = function (label, data) {
+    var section_data = getSectionDataByLabel(label),
+        $drs_missing_textbooks = $('.drs_missing_textbooks'),
+        template = Handlebars.compile($("#drs-banner-missing-textbooks").html());
 
     if (data && data.hasOwnProperty('textbooks') && data.textbooks.length > 0) {
-        $('.drs_missing_textbooks', $drs_missing).addClass('visually-hidden');
+        $drs_missing_textbooks.empty();
     } else {
-        $drs_missing.removeClass('visually-hidden');
-        $('.drs_missing_textbooks', $drs_missing).removeClass('visually-hidden');
+        $drs_missing_textbooks.html(template({
+            sln: data ? data.sln : null,
+            year: section_data.year,
+            qtr: _timeschedule_quarter(section_data.quarter),
+            curriculum: section_data.curriculum,
+            course_number: section_data.course_number,
+            section_id: section_data.section_id
+        }));
     }
 };
 
@@ -205,4 +213,11 @@ var _isCurrentTerm = function (section_data) {
 var _isPastTerm = function (section_data) {
     return compare_terms(section_data.year, section_data.quarter,
                          window.term.year, window.term.quarter) < 0;
+};
+
+
+var _timeschedule_quarter = function (quarter) {
+    return (quarter.toLowerCase() == 'autumn') ? 'AUT' :
+        (quarter.toLowerCase() == 'winter') ? 'WIN' :
+        (quarter.toLowerCase() == 'spring') ? 'SPR' : 'SUM';
 };

@@ -13,8 +13,9 @@ logger = logging.getLogger(__name__)
 class CourseTextbookData(CoDaEndpoint):
     def get_data(self, offering):
         try:
-            books = get_books_for_offering(offering)
+            sln, books = get_books_for_offering(offering)
             return {
+                'sln': sln,
                 'textbooks': [book.isbn for book in books]
             }
         except Exception as ex:
