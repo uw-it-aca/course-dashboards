@@ -18,5 +18,5 @@ def get_books_for_offering(offering):
         offering.course.curriculum, offering.course.course_number,
         offering.course.section_id)
     section = get_section_by_label(section_label)
-    return Bookstore().get_books_by_quarter_sln(
+    return section.sln, Bookstore().get_books_by_quarter_sln(
         offering.term.quarter, section.sln)

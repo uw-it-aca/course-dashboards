@@ -120,7 +120,7 @@ var fetchCourseTextbookData = function (label) {
 
     if (getCourseTextbookData(label)) {
         $('div.current-section').trigger(
-            'coda:CurrentCourseTextbookDataSuccess', [getCourseTextbookData(label)]);
+            'coda:CurrentCourseTextbookDataSuccess', [label, getCourseTextbookData(label)]);
         return;
     }
 
@@ -140,11 +140,11 @@ var fetchCourseTextbookData = function (label) {
             setCourseTextbookData(label, results);
 
             $('div.current-section').trigger(
-                'coda:CurrentCourseTextbookDataSuccess', [results]);
+                'coda:CurrentCourseTextbookDataSuccess', [label, results]);
         },
         error: function(xhr, status, error) {
             $('div.current-section').trigger(
-                'coda:CurrentCourseTextbookDataFailure', [error]);
+                'coda:CurrentCourseTextbookDataFailure', [label, error]);
         }
     });
 };

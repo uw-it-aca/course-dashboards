@@ -70,13 +70,13 @@ var registerEvents = function () {
             })
         .on(
             'coda:CurrentCourseTextbookDataSuccess',
-            function (e, data) {
-                showCourseTextbookData(data);
+            function (e, label, data) {
+                showCourseTextbookData(label, data);
             })
         .on(
             'coda:CurrentCourseTextbookDataFailure',
-            function (e, data) {
-                showCourseTextbookData();
+            function (e, label, error) {
+                showCourseTextbookData(label);
             })
         .on(
             'coda:CurrentCourseProfileDisability',
@@ -149,18 +149,17 @@ var registerEvents = function () {
 
     $('.drs_banner')
         .on(
-            'click', 'span.drs_missing_exposure', function (e) {
-                var $this = $(this),
-                    $i = $('i', $this),
-                    $content = $('.drs_banner_missing_content');
+            'click', 'span.drs_missing_textbooks_exposure', function (e) {
+                var $i = $('i', $(this)),
+                    $content = $('.drs_missing_textbooks_content');
 
-                if ($i.hasClass('drs_missing_hidden')) {
-                    $i.removeClass('fa-angle-right drs_missing_hidden');
+                if ($content.hasClass('visually-hidden')) {
+                    $i.removeClass('fa-angle-right');
                     $i.addClass('fa-angle-down');
                     $content.removeClass('visually-hidden');
                 } else {
                     $i.removeClass('fa-angle-down');
-                    $i.addClass('fa-angle-right  drs_missing_hidden');
+                    $i.addClass('fa-angle-right');
                     $content.addClass('visually-hidden');
                 }
             });
