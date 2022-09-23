@@ -17,7 +17,8 @@
     </ul>
   </div>
 
-  <CurrentPerformance :section-label="sectionLabel" />
+  <CurrentPerformance v-if="isCurrent" :section-label="sectionLabel" />
+  <PastPerformance v-else :section-label="sectionLabel" />
 
   <!-- <div class="row mt-5">
     <div class="col-sm-6">
@@ -55,6 +56,7 @@ import SectionList from "./SectionList.vue";
 import PercentList from "./PercentList.vue";
 import PopoverIcon from "../popover/PopoverIcon.vue";
 import CurrentPerformance from "./CurrentPerformance.vue";
+import PastPerformance from "./PastPerformance.vue";
 export default {
   name: "CurrentSection",
   data() {
@@ -64,19 +66,25 @@ export default {
   },
   setup(props) {
     const route = useRoute();
-    const sectionLabel = route.fullPath;
+    const sectionLabel = route.fullPath.substring(1);
 
-    return { sectionLabel };
+    return { sectionLabel, route };
   },
   components: {
     // SectionProperty,
     // SectionList,
     // PercentList,
     // PopoverIcon,
+    PastPerformance,
     CurrentPerformance,
   },
   props: {},
-  computed: {},
+  computed: {
+    isCurrent() {
+      return this.$store.state.year == this.route.params.year &&
+             this.$store.state.quarter == this.route.params.quarter;
+    }
+  },
   created: function () {},
 };
 </script>

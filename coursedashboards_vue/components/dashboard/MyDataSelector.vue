@@ -28,7 +28,7 @@
           :value="term.section_label"
           :selected="term.section_label == selectedTerm.section_label"
         >
-          {{ termTextLabel(term) }}
+          {{ termTextLabel(term) }} <span v-if="term.year == year && term.quarter == quarter">(current)</span>
         </option>
       </select>
     </div>
@@ -68,6 +68,12 @@ export default {
         return term.section_label == toSectionLabel(this.$route.params);
       });
     },
+    year() {
+      return this.$store.state.year;
+    },
+    quarter() {
+      return this.$store.state.quarter;
+    }
   },
   methods: {
     setTerm(e) {

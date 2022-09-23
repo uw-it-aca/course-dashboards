@@ -95,11 +95,11 @@ export default {
   name: "CurrentPerformance",
   setup(props) {
     const { data: courseData, isFinished: courseIsFinished } = useAxios(
-      "api/v1/course" + props.sectionLabel
+      "api/v1/course/" + props.sectionLabel
     );
 
     const { data: profileData, isFinished: profileIsFinished } = useAxios(
-      "api/v1/course" + props.sectionLabel + "/profile"
+      "api/v1/course/" + props.sectionLabel + "/profile"
     );
 
     return { profileData, profileIsFinished, courseData, courseIsFinished };

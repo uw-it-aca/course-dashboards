@@ -19,7 +19,7 @@ const routes = [
         path: ":year(\\d{4})-:quarter([A-Za-z]+)-:curriculum([&% 0-9A-Za-z]+)-:course_number(\\d{3})-:section_id([A-Za-z][0-9A-Za-z]?)",
         components: {
           MyData: CurrentSection,
-          // HistoricData: HistoricData,
+          HistoricData: HistoricData,
         },
       },
     ],
