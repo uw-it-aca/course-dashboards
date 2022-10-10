@@ -1,5 +1,5 @@
 <template>
-  <div class="alert alert-dark-beige border-0 small" role="alert">
+  <div class="alert alert-beige small" role="alert">
     <p>
       The query you requested will not generate data for one of the following
       reasons:
