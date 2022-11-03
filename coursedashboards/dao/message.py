@@ -13,5 +13,5 @@ def get_persistent_messages(tags="", params={}):
             ret[level].append(message)
         except KeyError:
             ret[level] = [message]
-    print("RETURNING MESSAGES: {} ".format(ret))
+
     return ret
