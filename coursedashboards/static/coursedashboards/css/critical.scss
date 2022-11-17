@@ -427,6 +427,21 @@ a {
     }
 }
 
+/* General Education Notices */
+.general-education-notices {
+    width: 100%;
+    background: #e2ddc9;
+    border-radius: 6px;
+    font-size: 95%;
+    line-height: 1.6em;
+    margin-right: 20px;
+    margin-bottom: -45px;
+    padding-top: .4em;
+    padding-bottom: .4em;
+    padding-left: 1em;
+    .general-education-explanation { font-size: 90% }
+}
+
 
  /* ==========================================================================
    SMALL SCREEN: need to revisit for SCSS
