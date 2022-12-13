@@ -1,10 +1,13 @@
 {% verbatim %}
 <script id="general-education-notices-template" type="text/x-handlebars-template">
 {{#if writing}}
-Looks like this is a W credit!<br />
-<span class="general-education-explanation">
-Learn more about how to implement the requirements in your class <a href="https://writing.washington.edu/for-instructors/teaching-w-courses" target="_blank">here</a>.
-</span>
+<div class="alert alert-secondary w-100" style="margin-top:15px;margin-left:15px; padding:5px;" role="alert">
+    <span class="fa-stack" style="font-size:90%;">
+      <i class="fa fa-circle fa-stack-2x" style="color:#452a78;"></i>
+      <i class="fa fa-stack-1x fa-inverse">W</i>
+    </span>
+    <span>This is a <strong>W</strong> credit course. <a href="https://writing.washington.edu/for-instructors/teaching-w-courses" target="_blank">Learn how to implement in your class.</a></span>
+</div>
 {{/if}}
 </script>
 {% endverbatim %}
