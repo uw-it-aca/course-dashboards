@@ -57,6 +57,7 @@ var registerEvents = function () {
                 }
 
                 updateDRSPanel(label);
+                updateGenEdNoticePanel(label);
             })
         .on(
             'coda:CurrentCourseProfileDataSuccess',
@@ -77,6 +78,16 @@ var registerEvents = function () {
             'coda:CurrentCourseTextbookDataFailure',
             function (e, label, error) {
                 showCourseTextbookData(label);
+            })
+        .on(
+            'coda:CurrentCourseGenEdDataSuccess',
+            function (e, label, data) {
+                showCourseGenEdData(label, data);
+            })
+        .on(
+            'coda:CurrentCourseGenEdDataFailure',
+            function (e, label, error) {
+                showCourseGenEdData(label);
             })
         .on(
             'coda:CurrentCourseProfileDisability',

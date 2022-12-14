@@ -14,6 +14,7 @@
     window.section_data = {{sections | safe | escape}};
     window.profile_data = {};
     window.textbook_data = {};
+    window.gen_ed_data = {};
     window.section_historic_data = {{historic_sections | safe | escape}};
     window.historic_data = {};
 
@@ -23,7 +24,7 @@
 
   	<main class="coda-wrapper" role="main">
       {% include "persistent_messages.html" %}
-    		<div class="main-content row" id="maincontent"> 
+    		<div class="main-content row" id="maincontent">
               {% if no_courses %}
               <div class="col-12">
                 We're sorry, but it does not appear you have instructed any courses recently.
@@ -31,7 +32,7 @@
               {% else %}
               <div class="course-info col-12" aria-labelledby="course_title">
                 <div class="course-quarter-year">
-                  <h2 id="course_title" class="heading-page">Course Dashboard for 
+                  <h2 id="course_title" class="heading-page">Course Dashboard for
                     <div class="d-inline-block course-select"></div>
                   </h2>
                 </div>

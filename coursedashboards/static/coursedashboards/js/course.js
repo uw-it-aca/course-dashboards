@@ -180,6 +180,16 @@ var updateDRSPanel = function (label) {
 };
 
 
+var updateGenEdNoticePanel = function (label) {
+    var section_data = getSectionDataByLabel(label);
+
+    $('.general-education-notices').addClass('visually-hidden');
+    if (!_isPastTerm(section_data)) {
+        fetchCourseGenEdData(label);
+    }
+};
+
+
 var showCourseTextbookData = function (label, data) {
     var section_data = getSectionDataByLabel(label),
         $drs_missing_textbooks = $('.drs_missing_textbooks'),
@@ -197,6 +207,23 @@ var showCourseTextbookData = function (label, data) {
             course_number: section_data.course_number,
             section_id: section_data.section_id
         }));
+    }
+};
+
+
+var showCourseGenEdData = function (label, data) {
+    var section_data = getSectionDataByLabel(label),
+        $gen_ed_notices = $('.general-education-notices'),
+        template = Handlebars.compile($("#general-education-notices-template").html()),
+        html = "";
+
+    $gen_ed_notices.addClass('visually-hidden');
+    if (data) {
+        html = template(data);
+        if (html.length > 10) {
+            $gen_ed_notices.html(html);
+            $gen_ed_notices.removeClass('visually-hidden');
+        }
     }
 };
 
