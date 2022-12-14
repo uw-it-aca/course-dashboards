@@ -411,35 +411,21 @@ a {
 
 /* DRS banner */
 .drs_banner {
-    //background-color: #E4DFEA;
-    border-bottom: 1px solid lightgrey;
-    padding: 20px 50px 5px; 
-    .drs_missing_notice { padding-bottom: .25rem;
-        h4 { font-weight: 400; }
-        h4 span.drs_missing_notice { xcolor: #8A3736; color: #990000; font-weight: 700; }
-        h4 span.drs_exposure {
-            cursor: pointer;
-            color: $link_color;
-            i { font-size: 1.3em; font-weight: 550; }
-        }
-        .drs_emphasis { font-weight: 700; }
-        .drs_missing_content { padding: 0 2rem; }
+    h4 span.drs_exposure {
+        cursor: pointer;
+        color: $link_color;
+        i { font-size: 1.3em; font-weight: 550; }
     }
 }
 
 /* General Education Notices */
 .general-education-notices {
-    width: 100%;
-    background: #e2ddc9;
-    border-radius: 6px;
-    font-size: 95%;
-    line-height: 1.6em;
-    margin-right: 20px;
-    margin-bottom: -45px;
-    padding-top: .4em;
-    padding-bottom: .4em;
-    padding-left: 1em;
-    .general-education-explanation { font-size: 90% }
+    .axdd-alert-sm {
+        margin-top:15px;
+        margin-left:15px; 
+        margin-bottom:-30px; 
+        padding:5px;
+    }
 }
 
 
