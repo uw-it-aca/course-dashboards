@@ -1,10 +1,9 @@
 {% verbatim %}
 <script id="drs-banner-missing-textbooks" type="text/x-handlebars-template">
-    <h4><span class="drs_missing_notice">Missing:</span> Course textbook information in {{#if sln}}<a href="https://sdb.admin.uw.edu/timeschd/uwnetid/sln.asp?QTRYR={{qtr}}+{{year}}&SLN={{sln}}" target="_blank">{{/if}}Time Schedule{{#if sln}}</a>{{/if}} for <span class="drs_emphasis">{{curriculum}} {{course_number}} {{section_id}}</span> &nbsp;<span class="drs_exposure drs_missing_textbooks_exposure">Fix this <i class="fa fa-angle-right"></i></span></h4>
-    <div class="drs_missing_content drs_missing_textbooks_content visually-hidden">
-    <p>To best accommodate students, it is important to provide a list of required reading materials for your course as early as possible. To do this, you should use the <a href="http://www2.bookstore.washington.edu/textsys/TextReqLogin.taf?school=uw{{campus}}" target="_blank">UW Bookstore Course Materials Request Form</a> to list <span class="drs_emphasis">ALL</span> the required reading materials for your courses, regardless of whether you want UW Bookstore to supply the materials, or to clarify if no texts are required for your course.</p>
-    <p>Please see the <a href="https://www.ubookstore.com/faculty" target="_blank">UW Bookstore’s Faculty Adoptions FAQS</a> for information about how to submit your requests to help clarify for students what your required reading materials are.
-    </p>
+    <h4 class="pt-0 font-weight-normal"><span class="text-danger font-weight-bold">Missing:</span> Course textbook information in {{#if sln}}<a href="https://sdb.admin.uw.edu/timeschd/uwnetid/sln.asp?QTRYR={{qtr}}+{{year}}&SLN={{sln}}" target="_blank">{{/if}}Time Schedule{{#if sln}}</a>{{/if}} for <span class="font-weight-bold">{{curriculum}} {{course_number}} {{section_id}}</span> &nbsp;<span class="drs_exposure drs_missing_textbooks_exposure">Fix this <i class="fa fa-angle-right"></i></span></h4>
+    <div class="drs_missing_content drs_missing_textbooks_content card card-body bg-transparent visually-hidden">
+        <p>To best accommodate students, it is important to provide a list of required reading materials for your course as early as possible. To do this, you should use the <a href="http://www2.bookstore.washington.edu/textsys/TextReqLogin.taf?school=uw{{campus}}" target="_blank">UW Bookstore Course Materials Request Form</a> to list <span class="font-weight-bold">ALL</span> the required reading materials for your courses, regardless of whether you want UW Bookstore to supply the materials, or to clarify if no texts are required for your course.</p>
+        <p>Please see the <a href="https://www.ubookstore.com/faculty" target="_blank">UW Bookstore's Faculty Adoptions FAQS</a> for information about how to submit your requests to help clarify for students what your required reading materials are.</p>
     </div>
 </script>
 {% endverbatim %}

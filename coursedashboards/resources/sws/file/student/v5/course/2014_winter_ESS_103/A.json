@@ -2,6 +2,7 @@
   "GradingSystem":"standard",
   "CourseTitle":"SPACE & SPACE TRAVEL",
   "Auditors":"0",
+  "CourseNumber":"103",
   "FinalExam":
   {
     "Building":"SMI",
@@ -24,6 +25,7 @@
   "LimitEstimateEnrollmentIndicator":"limit",
   "Curriculum":
   {
+    "CurriculumAbbreviation":"ESS",
     "TimeScheduleLinkAbbreviation":""
   },
   "HonorsCourse":false,
@@ -118,7 +120,7 @@
   "DeleteFlag":"active",
   "GeneralEducationRequirements":
   {
-    "NaturalWorld":false,
+    "NaturalWorld":true,
     "Writing":false,
     "QuantitativeAndSymbolicReasoning":false,
     "EnglishComposition":false,

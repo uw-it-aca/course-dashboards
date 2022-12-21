@@ -160,3 +160,49 @@ var getCourseTextbookData = function (label) {
 
     return false;
 };
+
+var fetchCourseGenEdData = function (label) {
+    var startTime = Date.now();
+
+    if (getCourseGenEdData(label)) {
+        $('div.current-section').trigger(
+            'coda:CurrentCourseGenEdDataSuccess', [label, getCourseGenEdData(label)]);
+        return;
+    }
+
+    $.ajax({
+        url: "/api/v1/course/" + label + '/general-education-requirements',
+        dataType: "JSON",
+        type: "GET",
+        accepts: {text: "application/json"},
+        success: function(results) {
+            var totalTime = Date.now() - startTime;
+
+            gtag('event', 'course_gen_ed_data', {
+                'eventLabel': label,
+                'value': totalTime
+            });
+
+            setCourseGenEdData(label, results);
+
+            $('div.current-section').trigger(
+                'coda:CurrentCourseGenEdDataSuccess', [label, results]);
+        },
+        error: function(xhr, status, error) {
+            $('div.current-section').trigger(
+                'coda:CurrentCourseGenEdDataFailure', [label, error]);
+        }
+    });
+};
+
+var setCourseGenEdData = function (label, gen_ed_data) {
+    window.gen_ed_data[label] = gen_ed_data;
+};
+
+var getCourseGenEdData = function (label) {
+    if (window.gen_ed_data.hasOwnProperty(label)) {
+        return window.gen_ed_data[label];
+    }
+
+    return false;
+};

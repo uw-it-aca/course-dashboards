@@ -1,24 +1,25 @@
 {% verbatim %}
 <script id="current-course-data" type="text/x-handlebars-template">
 <div class="current-top-row row">
-    <div class="col-8">
-        <h3 id="current_section_data">My data for {{curriculum}} {{course_number}} {{section_id}}</h3>
-        <input type="hidden" id="current_course_label" value="{{section_label}}">
-        <div class="d-inline-block past-quarter-select">
-            <label for="my_courses" class="visually-hidden">My Courses:</label>
-            <select class="form-control form-control-sm" name="course_quarters" id="course_quarters" aria-contols="current-quarter-target">
+  <div class="col-8">
+    <h3 id="current_section_data">My data for {{curriculum}} {{course_number}} {{section_id}}</h3>
+    <input type="hidden" id="current_course_label" value="{{section_label}}">
+    <div class="d-inline-block past-quarter-select">
+      <label for="my_courses" class="visually-hidden">My Courses:</label>
+      <select class="form-control form-control-sm" name="course_quarters" id="course_quarters" aria-contols="current-quarter-target">
               {{#each terms}}
               <option value="{{year}}-{{toLowerCase quarter}}-{{toUpperCase ../curriculum}}-{{../course_number}}-{{../section_id}}"{{#if selected}} selected{{/if}}>{{quarter}} {{year}}{{#if current}} (current){{/if}}</option>
               {{/each}}
-            </select>
-        </div>
+      </select>
     </div>
-    <div class="col-4">
-    <ul class="list-unstyled course-links col">
-        <li><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}" title="View course details in Teaching page"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Course details<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>
-        {{#if canvas_course_url}}<li><a href="{{canvas_course_url}}"><i class="fa fa-book" aria-hidden="true"></i> Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>{{/if}}
-    </ul>
-    </div>
+  </div>
+  <div class="col-4">
+      <ul class="list-unstyled course-links col">
+          <li><a href="https://my.uw.edu/teaching/{{year}},{{quarter}}#{{curriculum}}-{{course_number}}-{{section_id}}" title="View course details in Teaching page"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Course details<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>
+          {{#if canvas_course_url}}<li><a href="{{canvas_course_url}}"><i class="fa fa-book" aria-hidden="true"></i> Canvas course site<span class="sr-only"> for {{curriculum}} {{course_number}} {{section_id}}</span></a></li>{{/if}}
+      </ul>
+  </div>
+  <div class="general-education-notices"></div>
 </div>
 {{#if display_course}}
 <div id="current-performance-panel"></div>
