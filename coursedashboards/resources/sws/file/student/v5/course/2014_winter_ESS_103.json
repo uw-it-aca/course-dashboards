@@ -1,0 +1,41 @@
+{
+    "CourseCampus": "Seattle",
+    "CourseCollege": "Environment",
+    "CourseComment": "MOVE COLLEGE",
+    "CourseDescription": "Explores history and evolution of Earth, from the Big Bang to present day. Emphasizes disparate timescales over which Earth processes operate - planetary formation, plate tectonics, evolution of life, geologic climate change, and catastrophes such as earthquakes, volcanoes, meteor impacts, and mass extinctions. Sets stage for understanding the origins of extraordinary geologic features in the Pacific Northwest. Credit/no-credit only.",
+    "CourseNumber": "103",
+    "CourseTitle": "MINERALS AND GEMS",
+    "CourseTitleLong": "Minerals and Gems",
+    "CreditControl": "fixed credit",
+    "Curriculum": {
+        "CurriculumAbbreviation": "ESS",
+        "Href": "/student/v5/curriculum/2014,winter,ESS.json",
+        "Quarter": "winter",
+        "Year": 2014
+    },
+    "FirstEffectiveTerm": {
+        "Href": "/student/v5/term/2009,autumn.json",
+        "Quarter": "autumn",
+        "Year": 2009
+    },
+    "GeneralEducationRequirements": {
+        "Diversity": false,
+        "EnglishComposition": false,
+        "IndividualsAndSocieties": false,
+        "NaturalWorld": true,
+        "QuantitativeAndSymbolicReasoning": false,
+        "VisualLiteraryAndPerformingArts": false,
+        "Writing": true
+    },
+    "GradingSystem": "credit/no credit or standard",
+    "LastEffectiveTerm": {
+        "Href": "/student/v5/term/2020,autumn.json",
+        "Quarter": "autumn",
+        "Year": 2020
+    },
+    "MaximumCredit": 0.0,
+    "MaximumTermCredit": 0.0,
+    "Metadata": "CourseSourceKey=SDB;",
+    "MinimumTermCredit": 3.0,
+    "RepositoryTimeStamp": "2/2/2021 8:02:07 AM"
+}

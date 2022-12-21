@@ -1,0 +1,41 @@
+{
+    "CourseCampus": "Seattle",
+    "CourseCollege": "Arts & Sciences",
+    "CourseComment": "NEW COURSE DESCRIPTION",
+    "CourseDescription": "Philosophical bases of politics and political activity. Provides an introduction to the study of politics by the reading of books in political philosophy. Organized around several key political concepts, such as liberty, equality, justice, authority, rights, and citizenship. Offered: AWSpS.",
+    "CourseNumber": "201",
+    "CourseTitle": "INTRO POL THEORY",
+    "CourseTitleLong": "Introduction to Political Theory",
+    "CreditControl": "fixed credit",
+    "Curriculum": {
+        "CurriculumAbbreviation": "POL S",
+        "Href": "/student/v5/curriculum/2014,winter,POL%20S.json",
+        "Quarter": "winter",
+        "Year": 2014
+    },
+    "FirstEffectiveTerm": {
+        "Href": "/student/v5/term/1979,winter.json",
+        "Quarter": "winter",
+        "Year": 1979
+    },
+    "GeneralEducationRequirements": {
+        "Diversity": false,
+        "EnglishComposition": false,
+        "IndividualsAndSocieties": true,
+        "NaturalWorld": false,
+        "QuantitativeAndSymbolicReasoning": false,
+        "VisualLiteraryAndPerformingArts": false,
+        "Writing": true
+    },
+    "GradingSystem": "credit/no credit or standard",
+    "LastEffectiveTerm": {
+        "Href": "/student/v5/term/9999,autumn.json",
+        "Quarter": "autumn",
+        "Year": 9999
+    },
+    "MaximumCredit": 0.0,
+    "MaximumTermCredit": 0.0,
+    "Metadata": "CourseSourceKey=SDB;",
+    "MinimumTermCredit": 5.0,
+    "RepositoryTimeStamp": "2/2/2021 8:02:11 AM"
+}
