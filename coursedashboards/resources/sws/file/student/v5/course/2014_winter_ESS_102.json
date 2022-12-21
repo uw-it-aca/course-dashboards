@@ -1,0 +1,41 @@
+{
+    "CourseCampus": "Seattle",
+    "CourseCollege": "Environment",
+    "CourseComment": "INT DL, CHG DESC, ADD AOK",
+    "CourseDescription": "Explores the sun, solar storms, observations from space and from Earth; Earth's space environment, radiation belts and hazards, plasma storms and auroras, rockets and propulsion, human exploration efforts, societal impact, planetary systems and resources, and project highlighting space and its exploration. Open to non-majors. Offered: AWSp.",
+    "CourseNumber": "102",
+    "CourseTitle": "SPACE&SPACE TRAVEL",
+    "CourseTitleLong": "Space and Space Travel",
+    "CreditControl": "fixed credit",
+    "Curriculum": {
+        "CurriculumAbbreviation": "ESS",
+        "Href": "/student/v5/curriculum/2014,winter,ESS.json",
+        "Quarter": "winter",
+        "Year": 2014
+    },
+    "FirstEffectiveTerm": {
+        "Href": "/student/v5/term/2012,autumn.json",
+        "Quarter": "autumn",
+        "Year": 2012
+    },
+    "GeneralEducationRequirements": {
+        "Diversity": false,
+        "EnglishComposition": false,
+        "IndividualsAndSocieties": true,
+        "NaturalWorld": true,
+        "QuantitativeAndSymbolicReasoning": false,
+        "VisualLiteraryAndPerformingArts": false,
+        "Writing": false
+    },
+    "GradingSystem": "credit/no credit or standard",
+    "LastEffectiveTerm": {
+        "Href": "/student/v5/term/2016,winter.json",
+        "Quarter": "winter",
+        "Year": 2016
+    },
+    "MaximumCredit": 0.0,
+    "MaximumTermCredit": 0.0,
+    "Metadata": "CourseSourceKey=SDB;",
+    "MinimumTermCredit": 5.0,
+    "RepositoryTimeStamp": "2/2/2021 8:02:07 AM"
+}
