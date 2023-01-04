@@ -41,7 +41,7 @@ setup(
         'Django-SupportTools~=3.5',
         'djangorestframework==3.11.2',
         'Django-Persistent-Message',
-        'axdd-person-client==1.0.7',
+        'axdd-person-client==1.1.0',
         'statistics',
     ],
     license='Apache License, Version 2.0',
