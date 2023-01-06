@@ -108,8 +108,8 @@ class CourseProfileData(CoDaEndpoint):
     def _inc(self, test, person, offering):
         try:
             return 1 if test(person, offering) else 0
-        except (KeyError, AttributeError):
-            logger.exception("person reference")
+        except (KeyError, AttributeError) as ex:
+            logger.error("pds client: {}".format(ex))
             return 0
 
     def _percent(self, c):

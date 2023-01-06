@@ -29,7 +29,11 @@ class OfferingMajors(OfferingInfoView):
         response = {}
         majors = []
         for x in range(0, num_majors):
-            majors.append(json_obj['current_student_majors'][x])
+            try:
+                majors.append(json_obj['current_student_majors'][x])
+            except IndexError:
+                # fewer majors than number requested
+                break
 
         response['current_student_majors'] = majors
 
