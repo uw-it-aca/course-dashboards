@@ -22,10 +22,11 @@ class Command(BaseCommand):
             options['course'].split('-'))
         fields = options['field'].split('.')
 
-        term = Term.objects.get(quarter=quarter,year=int(year))
+        term = Term.objects.get(quarter=quarter, year=int(year))
         course = Course.objects.get(
-            curriculum=curriculum,course_number=int(number),section_id=section)
-        offering = CourseOffering.objects.get(term=term,course=course)
+            curriculum=curriculum, course_number=int(number),
+            section_id=section)
+        offering = CourseOffering.objects.get(term=term, course=course)
         regs = offering.get_registrations()
         client = UWPersonClient()
         for r in regs:
