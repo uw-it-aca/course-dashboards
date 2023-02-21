@@ -43,12 +43,12 @@ class CourseOffering(models.Model):
 
     @profile
     def _filter_parms(self, terms=None, is_alum=None):
-        term_filter = Q(course=self.course)
-
         if terms:
-            term_filter &= Q(term__in=terms)
+            term_filter = (Q(course__in=Course.objects.sections(
+                self.course.curriculum, self.course.course_number))
+                           & Q(term__in=terms))
         else:
-            term_filter &= Q(term=self.term)
+            term_filter = Q(course=self.course) & Q(term=self.term)
 
         if is_alum:
             term_filter &= Q(user__is_alum=1)
