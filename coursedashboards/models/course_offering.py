@@ -183,6 +183,16 @@ class CourseOffering(models.Model):
     def concurrent_courses(self, terms=None):
         # all courses students in this offering for the given term
         # are registered
+        def compress(courses):
+            n = 0
+            for c in courses[1:]:
+                if courses[n] != c:
+                    n += 1
+                    courses[n] = c
+
+            del courses[(n+1):]
+            return courses
+
         student_count = 0.0
         all_courses = {}
         for term in terms if terms else [self.term]:
@@ -195,8 +205,8 @@ class CourseOffering(models.Model):
                     all_courses[reg.course.id] = 1
 
         courses = []
-        for c in sorted(
-                all_courses.items(), key=lambda x: x[1], reverse=True)[1:21]:
+        for c in compress(sorted(
+                all_courses.items(), key=lambda x: x[1], reverse=True))[1:20]:
             course = Course.objects.get(id=c[0])
             courses.append({
                 'course_ref': "{}-{}".format(
