@@ -85,7 +85,7 @@ var showHistoricCourseData = function (section_label, data, filter) {
             return false;
         }
 
-        historic = $("#historic-course-data-span").html(),
+        historic = $("#historic-course-data-span").html();
         historicTemplate = Handlebars.compile(historic);
 
         var first = data.past_offerings.terms[data.past_offerings.terms.length - 1].split('-'),
