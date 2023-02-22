@@ -2,7 +2,7 @@
 <script id="historic-course-data" type="text/x-handlebars-template">
     <div class="row">
       <div class="col">
-    <h3 id="historic_section_data">Historical Student Data {{curriculum}} {{course_number}}</h3>
+    <h3 id="historic_section_data">Historical Data {{curriculum}} {{course_number}}<span class="historic-span"></span></h3>
       </div>
     </div>
     <div id="historic-selector-target" class="row">
@@ -70,6 +70,10 @@
 </div>
 </script>
 
+
+<script id="historic-course-data-span" type="text/x-handlebars-template">
+({{first_term_short}} {{first_year}} to {{last_term_short}} {{last_year}})
+</script>
 
 <script id="no-historic-course-data" type="text/x-handlebars-template">
 <div class="coda-alert alert alert-info" role="alert">

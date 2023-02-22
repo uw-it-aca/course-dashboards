@@ -85,12 +85,30 @@ var showHistoricCourseData = function (section_label, data, filter) {
             return false;
         }
 
+        historic = $("#historic-course-data-span").html(),
+        historicTemplate = Handlebars.compile(historic);
+
+        var first = data.past_offerings.terms[data.past_offerings.terms.length - 1].split('-'),
+            last = data.past_offerings.terms[0].split('-'),
+            first_term = first[1].charAt(0).toUpperCase() + first[1].slice(1),
+            last_term = last[1].charAt(0).toUpperCase() + last[1].slice(1);
+
+        $('span.historic-span').html(historicTemplate({
+            first_year: first[0],
+            first_term: first_term,
+            first_term_short: first_term.slice(0, 3),
+            last_year: last[0],
+            last_term: last_term,
+            last_term_short: last_term.slice(0, 3)
+        }));
+
         showHistoricPreviousInstructors(section_label, data);
     } else {
         historic = $("#no-historic-course-data").html();
         historicTemplate = Handlebars.compile(historic);
 
         $("#historic-course-target").html(historicTemplate());
+        $('span.historic-span').html('');
         return false;
     }
 
