@@ -190,37 +190,18 @@ class CourseOffering(models.Model):
             student_count += regs.values('user_id').distinct().count()
             for reg in regs:
                 try:
-                    all_courses[reg.course.id] += 1
+                    all_courses[reg.course.ref] += 1
                 except KeyError:
-                    all_courses[reg.course.id] = 1
+                    all_courses[reg.course.ref] = 1
 
         courses = []
-        last_ref = ''
-        course_data = None
-        for c in sorted(all_courses.items(), key=lambda x: x[1], reverse=True):
-            course = Course.objects.get(id=c[0])
-            course_ref = "{}-{}".format(
-                course.curriculum, course.course_number)
-            if course_ref != last_ref:
-                last_ref = course_ref
-                if course_data:
-                    courses.append(course_data)
-
-                if len(courses) > 20:
-                    break
-
-                course_data = {
-                    'course_ref': course_ref,
-                    'title': course.course_title,
-                    'curriculum': course.curriculum,
-                    'course_number': course.course_number,
-                    'course_students': c[1],
-                    'percent_students': c[1] * 100.0 / student_count
-                }
-            else:
-                course_data['course_students'] += c[1]
-                course_data['percent_students'] = (
-                    course_data['course_students'] * 100) / student_count
+        for c in sorted(
+                all_courses.items(), key=lambda x: x[1], reverse=True)[1:21]:
+            courses.append({
+                'course_ref': c[0],
+                'course_students': c[1],
+                'percent_students': c[1] * 100.0 / student_count
+            })
 
         return courses
 

@@ -18,10 +18,13 @@ class Course(models.Model):
 
     objects = CourseManager()
 
+    @property
+    def ref(self):
+        return "{}-{}".format(self.curriculum, self.course_number)
+
     class Meta:
         db_table = "Course"
         unique_together = ('curriculum', 'course_number', 'section_id')
 
     def __str__(self):
-        return "{}-{}-{}".format(
-            self.curriculum, self.course_number, self.section_id)
+        return "{}-{}".format(self.ref, self.section_id)
