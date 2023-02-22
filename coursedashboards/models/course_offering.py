@@ -183,16 +183,6 @@ class CourseOffering(models.Model):
     def concurrent_courses(self, terms=None):
         # all courses students in this offering for the given term
         # are registered
-        def compress(courses):
-            n = 0
-            for c in courses[1:]:
-                if courses[n] != c:
-                    n += 1
-                    courses[n] = c
-
-            del courses[(n+1):]
-            return courses
-
         student_count = 0.0
         all_courses = {}
         for term in terms if terms else [self.term]:
@@ -205,18 +195,31 @@ class CourseOffering(models.Model):
                     all_courses[reg.course.id] = 1
 
         courses = []
-        for c in compress(sorted(
-                all_courses.items(), key=lambda x: x[1], reverse=True))[1:20]:
+        last_ref = ''
+        course_data = None
+        for c in sorted(all_courses.items(), key=lambda x: x[1], reverse=True):
             course = Course.objects.get(id=c[0])
-            courses.append({
-                'course_ref': "{}-{}".format(
-                    course.curriculum, course.course_number),
-                'title': course.course_title,
-                'curriculum': course.curriculum,
-                'course_number': course.course_number,
-                'course_students': c[1],
-                'percent_students': c[1] * 100.0 / student_count
-            })
+            course_ref = "{}-{}".format(
+                course.curriculum, course.course_number)
+            if course_ref != last_ref:
+                if course_data:
+                    courses.append(course_data)
+
+                if len(courses) > 20:
+                    break
+
+                course_data = {
+                    'course_ref': course_ref,
+                    'title': course.course_title,
+                    'curriculum': course.curriculum,
+                    'course_number': course.course_number,
+                    'course_students': c[1],
+                    'percent_students': c[1] * 100.0 / student_count
+                }
+            else:
+                course_data['course_students'] += c[1]
+                course_data['percent_students'] = (
+                    course_data['course_students'] * 100) / student_count
 
         return courses
 
