@@ -202,6 +202,7 @@ class CourseOffering(models.Model):
             course_ref = "{}-{}".format(
                 course.curriculum, course.course_number)
             if course_ref != last_ref:
+                last_ref = course_ref
                 if course_data:
                     courses.append(course_data)
 
@@ -425,12 +426,22 @@ class CourseOffering(models.Model):
         List of past course sections
         """
         sections = {}
+        seen = {}
         for i in self.get_instructors(terms):
             if i.term.year not in sections:
                 sections[i.term.year] = {}
 
             if i.term.quarter not in sections[i.term.year]:
                 sections[i.term.year][i.term.quarter] = []
+
+            if i.user.id not in seen:
+                seen[i.user.id] = {i.term.year: [i.term.quarter]}
+            elif i.term.year not in seen[i.user.id]:
+                seen[i.user.id][i.term.year] = [i.term.quarter]
+            elif i.term.quarter not in seen[i.user.id][i.term.year]:
+                seen[i.user.id][i.term.year].append(i.term.quarter)
+            else:
+                continue
 
             sections[i.term.year][i.term.quarter].append(i.user.to_json())
 
