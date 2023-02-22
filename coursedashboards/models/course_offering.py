@@ -190,20 +190,24 @@ class CourseOffering(models.Model):
             student_count += regs.values('user_id').distinct().count()
             for reg in regs:
                 try:
-                    all_courses[reg.course.ref] += 1
+                    all_courses[reg.course.ref]['enrollments'] += 1
                 except KeyError:
-                    all_courses[reg.course.ref] = 1
+                    all_courses[reg.course.ref] = {
+                        'curriculum': reg.course.curriculum,
+                        'course_number': reg.course.course_number,
+                        'enrollments': 1
+                    }
 
-        courses = []
-        for c in sorted(
-                all_courses.items(), key=lambda x: x[1], reverse=True)[1:21]:
-            courses.append({
-                'course_ref': c[0],
-                'course_students': c[1],
-                'percent_students': c[1] * 100.0 / student_count
-            })
-
-        return courses
+        return [{
+            'course_ref': c[0],
+            'curriculum': c[1]['curriculum'],
+            'course_number': c[1]['course_number'],
+            'course_students': c[1]['enrollments'],
+            'percent_students': (
+                c[1]['enrollments'] * 100.0) / student_count
+        } for c in sorted(
+            all_courses.items(), key=lambda x: x[1]['enrollments'],
+            reverse=True)[1:21]]
 
     @profile
     def student_majors_for_term(self, terms=None):
