@@ -15,7 +15,6 @@ from coursedashboards.models.registration import Registration
 from coursedashboards.models.major import StudentMajor
 from coursedashboards.util.profile import (
     profile, log_profile_data, clear_prof_data)
-from coursedashboards.dao.user import get_current_user
 from threading import Thread
 from uw_sws.term import get_current_term
 import logging
@@ -53,7 +52,7 @@ class CourseOffering(models.Model):
             self.course.curriculum, self.course.course_number)
 
         if instructor:
-            instructed = Instructor.objects.courses(get_current_user())
+            instructed = Instructor.objects.courses(instructor)
             term_filter &= Q(
                 course__in=[c for c in instructed if c in courses])
         else:

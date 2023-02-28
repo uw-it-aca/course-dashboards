@@ -8,9 +8,9 @@ from coursedashboards.models.course import Course
 
 
 class InstructorManager(models.Manager):
-    def courses(self, instructor_user_model):
+    def courses(self, instructor_netid):
         return [c.course.id for c in Instructor.objects.filter(
-            user=instructor_user_model)]
+            user__uwnetid=instructor_netid)]
 
 
 class Instructor(models.Model):
