@@ -72,7 +72,7 @@
 
 
 <script id="historic-course-data-span" type="text/x-handlebars-template">
-({{first_term_short}} {{first_year}} to {{last_term_short}} {{last_year}})
+({{first_term_short}} {{first_year}}{{#if last_term_short}} to {{last_term_short}} {{last_year}}{{/if}})
 </script>
 
 <script id="no-historic-course-data" type="text/x-handlebars-template">
