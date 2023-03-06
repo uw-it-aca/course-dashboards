@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.exceptions import APIException
 from coursedashboards.models import Term, Course, CourseOffering
+from coursedashboards.dao.user import get_current_user
 from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
 
 
@@ -44,8 +45,13 @@ class CoDaAPI(APIView):
         return JsonResponse(json_response)
 
     def get_data(self, offering):
-        raise NotImplementedError("You must define your get_data method to "
-                                  "use it!")
+        raise NotImplementedError(
+            "You must define your get_data method to use it!")
+
+    def get_current_instructor(self):
+        return get_current_user() if (
+            self.request.GET.get('instructed', '') in [
+                '1', 'true']) else None
 
     def data_error(self):
         return _make_response(MYUW_DATA_ERROR,
