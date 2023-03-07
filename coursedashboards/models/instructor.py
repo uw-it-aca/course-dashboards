@@ -8,9 +8,12 @@ from coursedashboards.models.course import Course
 
 
 class InstructorManager(models.Manager):
-    def courses(self, instructor):
-        return [
-            c.course.id for c in Instructor.objects.filter(user=instructor)]
+    def instructed(self, instructor, term, course):
+        course_ids = [i.course.id for i in Instructor.objects.filter(
+            user=instructor, term=term,
+            course__curriculum=course.curriculum,
+            course__course_number=course.course_number).distinct()]
+        return [*set(course_ids)]
 
 
 class Instructor(models.Model):

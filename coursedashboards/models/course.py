@@ -6,8 +6,9 @@ from django.db import models
 
 class CourseManager(models.Manager):
     def sections(self, course):
-        return [c.id for c in Course.objects.filter(
+        course_ids = [c.id for c in Course.objects.filter(
             curriculum=course.curriculum, course_number=course.course_number)]
+        return [*set(course_ids)]
 
 
 class Course(models.Model):

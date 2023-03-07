@@ -43,14 +43,17 @@ class CourseOffering(models.Model):
 
     @profile
     def _filter_parms(self, terms=None, is_alum=None, instructor=None):
-        term_filter = Q(term__in=terms) if terms else Q(term=self.term)
-
-        sections = Course.objects.sections(self.course)
         if instructor:
-            instructed = Instructor.objects.courses(instructor)
-            term_filter &= Q(
-                course__in=[c for c in instructed if c in sections])
+            term_filter = Q()
+
+            for term in terms:
+                instructed = Instructor.objects.instructed(
+                    instructor, term, self.course)
+
+                term_filter |= Q(term__id=term, course__id__in=instructed)
         else:
+            term_filter = Q(term__in=terms) if terms else Q(term=self.term)
+            sections = Course.objects.sections(self.course)
             term_filter &= Q(course__in=sections)
 
         if is_alum:
