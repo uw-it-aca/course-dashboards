@@ -121,6 +121,7 @@ var displayCourse = function (label) {
     }
 
     fetchCourseData(label);
+    clearHistoricTermCache();
     fetchHistoricCourseData(section_data.section_label);
     return true;
 };

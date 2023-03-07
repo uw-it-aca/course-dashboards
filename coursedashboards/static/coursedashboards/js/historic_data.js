@@ -134,6 +134,11 @@ var _url_search_terms_from_filter = function (filter) {
             'instructed=' + (filter && filter.only_instructed ? 'true' : '')].join('&');
 };
 
+var clearHistoricTermCache = function () {
+    window.historic_instructed_terms = null;
+    window.historic_terms = null;
+};
+
 var startLoadingHistoricCourseData = function () {
     $(".section-container.historic-section").addClass('loading');
 };
