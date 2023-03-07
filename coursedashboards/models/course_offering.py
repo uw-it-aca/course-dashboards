@@ -51,6 +51,8 @@ class CourseOffering(models.Model):
                     instructor, term, self.course)
 
                 term_filter |= Q(term__id=term, course__id__in=instructed)
+            else:
+                term_filter = Q(term__in=[])
         else:
             term_filter = Q(term__in=terms) if terms else Q(term=self.term)
             sections = Course.objects.sections(self.course)
