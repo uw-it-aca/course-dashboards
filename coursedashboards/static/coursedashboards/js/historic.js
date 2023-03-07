@@ -85,6 +85,7 @@ var showHistoricCourseData = function (section_label, data, filter) {
             return false;
         }
 
+        /* tabled for now
         historic = $("#historic-course-data-span").html();
         historicTemplate = Handlebars.compile(historic);
 
@@ -106,7 +107,7 @@ var showHistoricCourseData = function (section_label, data, filter) {
         }
 
         $('span.historic-span').html(historicTemplate(context));
-
+        */
 
         showHistoricPreviousInstructors(section_label, data);
     } else {
