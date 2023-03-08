@@ -174,7 +174,7 @@ var showCourseProfileData = function (data) {
 var updateDRSPanel = function (label) {
     var section_data = getSectionDataByLabel(label);
 
-    $('.drs_banner_missing').addClass('visually-hidden');
+    $('.drs_missing_notice').addClass('visually-hidden');
     if (!_isPastTerm(section_data)) {
         fetchCourseTextbookData(label);
     }
