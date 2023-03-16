@@ -138,7 +138,8 @@ var setupHistoricInstructedSelector = function (data) {
             var parts = this.split('-');
 
             if (!currentOrLaterTerm(parts[0], parts[1])) {
-                window.historic_instructed_terms.push(this);
+                window.historic_instructed_terms.push(
+                    parts[1] + ' ' + parts[0]);
             }
         });
     }
