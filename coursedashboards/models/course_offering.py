@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.conf import settings
-from django.db.models import (
-    Q, Count, Sum, F, Avg, Subquery, OuterRef, FloatField, Value)
+from django.db.models import Q, Count, Sum, F
+from django.db.models.functions import Round
 from statistics import median
 from statistics import StatisticsError
 from django.db import models
@@ -244,7 +244,8 @@ class CourseOffering(models.Model):
             ).values(
                 'major_name'
             ).annotate(
-                percent_students=round((Count('major') * 100.0 / majors_count))
+                percent_students=Round(
+                    (Count('major') * 100.0) / majors_count)
             ).order_by(
                 '-percent_students'
             )[:20])
