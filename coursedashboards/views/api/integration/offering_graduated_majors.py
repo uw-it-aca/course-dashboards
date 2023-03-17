@@ -3,7 +3,6 @@
 
 from coursedashboards.views.api.integration.offering_info import\
     OfferingInfoView
-import json
 
 
 class OfferingGraduatedMajors(OfferingInfoView):

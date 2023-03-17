@@ -7,6 +7,15 @@ from coursedashboards.models.term import Term
 from coursedashboards.models.course import Course
 
 
+class InstructorManager(models.Manager):
+    def instructed(self, instructor, term, course):
+        return Instructor.objects.filter(
+            user=instructor, term=term,
+            course__curriculum=course.curriculum,
+            course__course_number=course.course_number).values_list(
+                'course__id', flat=True).distinct()
+
+
 class Instructor(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.PROTECT)
@@ -14,6 +23,8 @@ class Instructor(models.Model):
                              on_delete=models.PROTECT)
     course = models.ForeignKey(Course,
                                on_delete=models.PROTECT)
+
+    objects = InstructorManager()
 
     class Meta:
         db_table = 'Instructor'

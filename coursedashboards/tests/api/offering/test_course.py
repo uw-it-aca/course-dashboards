@@ -80,11 +80,10 @@ class TestCourseAPIs(CodaApiTest):
         past_offerings = payload['past_offerings']
         sections = payload['sections']
 
-        self.assertEquals(len(past_offerings['terms']), 4)
-        self.assertEquals(past_offerings['enrollment'], 584)
-        self.assertEquals(len(sections), 2)
+        self.assertEquals(len(past_offerings['terms']), 3)
+        self.assertEquals(past_offerings['enrollment'], 394)
+        self.assertEquals(len(sections), 1)
         self.assertEquals(len(sections['2013']), 3)
-        self.assertEquals(len(sections['2014']), 1)
 
     def test_past_performance_api(self):
         self.set_user('bill')
@@ -95,9 +94,9 @@ class TestCourseAPIs(CodaApiTest):
         payload = json.loads(response.content)
         performance = payload['performance']
 
-        self.assertEquals(performance['enrollment'], 584)
-        self.assertEquals(performance['offering_count'], 4)
-        self.assertEquals(len(performance['course_grades']), 554)
+        self.assertEquals(performance['enrollment'], 394)
+        self.assertEquals(performance['offering_count'], 3)
+        self.assertEquals(len(performance['course_grades']), 370)
 
     def test_past_concurrent_api(self):
         self.set_user('bill')
@@ -108,7 +107,7 @@ class TestCourseAPIs(CodaApiTest):
         payload = json.loads(response.content)
         concurrent = payload['concurrent_courses']
 
-        self.assertEquals(len(concurrent), 3)
+        self.assertEquals(len(concurrent), 2)
 
     def test_past_student_major_api(self):
         self.set_user('bill')
