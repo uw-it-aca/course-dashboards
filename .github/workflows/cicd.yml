@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [main, develop, feature/all-sections-in-historic-view]
+    branches: [main, develop]
   pull_request:
     branches: [main, develop]
     types: [opened, reopened, synchronize]
@@ -120,7 +120,7 @@ jobs:
 
       - name: Deployment Pipeline
         if: >-
-          contains(fromJSON('["main", "develop", "feature/all-sections-in-historic-view"]'),
+          contains(fromJSON('["main", "develop"]'),
             needs.context.outputs.git_repo_branch)
         uses: uw-it-aca/actions/cicd-deploy@main
         with:
