@@ -33,22 +33,22 @@ class TestCourseOffering(TransactionTestCase):
 
         self.spring = Term()
         self.spring.quarter = Term.SPRING
-        self.spring.year = 2016
+        self.spring.year = 2013
         self.spring.save()
 
         self.winter = Term()
         self.winter.quarter = Term.WINTER
-        self.winter.year = 2016
+        self.winter.year = 2013
         self.winter.save()
 
         self.autumn = Term()
         self.autumn.quarter = Term.AUTUMN
-        self.autumn.year = 2015
+        self.autumn.year = 2012
         self.autumn.save()
 
         self.summer = Term()
         self.summer.quarter = Term.SUMMER
-        self.summer.year = 2015
+        self.summer.year = 2012
         self.summer.save()
 
         self.spring_ess = CourseOffering()

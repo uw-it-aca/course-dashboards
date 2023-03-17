@@ -85,12 +85,46 @@ var showHistoricCourseData = function (section_label, data, filter) {
             return false;
         }
 
-        showHistoricPreviousInstructors(section_label, data);
-    } else {
-        historic = $("#no-historic-course-data").html();
+        /* tabled for now
+        historic = $("#historic-course-data-span").html();
         historicTemplate = Handlebars.compile(historic);
 
-        $("#historic-course-target").html(historicTemplate());
+        var first = data.past_offerings.terms[data.past_offerings.terms.length - 1].split('-'),
+            last = data.past_offerings.terms[0].split('-'),
+            first_term = first[1].charAt(0).toUpperCase() + first[1].slice(1),
+            last_term = last[1].charAt(0).toUpperCase() + last[1].slice(1);
+
+        context = {
+            first_year: first[0],
+            first_term: first_term,
+            first_term_short: first_term.slice(0, 3)
+        };
+
+        if (data.past_offerings.terms.length > 1) {
+            context.last_year = last[0];
+            context.last_term = last_term;
+            context.last_term_short = last_term.slice(0, 3);
+        }
+
+        $('span.historic-span').html(historicTemplate(context));
+        */
+
+        showHistoricPreviousInstructors(section_label, data);
+    } else {
+        if (filter && filter.only_instructed) {
+            historic = $("#no-display-historic-course-panel").html();
+            historicTemplate = Handlebars.compile(historic);
+
+            $("#historic-performance-panel").html(historicTemplate());
+        } else {
+            historic = $("#no-historic-course-data").html();
+            historicTemplate = Handlebars.compile(historic);
+
+            $("#historic-course-target").html(historicTemplate());
+            $('span.historic-span').html('');
+
+        }
+
         return false;
     }
 
@@ -101,7 +135,14 @@ var setupHistoricInstructedSelector = function (data) {
     if (!window.historic_instructed_terms) {
         window.historic_instructed_terms = [];
         $.each(data.past_offerings.terms, function () {
-            window.historic_instructed_terms.push(this);
+            var parts = this.split('-');
+
+            if (!currentOrLaterTerm(parts[0], parts[1])) {
+                window.historic_instructed_terms.push({
+                    'year': parts[0],
+                    'quarter': firstLetterUppercase(parts[1])
+                });
+            }
         });
     }
 };
@@ -454,8 +495,8 @@ var _postloadHistoricPanel = function (panel_id, section_label, filter, data, te
 var _getHistoricPanelClassName = function (panel_id, section_label, filter) {
     var mashup = panel_id + section_label + '/' +
         (((typeof filter !== 'undefined') && filter.year) ? filter.year : '') + '/' +
-        (((typeof filter !== 'undefined') && filter.quarter) ? filter.quarter : '') + '/' + 
-        (((typeof filter !== 'undefined') && filter.instructed) ? filter.instructed : '');
+        (((typeof filter !== 'undefined') && filter.quarter) ? filter.quarter : '') + '/' +
+        (((typeof filter !== 'undefined') && filter.only_instructed) ? filter.only_instructed : '');
 
     return "historic_" + Math.abs(
         mashup.split("").reduce(

@@ -121,6 +121,7 @@ var displayCourse = function (label) {
     }
 
     fetchCourseData(label);
+    clearHistoricTermCache();
     fetchHistoricCourseData(section_data.section_label);
     return true;
 };
@@ -173,7 +174,8 @@ var showCourseProfileData = function (data) {
 var updateDRSPanel = function (label) {
     var section_data = getSectionDataByLabel(label);
 
-    $('.drs_banner_missing').addClass('visually-hidden');
+    // only textbook data for now
+    $('.drs_missing_textbooks').empty();
     if (!_isPastTerm(section_data)) {
         fetchCourseTextbookData(label);
     }

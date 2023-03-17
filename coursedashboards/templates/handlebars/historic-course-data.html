@@ -2,7 +2,7 @@
 <script id="historic-course-data" type="text/x-handlebars-template">
     <div class="row">
       <div class="col">
-    <h3 id="historic_section_data">Historical Student Data {{curriculum}} {{course_number}} {{section_id}}</h3>
+    <h3 id="historic_section_data">Historical Data {{curriculum}} {{course_number}}<span class="historic-span"></span></h3>
       </div>
     </div>
     <div id="historic-selector-target" class="row">
@@ -43,7 +43,7 @@
                       <select class="form-control form-control-sm historic-filter" name="historic_filter_instructed" id="historic_filter_instructed" aria-controls="historic-course-target">
                              <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
                              {{#each instructed_sections}}
-                             <option value="{{this}}">{{this}}</option>
+                             <option value="{{this.year}}-{{this.quarter}}">{{this.quarter}} {{this.year}}</option>
                              {{/each}}
                         </select>
                  </div>
@@ -70,6 +70,10 @@
 </div>
 </script>
 
+
+<script id="historic-course-data-span" type="text/x-handlebars-template">
+({{first_term_short}} {{first_year}}{{#if last_term_short}} to {{last_term_short}} {{last_year}}{{/if}})
+</script>
 
 <script id="no-historic-course-data" type="text/x-handlebars-template">
 <div class="coda-alert alert alert-info" role="alert">
