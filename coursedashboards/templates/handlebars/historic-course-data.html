@@ -43,7 +43,7 @@
                       <select class="form-control form-control-sm historic-filter" name="historic_filter_instructed" id="historic_filter_instructed" aria-controls="historic-course-target">
                              <option data-label="All My Courses" {{all_courses}}>All My Courses</option>
                              {{#each instructed_sections}}
-                             <option value="{{this}}">{{this}}</option>
+                             <option value="{{this.year}}-{{this.quarter}}">{{this.quarter}} {{this.year}}</option>
                              {{/each}}
                         </select>
                  </div>
