@@ -31,7 +31,7 @@ setup(
         'uw-memcached-clients~=1.0',
         'pytz',
         'UW-RestClients-Core~=1.3',
-        'UW-RestClients-SWS~=2.3',
+        'UW-RestClients-SWS~=2.4',
         'UW-Restclients-PWS~=2.1',
         'UW-RestClients-GWS~=2.3',
         'UW-RestClients-Django-Utils~=2.3',
