@@ -14,15 +14,10 @@ logger = logging.getLogger(__name__)
 
 
 class CoDaUWPersonClient(UWPersonClient):
-    def get_persons_by_uwnetids(
-            self, uwnetids, page=None, page_size=None, **kwargs):
+    def get_persons_by_uwregids(self, uwregids, **kwargs):
         sqla_persons = self.DB.session.query(self.DB.Person).filter(
-            self.DB.Person.uwnetid.in_(uwnetids))
-        return self._get_page(sqla_persons,
-                              self._map_person,
-                              page=page,
-                              page_size=page_size,
-                              **kwargs)
+            self.DB.Person.uwregid.in_(uwregids))
+        return [self._map_person(p, **kwargs) for p in sqla_persons.all()]
 
 
 class CourseProfileData(CoDaEndpoint):
@@ -33,19 +28,14 @@ class CourseProfileData(CoDaEndpoint):
         probation = 0
 
         client = MockedUWPersonClient() if (
-            os.getenv('ENV') == "localdev") else UWPersonClient()
+            os.getenv('ENV') == "localdev") else CoDaUWPersonClient()
 
         try:
-            regs = offering.get_registrations()
-            self.total_registrations = len(regs)
-            for r in regs:
-                try:
-                    person = client.get_person_by_uwnetid(r.user.uwnetid)
-                except PersonNotFoundException:
-                    logger.error("person service netid not found: {}".format(
-                        r.user.uwnetid))
-                    raise
+            regids = offering.get_registrations().values_list(
+                'user__uwregid',flat=True)
 
+            self.total_registrations = len(regids)
+            for person in client.get_persons_by_uwregids(regids):
                 eop += self._inc(self._is_eop, person, offering)
                 xfer += self._inc(self._is_transfer, person, offering)
                 disability += self._inc(self._is_disability, person, offering)
