@@ -3,21 +3,11 @@
 
 from coursedashboards.views.api.endpoint import CoDaEndpoint
 from coursedashboards.views.api import UpStreamErrorException
-from uw_person_client.clients.mock_client import MockedUWPersonClient
-from uw_person_client.clients.core_client import UWPersonClient
-from uw_person_client.exceptions import PersonNotFoundException
+from coursedashboards.dao.pds import CoDaUWPersonClient
 import logging
-import os
 
 
 logger = logging.getLogger(__name__)
-
-
-class CoDaUWPersonClient(UWPersonClient):
-    def get_persons_by_uwregids(self, uwregids, **kwargs):
-        sqla_persons = self.DB.session.query(self.DB.Person).filter(
-            self.DB.Person.uwregid.in_(uwregids))
-        return [self._map_person(p, **kwargs) for p in sqla_persons.all()]
 
 
 class CourseProfileData(CoDaEndpoint):
@@ -27,15 +17,12 @@ class CourseProfileData(CoDaEndpoint):
         disability = 0
         probation = 0
 
-        client = MockedUWPersonClient() if (
-            os.getenv('ENV') == "localdev") else CoDaUWPersonClient()
-
         try:
-            regids = offering.get_registrations().values_list(
-                'user__uwregid',flat=True)
+            netids = offering.get_registrations().values_list(
+                'user__uwnetid', flat=True)
 
-            self.total_registrations = len(regids)
-            for person in client.get_persons_by_uwregids(regids):
+            self.total_registrations = len(netids)
+            for person in CoDaUWPersonClient().get_persons_by_uwnetids(netids):
                 eop += self._inc(self._is_eop, person, offering)
                 xfer += self._inc(self._is_transfer, person, offering)
                 disability += self._inc(self._is_disability, person, offering)
