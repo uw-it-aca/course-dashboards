@@ -3,26 +3,11 @@
 
 from coursedashboards.views.api.endpoint import CoDaEndpoint
 from coursedashboards.views.api import UpStreamErrorException
-from uw_person_client.clients.mock_client import MockedUWPersonClient
-from uw_person_client.clients.core_client import UWPersonClient
-from uw_person_client.exceptions import PersonNotFoundException
+from coursedashboards.dao.pds import CoDaUWPersonClient
 import logging
-import os
 
 
 logger = logging.getLogger(__name__)
-
-
-class CoDaUWPersonClient(UWPersonClient):
-    def get_persons_by_uwnetids(
-            self, uwnetids, page=None, page_size=None, **kwargs):
-        sqla_persons = self.DB.session.query(self.DB.Person).filter(
-            self.DB.Person.uwnetid.in_(uwnetids))
-        return self._get_page(sqla_persons,
-                              self._map_person,
-                              page=page,
-                              page_size=page_size,
-                              **kwargs)
 
 
 class CourseProfileData(CoDaEndpoint):
@@ -32,20 +17,12 @@ class CourseProfileData(CoDaEndpoint):
         disability = 0
         probation = 0
 
-        client = MockedUWPersonClient() if (
-            os.getenv('ENV') == "localdev") else UWPersonClient()
-
         try:
-            regs = offering.get_registrations()
-            self.total_registrations = len(regs)
-            for r in regs:
-                try:
-                    person = client.get_person_by_uwnetid(r.user.uwnetid)
-                except PersonNotFoundException:
-                    logger.error("person service netid not found: {}".format(
-                        r.user.uwnetid))
-                    raise
+            netids = offering.get_registrations().values_list(
+                'user__uwnetid', flat=True)
 
+            self.total_registrations = len(netids)
+            for person in CoDaUWPersonClient().get_persons_by_uwnetids(netids):
                 eop += self._inc(self._is_eop, person, offering)
                 xfer += self._inc(self._is_transfer, person, offering)
                 disability += self._inc(self._is_disability, person, offering)

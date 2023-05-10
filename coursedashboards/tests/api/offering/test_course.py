@@ -43,7 +43,7 @@ class TestCourseAPIs(CodaApiTest):
         return self.get_response_by_reverse(
             'historic_course_gpas', *args, **kwargs)
 
-    def test_course_api(self):
+    def test_course_apis(self):
         self.set_user('bill')
         response = self.get_course_response(kwargs=self.course)
 
@@ -55,8 +55,7 @@ class TestCourseAPIs(CodaApiTest):
         self.assertEquals(course['current_repeating'], 5)
         self.assertEquals(course['median_course_grade'], 3.4)
 
-    def test_profile(self):
-        self.set_user('bill')
+        # def test_profile
         response = self.get_profile_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
@@ -70,8 +69,7 @@ class TestCourseAPIs(CodaApiTest):
         self.assertEquals(profile['disability']['n'], 12)
         self.assertEquals(profile['probation']['n'], 4)
 
-    def test_historic_course_api(self):
-        self.set_user('bill')
+        # test_historic_course_api
         response = self.get_historic_course_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
@@ -85,8 +83,7 @@ class TestCourseAPIs(CodaApiTest):
         self.assertEquals(len(sections), 1)
         self.assertEquals(len(sections['2013']), 3)
 
-    def test_past_performance_api(self):
-        self.set_user('bill')
+        # test_past_performance_api
         response = self.get_past_performance_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
@@ -98,8 +95,7 @@ class TestCourseAPIs(CodaApiTest):
         self.assertEquals(performance['offering_count'], 3)
         self.assertEquals(len(performance['course_grades']), 370)
 
-    def test_past_concurrent_api(self):
-        self.set_user('bill')
+        # test_past_concurrent_api
         response = self.get_past_concurrent_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
@@ -109,8 +105,7 @@ class TestCourseAPIs(CodaApiTest):
 
         self.assertEquals(len(concurrent), 2)
 
-    def test_past_student_major_api(self):
-        self.set_user('bill')
+        # test_past_student_major_api(self):
         response = self.get_student_major_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
@@ -120,8 +115,7 @@ class TestCourseAPIs(CodaApiTest):
 
         self.assertEquals(len(majors), 20)
 
-    def test_past_graduated_major_api(self):
-        self.set_user('bill')
+        # test_past_graduated_major_api
         response = self.get_graduated_major_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
@@ -131,8 +125,7 @@ class TestCourseAPIs(CodaApiTest):
 
         self.assertEquals(len(majors), 20)
 
-    def test_past_historic_gpas_api(self):
-        self.set_user('bill')
+        # test_past_historic_gpas_api
         response = self.get_historic_gpas_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
