@@ -23,8 +23,8 @@ class CoDaLiveUWPersonClient(UWPersonClient):
         kwargs.update({
             'include_employee': False,
             'include_student': True,
-            'include_student_transcripts': False,
-            'include_student_transfers': False,
+            'include_student_transcripts': True,
+            'include_student_transfers': True,
             'include_student_sports': False,
             'include_student_advisers': False,
             'include_student_majors': False,
