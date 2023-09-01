@@ -8,9 +8,13 @@ from coursedashboards.models.user import User
 
 
 class Major(models.Model):
-    major = models.CharField(max_length=128,
-                             db_index=True)
+    major = models.CharField(max_length=128)
     degree_level = models.IntegerField(default=0)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['major'], name='major_name_idx'),
+        ]
 
 
 class StudentMajor(models.Model):
