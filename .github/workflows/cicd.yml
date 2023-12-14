@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, task/validate-ingress-class]
   pull_request:
     branches: [main, develop]
     types: [opened, reopened, synchronize]
@@ -120,7 +120,7 @@ jobs:
 
       - name: Deployment Pipeline
         if: >-
-          contains(fromJSON('["main", "develop"]'),
+          contains(fromJSON('["main", "develop", "task/validate-ingress-class"]'),
             needs.context.outputs.git_repo_branch)
         uses: uw-it-aca/actions/cicd-deploy@main
         with:
@@ -128,6 +128,7 @@ jobs:
           commit_hash: ${{ needs.context.outputs.commit_hash }}
           git_repo_branch: ${{ needs.context.outputs.git_repo_branch }}
           gh_auth_token: ${{ secrets.GH_AUTH_TOKEN }}
+          helm_chart_branch: feature/nginx-class-change
 
       - name: 'Surface context from executed build step'
         id: context
