@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [main, develop, feature/lti]
+    branches: [main, develop]
   pull_request:
     branches: [main, develop]
     types: [opened, reopened, synchronize]
@@ -120,9 +120,9 @@ jobs:
 
       - name: Deployment Pipeline
         if: >-
-          contains(fromJSON('["main", "develop", "feature/lti"]'),
+          contains(fromJSON('["main", "develop"]'),
             needs.context.outputs.git_repo_branch)
-        uses: uw-it-aca/actions/cicd-deploy@fix/kubeval-to-kubeconform
+        uses: uw-it-aca/actions/cicd-deploy@main
         with:
           release_name: ${{ env.RELEASE_NAME }}
           commit_hash: ${{ needs.context.outputs.commit_hash }}
