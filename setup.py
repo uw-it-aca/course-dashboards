@@ -28,6 +28,8 @@ setup(
         'django-compressor',
         'django-pyscss',
         'django_mobileesp',
+        'django-blti~=2.2',
+        'django-userservice~=3.2',
         'uw-memcached-clients~=1.0',
         'pytz',
         'UW-RestClients-Core~=1.3',

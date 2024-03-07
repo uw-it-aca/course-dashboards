@@ -21,7 +21,7 @@ from coursedashboards.views.index import index
 from coursedashboards.views.page import user_login, logout
 
 course_regex = (
-    r'^api/v1/course/(?P<year>\d{4})-'
+    r'^(blti/)api/v1/course/(?P<year>\d{4})-'
     r'(?P<quarter>[A-Za-z]+)-'
     r'(?P<curriculum>[&% 0-9A-Za-z]+)-'
     r'(?P<course_number>\d{3})-'
@@ -30,7 +30,7 @@ course_regex = (
 urlpatterns = [
     # Home
     re_path(r'^$', index, name='home'),
-    re_path(r'api/v1/user/(?P<netid>[a-z][a-z0-9\-\_\.]{,127})/introduction',
+    re_path(r'(blti/)api/v1/user/(?P<netid>[a-z][a-z0-9\-\_\.]{,127})/introduction',
             Introduction.as_view(),
             name='coda_introduction'),
     re_path(course_regex + r'/past/performance/?',
