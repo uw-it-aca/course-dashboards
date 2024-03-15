@@ -100,7 +100,6 @@ DETECT_USER_AGENTS = {
 
 CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
 
-# DEBUG = True if os.getenv('ENV', 'localdev') == "localdev" else False
-DEBUG = True
+DEBUG = True if os.getenv('ENV', 'localdev') == "localdev" else False
 
 CODA_PROFILE = True if os.getenv('CODA_PROFILE', 'FALSE') == "TRUE" else False
