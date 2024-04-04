@@ -12,11 +12,6 @@ if os.getenv('AUTH', 'NONE') == 'SAML_MOCK':
                        'u_acadev_coda_admins'],
     }
 
-if 'BLTI_DEV' in os.getenv('AUTH', '').split(' '):
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-    MIDDLEWARE.remove('blti.middleware.SameSiteMiddleware')
-
 INSTALLED_APPS += [
     'compressor',
     'coursedashboards',
@@ -74,6 +69,7 @@ PERSISTENT_MESSAGE_AUTH_MODULE = 'coursedashboards.authorization.can_manage_pers
 if not os.getenv("ENV") == "localdev":
     INSTALLED_APPS += ['rc_django',]
     RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
+    LTI_DEVELOP_APP = os.getenv("LTI_DEVELOP_APP", '')
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
