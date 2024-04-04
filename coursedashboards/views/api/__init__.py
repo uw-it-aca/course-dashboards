@@ -58,13 +58,13 @@ class CoDaAPI(APIView):
                               "Data not available due to an error")
 
     def term_not_found(self):
-        return HttpResponse(content="Term not found!", status=543)
+        return HttpResponse(content="Term not found", status=404)
 
     def course_not_found(self):
-        return HttpResponse(content="Course not found!", status=543)
+        return HttpResponse(content="Course not found", status=404)
 
     def course_offering_not_found(self):
-        return HttpResponse(content="Course Offering not found!", status=543)
+        return HttpResponse(content="Course Offering not found", status=404)
 
 
 class UpStreamErrorException(APIException):
