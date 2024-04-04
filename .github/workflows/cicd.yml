@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -49,7 +49,7 @@ jobs:
           exclude_paths: 'migrations'
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Cache Docker layers
         uses: actions/cache@v3
@@ -60,7 +60,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build App Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           target: app-container
           tags: ${{ needs.context.outputs.image_tag }}
@@ -70,7 +70,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Build Test Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           target: app-test-container
           tags: app-test-container
@@ -132,7 +132,7 @@ jobs:
       - name: 'Surface context from executed build step'
         id: context
         shell: bash
-        run: echo "::set-output name=context::$(< ${CONTEXT_FILENAME})"
+        run: echo "context=$(< ${CONTEXT_FILENAME})" >> $GITHUB_OUTPUT
 
   housekeeping:
     if: github.event_name == 'push'
