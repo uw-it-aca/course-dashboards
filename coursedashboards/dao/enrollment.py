@@ -26,5 +26,7 @@ def get_student_majors_for_regid_and_term(regid, term):
     except AttributeError as ex:
         logger.info(
             "Student_majors: No enrollments for {}: {}".format(regid, ex))
+    except Exception as ex:
+        logger.exception("Student_majors: for {}: {}".format(regid, ex))
 
     return []
