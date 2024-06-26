@@ -40,7 +40,7 @@ setup(
         'UW-RestClients-Bookstore~=1.1',
         'UW-Django-SAML2~=1.5',
         'Django-SupportTools~=3.5',
-        'djangorestframework==3.11.2',
+        'djangorestframework==3.15.2',
         'Django-Persistent-Message',
         'axdd-person-client>=1.1.8',
         'statistics',
