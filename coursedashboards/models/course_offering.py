@@ -188,11 +188,14 @@ class CourseOffering(models.Model):
     def concurrent_courses(self, terms=None, instructor=None):
         # all courses students in this offering for the given term
         # are registered
+        # null term is significant: none implies concurrent courses
+        #   for only this course section registrations
         student_count = 0.0
         all_courses = {}
+        all_sections = (terms is not None)
         for term in terms if terms else [self.term]:
             regs = self.all_student_registrations(
-                terms=[term], instructor=instructor)
+                terms=[term] if all_sections else None, instructor=instructor)
             student_count += regs.values('user_id').distinct().count()
             for reg in regs:
                 try:
