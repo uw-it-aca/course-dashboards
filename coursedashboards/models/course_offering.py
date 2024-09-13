@@ -44,6 +44,7 @@ class CourseOffering(models.Model):
     @profile
     def _filter_parms(self, terms=None, is_alum=None, instructor=None):
         if instructor:
+            # implies cross-term historic query
             term_filter = Q(term__in=[])
 
             for term in terms:
@@ -51,10 +52,13 @@ class CourseOffering(models.Model):
                     instructor, term, self.course)
 
                 term_filter |= Q(term__id=term, course__id__in=instructed)
+        elif terms:
+            # implies cross-term, cross-section  historic query
+            term_filter = Q(term__in=terms) & Q(
+                course__in=self.course.sections())
         else:
-            term_filter = Q(term__in=terms) if terms else Q(term=self.term)
-            sections = Course.objects.sections(self.course)
-            term_filter &= Q(course__in=sections)
+            # only this offering's term and course section
+            term_filter = Q(term=self.term) & Q(course=self.course)
 
         if is_alum:
             term_filter &= Q(user__is_alum=1)
