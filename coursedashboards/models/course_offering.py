@@ -199,15 +199,15 @@ class CourseOffering(models.Model):
                 terms=[term] if all_sections else None, instructor=instructor)
             student_count += regs.values('user_id').distinct().count()
             for reg in regs:
-                if reg.course.ref != this_course_ref:
-                    try:
+                try:
+                    if reg.course.ref != this_course_ref:
                         all_courses[reg.course.ref]['enrollments'] += 1
-                    except KeyError:
-                        all_courses[reg.course.ref] = {
-                            'curriculum': reg.course.curriculum,
-                            'course_number': reg.course.course_number,
-                            'enrollments': 1
-                        }
+                except KeyError:
+                    all_courses[reg.course.ref] = {
+                        'curriculum': reg.course.curriculum,
+                        'course_number': reg.course.course_number,
+                        'enrollments': 1
+                    }
 
         return [{
             'course_ref': c[0],
