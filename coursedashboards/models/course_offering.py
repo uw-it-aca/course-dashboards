@@ -190,6 +190,7 @@ class CourseOffering(models.Model):
         # are registered
         # null term is significant: none implies concurrent courses
         #   for only this course section registrations
+        this_course_ref = self.course.ref
         student_count = 0.0
         all_courses = {}
         all_sections = (terms is not None)
@@ -198,14 +199,15 @@ class CourseOffering(models.Model):
                 terms=[term] if all_sections else None, instructor=instructor)
             student_count += regs.values('user_id').distinct().count()
             for reg in regs:
-                try:
-                    all_courses[reg.course.ref]['enrollments'] += 1
-                except KeyError:
-                    all_courses[reg.course.ref] = {
-                        'curriculum': reg.course.curriculum,
-                        'course_number': reg.course.course_number,
-                        'enrollments': 1
-                    }
+                if reg.course.ref != this_course_ref:
+                    try:
+                        all_courses[reg.course.ref]['enrollments'] += 1
+                    except KeyError:
+                        all_courses[reg.course.ref] = {
+                            'curriculum': reg.course.curriculum,
+                            'course_number': reg.course.course_number,
+                            'enrollments': 1
+                        }
 
         return [{
             'course_ref': c[0],
@@ -216,7 +218,7 @@ class CourseOffering(models.Model):
                 c[1]['enrollments'] * 100.0) / student_count
         } for c in sorted(
             all_courses.items(), key=lambda x: x[1]['enrollments'],
-            reverse=True)[1:21]]
+            reverse=True)[:20]]
 
     @profile
     def student_majors_for_term(self, terms=None, instructor=None):
