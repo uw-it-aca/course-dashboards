@@ -44,6 +44,7 @@ class CourseOffering(models.Model):
     @profile
     def _filter_parms(self, terms=None, is_alum=None, instructor=None):
         if instructor:
+            # implies cross-term historic query
             term_filter = Q(term__in=[])
 
             for term in terms:
@@ -51,10 +52,13 @@ class CourseOffering(models.Model):
                     instructor, term, self.course)
 
                 term_filter |= Q(term__id=term, course__id__in=instructed)
+        elif terms:
+            # implies cross-term, cross-section  historic query
+            term_filter = Q(term__in=terms) & Q(
+                course__in=self.course.sections())
         else:
-            term_filter = Q(term__in=terms) if terms else Q(term=self.term)
-            sections = Course.objects.sections(self.course)
-            term_filter &= Q(course__in=sections)
+            # only this offering's term and course section
+            term_filter = Q(term=self.term) & Q(course=self.course)
 
         if is_alum:
             term_filter &= Q(user__is_alum=1)
@@ -184,15 +188,20 @@ class CourseOffering(models.Model):
     def concurrent_courses(self, terms=None, instructor=None):
         # all courses students in this offering for the given term
         # are registered
+        # null term is significant: none implies concurrent courses
+        #   for only this course section registrations
+        this_course_ref = self.course.ref
         student_count = 0.0
         all_courses = {}
+        all_sections = (terms is not None)
         for term in terms if terms else [self.term]:
             regs = self.all_student_registrations(
-                terms=[term], instructor=instructor)
+                terms=[term] if all_sections else None, instructor=instructor)
             student_count += regs.values('user_id').distinct().count()
             for reg in regs:
                 try:
-                    all_courses[reg.course.ref]['enrollments'] += 1
+                    if reg.course.ref != this_course_ref:
+                        all_courses[reg.course.ref]['enrollments'] += 1
                 except KeyError:
                     all_courses[reg.course.ref] = {
                         'curriculum': reg.course.curriculum,
@@ -209,7 +218,7 @@ class CourseOffering(models.Model):
                 c[1]['enrollments'] * 100.0) / student_count
         } for c in sorted(
             all_courses.items(), key=lambda x: x[1]['enrollments'],
-            reverse=True)[1:21]]
+            reverse=True)[:20]]
 
     @profile
     def student_majors_for_term(self, terms=None, instructor=None):

@@ -4,21 +4,17 @@
 from django.db import models
 
 
-class CourseManager(models.Manager):
-    def sections(self, course):
-        return Course.objects.filter(
-            curriculum=course.curriculum,
-            course_number=course.course_number).values_list(
-                'id', flat=True).distinct()
-
-
 class Course(models.Model):
     curriculum = models.CharField(max_length=20)
     course_number = models.PositiveSmallIntegerField()
     section_id = models.CharField(max_length=2)
     course_title = models.CharField(max_length=64, default='')
 
-    objects = CourseManager()
+    def sections(self):
+        return Course.objects.filter(
+            curriculum=self.curriculum,
+            course_number=self.course_number).values_list(
+                'id', flat=True).distinct()
 
     @property
     def ref(self):
