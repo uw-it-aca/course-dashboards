@@ -9,6 +9,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+APPLICATION_TYPE_2YR_TRANSFER = "2"
+APPLICATION_TYPE_4YR_TRANSFER = "4"
+
 
 class CourseProfileData(CoDaEndpoint):
     def get_data(self, offering):
@@ -61,7 +64,9 @@ class CourseProfileData(CoDaEndpoint):
         return str(person.student.special_program_code) in EOP_CODES
 
     def _is_transfer(self, person, offering):
-        return len(person.student.transfers) > 0
+        return person.student.application_type_code in [
+            APPLICATION_TYPE_2YR_TRANSFER,
+            APPLICATION_TYPE_4YR_TRANSFER]
 
     def _on_probation(self, person, offering):
         # https://studentdata.washington.edu/sdb-code-manual/
