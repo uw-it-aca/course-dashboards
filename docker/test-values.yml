@@ -44,8 +44,8 @@ externalService:
   enabled: true
   name: coda-db-test-service
   type: ClusterIP
-  serviceAddress: 172.18.0.7
-  servicePort: 3306
+  serviceAddress: 172.18.1.200
+  servicePort: 5432
 repo: coda
 instance: test
 image:
