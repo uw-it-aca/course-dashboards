@@ -36,7 +36,7 @@ affinity:
 readiness:
   enabled: true
 database:
-  engine: mysql
+  engine: postgres
   name: coda_test
   hostname: coda-db-test-service
   secretName: test.coda.uw.edu-sql-secrets
