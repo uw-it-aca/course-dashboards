@@ -183,7 +183,7 @@ class CourseOffering(models.Model):
         return Registration.objects.filter(
             term__in=terms if terms else [self.term],
             user_id__in=self.get_students(terms=terms, instructor=instructor)
-        ).select_related('course', 'user')
+        ).select_related('course')
 
     @profile
     def concurrent_courses(self, terms=None, instructor=None):
