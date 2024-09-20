@@ -6,6 +6,7 @@ from django.db.models import Q, Count, Sum, F
 from django.db.models.functions import Round
 from statistics import median
 from statistics import StatisticsError
+from collections import Counter
 from django.db import models
 from coursedashboards.models.instructor import Instructor
 from coursedashboards.models.course import Course
@@ -54,8 +55,10 @@ class CourseOffering(models.Model):
                 term_filter |= Q(term__id=term, course__id__in=instructed)
         elif terms:
             # implies cross-term, cross-section  historic query
-            term_filter = Q(term__in=terms) & Q(
-                course__in=self.course.sections())
+            term_filter = (
+                Q(term__in=terms)
+                & Q(course__curriculum=self.course.curriculum)
+                & Q(course__course_number=self.course.course_number))
         else:
             # only this offering's term and course section
             term_filter = Q(term=self.term) & Q(course=self.course)
@@ -180,45 +183,32 @@ class CourseOffering(models.Model):
         return Registration.objects.filter(
             term__in=terms if terms else [self.term],
             user_id__in=self.get_students(terms=terms, instructor=instructor)
-        ).select_related(
-            'course'
-        )
+        ).select_related('course', 'user')
 
     @profile
     def concurrent_courses(self, terms=None, instructor=None):
-        # all courses students in this offering for the given term
+        # all courses students in this offering for the given terms
         # are registered
-        # null term is significant: none implies concurrent courses
-        #   for only this course section registrations
-        this_course_ref = self.course.ref
-        student_count = 0.0
-        all_courses = {}
-        all_sections = (terms is not None)
-        for term in terms if terms else [self.term]:
-            regs = self.all_student_registrations(
-                terms=[term] if all_sections else None, instructor=instructor)
-            student_count += regs.values('user_id').distinct().count()
-            for reg in regs:
-                try:
-                    if reg.course.ref != this_course_ref:
-                        all_courses[reg.course.ref]['enrollments'] += 1
-                except KeyError:
-                    all_courses[reg.course.ref] = {
-                        'curriculum': reg.course.curriculum,
-                        'course_number': reg.course.course_number,
-                        'enrollments': 1
-                    }
+        courses = []
+        regs = self.all_student_registrations(
+            terms=terms, instructor=instructor)
+        student_count = len(Counter([r.user_id for r in regs]).keys())
+        common_courses = Counter([r.course_id for r in regs]).most_common()
+        for cid, n in common_courses[:21]:
+            if cid == self.course_id:
+                continue
 
-        return [{
-            'course_ref': c[0],
-            'curriculum': c[1]['curriculum'],
-            'course_number': c[1]['course_number'],
-            'course_students': c[1]['enrollments'],
-            'percent_students': (
-                c[1]['enrollments'] * 100.0) / student_count
-        } for c in sorted(
-            all_courses.items(), key=lambda x: x[1]['enrollments'],
-            reverse=True)[:20]]
+            course = next(r.course for r in regs if r.course_id == cid)
+            courses.append({
+                'course_ref': course.ref,
+                'curriculum': course.curriculum,
+                'course_number': course.course_number,
+                'course_students': n,
+                'percent_students': (n * 100.0) / student_count
+            })
+
+        print(courses)
+        return courses
 
     @profile
     def student_majors_for_term(self, terms=None, instructor=None):
