@@ -207,7 +207,6 @@ class CourseOffering(models.Model):
                 'percent_students': (n * 100.0) / student_count
             })
 
-        print(courses)
         return courses
 
     @profile
