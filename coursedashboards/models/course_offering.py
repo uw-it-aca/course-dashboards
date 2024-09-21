@@ -176,38 +176,55 @@ class CourseOffering(models.Model):
         )['current_enrollment__sum']
 
     @profile
-    def all_student_registrations(self, terms=None, instructor=None):
-        """
-        Return given user's Courses for this term
-        """
-        return Registration.objects.filter(
-            term__in=terms if terms else [self.term],
-            user_id__in=self.get_students(terms=terms, instructor=instructor)
-        ).select_related('course')
-
-    @profile
     def concurrent_courses(self, terms=None, instructor=None):
-        # all courses students in this offering for the given terms
-        # are registered
-        courses = []
-        regs = self.all_student_registrations(
-            terms=terms, instructor=instructor)
-        student_count = len(Counter([r.user_id for r in regs]).keys())
-        common_courses = Counter([r.course_id for r in regs]).most_common()
-        for cid, n in common_courses[:21]:
-            if cid == self.course_id:
-                continue
+        total_students = 0
+        all_courses = {}
 
-            course = next(r.course for r in regs if r.course_id == cid)
-            courses.append({
-                'course_ref': course.ref,
-                'curriculum': course.curriculum,
-                'course_number': course.course_number,
-                'course_students': n,
-                'percent_students': (n * 100.0) / student_count
-            })
+        # collect concurrent courses by term, summing student counts
+        for term in terms if terms else [self.term]:
+            filter_parms = self._filter_parms(
+                terms=[term] if terms else None, instructor=instructor)
+            user_ids = list(Registration.objects.values_list(
+                'user_id', flat=True).filter(filter_parms).distinct())
 
-        return courses
+            total_students += len(user_ids)
+
+            courses = Registration.objects.values(
+                'course_id',
+                'course__curriculum',
+                'course__course_number').annotate(
+                    course_students=Count('course_id')).filter(
+                        term_id=term,
+                        user__id__in=user_ids).order_by(
+                            '-course_students')[:100]
+
+            for course in courses:
+                course_id = course.get('course_id')
+                curriculum = course.get('course__curriculum')
+                course_number = course.get('course__course_number')
+
+                if (curriculum == self.course.curriculum
+                        and course_number == self.course.course_number):
+                    continue
+
+                try:
+                    all_courses[course_id][
+                        'enrollments'] += course.get('course_students')
+                except KeyError:
+                    all_courses[course_id] = {
+                        'curriculum': curriculum,
+                        'course_number': course_number,
+                        'enrollments': course.get('course_students')}
+
+        return [{
+            'course_id': c[0],
+            'curriculum': c[1]['curriculum'],
+            'course_number': c[1]['course_number'],
+            'course_students': c[1]['enrollments'],
+            'percent_students': (c[1]['enrollments'] * 100.0) / total_students
+        } for c in sorted(
+            all_courses.items(), key=lambda x: x[1]['enrollments'],
+            reverse=True)[:20]]
 
     @profile
     def student_majors_for_term(self, terms=None, instructor=None):
