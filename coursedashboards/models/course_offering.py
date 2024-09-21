@@ -217,7 +217,7 @@ class CourseOffering(models.Model):
                         'enrollments': course.get('course_students')}
 
         return [{
-            'course_ref': f"{curriculum}-{course_number}",
+            'course_ref': f'{c[1]['curriculum']}-{c[1]['course_number']}',
             'curriculum': c[1]['curriculum'],
             'course_number': c[1]['course_number'],
             'course_students': c[1]['enrollments'],
