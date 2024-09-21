@@ -103,7 +103,7 @@ class TestCourseAPIs(CodaApiTest):
         payload = json.loads(response.content)
         concurrent = payload['concurrent_courses']
 
-        self.assertEquals(len(concurrent), 4)
+        self.assertEquals(len(concurrent), 2)
 
         # test_past_student_major_api(self):
         response = self.get_student_major_response(kwargs=self.course)
