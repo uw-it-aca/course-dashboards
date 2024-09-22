@@ -202,22 +202,23 @@ class CourseOffering(models.Model):
                 course_id = course.get('course_id')
                 curriculum = course.get('course__curriculum')
                 course_number = course.get('course__course_number')
+                course_ref = f"{curriculum}-{course_number}"
 
                 if (curriculum == self.course.curriculum
                         and course_number == self.course.course_number):
                     continue
 
                 try:
-                    all_courses[course_id][
+                    all_courses[course_ref][
                         'enrollments'] += course.get('course_students')
                 except KeyError:
-                    all_courses[course_id] = {
+                    all_courses[course_ref] = {
                         'curriculum': curriculum,
                         'course_number': course_number,
                         'enrollments': course.get('course_students')}
 
         return [{
-            'course_ref': f"{c[1]['curriculum']}-{c[1]['course_number']}",
+            'course_ref': c[0],
             'curriculum': c[1]['curriculum'],
             'course_number': c[1]['course_number'],
             'course_students': c[1]['enrollments'],
