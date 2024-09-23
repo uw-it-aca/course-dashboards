@@ -27,16 +27,16 @@ affinity:
 readiness:
   enabled: true
 database:
-  engine: mysql
+  engine: postgres
   name: coda
-  hostname: coda-db-prod-service
+  hostname: coda-prod-db-service
   secretName: coda.uw.edu-sql-secrets
 externalService:
   enabled: true
-  name: coda-db-prod-service
+  name: coda-prod-db-service
   type: ClusterIP
-  serviceAddress: 172.18.0.7
-  servicePort: 3306
+  serviceAddress: 172.18.1.200
+  servicePort: 5432
 repo: coda
 instance: prod
 image:
