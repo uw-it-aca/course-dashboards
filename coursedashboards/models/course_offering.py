@@ -87,7 +87,7 @@ class CourseOffering(models.Model):
             user_id__in=self.get_students(terms=terms, instructor=instructor),
             term_id__in=[t.id for t in Term.objects.all() if t < self.term]
         ).values(
-            'grade', 'credits', 'user'
+            'grade', 'credits', 'user_id'
         ).annotate(
             total=Count('grade')
         )
@@ -108,21 +108,21 @@ class CourseOffering(models.Model):
         user_grades = {}
 
         for registration in registrations:
-            userid = registration['user']
+            user_id = registration['user_id']
 
-            if userid not in user_grades:
-                user_grades[userid] = {
+            if user_id not in user_grades:
+                user_grades[user_id] = {
                     'credits': 0,
                     'grade_points': 0
                 }
 
-            self._add_grade_entry(user_grades[userid], registration)
+            self._add_grade_entry(user_grades[user_id], registration)
 
         grades = []
 
-        for userid in user_grades:
-            credits = user_grades[userid]['credits']
-            grade_points = user_grades[userid]['grade_points']
+        for user_id in user_grades:
+            credits = user_grades[user_id]['credits']
+            grade_points = user_grades[user_id]['grade_points']
 
             if credits != 0:
                 grades.append(round(grade_points / credits, 2))
@@ -184,6 +184,7 @@ class CourseOffering(models.Model):
         for term in terms if terms else [self.term]:
             filter_parms = self._filter_parms(
                 terms=[term] if terms else None, instructor=instructor)
+
             user_ids = list(Registration.objects.values_list(
                 'user_id', flat=True).filter(filter_parms).distinct())
 

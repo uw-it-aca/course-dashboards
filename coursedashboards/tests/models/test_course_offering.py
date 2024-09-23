@@ -361,21 +361,21 @@ class TestCourseOffering(TransactionTestCase):
             'grade': grades[0],
             'credits': 5,
             'total': 2,
-            'user': 0
+            'user_id': 0
         })
 
         grade_totals.append({
             'grade': grades[1],
             'credits': 5,
             'total': 3,
-            'user': 0
+            'user_id': 0
         })
 
         grade_totals.append({
             'grade': grades[2],
             'credits': 5,
             'total': 1,
-            'user': 0
+            'user_id': 0
         })
 
         grades = self.winter_ess._process_grade_totals(grade_totals)

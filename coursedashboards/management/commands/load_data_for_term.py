@@ -189,6 +189,9 @@ class Command(BaseCommand):
                 user = user_from_person(section_instructor)
             except MalformedOrInconsistentUser:
                 continue
+            except Exception as ex:
+                logger.info(f"cannot load instructor: {ex}")
+                continue
 
             inst_obj, created = Instructor.objects.get_or_create(
                 user=user, course=course, term=term)
