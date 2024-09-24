@@ -28,7 +28,7 @@ readiness:
   enabled: true
 database:
   engine: postgres
-  name: coda
+  name: coda_prod
   hostname: coda-prod-db-service
   secretName: coda.uw.edu-sql-secrets
 externalService:
