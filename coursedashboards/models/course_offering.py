@@ -6,6 +6,7 @@ from django.db.models import Q, Count, Sum, F
 from django.db.models.functions import Round
 from statistics import median
 from statistics import StatisticsError
+from collections import Counter
 from django.db import models
 from coursedashboards.models.instructor import Instructor
 from coursedashboards.models.course import Course
@@ -54,8 +55,10 @@ class CourseOffering(models.Model):
                 term_filter |= Q(term__id=term, course__id__in=instructed)
         elif terms:
             # implies cross-term, cross-section  historic query
-            term_filter = Q(term__in=terms) & Q(
-                course__in=self.course.sections())
+            term_filter = (
+                Q(term__in=terms)
+                & Q(course__curriculum=self.course.curriculum)
+                & Q(course__course_number=self.course.course_number))
         else:
             # only this offering's term and course section
             term_filter = Q(term=self.term) & Q(course=self.course)
@@ -84,7 +87,7 @@ class CourseOffering(models.Model):
             user_id__in=self.get_students(terms=terms, instructor=instructor),
             term_id__in=[t.id for t in Term.objects.all() if t < self.term]
         ).values(
-            'grade', 'credits', 'user'
+            'grade', 'credits', 'user_id'
         ).annotate(
             total=Count('grade')
         )
@@ -105,21 +108,21 @@ class CourseOffering(models.Model):
         user_grades = {}
 
         for registration in registrations:
-            userid = registration['user']
+            user_id = registration['user_id']
 
-            if userid not in user_grades:
-                user_grades[userid] = {
+            if user_id not in user_grades:
+                user_grades[user_id] = {
                     'credits': 0,
                     'grade_points': 0
                 }
 
-            self._add_grade_entry(user_grades[userid], registration)
+            self._add_grade_entry(user_grades[user_id], registration)
 
         grades = []
 
-        for userid in user_grades:
-            credits = user_grades[userid]['credits']
-            grade_points = user_grades[userid]['grade_points']
+        for user_id in user_grades:
+            credits = user_grades[user_id]['credits']
+            grade_points = user_grades[user_id]['grade_points']
 
             if credits != 0:
                 grades.append(round(grade_points / credits, 2))
@@ -173,49 +176,54 @@ class CourseOffering(models.Model):
         )['current_enrollment__sum']
 
     @profile
-    def all_student_registrations(self, terms=None, instructor=None):
-        """
-        Return given user's Courses for this term
-        """
-        return Registration.objects.filter(
-            term__in=terms if terms else [self.term],
-            user_id__in=self.get_students(terms=terms, instructor=instructor)
-        ).select_related(
-            'course'
-        )
-
-    @profile
     def concurrent_courses(self, terms=None, instructor=None):
-        # all courses students in this offering for the given term
-        # are registered
-        # null term is significant: none implies concurrent courses
-        #   for only this course section registrations
-        this_course_ref = self.course.ref
-        student_count = 0.0
+        total_students = 0
         all_courses = {}
-        all_sections = (terms is not None)
+
+        # collect concurrent courses by term, summing student counts
         for term in terms if terms else [self.term]:
-            regs = self.all_student_registrations(
-                terms=[term] if all_sections else None, instructor=instructor)
-            student_count += regs.values('user_id').distinct().count()
-            for reg in regs:
+            filter_parms = self._filter_parms(
+                terms=[term] if terms else None, instructor=instructor)
+
+            user_ids = list(Registration.objects.values_list(
+                'user_id', flat=True).filter(filter_parms).distinct())
+
+            total_students += len(user_ids)
+
+            courses = Registration.objects.values(
+                'course_id',
+                'course__curriculum',
+                'course__course_number').annotate(
+                    course_students=Count('course_id')).filter(
+                        term_id=term,
+                        user__id__in=user_ids).order_by(
+                            '-course_students')[:100]
+
+            for course in courses:
+                course_id = course.get('course_id')
+                curriculum = course.get('course__curriculum')
+                course_number = course.get('course__course_number')
+                course_ref = f"{curriculum}-{course_number}"
+
+                if (curriculum == self.course.curriculum
+                        and course_number == self.course.course_number):
+                    continue
+
                 try:
-                    if reg.course.ref != this_course_ref:
-                        all_courses[reg.course.ref]['enrollments'] += 1
+                    all_courses[course_ref][
+                        'enrollments'] += course.get('course_students')
                 except KeyError:
-                    all_courses[reg.course.ref] = {
-                        'curriculum': reg.course.curriculum,
-                        'course_number': reg.course.course_number,
-                        'enrollments': 1
-                    }
+                    all_courses[course_ref] = {
+                        'curriculum': curriculum,
+                        'course_number': course_number,
+                        'enrollments': course.get('course_students')}
 
         return [{
             'course_ref': c[0],
             'curriculum': c[1]['curriculum'],
             'course_number': c[1]['course_number'],
             'course_students': c[1]['enrollments'],
-            'percent_students': (
-                c[1]['enrollments'] * 100.0) / student_count
+            'percent_students': (c[1]['enrollments'] * 100.0) / total_students
         } for c in sorted(
             all_courses.items(), key=lambda x: x[1]['enrollments'],
             reverse=True)[:20]]
