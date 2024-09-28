@@ -3,7 +3,7 @@
 
 from coursedashboards.views.api.endpoint import CoDaEndpoint
 from coursedashboards.views.api import UpStreamErrorException
-from coursedashboards.dao.pds import CoDaUWPersonClient
+from coursedashboards.dao.pds import get_persons_by_uwnetids
 import logging
 
 
@@ -21,11 +21,14 @@ class CourseProfileData(CoDaEndpoint):
         probation = 0
 
         try:
-            netids = offering.get_registrations().values_list(
-                'user__uwnetid', flat=True)
+            netids = list(offering.get_registrations().values_list(
+                'user__uwnetid', flat=True))
 
             self.total_registrations = len(netids)
-            for person in CoDaUWPersonClient().get_persons_by_uwnetids(netids):
+
+            for person in get_persons_by_uwnetids(
+                    netids, include_student=True,
+                    include_student_transcripts=True):
                 eop += self._inc(self._is_eop, person, offering)
                 xfer += self._inc(self._is_transfer, person, offering)
                 disability += self._inc(self._is_disability, person, offering)
@@ -50,7 +53,7 @@ class CourseProfileData(CoDaEndpoint):
                 }
             }
         except Exception as ex:
-            logger.exception("person service: {}".format(ex))
+            logger.exception(f"person service: {ex}")
             raise UpStreamErrorException()
 
     def _is_disability(self, person, offering):
@@ -74,7 +77,9 @@ class CourseProfileData(CoDaEndpoint):
         PROBATION_CODES = ['2', '3', '4', '7', '81', '82']
 
         transcript_terms = {}
-        for i, transcript in enumerate(person.student.transcripts):
+        i = 0
+        transcripts = person.student.transcripts.all()
+        for transcript in transcripts:
             tran_key = (
                 transcript.tran_term.year * 10) + transcript.tran_term.quarter
             transcript_terms[tran_key] = i
@@ -82,7 +87,7 @@ class CourseProfileData(CoDaEndpoint):
         for term in sorted(
                 transcript_terms.items(), key=lambda x: x[0], reverse=True):
             if term[0] < offering.term.term_key:
-                transcript = person.student.transcripts[term[1]]
+                transcript = transcripts[term[1]]
                 return str(transcript.scholarship_type) in PROBATION_CODES
 
         return False
@@ -91,7 +96,7 @@ class CourseProfileData(CoDaEndpoint):
         try:
             return 1 if test(person, offering) else 0
         except (KeyError, AttributeError) as ex:
-            logger.error("pds client: {}".format(ex))
+            logger.error(f"pds client: {ex}")
             return 0
 
     def _percent(self, c):

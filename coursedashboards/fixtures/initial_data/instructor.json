@@ -1,0 +1,1226 @@
+[
+{
+    "model": "coursedashboards.instructor",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 3,
+    "fields": {
+        "user": 3,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 4,
+    "fields": {
+        "user": 4,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 5,
+    "fields": {
+        "user": 5,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 6,
+    "fields": {
+        "user": 6,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 7,
+    "fields": {
+        "user": 7,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 8,
+    "fields": {
+        "user": 8,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 9,
+    "fields": {
+        "user": 9,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 10,
+    "fields": {
+        "user": 10,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 11,
+    "fields": {
+        "user": 11,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 12,
+    "fields": {
+        "user": 12,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 13,
+    "fields": {
+        "user": 13,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 14,
+    "fields": {
+        "user": 14,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 15,
+    "fields": {
+        "user": 15,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 16,
+    "fields": {
+        "user": 16,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 17,
+    "fields": {
+        "user": 17,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 18,
+    "fields": {
+        "user": 18,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 19,
+    "fields": {
+        "user": 19,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 20,
+    "fields": {
+        "user": 20,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 21,
+    "fields": {
+        "user": 21,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 22,
+    "fields": {
+        "user": 22,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 23,
+    "fields": {
+        "user": 23,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 24,
+    "fields": {
+        "user": 24,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 25,
+    "fields": {
+        "user": 25,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 26,
+    "fields": {
+        "user": 26,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 27,
+    "fields": {
+        "user": 27,
+        "term": 1,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 28,
+    "fields": {
+        "user": 22,
+        "term": 1,
+        "course": 2
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 29,
+    "fields": {
+        "user": 172,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 30,
+    "fields": {
+        "user": 173,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 31,
+    "fields": {
+        "user": 22,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 32,
+    "fields": {
+        "user": 174,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 33,
+    "fields": {
+        "user": 175,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 34,
+    "fields": {
+        "user": 176,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 35,
+    "fields": {
+        "user": 177,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 36,
+    "fields": {
+        "user": 178,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 37,
+    "fields": {
+        "user": 179,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 38,
+    "fields": {
+        "user": 180,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 39,
+    "fields": {
+        "user": 181,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 40,
+    "fields": {
+        "user": 182,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 41,
+    "fields": {
+        "user": 183,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 42,
+    "fields": {
+        "user": 184,
+        "term": 1,
+        "course": 3
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 43,
+    "fields": {
+        "user": 22,
+        "term": 1,
+        "course": 4
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 44,
+    "fields": {
+        "user": 208,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 45,
+    "fields": {
+        "user": 172,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 46,
+    "fields": {
+        "user": 173,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 47,
+    "fields": {
+        "user": 22,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 48,
+    "fields": {
+        "user": 209,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 49,
+    "fields": {
+        "user": 210,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 50,
+    "fields": {
+        "user": 211,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 51,
+    "fields": {
+        "user": 174,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 52,
+    "fields": {
+        "user": 212,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 53,
+    "fields": {
+        "user": 3,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 54,
+    "fields": {
+        "user": 213,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 55,
+    "fields": {
+        "user": 214,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 56,
+    "fields": {
+        "user": 215,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 57,
+    "fields": {
+        "user": 216,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 58,
+    "fields": {
+        "user": 217,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 59,
+    "fields": {
+        "user": 218,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 60,
+    "fields": {
+        "user": 219,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 61,
+    "fields": {
+        "user": 180,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 62,
+    "fields": {
+        "user": 220,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 63,
+    "fields": {
+        "user": 184,
+        "term": 1,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 64,
+    "fields": {
+        "user": 252,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 65,
+    "fields": {
+        "user": 1,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 66,
+    "fields": {
+        "user": 253,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 67,
+    "fields": {
+        "user": 4,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 68,
+    "fields": {
+        "user": 5,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 69,
+    "fields": {
+        "user": 254,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 70,
+    "fields": {
+        "user": 255,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 71,
+    "fields": {
+        "user": 256,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 72,
+    "fields": {
+        "user": 257,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 73,
+    "fields": {
+        "user": 6,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 74,
+    "fields": {
+        "user": 258,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 75,
+    "fields": {
+        "user": 259,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 76,
+    "fields": {
+        "user": 260,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 77,
+    "fields": {
+        "user": 7,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 78,
+    "fields": {
+        "user": 8,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 79,
+    "fields": {
+        "user": 261,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 80,
+    "fields": {
+        "user": 262,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 81,
+    "fields": {
+        "user": 263,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 82,
+    "fields": {
+        "user": 264,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 83,
+    "fields": {
+        "user": 265,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 84,
+    "fields": {
+        "user": 9,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 85,
+    "fields": {
+        "user": 13,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 86,
+    "fields": {
+        "user": 266,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 87,
+    "fields": {
+        "user": 14,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 88,
+    "fields": {
+        "user": 267,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 89,
+    "fields": {
+        "user": 268,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 90,
+    "fields": {
+        "user": 269,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 91,
+    "fields": {
+        "user": 270,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 92,
+    "fields": {
+        "user": 271,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 93,
+    "fields": {
+        "user": 272,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 94,
+    "fields": {
+        "user": 273,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 95,
+    "fields": {
+        "user": 274,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 96,
+    "fields": {
+        "user": 275,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 97,
+    "fields": {
+        "user": 276,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 98,
+    "fields": {
+        "user": 277,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 99,
+    "fields": {
+        "user": 278,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 100,
+    "fields": {
+        "user": 279,
+        "term": 2,
+        "course": 1
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 101,
+    "fields": {
+        "user": 276,
+        "term": 2,
+        "course": 2
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 102,
+    "fields": {
+        "user": 276,
+        "term": 2,
+        "course": 6
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 103,
+    "fields": {
+        "user": 226,
+        "term": 2,
+        "course": 7
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 104,
+    "fields": {
+        "user": 215,
+        "term": 4,
+        "course": 2
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 105,
+    "fields": {
+        "user": 670,
+        "term": 4,
+        "course": 8
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 106,
+    "fields": {
+        "user": 215,
+        "term": 4,
+        "course": 8
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 107,
+    "fields": {
+        "user": 208,
+        "term": 4,
+        "course": 9
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 108,
+    "fields": {
+        "user": 3,
+        "term": 4,
+        "course": 9
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 109,
+    "fields": {
+        "user": 215,
+        "term": 4,
+        "course": 9
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 110,
+    "fields": {
+        "user": 216,
+        "term": 4,
+        "course": 9
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 111,
+    "fields": {
+        "user": 215,
+        "term": 4,
+        "course": 10
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 112,
+    "fields": {
+        "user": 208,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 113,
+    "fields": {
+        "user": 22,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 114,
+    "fields": {
+        "user": 209,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 115,
+    "fields": {
+        "user": 210,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 116,
+    "fields": {
+        "user": 211,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 117,
+    "fields": {
+        "user": 686,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 118,
+    "fields": {
+        "user": 212,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 119,
+    "fields": {
+        "user": 3,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 120,
+    "fields": {
+        "user": 213,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 121,
+    "fields": {
+        "user": 214,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 122,
+    "fields": {
+        "user": 215,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 123,
+    "fields": {
+        "user": 216,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 124,
+    "fields": {
+        "user": 218,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 125,
+    "fields": {
+        "user": 219,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 126,
+    "fields": {
+        "user": 687,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 127,
+    "fields": {
+        "user": 180,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 128,
+    "fields": {
+        "user": 220,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 129,
+    "fields": {
+        "user": 183,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 130,
+    "fields": {
+        "user": 184,
+        "term": 4,
+        "course": 5
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 131,
+    "fields": {
+        "user": 226,
+        "term": 6,
+        "course": 2
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 132,
+    "fields": {
+        "user": 226,
+        "term": 6,
+        "course": 7
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 133,
+    "fields": {
+        "user": 226,
+        "term": 6,
+        "course": 11
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 134,
+    "fields": {
+        "user": 226,
+        "term": 7,
+        "course": 2
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 135,
+    "fields": {
+        "user": 226,
+        "term": 7,
+        "course": 7
+    }
+},
+{
+    "model": "coursedashboards.instructor",
+    "pk": 136,
+    "fields": {
+        "user": 226,
+        "term": 7,
+        "course": 11
+    }
+}
+]

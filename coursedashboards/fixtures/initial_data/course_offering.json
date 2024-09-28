@@ -1,0 +1,222 @@
+[
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 1,
+    "fields": {
+        "term": 1,
+        "course": 1,
+        "current_enrollment": 46,
+        "limit_estimate_enrollment": 100,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 2,
+    "fields": {
+        "term": 1,
+        "course": 2,
+        "current_enrollment": 90,
+        "limit_estimate_enrollment": 150,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 3,
+    "fields": {
+        "term": 1,
+        "course": 3,
+        "current_enrollment": 15,
+        "limit_estimate_enrollment": 12,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 4,
+    "fields": {
+        "term": 1,
+        "course": 4,
+        "current_enrollment": 8,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 5,
+    "fields": {
+        "term": 1,
+        "course": 5,
+        "current_enrollment": 30,
+        "limit_estimate_enrollment": 35,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 6,
+    "fields": {
+        "term": 2,
+        "course": 1,
+        "current_enrollment": 69,
+        "limit_estimate_enrollment": 200,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 7,
+    "fields": {
+        "term": 2,
+        "course": 2,
+        "current_enrollment": 110,
+        "limit_estimate_enrollment": 150,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 8,
+    "fields": {
+        "term": 2,
+        "course": 6,
+        "current_enrollment": 21,
+        "limit_estimate_enrollment": 20,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 9,
+    "fields": {
+        "term": 2,
+        "course": 7,
+        "current_enrollment": 305,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 10,
+    "fields": {
+        "term": 4,
+        "course": 2,
+        "current_enrollment": 194,
+        "limit_estimate_enrollment": 225,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 11,
+    "fields": {
+        "term": 4,
+        "course": 8,
+        "current_enrollment": 5,
+        "limit_estimate_enrollment": 20,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 12,
+    "fields": {
+        "term": 4,
+        "course": 9,
+        "current_enrollment": 5,
+        "limit_estimate_enrollment": 25,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 13,
+    "fields": {
+        "term": 4,
+        "course": 10,
+        "current_enrollment": 8,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 14,
+    "fields": {
+        "term": 4,
+        "course": 5,
+        "current_enrollment": 29,
+        "limit_estimate_enrollment": 40,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 15,
+    "fields": {
+        "term": 6,
+        "course": 2,
+        "current_enrollment": 190,
+        "limit_estimate_enrollment": 200,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 16,
+    "fields": {
+        "term": 6,
+        "course": 7,
+        "current_enrollment": 305,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 17,
+    "fields": {
+        "term": 6,
+        "course": 11,
+        "current_enrollment": 305,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 18,
+    "fields": {
+        "term": 7,
+        "course": 2,
+        "current_enrollment": 190,
+        "limit_estimate_enrollment": 200,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 19,
+    "fields": {
+        "term": 7,
+        "course": 7,
+        "current_enrollment": 305,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+},
+{
+    "model": "coursedashboards.courseoffering",
+    "pk": 20,
+    "fields": {
+        "term": 7,
+        "course": 11,
+        "current_enrollment": 305,
+        "limit_estimate_enrollment": 15,
+        "canvas_course_url": ""
+    }
+}
+]

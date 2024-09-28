@@ -1,0 +1,72 @@
+[
+{
+    "model": "coursedashboards.term",
+    "pk": 1,
+    "fields": {
+        "quarter": "winter",
+        "year": 2013,
+        "last_queried": "2024-09-27T19:22:51.783Z",
+        "term_key": 20131
+    }
+},
+{
+    "model": "coursedashboards.term",
+    "pk": 2,
+    "fields": {
+        "quarter": "spring",
+        "year": 2013,
+        "last_queried": "2024-09-27T19:22:58.945Z",
+        "term_key": 20132
+    }
+},
+{
+    "model": "coursedashboards.term",
+    "pk": 3,
+    "fields": {
+        "quarter": "autumn",
+        "year": 2012,
+        "last_queried": null,
+        "term_key": 20124
+    }
+},
+{
+    "model": "coursedashboards.term",
+    "pk": 4,
+    "fields": {
+        "quarter": "autumn",
+        "year": 2013,
+        "last_queried": "2024-09-27T19:23:06.548Z",
+        "term_key": 20134
+    }
+},
+{
+    "model": "coursedashboards.term",
+    "pk": 5,
+    "fields": {
+        "quarter": "summer",
+        "year": 2013,
+        "last_queried": "2024-09-27T19:23:06.527Z",
+        "term_key": 20133
+    }
+},
+{
+    "model": "coursedashboards.term",
+    "pk": 6,
+    "fields": {
+        "quarter": "winter",
+        "year": 2014,
+        "last_queried": "2024-09-27T19:23:14.553Z",
+        "term_key": 20141
+    }
+},
+{
+    "model": "coursedashboards.term",
+    "pk": 7,
+    "fields": {
+        "quarter": "spring",
+        "year": 2014,
+        "last_queried": "2024-09-27T19:23:21.249Z",
+        "term_key": 20142
+    }
+}
+]

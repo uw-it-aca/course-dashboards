@@ -1,0 +1,112 @@
+[
+{
+    "model": "coursedashboards.course",
+    "pk": 1,
+    "fields": {
+        "curriculum": "GEN ST",
+        "course_number": 350,
+        "section_id": "A",
+        "course_title": "INDEPENDENT FIELDWORK"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 2,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 201,
+        "section_id": "A",
+        "course_title": "INTRODUCTION TO POLITICAL THEORY"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 3,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 488,
+        "section_id": "A",
+        "course_title": "HONORS SENIOR THESIS"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 4,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 514,
+        "section_id": "A",
+        "course_title": "SELECTED TOPICS IN POLITICAL THEORY"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 5,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 800,
+        "section_id": "A",
+        "course_title": "DOCTORAL DISSERTATION"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 6,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 405,
+        "section_id": "A",
+        "course_title": "ADVANCED SEMINAR IN AMERICAN POLITICS"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 7,
+    "fields": {
+        "curriculum": "ESS",
+        "course_number": 102,
+        "section_id": "A",
+        "course_title": "SPACE & SPACE TRAVEL"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 8,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 498,
+        "section_id": "A",
+        "course_title": "THE WASHINGTON CENTER INTERNSHIP"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 9,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 499,
+        "section_id": "B",
+        "course_title": "INDIVIDUAL CONFERENCE AND RESEARCH"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 10,
+    "fields": {
+        "curriculum": "POL S",
+        "course_number": 513,
+        "section_id": "A",
+        "course_title": "ISSUES IN FEMINIST THEORY"
+    }
+},
+{
+    "model": "coursedashboards.course",
+    "pk": 11,
+    "fields": {
+        "curriculum": "ESS",
+        "course_number": 103,
+        "section_id": "A",
+        "course_title": "SPACE & SPACE TRAVEL"
+    }
+}
+]

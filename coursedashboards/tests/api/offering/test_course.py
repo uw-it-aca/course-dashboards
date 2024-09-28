@@ -45,6 +45,7 @@ class TestCourseAPIs(CodaApiTest):
 
     def test_course_apis(self):
         self.set_user('bill')
+
         response = self.get_course_response(kwargs=self.course)
 
         self.assertEquals(response.status_code, 200)
