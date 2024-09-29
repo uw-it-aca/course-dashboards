@@ -43,21 +43,21 @@ class Term(models.Model):
 
     def __eq__(self, other):
         return (other is not None and
-                type(self) == type(other) and
+                type(self) is type(other) and
                 self.int_key() == other.int_key())
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __lt__(self, other):
-        return (type(self) == type(other) and
+        return (type(self) is type(other) and
                 self.int_key() < other.int_key())
 
     def __le__(self, other):
         return self.__lt__(other) or self.__eq__(other)
 
     def __gt__(self, other):
-        return (type(self) == type(other) and
+        return (type(self) is type(other) and
                 self.int_key() > other.int_key())
 
     def __ge__(self, other):
