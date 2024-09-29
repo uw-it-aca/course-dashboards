@@ -30,7 +30,6 @@ setup(
         'django_mobileesp',
         'uw-memcached-clients~=1.0',
         'pytz',
-        'psycopg2>=2.8,<2.9',
         'lxml~=4.9.1',
         'xmlsec==1.3.13',
         'UW-RestClients-Core~=1.3',
