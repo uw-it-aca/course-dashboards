@@ -25,6 +25,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django~=4.2',
+        'psycopg2',
         'django-compressor==4.4',
         'django-pyscss',
         'django_mobileesp',
