@@ -28,7 +28,7 @@ FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-test-container:${DJANGO_C
 
 USER root
 
-RUN apt-get update && apt-get install libpq-dev -y
+RUN apt-get update && apt-get install sqlite3 libpq-dev -y
 
 USER acait
 
