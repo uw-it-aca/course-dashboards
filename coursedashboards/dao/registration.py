@@ -17,8 +17,8 @@ def get_active_registrations_for_section(section):
         return get_active_registrations_by_section(section)
     except DataFailureException as ex:
         if ex.status == 404:
-            logger.info(" {}".format(ex))
+            logger.info(f"Section not found: {ex}")
         else:
-            logger.error(" {}".format(ex))
+            logger.error(f"Registration fetch error: {ex}")
 
     return []

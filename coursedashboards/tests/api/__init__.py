@@ -34,6 +34,23 @@ standard_test_override = override_settings(
 
 @standard_test_override
 class CodaApiTest(TransactionTestCase):
+    databases = '__all__'
+    fixtures = [
+        'initial_data/term.json',
+        'initial_data/user.json',
+        'initial_data/course.json',
+        'initial_data/course_offering.json',
+        'initial_data/instructor.json',
+        'initial_data/major.json',
+        'initial_data/registration.json',
+        'initial_data/student_major.json',
+        'uw_person/person.json',
+        'uw_person/student.json',
+        'person.json',
+        'term.json',
+        'major.json',
+        'student.json',
+        'transcript.json']
 
     def setUp(self):
         """
@@ -42,7 +59,7 @@ class CodaApiTest(TransactionTestCase):
         self.client = Client()
         self.request = RequestFactory().get("/")
         self.middleware = UserServiceMiddleware()
-        call_command('load_data_for_term', '--previous=4', '--next')
+#        call_command('initialize_db')
 
     def set_user(self, username):
         self.request.user = get_user(username)

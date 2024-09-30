@@ -1,0 +1,866 @@
+[
+{
+    "model": "coursedashboards.major",
+    "pk": 1,
+    "fields": {
+        "major": "PSYCHOLOGY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 2,
+    "fields": {
+        "major": "PRE SOCIAL SCIENCE",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 3,
+    "fields": {
+        "major": "COMMUNICATION",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 4,
+    "fields": {
+        "major": "POL SCI (POL ECON)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 5,
+    "fields": {
+        "major": "BUS ADMIN (MARKETING)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 6,
+    "fields": {
+        "major": "BIORESOURCE SCI & ENGR",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 7,
+    "fields": {
+        "major": "COM (JOURNALISM)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 8,
+    "fields": {
+        "major": "POLITICAL SCIENCE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 9,
+    "fields": {
+        "major": "SPANISH",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 10,
+    "fields": {
+        "major": "COMP HIST OF IDEAS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 11,
+    "fields": {
+        "major": "INT ST: LAT AM & CARIB",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 12,
+    "fields": {
+        "major": "COMMUNICATION, EVENING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 13,
+    "fields": {
+        "major": "ACCOUNTING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 14,
+    "fields": {
+        "major": "EXTENDED PRE MAJOR",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 15,
+    "fields": {
+        "major": "AMERICAN ETHNIC STUDIES",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 16,
+    "fields": {
+        "major": "ECONOMICS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 17,
+    "fields": {
+        "major": "AQUATIC & FISHERY SCI",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 18,
+    "fields": {
+        "major": "BIOLOGY (GENERAL)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 19,
+    "fields": {
+        "major": "INFORMATICS (HCI)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 20,
+    "fields": {
+        "major": "ACADEMY FOR YOUNG SCH",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 21,
+    "fields": {
+        "major": "INTERNATIONAL STUDIES",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 22,
+    "fields": {
+        "major": "SOCIOLOGY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 23,
+    "fields": {
+        "major": "ART (PHOTOMEDIA)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 24,
+    "fields": {
+        "major": "EARLY CHILD & FAMILY ST",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 25,
+    "fields": {
+        "major": "CHEMICAL ENGINEERING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 26,
+    "fields": {
+        "major": "CHEMISTRY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 27,
+    "fields": {
+        "major": "PRE MAJOR (A&S)",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 28,
+    "fields": {
+        "major": "PRE ENGINEERING",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 29,
+    "fields": {
+        "major": "PRE SCIENCE",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 30,
+    "fields": {
+        "major": "NON MATRICULATED",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 31,
+    "fields": {
+        "major": "PRE HUMANITIES",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 32,
+    "fields": {
+        "major": "PRE HEALTH SCIENCES",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 33,
+    "fields": {
+        "major": "ANTHROPOLOGY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 34,
+    "fields": {
+        "major": "PRE ENVIRONMENTAL HEALTH",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 35,
+    "fields": {
+        "major": "ART (INTERD VISUAL ARTS)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 36,
+    "fields": {
+        "major": "ART HISTORY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 37,
+    "fields": {
+        "major": "PRE NURSING",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 38,
+    "fields": {
+        "major": "PRE ARTS",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 39,
+    "fields": {
+        "major": "BUSINESS ADMINISTRATION",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 40,
+    "fields": {
+        "major": "APPLIED MUSIC-STRING INS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 41,
+    "fields": {
+        "major": "PHILOSOPHY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 42,
+    "fields": {
+        "major": "JAPANESE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 43,
+    "fields": {
+        "major": "PHYSICS: COMP PHYSICS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 44,
+    "fields": {
+        "major": "HISTORY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 45,
+    "fields": {
+        "major": "ENGLISH",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 46,
+    "fields": {
+        "major": "DANCE: CREATIVE STUDIES",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 47,
+    "fields": {
+        "major": "COMPUTATIONAL LING",
+        "degree_level": 2
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 48,
+    "fields": {
+        "major": "ACMS (BIOL & LIFE SCI)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 49,
+    "fields": {
+        "major": "DRAMA: PERFORMANCE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 50,
+    "fields": {
+        "major": "POL SCI (INTL SECURITY)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 51,
+    "fields": {
+        "major": "AMERICAN INDIAN STUDIES",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 52,
+    "fields": {
+        "major": "POLITICAL SCIENCE",
+        "degree_level": 3
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 53,
+    "fields": {
+        "major": "PHILOSOPHY",
+        "degree_level": 4
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 54,
+    "fields": {
+        "major": "GENDER, WOMEN, SEXUALITY",
+        "degree_level": 3
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 55,
+    "fields": {
+        "major": "POLITICAL SCIENCE",
+        "degree_level": 4
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 56,
+    "fields": {
+        "major": "SPEECH&HEARING SCI (CD)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 57,
+    "fields": {
+        "major": "BUS ADMIN (FINANCE)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 58,
+    "fields": {
+        "major": "BIO:ECOL,EVOL,& CONSER",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 59,
+    "fields": {
+        "major": "ANTH: MED ANTH & GLOB HL",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 60,
+    "fields": {
+        "major": "SOCIAL WELFARE (BSW)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 61,
+    "fields": {
+        "major": "ENGLISH(CREATIVE WRITNG)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 62,
+    "fields": {
+        "major": "FRENCH",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 63,
+    "fields": {
+        "major": "LAW, SOCIETIES, JUSTICE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 64,
+    "fields": {
+        "major": "SOCIAL SCIENCES,EVENING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 65,
+    "fields": {
+        "major": "BUS ADMIN (INFOR SYS)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 66,
+    "fields": {
+        "major": "COMPUTER ENGINEERING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 67,
+    "fields": {
+        "major": "BIOCHEMISTRY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 68,
+    "fields": {
+        "major": "MATHEMATICS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 69,
+    "fields": {
+        "major": "NEAR EAST ST CULT & CIV",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 70,
+    "fields": {
+        "major": "SWEDISH",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 71,
+    "fields": {
+        "major": "MECHANICAL ENGINEERING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 72,
+    "fields": {
+        "major": "NEAR EAST ST LANG & CIV",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 73,
+    "fields": {
+        "major": "GENDER, WOMEN, SEXUALITY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 74,
+    "fields": {
+        "major": "PREMAJOR (BOTHELL)",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 75,
+    "fields": {
+        "major": "VISITING-ARTS & SCIENCES",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 76,
+    "fields": {
+        "major": "ENV SCI & TERR RES MGMT",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 77,
+    "fields": {
+        "major": "BIOENGINEERING",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 78,
+    "fields": {
+        "major": "ENVIRONMENTAL STUDIES",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 79,
+    "fields": {
+        "major": "INT ST:EUROPE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 80,
+    "fields": {
+        "major": "INT ST:COMPARATIVE RELIG",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 81,
+    "fields": {
+        "major": "COMPUTER SCIENCE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 82,
+    "fields": {
+        "major": "PRE ARCHITECTURE",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 83,
+    "fields": {
+        "major": "BIOLOGY (PHYSIOLOGY)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 84,
+    "fields": {
+        "major": "EXTENDED PRE BUS ADMIN",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 85,
+    "fields": {
+        "major": "GRAD VISITING",
+        "degree_level": 3
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 86,
+    "fields": {
+        "major": "INT ST: ASIA",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 87,
+    "fields": {
+        "major": "DESIGN (VISUAL COMM)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 88,
+    "fields": {
+        "major": "ACMS (SOC & BEH SCI)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 89,
+    "fields": {
+        "major": "BSKT WVE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 90,
+    "fields": {
+        "major": "PUBLIC HEALTH",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 91,
+    "fields": {
+        "major": "GEOGRAPHY",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 92,
+    "fields": {
+        "major": "PRE BIORES SCI & ENGR",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 93,
+    "fields": {
+        "major": "ATMOSPHERIC SCIENCE",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 94,
+    "fields": {
+        "major": "ITALIAN",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 95,
+    "fields": {
+        "major": "EXCHANGE ARTS & SCIENCES",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 96,
+    "fields": {
+        "major": "LAW CONCURRENT",
+        "degree_level": 3
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 97,
+    "fields": {
+        "major": "LAW, SOCIETIES, JUSTICE",
+        "degree_level": 3
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 98,
+    "fields": {
+        "major": "WOMEN STUDIES",
+        "degree_level": 3
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 99,
+    "fields": {
+        "major": "GEOGRAPHY",
+        "degree_level": 2
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 100,
+    "fields": {
+        "major": "PRE BUSINESS ADMIN",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 101,
+    "fields": {
+        "major": "BIOLOGY (MOLEC,CELL,DEV)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 102,
+    "fields": {
+        "major": "EARLY ENTRANCE PROGRAM",
+        "degree_level": 0
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 103,
+    "fields": {
+        "major": "PHYSICS: APPLIED PHYSICS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 104,
+    "fields": {
+        "major": "APPLIED MUSIC-ORCHESTRAL",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 105,
+    "fields": {
+        "major": "ART (PAINTING & DRAWING)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 106,
+    "fields": {
+        "major": "ACMS (DISCRETE MATH AL)",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 107,
+    "fields": {
+        "major": "PHYSICS: BIOPHYSICS",
+        "degree_level": 1
+    }
+},
+{
+    "model": "coursedashboards.major",
+    "pk": 108,
+    "fields": {
+        "major": "MATH (TEACH PREP)",
+        "degree_level": 1
+    }
+}
+]

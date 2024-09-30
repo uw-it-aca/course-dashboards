@@ -25,11 +25,12 @@ class Term(models.Model):
     last_queried = models.DateTimeField(null=True, blank=True)
     term_key = models.PositiveSmallIntegerField(db_index=True, default=0)
 
-    def __str__(self):
-        return "{}-{}".format(self.year, self.quarter)
-
     def get_term_key(self):
         return self.year * 10 + self._quarter_to_int(self.quarter)
+
+    @property
+    def sws_label(self):
+        return f"{self.year},{self.quarter}"
 
     def save(self, *args, **kwargs):
         if not self.term_key:
@@ -42,21 +43,21 @@ class Term(models.Model):
 
     def __eq__(self, other):
         return (other is not None and
-                type(self) == type(other) and
+                type(self) is type(other) and
                 self.int_key() == other.int_key())
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __lt__(self, other):
-        return (type(self) == type(other) and
+        return (type(self) is type(other) and
                 self.int_key() < other.int_key())
 
     def __le__(self, other):
         return self.__lt__(other) or self.__eq__(other)
 
     def __gt__(self, other):
-        return (type(self) == type(other) and
+        return (type(self) is type(other) and
                 self.int_key() > other.int_key())
 
     def __ge__(self, other):
@@ -74,3 +75,6 @@ class Term(models.Model):
 
     def int_key(self):
         return int(self.year) * 10 + self._quarter_to_int(self.quarter)
+
+    def __str__(self):
+        return f"{self.year}-{self.quarter}"

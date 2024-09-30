@@ -5,6 +5,11 @@ import uw_pws
 from coursedashboards.models.user import User
 from coursedashboards.dao.pws import get_person_of_current_user, \
     get_person_by_netid
+from coursedashboards.dao.exceptions import MalformedOrInconsistentUser
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def user_from_person(person):
@@ -27,8 +32,7 @@ def user_from_person(person):
                 save = True
             elif n_prior > 1:
                 raise Exception(
-                    'Need to sort out netid {} User models'.format(
-                        person.uwnetid))
+                    f"Need to sort out netid {person.uwnetid} User models")
 
         if not user:
             return _user_from_person(person)
@@ -53,8 +57,10 @@ def user_from_person(person):
                 user.uwregid = person.uwregid
                 save = True
         else:
-            raise Exception('Mismatched regid {} for {}'.format(
-                user.uwregid, user.uwnetid))
+            logger.error(
+                f"previous regid for {user.uwnetid} ({user.uwregid}) "
+                f"not found in person service {person.uwregid}")
+            raise MalformedOrInconsistentUser()
 
     if user.email != _person_email(person):
         user.email = _person_email(person)
@@ -109,7 +115,7 @@ def _person_email(person):
     try:
         return person.email_addresses[0]
     except IndexError:
-        return '{}@uw.edu'.format(person.uwnetid)
+        return f"{person.uwnetid}@uw.edu"
 
 
 def get_current_user():

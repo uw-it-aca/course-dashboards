@@ -188,7 +188,7 @@ def get_given_and_previous_quarters(quarter_string, num):
             sws_term = get_term_before(sws_term)
             sws_terms.insert(0, sws_term)
         except Exception as ex:
-            logger.error("Previous term Fail: {}: {}".format(sws_term, ex))
+            logger.error(f"Previous term Fail: {sws_term}: {ex}")
 
     return sws_terms
 
