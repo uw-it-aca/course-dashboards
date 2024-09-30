@@ -1,7 +1,7 @@
 # Copyright 2024 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.db.models import CharField, OuterRef, Subquery
+from django.db.models import OuterRef, Subquery
 from django.db.models.functions import JSONObject
 from uw_person_client.models import Student, Transcript
 

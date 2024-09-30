@@ -65,18 +65,19 @@ class CourseProfileData(CoDaEndpoint):
             raise UpStreamErrorException()
 
     def _is_disability(self, person, offering):
-        return person.student.disability_ind
+        return person.get('disability_ind')
 
     def _is_eop(self, person, offering):
-        return str(person['special_program_code']) in EOP_CODES
+        return str(person.get('special_program_code')) in EOP_CODES
 
     def _is_transfer(self, person, offering):
-        return str(person['application_type_code']) in TRANSFER_CODES
+        return str(person.get('application_type_code')) in TRANSFER_CODES
 
     def _on_probation(self, person, offering):
-        transcript = getattr(person, 'latest_transcript', {})
-        if hasattr(transcript, 'scholarship_type'):
-            return str(transcript['scholarship_type']) in PROBATION_CODES
+        if person.get('latest_transcript'):
+            return str(
+                person.get('latest_transcript').get('scholarship_type')
+            ) in PROBATION_CODES
         return False
 
     def _inc(self, test, person, offering):
