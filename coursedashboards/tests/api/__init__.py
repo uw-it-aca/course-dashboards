@@ -21,6 +21,15 @@ XFrame = 'django.middleware.clickjacking.XFrameOptionsMiddleware'
 UserService = 'userservice.user.UserServiceMiddleware'
 AUTH_BACKEND = 'django.contrib.auth.backends.ModelBackend'
 standard_test_override = override_settings(
+    DATABASE_ROUTERS=[],
+    DATABASES={
+        'default': {
+            sqlite3: {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': 'db.sqlite3',
+            }
+        }
+    },
     MIDDLEWARE=[Session,
                 Common,
                 CsrfView,

@@ -26,5 +26,10 @@ RUN . /app/bin/activate && python manage.py compress -f && python manage.py coll
 
 FROM us-docker.pkg.dev/uwit-mci-axdd/containers/django-test-container:${DJANGO_CONTAINER_VERSION} as app-test-container
 
+USER root
+
+RUN apt-get update && apt-get install libpq-dev -y
+
+USER acait
+
 COPY --from=app-container /app/ /app/
-COPY --from=app-container /static/ /static/
