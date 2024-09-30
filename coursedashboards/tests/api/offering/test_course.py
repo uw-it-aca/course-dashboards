@@ -48,88 +48,88 @@ class TestCourseAPIs(CodaApiTest):
 
         response = self.get_course_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         course = json.loads(response.content)
 
-        self.assertEquals(course['current_enrollment'], 190)
-        self.assertEquals(course['current_repeating'], 5)
-        self.assertEquals(course['median_course_grade'], 3.4)
+        self.assertEqual(course['current_enrollment'], 190)
+        self.assertEqual(course['current_repeating'], 5)
+        self.assertEqual(course['median_course_grade'], 3.4)
 
         # def test_profile
         response = self.get_profile_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         profile = json.loads(response.content)
 
-        self.assertEquals(len(profile.keys()), 4)
+        self.assertEqual(len(profile.keys()), 4)
 
-        self.assertEquals(profile['eop']['n'], 22)
-        self.assertEquals(profile['transfer']['n'], 15)
-        self.assertEquals(profile['disability']['n'], 12)
-        self.assertEquals(profile['probation']['n'], 4)
+        self.assertEqual(profile['eop']['n'], 22)
+        self.assertEqual(profile['transfer']['n'], 15)
+        self.assertEqual(profile['disability']['n'], 12)
+        self.assertEqual(profile['probation']['n'], 4)
 
         # test_historic_course_api
         response = self.get_historic_course_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         payload = json.loads(response.content)
         past_offerings = payload['past_offerings']
         sections = payload['sections']
 
-        self.assertEquals(len(past_offerings['terms']), 3)
-        self.assertEquals(past_offerings['enrollment'], 394)
-        self.assertEquals(len(sections), 1)
-        self.assertEquals(len(sections['2013']), 3)
+        self.assertEqual(len(past_offerings['terms']), 3)
+        self.assertEqual(past_offerings['enrollment'], 394)
+        self.assertEqual(len(sections), 1)
+        self.assertEqual(len(sections['2013']), 3)
 
         # test_past_performance_api
         response = self.get_past_performance_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         payload = json.loads(response.content)
         performance = payload['performance']
 
-        self.assertEquals(performance['enrollment'], 394)
-        self.assertEquals(performance['offering_count'], 3)
-        self.assertEquals(len(performance['course_grades']), 370)
+        self.assertEqual(performance['enrollment'], 394)
+        self.assertEqual(performance['offering_count'], 3)
+        self.assertEqual(len(performance['course_grades']), 370)
 
         # test_past_concurrent_api
         response = self.get_past_concurrent_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         payload = json.loads(response.content)
         concurrent = payload['concurrent_courses']
 
-        self.assertEquals(len(concurrent), 2)
+        self.assertEqual(len(concurrent), 2)
 
         # test_past_student_major_api(self):
         response = self.get_student_major_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         payload = json.loads(response.content)
         majors = payload['student_majors']
 
-        self.assertEquals(len(majors), 20)
+        self.assertEqual(len(majors), 20)
 
         # test_past_graduated_major_api
         response = self.get_graduated_major_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         payload = json.loads(response.content)
         majors = payload['graduated_majors']
 
-        self.assertEquals(len(majors), 20)
+        self.assertEqual(len(majors), 20)
 
         # test_past_historic_gpas_api
         response = self.get_historic_gpas_response(kwargs=self.course)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         payload = json.loads(response.content)
         gpas = payload['gpas']

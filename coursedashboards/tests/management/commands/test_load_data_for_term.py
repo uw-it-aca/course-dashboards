@@ -10,5 +10,5 @@ class TestLoadDataForTerm(TestCase):
     def test_load_data_for_term(self):
         call_command('load_data_for_term', '--next')
 
-        self.assertEquals(CourseOffering.objects.all().count(), 6)
-        self.assertEquals(Registration.objects.all().count(), 398)
+        self.assertEqual(CourseOffering.objects.all().count(), 6)
+        self.assertEqual(Registration.objects.all().count(), 398)
