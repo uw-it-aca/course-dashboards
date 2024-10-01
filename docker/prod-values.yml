@@ -87,13 +87,11 @@ environmentVariables:
     value: PROD
   - name: BOOKSTORE_ENV
     value: PROD
-  - name: AXDD_PERSON_CLIENT_ENV
-    value: PROD
-  - name: UW_PERSON_DB_HOSTNAME
+  - name: UW_PERSON_DB_HOST
     value: 172.18.1.67
   - name: UW_PERSON_DB_PORT
     value: '5432'
-  - name: UW_PERSON_DB_DATABASE
+  - name: UW_PERSON_DB_NAME
     value: uw-person-prod
   - name: AUTH
     value: SAML
@@ -157,7 +155,7 @@ environmentVariablesSecrets:
     secretName: coda.uw.edu-shared-secrets
     secretKey: canvas-api-token
   personDBUser:
-    name: UW_PERSON_DB_USERNAME
+    name: UW_PERSON_DB_USER
     secretName: coda.uw.edu-shared-secrets
     secretKey: person-db-user
   personDBPass:

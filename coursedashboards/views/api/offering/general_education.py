@@ -15,5 +15,5 @@ class CourseGenEdData(CoDaEndpoint):
         try:
             return get_gen_ed_reqs_for_offering(offering)
         except Exception as ex:
-            logger.exception("SWS Course: {}".format(ex))
+            logger.exception(f"SWS Course: {ex}")
             raise UpStreamErrorException()

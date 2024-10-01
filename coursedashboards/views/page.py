@@ -53,8 +53,7 @@ def page(request,
         sections = []
         historical = {}
 
-        for sws_term in get_page_terms(
-                "{},{}".format(cur_term.year, cur_term.quarter)):
+        for sws_term in get_page_terms(cur_term.sws_label):
             term, created = Term.objects.get_or_create(
                 year=sws_term.year, quarter=sws_term.quarter)
 

@@ -20,5 +20,5 @@ class CourseTextbookData(CoDaEndpoint):
                 'textbooks': [book.isbn for book in books]
             }
         except Exception as ex:
-            logger.exception("bookstore service: {}".format(ex))
+            logger.exception(f"bookstore service: {ex}")
             raise UpStreamErrorException()

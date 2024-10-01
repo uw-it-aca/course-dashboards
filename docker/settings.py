@@ -15,6 +15,7 @@ if os.getenv('AUTH', 'NONE') == 'SAML_MOCK':
 INSTALLED_APPS += [
     'compressor',
     'coursedashboards',
+    'uw_person_client',
     'userservice',
     'supporttools',
     'persistent_message',
@@ -66,7 +67,17 @@ USERSERVICE_ADMIN_GROUP='u_acadev_coda_admins'
 RESTCLIENTS_ADMIN_GROUP='u_acadev_coda_admins'
 PERSISTENT_MESSAGE_AUTH_MODULE = 'coursedashboards.authorization.can_manage_persistent_messages'
 
-if not os.getenv("ENV") == "localdev":
+if os.getenv("ENV") == "localdev":
+    DEBUG = True
+    RESTCLIENTS_DAO_CACHE_CLASS = None
+
+    MIGRATION_MODULES = {
+        'uw_person_client': 'uw_person_client.test_migrations',
+    }
+    FIXTURE_DIRS = ['uw_person_client/fixtures',
+                    'coursedashboards/fixtures/uw_person']
+else:
+    Debug = False
     INSTALLED_APPS += ['rc_django',]
     RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
 
@@ -79,13 +90,19 @@ USERSERVICE_VALIDATION_MODULE = "coursedashboards.authorization.validate_netid"
 USERSERVICE_OVERRIDE_AUTH_MODULE = "coursedashboards.authorization.can_override_user"
 RESTCLIENTS_ADMIN_AUTH_MODULE = "coursedashboards.authorization.can_proxy_restclient"
 
-# PDS config
-AXDD_PERSON_CLIENT_ENV = os.getenv('AXDD_PERSON_CLIENT_ENV', '')
-UW_PERSON_DB_USERNAME = os.getenv('UW_PERSON_DB_USERNAME', '')
-UW_PERSON_DB_PASSWORD = os.getenv('UW_PERSON_DB_PASSWORD', '')
-UW_PERSON_DB_HOSTNAME = os.getenv('UW_PERSON_DB_HOSTNAME', '')
-UW_PERSON_DB_DATABASE = os.getenv('UW_PERSON_DB_DATABASE', '')
-UW_PERSON_DB_PORT = os.getenv('UW_PERSON_DB_PORT', '')
+# PDS config, default values are for localdev
+DATABASES['uw_person'] = {
+    'ENGINE': 'django.db.backends.postgresql',
+    'HOST': os.getenv('UW_PERSON_DB_HOST', 'postgres'),
+    'PORT': os.getenv('UW_PERSON_DB_PORT', '5432'),
+    'NAME': os.getenv('UW_PERSON_DB_NAME', 'postgres'),
+    'USER': os.getenv('UW_PERSON_DB_USER', 'postgres'),
+    'PASSWORD': os.getenv('UW_PERSON_DB_PASSWORD', 'postgres'),
+}
+
+DATABASE_ROUTERS = ['coursedashboards.routers.UWPersonRouter']
+
+TZINFOS = {"PDT": -7 * 3600}
 
 DETECT_USER_AGENTS = {
     'is_tablet': False,
@@ -94,7 +111,5 @@ DETECT_USER_AGENTS = {
 }
 
 CODA_ADMIN_GROUP = 'u_acadev_coda_admins'
-
-DEBUG = True if os.getenv('ENV', 'localdev') == "localdev" else False
 
 CODA_PROFILE = True if os.getenv('CODA_PROFILE', 'FALSE') == "TRUE" else False

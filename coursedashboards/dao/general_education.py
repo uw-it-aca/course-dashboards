@@ -12,8 +12,8 @@ def get_gen_ed_reqs_for_offering(offering):
     """
     returns general education requirements for a given course offering
     """
-    course_label = "{},{},{},{}".format(
-        offering.term.year, offering.term.quarter,
-        offering.course.curriculum, offering.course.course_number)
+    course_label = (
+        f"{offering.term.year},{offering.term.quarter},"
+        f"{offering.course.curriculum},{offering.course.course_number}")
     course = get_course_by_label(course_label)
     return course.json_data().get('general_education_requirements', {})

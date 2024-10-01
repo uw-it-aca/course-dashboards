@@ -3,10 +3,11 @@ version: '3.4'
 services:
   app:
     environment:
-      - ENV=localdev
-      - PORT=8000
-      - AUTH=SAML_MOCK
-      - CODA_PROFILE=TRUE
+      ENV: localdev
+      PORT: 8000
+      AUTH: SAML_MOCK
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
     restart: always
     container_name: app-coda
     build:
@@ -16,3 +17,9 @@ services:
       - ./coursedashboards:/app/coursedashboards
     ports:
       - "8000:8000"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: postgres
