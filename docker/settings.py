@@ -80,6 +80,7 @@ else:
     Debug = False
     INSTALLED_APPS += ['rc_django',]
     RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
+    RESTCLIENTS_BOOK_HOST = 'https://api.ubookstore.com'
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
