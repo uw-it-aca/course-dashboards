@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+    <head>
+      {% include "include/head.html" %}
+    </head>
+
+<body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
+    {% csrf_token %}
+    {% block header %}{% endblock %}
+    <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
+    {% block web_content %}{% endblock %}
+
+    </div> <!-- end of .page-wrap  -->
+    <div>
+      {% block footer %}{% endblock %}
+    </div><!-- footer role -->
+
+{% include "handlebars/page-top.html" %}
+{% include "handlebars/course-select.html" %}
+{% include "handlebars/current-course-data.html" %}
+{% include "handlebars/current-performance.html" %}
+{% include "handlebars/current-profile.html" %}
+{% include "handlebars/historic-course-data.html" %}
+{% include "handlebars/cannot-display-course.html" %}
+{% include "handlebars/historic-concurrent-courses.html" %}
+{% include "handlebars/historic-course-major.html" %}
+{% include "handlebars/historic-grad-major.html" %}
+{% include "handlebars/historic-performance.html" %}
+{% include "handlebars/historic-previous-instructors.html" %}
+{% include "handlebars/intro_modal.html" %}
+{% include "handlebars/drs_banner_textbooks.html" %}
+{% include "handlebars/course-gen-ed-notices.html" %}
+<script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
+<script src="{% static "coursedashboards/js/main.js" %}"></script>
+<script src="{% static "coursedashboards/js/intro.js" %}"></script>
+<script src="{% static "coursedashboards/js/course.js" %}"></script>
+<script src="{% static "coursedashboards/js/course_select.js" %}"></script>
+<script src="{% static "coursedashboards/js/course_data.js" %}"></script>
+<script src="{% static "coursedashboards/js/historic.js" %}"></script>
+<script src="{% static "coursedashboards/js/historic_data.js" %}"></script>
+<script src="{% static "coursedashboards/js/calculate.js" %}"></script>
+<script src="{% static "coursedashboards/js/graphs.js" %}"></script>
+<script>
+  window.static_url = "{% get_static_prefix %}";
+</script>
+
+</body>
+</html>

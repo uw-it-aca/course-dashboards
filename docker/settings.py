@@ -2,7 +2,7 @@ from .base_settings import *
 
 ALLOWED_HOSTS = ['*']
 
-if os.getenv('AUTH', 'NONE') == 'SAML_MOCK':
+if 'SAML_MOCK' in os.getenv('AUTH', '').split(' '):
     MOCK_SAML_ATTRIBUTES = {
         'uwnetid': ['bill'],
         'affiliations': ['employee', 'member'],

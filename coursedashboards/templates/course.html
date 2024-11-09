@@ -1,23 +1,22 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "content_base.html" %}
+
+{% block header %}
+{% include "drs_banner.html" %}
+{% endblock %}
+
 {% block web_content %}
 {% include "include/script.html" %}
 
-<!-- MAIN CONTENT BELOW THE BANNER -->
-
   	<main class="coda-wrapper" role="main">
-      {% include "persistent_messages.html" %}
     		<div class="main-content row" id="maincontent">
-              {% if no_courses %}
+              {%if error %}
               <div class="col-12">
-                We're sorry, but it does not appear you have instructed any courses recently.
+                We're sorry, but instructed courses are unavailable at this time.
               </div>
               {% else %}
-              <div class="course-info col-12" aria-labelledby="course_title">
+              <div style="display: none;">
                 <div class="course-quarter-year">
-                  <h2 id="course_title" class="heading-page">Course Dashboard for
-                    <div class="d-inline-block course-select"></div>
-                  </h2>
+                  <div class="d-inline-block course-select"></div>
                 </div>
                 <hr />
               </div>
@@ -29,4 +28,5 @@
               {% endif %}
     		</div>	<!-- end of main -->
 	</main>  <!-- end of main container -->
+
 {% endblock %}

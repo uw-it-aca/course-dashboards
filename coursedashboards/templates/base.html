@@ -1,70 +1,23 @@
-{% load static %}
+{% extends "content_base.html" %}
 
-<!DOCTYPE html>
-<html class="no-js" lang="en">
+{% block header %}
+<div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
+</div>
+{% include "drs_banner.html" %}
+{% endblock %}
 
-    <head>
-      {% include "include/head.html" %}
-    </head>
-
-<body {% if request.is_mobile or request.is_tablet %}data-mobile="true"{% endif %}>
-    {% csrf_token %}
-    <div class="page-wrap"> <!-- another wrap to make a sticky footer -->
-        <div id="top_banner" class='no-padding'> <!-- username and logout goes here, handlebars/page-top.html -->
+{% block footer %}
+<footer id="app_footer" role="contentinfo">
+	<div class="footer-bar">
+        <div class="container footer-links">
+            <ul class="footer-links-list">
+                <li class="footer-links-list-item"><a href="//myuw.washington.edu/cgi-bin/contactmyuw.cgi" title="Contact help@uwe.edu"><i class="ion-android-mail" role="presentation"></i> Contact</a></li>
+                <li class="footer-links-list-item"><a href="//www.washington.edu/online/terms/" title="University of Washington Website Terms and Conditions of Use">Terms</a></li>
+                <li class="footer-links-list-item"><a href="//www.washington.edu/online/privacy/" title="University of Washington Online Privacy Statement">Privacy</a></li>
+           </ul>
+            <div style="clear:both;">&copy; {% now "Y" %} University of Washington</div>
         </div>
-        {% include "drs_banner.html" %}
-    {% block web_content %}{% endblock %}
 
-    </div> <!-- end of .page-wrap  -->
-
-    <!-- FOOTER STUFF -->
-
-<div>
-	<footer id="app_footer" role="contentinfo">
-		<div class="footer-bar">
-            <div class="container footer-links">
-                <ul class="footer-links-list">
-                    <li class="footer-links-list-item"><a href="//myuw.washington.edu/cgi-bin/contactmyuw.cgi" title="Contact help@uwe.edu"><i class="ion-android-mail" role="presentation"></i> Contact</a></li>
-                    <li class="footer-links-list-item"><a href="//www.washington.edu/online/terms/" title="University of Washington Website Terms and Conditions of Use">Terms</a></li>
-                    <li class="footer-links-list-item"><a href="//www.washington.edu/online/privacy/" title="University of Washington Online Privacy Statement">Privacy</a></li>
-               </ul>
-                <div style="clear:both;">&copy; {% now "Y" %} University of Washington</div>
-            </div>
-
-		</div><!-- end of footer content -->
-	</footer>
-
-
-
-</div><!-- footer role -->
-{% include "handlebars/page-top.html" %}
-{% include "handlebars/course-select.html" %}
-{% include "handlebars/current-course-data.html" %}
-{% include "handlebars/current-performance.html" %}
-{% include "handlebars/current-profile.html" %}
-{% include "handlebars/historic-course-data.html" %}
-{% include "handlebars/cannot-display-course.html" %}
-{% include "handlebars/historic-concurrent-courses.html" %}
-{% include "handlebars/historic-course-major.html" %}
-{% include "handlebars/historic-grad-major.html" %}
-{% include "handlebars/historic-performance.html" %}
-{% include "handlebars/historic-previous-instructors.html" %}
-{% include "handlebars/intro_modal.html" %}
-{% include "handlebars/drs_banner_textbooks.html" %}
-{% include "handlebars/course-gen-ed-notices.html" %}
-<script src="{% static "coursedashboards/js/handlebars-helpers.js" %}"></script>
-<script src="{% static "coursedashboards/js/main.js" %}"></script>
-<script src="{% static "coursedashboards/js/intro.js" %}"></script>
-<script src="{% static "coursedashboards/js/course.js" %}"></script>
-<script src="{% static "coursedashboards/js/course_select.js" %}"></script>
-<script src="{% static "coursedashboards/js/course_data.js" %}"></script>
-<script src="{% static "coursedashboards/js/historic.js" %}"></script>
-<script src="{% static "coursedashboards/js/historic_data.js" %}"></script>
-<script src="{% static "coursedashboards/js/calculate.js" %}"></script>
-<script src="{% static "coursedashboards/js/graphs.js" %}"></script>
-<script>
-  window.static_url = "{% get_static_prefix %}";
-</script>
-
-</body>
-</html>
+	</div><!-- end of footer content -->
+</footer>
+{% endblock %}

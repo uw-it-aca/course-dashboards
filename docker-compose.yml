@@ -5,9 +5,11 @@ services:
     environment:
       ENV: localdev
       PORT: 8000
-      AUTH: SAML_MOCK
+      AUTH: SAML_MOCK BLTI_DEV
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
+      LTI_DEVELOP_APP: course
+      LTI_CONFIG_DIRECTORY: MOCK
     restart: always
     container_name: app-coda
     build:
