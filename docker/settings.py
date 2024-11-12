@@ -12,6 +12,11 @@ if 'SAML_MOCK' in os.getenv('AUTH', '').split(' '):
                        'u_acadev_coda_admins'],
     }
 
+if 'BLTI_DEV' in os.getenv('AUTH', '').split(' '):
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    MIDDLEWARE.remove('blti.middleware.SameSiteMiddleware')
+
 INSTALLED_APPS += [
     'compressor',
     'coursedashboards',
@@ -24,6 +29,7 @@ INSTALLED_APPS += [
 
 MIDDLEWARE += [
     'userservice.user.UserServiceMiddleware',
+    'blti.middleware.LTISessionAuthenticationMiddleware',
 ]
 
 TEMPLATES[0]['DIRS'] = ['/app/coursedashboards/templates/']
