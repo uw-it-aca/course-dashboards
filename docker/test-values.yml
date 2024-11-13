@@ -101,6 +101,8 @@ externalSecrets:
       data:
         - name: django-secret
           property: django-secret
+        - name: lti-consumers
+          property: lti-consumers
     - name: test.coda.uw.edu-shared-secrets
       externalKey: coda/shared/secrets
       data:
@@ -112,8 +114,6 @@ externalSecrets:
           property: person-db-user
         - name: person-db-pass
           property: person-db-pass
-        - name: lti-consumers
-          property: lti-consumers
     - name: test.coda.uw.edu-sql-secrets
       externalKey: coda/test/sql-secrets
       data:
@@ -139,6 +139,10 @@ environmentVariablesSecrets:
     name: DJANGO_SECRET
     secretName: test.coda.uw.edu-secrets
     secretKey: django-secret
+  codaLTI_CONSUMERS:
+    name: LTI_CONSUMERS
+    secretName: test.coda.uw.edu-secrets
+    secretKey: lti-consumers
   canvasAccountID:
     name: CANVAS_ACCOUNT_ID
     secretName: test.coda.uw.edu-shared-secrets
@@ -155,10 +159,6 @@ environmentVariablesSecrets:
     name: UW_PERSON_DB_PASSWORD
     secretName: test.coda.uw.edu-shared-secrets
     secretKey: person-db-pass
-  codaLTI_CONSUMERS:
-    name: LTI_CONSUMERS
-    secretName: test.coda.uw.edu-shared-secrets
-    secretKey: lti-consumers
   SAMLServiceProviderCert:
     name: SP_CERT
     secretName: test.coda.uw.edu-ic-certs
