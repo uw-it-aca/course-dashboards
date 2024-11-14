@@ -1,32 +1,11 @@
-{% extends "content_base.html" %}
-
-{% block header %}
-{% include "drs_banner.html" %}
-{% endblock %}
-
-{% block web_content %}
+{% extends "index.html" %}
+{% block script_content %}
 {% include "include/script.html" %}
-
-  	<main class="coda-wrapper" role="main">
-    		<div class="main-content row" id="maincontent">
-              {%if error %}
-              <div class="col-12">
-                We're sorry, but instructed courses are unavailable at this time.
-              </div>
-              {% else %}
-              <div style="display: none;">
-                <div class="course-quarter-year">
-                  <div class="d-inline-block course-select"></div>
-                </div>
-                <hr />
-              </div>
-              <div class="course-data row col-12">
-                <div class="section-container current-section col-md-6" id="current-course-target" aria-labelledby="current_section_data"></div>
-                <div class="section-container historic-section col-md-6" id="historic-course-target" aria-labelledby="historic_section_data" style="">
-                </div>
-              </div>
-              {% endif %}
-    		</div>	<!-- end of main -->
-	</main>  <!-- end of main container -->
-
+{% endblock %}
+{% block exclude_content %}
+<style>
+div#top_banner, div.course-info, .past-quarter-select, .course-links, footer {
+    display: none !important;
+}
+</style>
 {% endblock %}

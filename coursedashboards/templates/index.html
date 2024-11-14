@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block script_content %}
+{% include "include/script.html" with instructor=user.netid intro_modal=user.intro_modal %}
+{% endblock %}
 {% block web_content %}
-{% include "include/script.html" %}
 
 <!-- MAIN CONTENT BELOW THE BANNER -->
 

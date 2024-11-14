@@ -26,7 +26,8 @@ class CourseLaunchView(BLTILaunchView):
                 return {
                     'instructor': instructor_netid,
                     'sections': sections,
-                    'historic': historic
+                    'historic_sections': historic,
+                    'intro_modal': 'false',
                 } | course_id
             except Exception as ex:
                 logger.error(
