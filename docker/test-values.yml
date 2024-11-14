@@ -89,7 +89,7 @@ environmentVariables:
   - name: UW_PERSON_DB_NAME
     value: uw-person-prod
   - name: AUTH
-    value: SAML
+    value: SAML BLTI
   - name: CLUSTER_CNAME
     value: test.coda.uw.edu
 
