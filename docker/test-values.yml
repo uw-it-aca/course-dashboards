@@ -172,7 +172,7 @@ environmentVariablesSecrets:
 
 mountedSecrets:
   enabled: true
-  mountPath: /certs
+  mountPath: /lti-keys
   secretName: test.coda.uw.edu-lti-keys
 
 podVolumes:
@@ -196,8 +196,8 @@ configmaps:
           "auth_token_url": "http://test.coda.uw.edu/course/",
           "key_set_url": "http://test.coda.uw.edu/lti/jwks",
           "key_set": null,
-          "private_key_file": "/certs/private-key-1.key",
-          "public_key_file": "/certs/public-key-1.key",
+          "private_key_file": "/lti-keys/private-key-1.key",
+          "public_key_file": "/lti-keys/public-key-1.key",
           "deployment_ids": ["201028:c78d46b24c785a8ad37b5bf9bdf26ceb32cc9d18"]
         }]
       }
