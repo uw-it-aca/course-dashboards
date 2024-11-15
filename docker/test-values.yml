@@ -188,7 +188,7 @@ podVolumes:
     mount:
       mountPath: /config/main.tpl
       subPath: tool.json
-    containers: [ base ]
+    containers: [base]
 
 configmaps:
   lti-tool-config:
