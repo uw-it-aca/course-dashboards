@@ -199,5 +199,5 @@ configmaps:
           "private_key_file": "/certs/private-key-1.key",
           "public_key_file": "/certs/public-key-1.key",
           "deployment_ids": ["201028:c78d46b24c785a8ad37b5bf9bdf26ceb32cc9d18"]
-      }]
-    }
+        }]
+      }
