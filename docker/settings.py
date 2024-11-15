@@ -2,6 +2,8 @@ from .base_settings import *
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS += ['https://uw.test.instructure.com']
+
 if 'SAML_MOCK' in os.getenv('AUTH', '').split(' '):
     MOCK_SAML_ATTRIBUTES = {
         'uwnetid': ['bill'],
