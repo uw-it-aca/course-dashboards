@@ -105,6 +105,11 @@ externalSecrets:
           property: lti-consumers
     - name: test.coda.uw.edu-lti-keys
       externalKey: coda/test/lti-keys
+      data:
+        - name: private-key-1.key
+          property: private-key-1.key
+        - name: public-key-1.key
+          property: public-key-1.key
     - name: test.coda.uw.edu-shared-secrets
       externalKey: coda/shared/secrets
       data:
