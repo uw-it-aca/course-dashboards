@@ -8,7 +8,7 @@ services:
       AUTH: SAML_MOCK BLTI_DEV
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
-      LTI_DEVELOP_APP: course
+      LTI_DEVELOP_APP: YUP
       LTI_CONFIG_DIRECTORY: MOCK
     restart: always
     container_name: app-coda

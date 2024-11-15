@@ -31,7 +31,7 @@ course_regex = (
 urlpatterns = [
     # Home
     re_path(r'^$', index, name='home'),
-    re_path(r'^course/?$', CourseLaunchView.as_view(), name='coda_lti'),
+    re_path(r'^course/$', CourseLaunchView.as_view(), name='lti-launch'),
     re_path(r'api/v1/user/(?P<netid>[a-z][a-z0-9\-\_\.]{,127})/introduction',
             Introduction.as_view(),
             name='coda_introduction'),

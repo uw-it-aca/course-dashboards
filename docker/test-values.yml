@@ -103,6 +103,8 @@ externalSecrets:
           property: django-secret
         - name: lti-consumers
           property: lti-consumers
+    - name: test.coda.uw.edu-lti-keys
+      externalKey: coda/test/lti-keys
     - name: test.coda.uw.edu-shared-secrets
       externalKey: coda/shared/secrets
       data:
@@ -167,3 +169,35 @@ environmentVariablesSecrets:
     name: IDP_CERT
     secretName: test.coda.uw.edu-uw-idp-cert
     secretKey: uw-idp-cert
+
+mountedSecrets:
+  enabled: true
+  mountPath: /certs
+  secretName: test.coda.uw.edu-lti-keys
+
+podVolumes:
+  lti-tool-config:
+    volume:
+      configMap:
+        name: lti-tool-config
+    mount:
+      mountPath: /config/main.tpl
+      subPath: tool.json
+    containers: [ base ]
+
+configmaps:
+  lti-tool-config:
+    tool.json: |
+      {
+        "https://canvas.test.instructure.com": [{
+          "default": true,
+          "client_id": "100000000000836",
+          "auth_login_url": "https://test.coda.uw.edu/lti/login/",
+          "auth_token_url": "http://test.coda.uw.edu/course/",
+          "key_set_url": "http://test.coda.uw.edu/lti/jwks",
+          "key_set": null,
+          "private_key_file": "/certs/private-key-1.key",
+          "public_key_file": "/certs/public-key-1.key",
+          "deployment_ids": ["201028:c78d46b24c785a8ad37b5bf9bdf26ceb32cc9d18"]
+      }]
+    }
