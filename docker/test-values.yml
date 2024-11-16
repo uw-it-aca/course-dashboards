@@ -188,7 +188,7 @@ podVolumes:
       configMap:
         name: lti-tool-config
     mount:
-      mountPath: /lti/config/tool.json
+      mountPath: /lti/config
     containers: [base]
 
 configmaps:
