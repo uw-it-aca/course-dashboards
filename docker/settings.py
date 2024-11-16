@@ -22,6 +22,9 @@ if 'BLTI_DEV' in os.getenv('AUTH', '').split(' '):
     CSRF_COOKIE_SECURE = False
     MIDDLEWARE.remove('blti.middleware.SameSiteMiddleware')
 
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+
 INSTALLED_APPS += [
     'compressor',
     'coursedashboards',
