@@ -198,7 +198,7 @@ configmaps:
         "https://canvas.test.instructure.com": [{
           "default": true,
           "client_id": "100000000000837",
-          "auth_login_url": "https://uw.test.instructure.com/login/oauth2/token",
+          "auth_login_url": "https://canvas.test.instructure.com/login/oauth2/token",
           "auth_token_url": "https://sso.test.canvaslms.com/api/lti/authorize_redirect",
           "key_set_url": "https://sso.test.canvaslms.com/api/lti/security/jwks",
           "key_set": null,
