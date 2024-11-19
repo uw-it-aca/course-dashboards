@@ -2,6 +2,8 @@ from .base_settings import *
 
 ALLOWED_HOSTS = ['*']
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 try:
     CSRF_TRUSTED_ORIGINS += ['https://uw.test.instructure.com']
 except NameError:
