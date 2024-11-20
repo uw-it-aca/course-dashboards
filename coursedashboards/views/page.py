@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
-import logging
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -16,7 +15,6 @@ from coursedashboards.models import Term, Instructor, CourseOffering
 from django.contrib.auth import logout as django_logout
 
 
-logger = logging.getLogger(__name__)
 LOGOUT_URL = "/user_logout"
 HISTORIC_TERM_COUNT = 12
 
@@ -25,8 +23,6 @@ def page(request,
          context={},
          template='course-page.html'):
     try:
-        logger.info(f"page request headers: {request.META}")
-
         user = get_current_user()
         context["user"] = {
             "netid": user.uwnetid,
