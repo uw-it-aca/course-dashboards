@@ -26,7 +26,7 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      more_set_headers "X-Forwarded-Proto $scheme";
+      proxy_set_header X-Forwarded-Proto https;
 securityPolicy:
   enabled: true
 lifecycle:
