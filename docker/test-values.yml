@@ -25,7 +25,7 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/auth-snippet:
+    nginx.ingress.kubernetes.io/auth-snippet: |
       proxy_set_header X-Forwarded-Proto: $scheme;
 securityPolicy:
   enabled: true
