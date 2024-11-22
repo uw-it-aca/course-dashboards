@@ -3,7 +3,6 @@
 
 from django.conf import settings
 from blti.views import BLTILaunchView
-from blti.exceptions import BLTIException
 from coursedashboards.models import Term, Instructor, Course, CourseOffering
 from coursedashboards.models.user import User
 import logging
@@ -20,7 +19,6 @@ class CourseLaunchView(BLTILaunchView):
     def get_context_data(self, **kwargs):
         if self.blti.course_sis_id:
             try:
-                exception_message = "Course Dashboard is not available"
                 instructor_netid = self.blti.user_login_id
                 course_id = self._sis_id_components(self.blti.course_sis_id)
                 sections, historic = self._get_course_data(
@@ -34,9 +32,8 @@ class CourseLaunchView(BLTILaunchView):
             except Exception as ex:
                 logger.error(
                     f"LTI launch {self.blti.course_sis_id} error: {ex}")
-                exception_message = f"{ex}"
-
-        raise BLTIException(exception_message)
+                self.template_name = 'course_error.html'
+                return {'error': f"{ex}"}
 
     def _sis_id_components(self, sis_id):
         RE_COURSE_SIS_ID = re.compile(
