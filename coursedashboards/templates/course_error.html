@@ -1,0 +1,17 @@
+{% block web_content %}
+<div id="lti_error" class="content">
+    <div style="margin-top:10em; text-align: center;">
+        <h2>Student profile data could not be displayed.</h2>
+        <div class="error-body" style="text-size: larger;">
+          ({{ error }})
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block exclude_content %}
+<style>
+div.drs_banner, div#top_banner, div.course-info, .past-quarter-select, .course-links, footer {
+    display: none !important;
+}
+</style>
+{% endblock %}

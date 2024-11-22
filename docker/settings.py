@@ -2,13 +2,6 @@ from .base_settings import *
 
 ALLOWED_HOSTS = ['*']
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_SCHEME', 'https')
-
-try:
-    CSRF_TRUSTED_ORIGINS += ['https://uw.test.instructure.com']
-except NameError:
-    CSRF_TRUSTED_ORIGINS = ['https://uw.test.instructure.com']
-
 if 'SAML_MOCK' in os.getenv('AUTH', '').split(' '):
     MOCK_SAML_ATTRIBUTES = {
         'uwnetid': ['bill'],
@@ -18,14 +11,6 @@ if 'SAML_MOCK' in os.getenv('AUTH', '').split(' '):
         'isMemberOf': ['u_test_group', 'u_test_another_group',
                        'u_acadev_coda_admins'],
     }
-
-if 'BLTI_DEV' in os.getenv('AUTH', '').split(' '):
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-    MIDDLEWARE.remove('blti.middleware.SameSiteMiddleware')
-
-SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
 
 INSTALLED_APPS += [
     'compressor',
