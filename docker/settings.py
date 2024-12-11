@@ -78,7 +78,7 @@ if os.getenv("ENV") == "localdev":
     FIXTURE_DIRS = ['uw_person_client/fixtures',
                     'coursedashboards/fixtures/uw_person']
 else:
-    Debug = False
+    DEBUG = False
     INSTALLED_APPS += ['rc_django',]
     RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
     RESTCLIENTS_BOOK_HOST = 'https://api.ubookstore.com'
