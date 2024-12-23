@@ -93,9 +93,9 @@ var showCourseData = function (label) {
             gpa_distribution_time: 'past'
         }));
 
-        chart_container = $('.current-section #historic-median-cumulative-gpa');
-        if (chart_container.length) {
-            renderGPADisribution(chart_container, section.current_median, section.gpas);
+        chart_container = $("#current-performance-panel #historic-median-cumulative-gpa");
+        if (chart_container.length > 0) {
+            renderGPADisribution(chart_container[0], section.current_median, section.gpas);
         }
     }
 
