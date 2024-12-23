@@ -20,7 +20,7 @@ function renderGPADisribution(container, median, gpas) {
         categories.push((1.5 + (i * 0.1)).toFixed(1).toString());
     });
 
-    let chart = Highcharts.chart(container, {
+    Highcharts.chart(container, {
         title: {
             text: undefined
         },
@@ -80,9 +80,7 @@ function renderGPADisribution(container, median, gpas) {
             showInLegend: false,
             data: gpas_dist
         }]
-    });
-
-    chart.addAnnotation({
+    }).addAnnotation({
         draggable: '',
         crop: false,
         shapes:[{
@@ -97,24 +95,6 @@ function renderGPADisribution(container, median, gpas) {
                 yAxis: 0
             }
         }]
-    });
-
-    $('.Highcharts-annotation').bind('mouseover', function(e) {
-        var x = e.originalEvent.x,
-            y = e.originalEvent.y;
-
-        chart.annotationTooltip ? chart.annotationTooltip.destroy() : null;
-        chart.annotationTooltip = chart.renderer.label('Some text', x, y, 'callout')
-            .css({
-                color: '#FFFFFF'
-            })
-            .attr({
-                fill: 'rgba(66, 0, 33, 0.75)',
-                padding: 5,
-                zIndex: 10,
-                r: 5
-            })
-            .add();
     });
 }
 
@@ -184,9 +164,9 @@ function renderCoursePercentage1(container, percentages, name_prop, percent_prop
         chart_width = 240;
 
     $.each(percentages.splice(0, 9), function () {
-        data.push([this[name_prop], Math.ceil(this[percent_prop])])
+        data.push([this[name_prop], Math.ceil(this[percent_prop])]);
         other -= this[percent_prop];
-    })
+    });
 
     Highcharts.chart(container, {
         chart: {

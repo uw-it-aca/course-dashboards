@@ -108,8 +108,7 @@ var showCourseData = function (label) {
     $('#current-course-target [data-toggle="popover"]').popover();
     $('#current-course-target .popover-dismiss').popover({ trigger: 'focus'});
 
-    return;
-
+/*
     $('#current-course-target .cumulative-popover')
         .on('inserted.bs.popover', function () {
             if (current_course_panel) {
@@ -123,7 +122,7 @@ var showCourseData = function (label) {
         .on('inserted.bs.popover', function () {
             renderGPADisribution('past-course-gpa-distribution', section.course_grades);
         });
-
+*/
 };
 
 var displaySelectedCourse = function () {
