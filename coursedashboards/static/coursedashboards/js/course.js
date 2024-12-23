@@ -25,7 +25,8 @@ var showCourseData = function (label) {
         terms = [],
         current_course_panel = (compare_terms(section.year, section.quarter,
                                               window.term.year, window.term.quarter) >= 0),
-        performanceTemplate;
+        performanceTemplate,
+        chart_container;
 
     if (!current_course_panel && !section.loaded) {
         fetchCourseData(label);
@@ -60,8 +61,6 @@ var showCourseData = function (label) {
         display_course: section.display_course
     }));
 
-    renderCoursePercentage1('current-declared-majors-chart', section.current_student_majors, 'major_name', 'percent_students');
-    renderCoursePercentage1('current-concurrent-courses-chart', section.concurrent_courses, 'course_ref', 'percent_students');
 
     if (current_course_panel) {
         var registered_percent = (section.current_enrollment / section.limit_estimate_enrollment) * 100,
@@ -78,6 +77,9 @@ var showCourseData = function (label) {
         }));
 
         renderStudentProfile('repeat', section.current_repeating, section.current_enrollment);
+
+        renderCoursePercentage1('current-declared-majors-chart', section.current_student_majors, 'major_name', 'percent_students');
+        renderCoursePercentage1('current-concurrent-courses-chart', section.concurrent_courses, 'course_ref', 'percent_students');
     } else {
         performanceTemplate = Handlebars.compile($("#historic-performance-template").html());
         $("#current-performance-panel").html(performanceTemplate({

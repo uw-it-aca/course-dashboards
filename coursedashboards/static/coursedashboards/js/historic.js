@@ -217,10 +217,19 @@ var showHistoricPerformanceData = function (section_label, data) {
             total_students: data.performance.enrollment,
             section_count: data.performance.offering_count,
             gpa_distribution_time: 'historic'
-        });
+        }),
+        chart_container;;
 
-    renderGPADisribution('historic-median-cumulative-gpa', median_gpa, data.performance.gpas);
-    renderGPADisribution('historic-median-course-gpa', median_course_grade, data.performance.course_grades);
+    chart_container = $panel.find('#historic-median-cumulative-gpa');
+    if (chart_container.length > 0) {
+        renderGPADisribution(chart_container[0], median_gpa, data.performance.gpas);
+    }
+
+    chart_container = $panel.find('#historic-median-course-gpa');
+    if (chart_container.length > 0) {
+        renderGPADisribution(chart_container[0], median_course_grade, data.performance.course_grades);
+    }
+
     bind_events($panel);
 };
 
@@ -243,9 +252,13 @@ var showHistoricConcurrentCourses = function (section_label, data) {
         'historic-concurrent-courses-template',
         {
             common_courses: data.concurrent_courses
-        });
+        }),
+        chart_container;
 
-    renderCoursePercentage1('historic-concurrent-course-chart', data.concurrent_courses, 'course_ref', 'percent_students');
+    chart_container = $panel.find('#historic-concurrent-course-chart');
+    if (chart_container.length > 0) {
+        renderCoursePercentage1(chart_container[0], data.concurrent_courses, 'course_ref', 'percent_students');
+    }
 
     bind_events($panel);
 
@@ -280,9 +293,14 @@ var showHistoricStudentMajors = function (section_label, data) {
         'historic-course-major-template',
         {
             common_majors: data.student_majors,
-        });
+        }),
+        chart_container;
 
-    renderCoursePercentage1('historic-course-major-chart', data.student_majors, 'major_name', 'percent_students');
+    chart_container = $panel.find('#historic-course-major-chart');
+    if (chart_container.length > 0) {
+        renderCoursePercentage1(chart_container[0], data.student_majors, 'major_name', 'percent_students');
+    }
+
     bind_events($panel);
 };
 
@@ -305,9 +323,14 @@ var showHistoricGraduatedMajors = function (section_label, data) {
         'historic-grad-major-template',
         {
             latest_majors: data.graduated_majors
-        });
+        }),
+        chart_container;
 
-    renderCoursePercentage1('historic-graduated-major-chart', data.graduated_majors, 'major_name', 'percent_students');
+    chart_container = $panel.find('#historic-graduated-major-chart');
+    if (chart_container.length > 0) {
+        renderCoursePercentage1(chart_container[0], data.graduated_majors, 'major_name', 'percent_students');
+    }
+
     bind_events($panel);
 };
 

@@ -163,7 +163,6 @@ function renderCoursePercentage1(container, percentages, name_prop, percent_prop
         other = 100,
         chart_width = 240;
 
-
     if (percentages) {
         $.each(percentages.slice(0, 9), function () {
             data.push([this[name_prop], Math.ceil(this[percent_prop])]);
