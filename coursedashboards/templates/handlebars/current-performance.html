@@ -3,38 +3,53 @@
 <div class="course-performance-row row">
   <div class="current-enrollment course-data-widget col">
     <div class="d-inline-block course-data-items">
-      <div class="course-data-description">Currently Registered</div>
-      <div class="course-data-number" title="{{current_num_registered}} of {{current_capacity}} registered students">{{current_num_registered}}/{{current_capacity}}<i class="ion-ios-people" aria-hidden="true"></i></div>
+      <div class="course-data-description">Currently Registered {{current_num_registered}} of {{current_capacity}}</div>
+    <!--      <div id="current-registration" class="course-data-number" title="{{current_num_registered}} of {{current_capacity}} registered students">{{current_num_registered}}/{{current_capacity}}<i class="ion-ios-people" aria-hidden="true"></i></div>
+    -->
+<div style="background: linear-gradient(to right, lightgray {{current_num_registered_percent}}%, white {{current_num_registered_percent_remaining}}% ); margin-top: 10px;"><img src="/static/coursedashboards/img/people.png" alt="Registered students {{current_num_registered}} of {{current_capacity}}" width="321" height="112"></div>
     </div>
   </div>
   <div class="current-median course-data-widget col">
     <div class="d-inline-block course-data-items">
-      <div class="course-data-description">Median Cumulative GPA<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumulative GPA" data-content="This is the midpoint of the cumulative GPAs of the students who are currently in your class.  If the median is lower than past offerings, spend more time on the most challenging topics."></i></span></div>
-      <div class="course-data-number" title="{{current_median}} Median Cumulative GPA">{{current_median}}<i class="ion-stats-bars cumulative-popover" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="current-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
+    <div class="course-data-description">Median Cumulative GPA <span class="course-data-gpa">{{current_median}}</span> <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Median Cumulative GPA" data-content="This is the midpoint of the cumulative GPAs of the students who are currently in your class.  If the median is lower than past offerings, spend more time on the most challenging topics."></i></span></div>
+      <div id="current-cumulative-median-gpa" class="course-data-number" title="{{current_median}} Median Cumulative GPA">{{current_median}}<i class="ion-stats-bars cumulative-popover" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Cumulative GPA Distribution" data-template='<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div id="current-gpa-distribution" class="grade-distribution"></div></div></div>'></i></div>
     </div>
   </div>
 </div>
+</div>
 <div class="course-performance-row row">
-  <div class="enrollment-profile course-data-widget col">
+  <div class="course-data-widget col-12">
+    <div class="d-inline-block course-data-items">
+      <div class="course-data-description">Student Profile</div>
+    </div>
+  </div>
+  <div id="current-enrollment-profile" class="enrollment-profile course-data-widget col-4">
     <div class="enrollment-profile-value enrollment-eop-percent font-weight-bold"><div class="loading-placeholder"></div> %</div>
-    <div class="enrollment-profile-label">EOP <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="EOP Students" data-content="This is the percentage of Early Opportunity Program students in your class.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
+    <div class="enrollment-profile-label text-right">EOP <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="EOP Students" data-content="This is the percentage of Early Opportunity Program students in your class.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
 
     <div class="enrollment-profile-value enrollment-transfer-percent font-weight-bold"><div class="loading-placeholder"></div> %</div>
-    <div class="enrollment-profile-label">Transfer <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Transfer Students" data-content="This is the percentage of transfer students in your course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
+    <div class="enrollment-profile-label text-right">Transfer <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Transfer Students" data-content="This is the percentage of transfer students in your course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
 
     <div class="enrollment-profile-value enrollment-disability-percent font-weight-bold"><div class="loading-placeholder"></div> %</div>
-    <div class="enrollment-profile-label">Disabled <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Disabled Students" data-content="This is the percentage of students with disabilites in your course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
+    <div class="enrollment-profile-label text-right">Disabled <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Disabled Students" data-content="This is the percentage of students with disabilites in your course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
 
     <div class="enrollment-profile-value enrollment-probation-percent font-weight-bold"><div class="loading-placeholder"></div> %</div>
-    <div class="enrollment-profile-label">Academic Probation <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Academic Probation Students" data-content="This is the percentage of students under academic probation in your course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
+    <div class="enrollment-profile-label text-right">Academic Probation <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Academic Probation Students" data-content="This is the percentage of students under academic probation in your course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
 
     <div class="enrollment-profile-value font-weight-bold" title="{{current_repeat_students}} repeating students">{{roundPercentage 0 current_repeat_students current_num_registered}}%</div>
-    <div class="enrollment-profile-label">Repeating <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Repeating Students" data-content="This is the number of students who have received a grade in a previous offering of the course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
+    <div class="enrollment-profile-label text-right">Repeating <span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Repeating Students" data-content="This is the number of students who have received a grade in a previous offering of the course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span></div>
 
 <!--      <div class="course-data-description">Repeating Students<span class="coda-info-popover"><i class="fa fa-info-circle" aria-hidden="true" tabindex="0" data-placement="top" data-toggle="popover" data-trigger="focus" title="Repeating Students" data-content="This is the number of students who have received a grade in a previous offering of the course.  Help gauge the amount of support you should provide your students, especially for required courses."></i></span>
 -->
-      </div>
     </div>
+    <div id="current-enrollment-profile-chart" class="enrollment-profile col-7">
+      <div id="enrollment-profile-eop-graph" class="enrollment-profile-graph"></div>
+      <div id="enrollment-profile-transfer-graph" class="enrollment-profile-graph"></div>
+      <div id="enrollment-profile-disability-graph" class="enrollment-profile-graph"></div>
+      <div id="enrollment-profile-probation-graph" class="enrollment-profile-graph"></div>
+      <div id="enrollment-profile-repeat-graph" class="enrollment-profile-graph"></div>
+    </div>
+      </div>
   </div>
   <div id="x-current-course-grade-distribution" class="placeholder-col col">
   </div>

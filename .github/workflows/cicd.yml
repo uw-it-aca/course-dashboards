@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [main, develop, feature/coda-lti]
+    branches: [main, develop, feature/coda-lti, feature/coda-lti-visualizatiions]
   pull_request:
     branches: [main, develop]
     types: [opened, reopened, synchronize]
@@ -135,7 +135,7 @@ jobs:
 
       - name: Deployment Pipeline
         if: >-
-          contains(fromJSON('["main", "develop", "feature/coda-lti"]'),
+          contains(fromJSON('["main", "develop", "feature/coda-lti", "feature/coda-lti-visualizatiions"]'),
             needs.context.outputs.git_repo_branch)
         uses: uw-it-aca/actions/cicd-deploy@main
         with:

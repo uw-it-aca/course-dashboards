@@ -60,14 +60,24 @@ var showCourseData = function (label) {
         display_course: section.display_course
     }));
 
+    renderCoursePercentage1('current-declared-majors-chart', section.current_student_majors, 'major_name', 'percent_students');
+    renderCoursePercentage1('current-concurrent-courses-chart', section.concurrent_courses, 'course_ref', 'percent_students');
+
     if (current_course_panel) {
+        var registered_percent = (section.current_enrollment / section.limit_estimate_enrollment) * 100,
+            registered_percent_remaining = 100 - registered_percent;
+
         performanceTemplate = Handlebars.compile($("#current-performance-template").html());
         $("#current-performance-panel").html(performanceTemplate({
             current_median: section.current_median ? section.current_median : 'N/A',
             current_num_registered: section.current_enrollment,
+            current_num_registered_percent: registered_percent,
+            current_num_registered_percent_remaining: registered_percent_remaining,
             current_capacity:section.limit_estimate_enrollment,
             current_repeat_students:section.current_repeating
         }));
+
+        renderStudentProfile('repeat', section.current_repeating, section.current_enrollment);
     } else {
         performanceTemplate = Handlebars.compile($("#historic-performance-template").html());
         $("#current-performance-panel").html(performanceTemplate({
@@ -89,9 +99,16 @@ var showCourseData = function (label) {
     // update term labels
     $('span.displayed-quarter').html(firstLetterUppercase(section.quarter) + " " + section.year);
 
+    if (current_course_panel) {
+        renderGPADisribution('current-cumulative-median-gpa', section.current_median, section.gpas);
+    }
+
     setup_exposures($("#current-course-target"));
+
     $('#current-course-target [data-toggle="popover"]').popover();
     $('#current-course-target .popover-dismiss').popover({ trigger: 'focus'});
+
+    return;
 
     $('#current-course-target .cumulative-popover')
         .on('inserted.bs.popover', function () {
@@ -153,7 +170,12 @@ var showCourseProfileData = function (data) {
             }
         };
 
-    $.each(attributes, function (k, v) {
+    renderStudentProfile('eop', data.eop.n, data.eop.total);
+    renderStudentProfile('transfer', data.transfer.n, data.transfer.total);
+    renderStudentProfile('disability', data.disability.n, data.disability.total);
+    renderStudentProfile('probation', data.probation.n, data.probation.total);
+
+/*    $.each(attributes, function (k, v) {
         var $id = $('.' + v.element_class);
 
         if ($id.length) {
@@ -163,7 +185,7 @@ var showCourseProfileData = function (data) {
             }));
         }
     });
-
+*/
     if (data.hasOwnProperty('disability')) {
         $('div.current-section').trigger(
             'coda:CurrentCourseProfileDisability', [data.disability]);

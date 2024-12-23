@@ -45,18 +45,22 @@ class CourseProfileData(CoDaEndpoint):
             return {
                 'eop': {
                     'n': eop,
+                    'total': self.total_registrations,
                     'percent': self._percent(eop)
                 },
                 'transfer': {
                     'n': xfer,
+                    'total': self.total_registrations,
                     'percent': self._percent(xfer)
                 },
                 'disability': {
                     'n': disability,
+                    'total': self.total_registrations,
                     'percent': self._percent(disability)
                 },
                 'probation': {
                     'n': probation,
+                    'total': self.total_registrations,
                     'percent': self._percent(probation)
                 }
             }
