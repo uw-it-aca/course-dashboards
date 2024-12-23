@@ -78,6 +78,8 @@ var showCourseData = function (label) {
 
         renderStudentProfile('repeat', section.current_repeating, section.current_enrollment);
 
+        renderGPADisribution('current-cumulative-median-gpa', section.current_median, section.gpas);
+
         renderCoursePercentage1('current-declared-majors-chart', section.current_student_majors, 'major_name', 'percent_students');
         renderCoursePercentage1('current-concurrent-courses-chart', section.concurrent_courses, 'course_ref', 'percent_students');
     } else {
@@ -90,6 +92,11 @@ var showCourseData = function (label) {
             section_count: 1,
             gpa_distribution_time: 'past'
         }));
+
+        chart_container = $('.current-section #historic-median-cumulative-gpa');
+        if (chart_container.length) {
+            renderGPADisribution(chart_container, section.current_median, section.gpas);
+        }
     }
 
     $('.course-title span').html(section.course_title);
@@ -100,10 +107,6 @@ var showCourseData = function (label) {
 
     // update term labels
     $('span.displayed-quarter').html(firstLetterUppercase(section.quarter) + " " + section.year);
-
-    if (current_course_panel) {
-        renderGPADisribution('current-cumulative-median-gpa', section.current_median, section.gpas);
-    }
 
     setup_exposures($("#current-course-target"));
 
