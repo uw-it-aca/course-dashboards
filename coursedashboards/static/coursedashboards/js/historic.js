@@ -218,7 +218,7 @@ var showHistoricPerformanceData = function (section_label, data) {
             section_count: data.performance.offering_count,
             gpa_distribution_time: 'historic'
         }),
-        chart_container;;
+        chart_container;
 
     chart_container = $panel.find('#historic-median-cumulative-gpa');
     if (chart_container.length > 0) {
