@@ -163,10 +163,13 @@ function renderCoursePercentage1(container, percentages, name_prop, percent_prop
         other = 100,
         chart_width = 240;
 
-    $.each(percentages.splice(0, 9), function () {
-        data.push([this[name_prop], Math.ceil(this[percent_prop])]);
-        other -= this[percent_prop];
-    });
+
+    if (percentages) {
+        $.each(percentages.slice(0, 9), function () {
+            data.push([this[name_prop], Math.ceil(this[percent_prop])]);
+            other -= this[percent_prop];
+        });
+    }
 
     Highcharts.chart(container, {
         chart: {
@@ -235,21 +238,23 @@ function renderCoursePercentage2(container, percentages, name_prop, percent_prop
         categories = [],
         other = 100;
 
-    $.each(percentages.slice(0, 9), function () {
-        categories.push(this.major_name);
-        series.push({
-            name: this[name_prop],
-            data: [Math.ceil(this[percent_prop])]
+    if (percentages) {
+        $.each(percentages.slice(0, 9), function () {
+            categories.push(this.major_name);
+            series.push({
+                name: this[name_prop],
+                data: [Math.ceil(this[percent_prop])]
+            });
+            other -= this[percent_prop];
         });
-        other -= this[percent_prop];
-    });
 
-    categories.push('Other');
-    series.push({
-        name: 'Other',
-        percent: other,
-        data: [other]
-    });
+        categories.push('Other');
+        series.push({
+            name: 'Other',
+            percent: other,
+            data: [other]
+        });
+    }
 
     Highcharts.chart(container, {
         chart: {
