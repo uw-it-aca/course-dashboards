@@ -79,9 +79,6 @@ var showCourseData = function (label) {
         renderStudentProfile('repeat', section.current_repeating, section.current_enrollment);
 
         renderGPADisribution('current-cumulative-median-gpa', section.current_median, section.gpas);
-
-        renderCoursePercentage1('current-declared-majors-chart', section.current_student_majors, 'major_name', 'percent_students');
-        renderCoursePercentage1('current-concurrent-courses-chart', section.concurrent_courses, 'course_ref', 'percent_students');
     } else {
         performanceTemplate = Handlebars.compile($("#historic-performance-template").html());
         $("#current-performance-panel").html(performanceTemplate({
@@ -97,6 +94,21 @@ var showCourseData = function (label) {
         if (chart_container.length > 0) {
             renderGPADisribution(chart_container[0], section.current_median, section.gpas);
         }
+
+        chart_container = $("#current-performance-panel #historic-median-course-gpa");
+        if (chart_container.length > 0) {
+            renderGPADisribution(chart_container[0], section.median_course_grade, section.gpas);
+        }
+    }
+
+    chart_container = $("#current-performance-panel #current-declared-majors-chart");
+    if (chart_container.length > 0) {
+        renderCoursePercentage1(chart_container[0], section.current_student_majors, 'major_name', 'percent_students');
+    }
+
+    chart_container = $("#current-performance-panel #current-concurrent-courses-chart");
+    if (chart_container.length > 0) {
+        renderCoursePercentage1(chart_container[0], section.concurrent_courses, 'course_ref', 'percent_students');
     }
 
     $('.course-title span').html(section.course_title);
