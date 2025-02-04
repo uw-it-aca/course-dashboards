@@ -83,6 +83,10 @@ environmentVariables:
     value: PROD
   - name: PWS_ENV
     value: PROD
+  - name: PWS_POOL_SIZE
+    value: "100"
+  - name: PWS_CONNECT_TIMEOUT
+    value: "10"
   - name: CANVAS_ENV
     value: PROD
   - name: BOOKSTORE_ENV
