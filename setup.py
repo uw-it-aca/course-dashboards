@@ -45,7 +45,7 @@ setup(
         'djangorestframework~=3.15',
         'Django-Persistent-Message',
         'django-person-client~=1.0',
-#        'django-blti~=3.0',
+        'django-blti~=3.0',
         'statistics',
     ],
     license='Apache License, Version 2.0',
