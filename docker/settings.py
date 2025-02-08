@@ -23,6 +23,7 @@ INSTALLED_APPS += [
 ]
 
 MIDDLEWARE += [
+    'blti.middleware.PartitionedCookieMiddleware',
     'userservice.user.UserServiceMiddleware',
     'blti.middleware.LTISessionAuthenticationMiddleware',
 ]
