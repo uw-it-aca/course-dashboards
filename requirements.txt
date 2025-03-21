@@ -1,2 +1,2 @@
-django-blti @ git+https://github.com/uw-it-aca/django-blti@3d3e3ab
+django-blti @ git+https://github.com/uw-it-aca/django-blti@2849f7f
 -e .
