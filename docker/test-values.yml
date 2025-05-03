@@ -47,9 +47,9 @@ externalService:
   serviceAddress: 172.18.1.200
   servicePort: 5432
 repo: coda
-instance: test
 namespace:
   enabled: true
+instance: test
 image:
   repository: us-docker.pkg.dev/uwit-mci-axdd/containers/coda
   tag: IMAGE_TAG
