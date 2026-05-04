@@ -86,6 +86,9 @@ else:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
+    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
+    DATABASES['default']['OPTIONS'] = {'pool': {'min_size': 2, 'max_size': 8}}
+
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
@@ -104,10 +107,11 @@ DATABASES['uw_person'] = {
     'NAME': os.getenv('UW_PERSON_DB_NAME', 'postgres'),
     'USER': os.getenv('UW_PERSON_DB_USER', 'postgres'),
     'PASSWORD': os.getenv('UW_PERSON_DB_PASSWORD', 'postgres'),
+    'CONN_HEALTH_CHECKS': True,
     'OPTIONS': {
         'pool': {
-            'min_size': int(os.getenv('UW_PERSON_DB_POOL_MIN', 1)),
-            'max_size': int(os.getenv('UW_PERSON_DB_POOL_MAX', 4)),
+            'min_size': int(os.getenv('UW_PERSON_DB_POOL_MIN', 2)),
+            'max_size': int(os.getenv('UW_PERSON_DB_POOL_MAX', 8)),
         },
     },
 }
