@@ -6,8 +6,7 @@ This module direct interfaces with restclient for the term data
 """
 
 import logging
-from datetime import datetime, timedelta
-import pytz
+from datetime import datetime, timedelta, timezone as dt_timezone
 from coursedashboards.dao.exceptions import NoTermAfterCurrent
 from coursedashboards.dao import is_using_file_dao
 from django.utils import timezone
@@ -95,7 +94,7 @@ def get_comparison_datetime_with_tz(request):
     """
     local_tz = timezone.get_current_timezone()
     return local_tz.localize(
-        get_comparison_datetime(request)).astimezone(pytz.utc)
+        get_comparison_datetime(request)).astimezone(dt_timezone.utc)
 
 
 def get_current_sws_quarter(request):

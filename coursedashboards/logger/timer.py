@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-import datetime
+from datetime import datetime, timezone
 
 
 class Timer:
@@ -11,7 +11,7 @@ class Timer:
         self.start = self._now()
 
     def _now(self):
-        return datetime.datetime.utcnow()
+        return datetime.now(timezone.utc)
 
     def get_elapsed(self):
         """ Return the time spent in milliseconds """
