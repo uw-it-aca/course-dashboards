@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
@@ -22,7 +22,7 @@ class Registration(models.Model):
     class Meta:
         db_table = 'Registration'
         unique_together = ('user', 'term', 'course')
-        index_together = ('term', 'course')
         indexes = [
+            models.Index(fields=['term', 'course']),
             models.Index(fields=['grade', 'credits'])
         ]

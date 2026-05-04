@@ -1,10 +1,9 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from django.utils.timezone import utc
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import logging
 from coursedashboards.models import (
     Term, Instructor, Course, CourseOffering,
@@ -86,7 +85,7 @@ class Command(BaseCommand):
                 delta = timedelta(days=365)
                 changed_since = sws_term.first_day_quarter - delta
 
-            changed_date = datetime.utcnow().replace(tzinfo=utc)
+            changed_date = datetime.now(timezone.utc)
             for instructor in instructors:
                 logger.debug('loading instructor: {}'.format(instructor))
                 params = {
