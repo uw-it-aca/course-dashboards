@@ -22,6 +22,8 @@ def get_person_by_netid(netid):
     """
     Retrieve person data using the given netid
     """
+    if netid == "2DF6":
+        import pdb; pdb.set_trace()
     return PWS().get_person_by_netid(netid)
 
 
