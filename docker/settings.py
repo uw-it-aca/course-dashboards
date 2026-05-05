@@ -86,17 +86,6 @@ else:
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
-    DATABASES['default']['OPTIONS'] = {'pool': False}
-    #DATABASES['default']['OPTIONS'] = {
-    #    'pool': {
-    #        "min_size": 4,         # Keeps connections warm
-    #        "max_size": 16,        # Handles traffic spikes
-    #        "timeout": 10,         # Fails fast under extreme load
-    #        "max_lifetime": 1800,  # 30 minutes maximum connection age
-    #        "max_idle": 300,       # Close idle connections after 5 minutes
-    #    }
-    #}
-
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
@@ -115,17 +104,6 @@ DATABASES['uw_person'] = {
     'NAME': os.getenv('UW_PERSON_DB_NAME', 'postgres'),
     'USER': os.getenv('UW_PERSON_DB_USER', 'postgres'),
     'PASSWORD': os.getenv('UW_PERSON_DB_PASSWORD', 'postgres'),
-    #'OPTIONS': {
-    #    'pool': {
-    #        "min_size": 4,         # Keeps connections warm
-    #        "max_size": 16,        # Handles traffic spikes
-    #        "timeout": 10,         # Fails fast under extreme load
-    #        "max_lifetime": 1800,  # 30 minutes maximum connection age
-    #        "max_idle": 300,       # Close idle connections after 5 minutes
-    #        #'min_size': int(os.getenv('UW_PERSON_DB_POOL_MIN', 3)),
-    #        #'max_size': int(os.getenv('UW_PERSON_DB_POOL_MAX', 12)),
-    #    },
-    #},
 }
 
 DATABASE_ROUTERS = ['uw_person_client.routers.UWPersonRouter']
