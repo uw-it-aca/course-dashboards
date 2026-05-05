@@ -87,7 +87,7 @@ else:
         },
     }
     DATABASES['default']['CONN_HEALTH_CHECKS'] = True
-    DATABASES['default']['OPTIONS'] = {'pool': {'min_size': 2, 'max_size': 8}}
+    DATABASES['default']['OPTIONS'] = {'pool': {'min_size': 4, 'max_size': 8}}
 
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
@@ -110,7 +110,7 @@ DATABASES['uw_person'] = {
     'CONN_HEALTH_CHECKS': True,
     'OPTIONS': {
         'pool': {
-            'min_size': int(os.getenv('UW_PERSON_DB_POOL_MIN', 2)),
+            'min_size': int(os.getenv('UW_PERSON_DB_POOL_MIN', 4)),
             'max_size': int(os.getenv('UW_PERSON_DB_POOL_MAX', 8)),
         },
     },
