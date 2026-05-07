@@ -21,6 +21,6 @@ services:
     depends_on:
       - postgres
   postgres:
-    image: postgres:14
+    image: postgres:17
     environment:
       POSTGRES_PASSWORD: postgres

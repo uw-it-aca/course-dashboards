@@ -1,4 +1,5 @@
 from .base_settings import *
+import os
 
 ALLOWED_HOSTS = ['*']
 
@@ -13,13 +14,14 @@ if 'SAML_MOCK' in os.getenv('AUTH', '').split(' '):
     }
 
 INSTALLED_APPS += [
-    'compressor',
-    'coursedashboards',
+    'coursedashboards.apps.CoursedashboardsConfig',
     'uw_person_client',
     'userservice',
     'supporttools',
     'persistent_message',
     'rest_framework.authtoken',
+    'django.contrib.postgres',
+    'compressor',
 ]
 
 MIDDLEWARE += [
@@ -37,20 +39,15 @@ TEMPLATES[0]['OPTIONS']['context_processors'] += [
     'supporttools.context_processors.has_less_compiled',
 ]
 
-COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 COMPRESS_ROOT = '/static/'
 
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-)
-
 STATICFILES_FINDERS += (
     'compressor.finders.CompressorFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-COMPRESS_PRECOMPILERS += (
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
     ('text/x-sass', 'pyscss {infile} > {outfile}'),
     ('text/x-scss', 'pyscss {infile} > {outfile}'),
 )
@@ -75,13 +72,21 @@ if os.getenv("ENV") == "localdev":
     MIGRATION_MODULES = {
         'uw_person_client': 'uw_person_client.test_migrations',
     }
-    FIXTURE_DIRS = ['uw_person_client/fixtures',
-                    'coursedashboards/fixtures/uw_person']
+    FIXTURE_DIRS = (
+        os.path.join(BASE_DIR, 'uw_person_client', 'fixtures'),
+        os.path.join(BASE_DIR, 'coursedashboards', 'fixtures', 'uw_person'),
+        os.path.join(BASE_DIR, 'coursedashboards', 'fixtures', 'initial_data'),
+    )
 else:
     DEBUG = False
     INSTALLED_APPS += ['rc_django',]
     RESTCLIENTS_DAO_CACHE_CLASS = 'coursedashboards.cache.RestClientsCache'
     RESTCLIENTS_BOOK_HOST = 'https://api.ubookstore.com'
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
 RESTCLIENTS_DEFAULT_TIMEOUT = 3
 
@@ -102,7 +107,7 @@ DATABASES['uw_person'] = {
     'PASSWORD': os.getenv('UW_PERSON_DB_PASSWORD', 'postgres'),
 }
 
-DATABASE_ROUTERS = ['coursedashboards.routers.UWPersonRouter']
+DATABASE_ROUTERS = ['uw_person_client.routers.UWPersonRouter']
 
 TZINFOS = {"PDT": -7 * 3600}
 

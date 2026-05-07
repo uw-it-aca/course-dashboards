@@ -14,7 +14,15 @@ then
   source "/app/bin/activate"
 
   cd /app
+
   python manage.py migrate
-  python manage.py initialize_db
+  python manage.py initialize_person_db
+
+  python manage.py loaddata --app coursedashboards --database uw_person \
+      person.json student.json transcript.json
+
+  python manage.py loaddata --app coursedashboards --database default \
+      course.json course_offering.json instructor.json major.json \
+      registration.json student_major.json term.json user.json
 
 fi
