@@ -210,6 +210,6 @@ configmaps:
           "key_set": null,
           "private_key_file": "/lti/keys/private-key-1.key",
           "public_key_file": "/lti/keys/public-key-1.key",
-          "deployment_ids": ["230669:82ea3323587ae330766ae046461fd35c747ed747"]
+          "deployment_ids": ["230670:3bc8ed0c9ea4aa8abb5ce6bf4693e1fd0e2c9d67"]
         }]
       }
