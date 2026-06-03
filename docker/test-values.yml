@@ -8,7 +8,7 @@ resources:
     cpu: 500m
     memory: 768Mi
   requests:
-    cpu: 25m
+    cpu: 100m
     memory: 512Mi
 ingress:
   enabled: true
@@ -203,13 +203,13 @@ configmaps:
       {
         "https://canvas.test.instructure.com": [{
           "default": true,
-          "client_id": "100000000000884",
+          "client_id": "100000000000901",
           "auth_login_url": "https://sso.test.canvaslms.com/api/lti/authorize_redirect",
           "auth_token_url": "https://sso.test.canvaslms.com/login/oauth2/token",
           "key_set_url": "https://sso.test.canvaslms.com/api/lti/security/jwks",
           "key_set": null,
           "private_key_file": "/lti/keys/private-key-1.key",
           "public_key_file": "/lti/keys/public-key-1.key",
-          "deployment_ids": ["211597:c78d46b24c785a8ad37b5bf9bdf26ceb32cc9d18"]
+          "deployment_ids": ["231120:3bc8ed0c9ea4aa8abb5ce6bf4693e1fd0e2c9d67"]
         }]
       }

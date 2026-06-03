@@ -1,8 +1,8 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 
-import datetime
+from datetime import datetime, timezone
 
 
 class Timer:
@@ -11,7 +11,7 @@ class Timer:
         self.start = self._now()
 
     def _now(self):
-        return datetime.datetime.utcnow()
+        return datetime.now(timezone.utc)
 
     def get_elapsed(self):
         """ Return the time spent in milliseconds """

@@ -1,4 +1,4 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 import os
@@ -59,7 +59,7 @@ class CodaApiTest(TransactionTestCase):
         self.client = Client()
         self.request = RequestFactory().get("/")
         self.middleware = UserServiceMiddleware()
-#        call_command('initialize_db')
+        # call_command('initialize_person_db')
 
     def set_user(self, username):
         self.request.user = get_user(username)
