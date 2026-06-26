@@ -8,6 +8,9 @@ function renderGPADisribution(container, gpas) {
         categories = [],
         max = 0;
 
+    // coerce light mode
+    $("#" + container).addClass('highcharts-light');
+
     $.each(gpas, function () {
         gpas_dist[(this <= 1.5) ? 0 : Math.round((this - 1.5) * 10)]++;
     });
@@ -29,21 +32,26 @@ function renderGPADisribution(container, gpas) {
         },
         chart: {
             type: 'column',
-            height: 120
+            height: 130
         },
         xAxis: {
             categories: categories,
             title: {
-                text: "GPA"
+                text: "GPA",
+                margin: 4
+            },
+            labels: {
+                distance: 6
             }
         },
         yAxis: {
             tickInterval: 5,
             title: {
-                text: 'Frequency'
+                text: 'Frequency',
+                margin: 4
             },
-            xlabels: {
-                enabled: false
+            labels: {
+                distance: 6
             }
         },
         tooltip: {

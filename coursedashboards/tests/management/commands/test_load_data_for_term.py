@@ -1,9 +1,10 @@
-# Copyright 2025 UW-IT, University of Washington
+# Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import TestCase
 from django.core.management import call_command
 from coursedashboards.models import CourseOffering, Registration
+from unittest import skip
 
 
 class TestLoadDataForTerm(TestCase):
