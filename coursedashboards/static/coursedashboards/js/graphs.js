@@ -9,7 +9,11 @@ function renderGPADisribution(container, median, gpas) {
         max = 0;
 
     // coerce light mode
-    $("#" + container).addClass('highcharts-light');
+    if (container instanceof jQuery) {
+        container.addClass('highcharts-light');
+    } else {
+        $(container).addClass('highcharts-light');
+    }
 
     $.each(gpas, function () {
         gpas_dist[(this <= 1.5) ? 0 : Math.round((this - 1.5) * 10)]++;
@@ -58,18 +62,17 @@ function renderGPADisribution(container, median, gpas) {
                 value: (median - 1.5) * 10
             }],
             labels: {
-                distance: 6
+                distance: 12
             }
         },
         yAxis: {
             tickInterval: 5,
-            title: {
-            //    text: 'Frequency'
-                text: 'Frequency',
-                margin: 4
-            },
-                distance: 6
-            }
+//            title: {
+//                text: 'Frequency',
+//            },
+//            labels: {
+//                distance: 15
+//            }
         },
         tooltip: {
             formatter: function () {
