@@ -113,6 +113,21 @@ jobs:
           coveralls
         continue-on-error: true
 
+      - name: Run vulnerability scan
+        id: vuln-scan
+        uses: uw-it-aca/actions/container-vuln-scan@main
+        with:
+          image_tag: ${{ needs.context.outputs.image_tag }}
+          severity: 'HIGH,CRITICAL'
+
+      - name: Fail on vulnerabilities (disabled for now)
+        if: false && steps.vuln-scan.outputs.vulnerabilities_found == 'true'
+        shell: bash
+        run: |
+          echo "High or critical vulnerabilities found!"
+          cat ${{ steps.vuln-scan.outputs.results_file }}
+          exit 1
+
       - name: Push Image to Registry
         if: github.event_name == 'push'
         uses: uw-it-aca/actions/gcr-push@main
