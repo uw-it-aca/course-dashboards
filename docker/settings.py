@@ -3,6 +3,8 @@ import os
 
 ALLOWED_HOSTS = ['*']
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 if os.getenv('AUTH', 'NONE') == 'SAML_MOCK':
     MOCK_SAML_ATTRIBUTES = {
         'uwnetid': ['bill'],
