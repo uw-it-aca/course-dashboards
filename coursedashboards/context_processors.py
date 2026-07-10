@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.conf import settings
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def is_desktop(request):
@@ -12,11 +16,6 @@ def is_desktop(request):
         'is_desktop': desktopapp
     }
 
-
-
-import logging
-
-logger = logging.getLogger(__name__)
 
 class DumpHeadersMiddleware:
     def __init__(self, get_response):
