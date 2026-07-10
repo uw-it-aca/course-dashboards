@@ -25,6 +25,7 @@ INSTALLED_APPS += [
 ]
 
 MIDDLEWARE += [
+    'coursedashboards.context_processors.DumpHeadersMiddleware',
     'userservice.user.UserServiceMiddleware',
 ]
 
