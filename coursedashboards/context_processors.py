@@ -22,7 +22,8 @@ class DumpHeadersMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.info(f"--- INCOMING REQUEST: {request.method} {request.path} ---")
+        logger.info(f"--- INCOMING REQUEST: {request.method} "
+                    f"{request.path} ---")
         for key, value in request.headers.items():
             logger.info(f"Req-Header: {key}: {value}")
 
