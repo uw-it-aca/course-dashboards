@@ -23,7 +23,8 @@ class DumpHeadersMiddleware:
 
     def __call__(self, request):
         logger.info(f"--- INCOMING REQUEST: {request.method} "
-                    f"{request.path} ---")
+                    f"{request.path} (secure: "
+                    f"{request.is_secure()}) ---")
         for key, value in request.headers.items():
             logger.info(f"Req-Header: {key}: {value}")
 
