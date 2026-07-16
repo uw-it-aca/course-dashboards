@@ -11,9 +11,9 @@ resources:
     cpu: 100m
     memory: 512Mi
 gateway:
+  enabled: true
   hostnames:
     - test.coda.uw.edu
-  enabled: true
 ingress:
   enabled: true
   type: nginx
