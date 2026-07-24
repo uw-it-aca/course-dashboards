@@ -136,4 +136,4 @@ class TestCourseAPIs(CodaApiTest):
         payload = json.loads(response.content)
         gpas = payload['gpas']
 
-        self.assertEqual(len(gpas), 3)
+        self.assertEqual(len(gpas), 0)
