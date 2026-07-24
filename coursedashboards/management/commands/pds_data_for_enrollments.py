@@ -1,11 +1,12 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.core.management.base import BaseCommand
-from uw_person_client.clients.core_client import UWPersonClient
-from coursedashboards.models import Course, CourseOffering, Term
 import logging
 
+from django.core.management.base import BaseCommand
+from uw_person_client.clients.core_client import UWPersonClient
+
+from coursedashboards.models import Course, CourseOffering, Term
 
 logger = logging.getLogger(__name__)
 

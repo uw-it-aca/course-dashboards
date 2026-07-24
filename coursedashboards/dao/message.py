@@ -4,8 +4,12 @@
 from persistent_message.models import Message
 
 
-def get_persistent_messages(tags="", params={}):
+def get_persistent_messages(tags="", params=None):
+    if not params:
+        params = {}
+
     ret = {}
+
     for message in Message.objects.active_messages(tags=tags):
         level = message.get_level_display().lower()
         message = message.render(params)

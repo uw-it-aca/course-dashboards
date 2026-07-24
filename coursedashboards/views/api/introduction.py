@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.http import JsonResponse
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+
 from coursedashboards.dao.user import get_current_user
 
 

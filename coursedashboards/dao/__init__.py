@@ -1,8 +1,8 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from uw_sws.dao import SWS_DAO
 from userservice.user import UserService
+from uw_sws.dao import SWS_DAO
 
 
 def get_netid_of_current_user():

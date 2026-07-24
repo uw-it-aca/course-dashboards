@@ -1,10 +1,18 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from unittest import TestCase
 from django.test import TransactionTestCase
-from coursedashboards.models import Course, Term, CourseOffering, User, \
-    Registration, Major, StudentMajor, Instructor
+
+from coursedashboards.models import (
+    Course,
+    CourseOffering,
+    Instructor,
+    Major,
+    Registration,
+    StudentMajor,
+    Term,
+    User,
+)
 
 
 class TestCourseOffering(TransactionTestCase):
@@ -132,7 +140,7 @@ class TestCourseOffering(TransactionTestCase):
         self.registrations = []
         self.student_majors = []
 
-        for x in range(0, 10):
+        for x in range(10):
             user = User()
             user.uwnetid = "netid" + str(x)
             user.save()
@@ -141,7 +149,7 @@ class TestCourseOffering(TransactionTestCase):
         self.students[3].is_alum = True
         self.students[3].save()
 
-        for x in range(0, 2):
+        for x in range(2):
             reg = Registration()
             reg.credits = 5
             reg.course = self.course

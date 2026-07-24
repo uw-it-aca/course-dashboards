@@ -1,10 +1,11 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from coursedashboards.views.api.endpoint import CoDaEndpoint
-from coursedashboards.views.api import UpStreamErrorException
-from coursedashboards.dao.pds import get_students_by_uwnetids
 import logging
+
+from coursedashboards.dao.pds import get_students_by_uwnetids
+from coursedashboards.views.api import UpStreamErrorException
+from coursedashboards.views.api.endpoint import CoDaEndpoint
 
 logger = logging.getLogger(__name__)
 
@@ -60,8 +61,8 @@ class CourseProfileData(CoDaEndpoint):
                     'percent': self._percent(probation)
                 }
             }
-        except Exception as ex:
-            logger.exception(f"person service: {ex}")
+        except Exception:
+            logger.exception(f"CourseProfileData: data failure getting {offering}")
             raise UpStreamErrorException()
 
     def _is_disability(self, person, offering):

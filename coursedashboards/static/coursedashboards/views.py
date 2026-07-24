@@ -1,10 +1,7 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.shortcuts import (
-    render_to_response
-)
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 

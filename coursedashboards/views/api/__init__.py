@@ -2,12 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.http import HttpResponse, JsonResponse
+from rest_framework.exceptions import APIException
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.exceptions import APIException
-from coursedashboards.models import Term, Course, CourseOffering
+
 from coursedashboards.dao.user import get_current_user
-from coursedashboards.views.error import _make_response, MYUW_DATA_ERROR
+from coursedashboards.models import Course, CourseOffering, Term
+from coursedashboards.views.error import MYUW_DATA_ERROR, _make_response
 
 
 class CoDaAPI(APIView):

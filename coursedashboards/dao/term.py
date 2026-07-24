@@ -6,18 +6,25 @@ This module direct interfaces with restclient for the term data
 """
 
 import logging
-from datetime import datetime, timedelta, timezone as dt_timezone
-from coursedashboards.dao.exceptions import NoTermAfterCurrent
-from coursedashboards.dao import is_using_file_dao
+from datetime import datetime, timedelta
+from datetime import timezone as dt_timezone
+
 from django.utils import timezone
-from coursedashboards.models import Term
 from restclients_core.exceptions import DataFailureException
 from uw_sws.section import is_a_term, is_b_term
 from uw_sws.term import (
-    get_term_by_date, get_specific_term, get_current_term,
-    get_term_before, get_term_after, get_next_autumn_term,
-    get_next_non_summer_term, get_term_by_year_and_quarter)
+    get_current_term,
+    get_next_autumn_term,
+    get_next_non_summer_term,
+    get_specific_term,
+    get_term_after,
+    get_term_before,
+    get_term_by_date,
+)
 
+from coursedashboards.dao import is_using_file_dao
+from coursedashboards.dao.exceptions import NoTermAfterCurrent
+from coursedashboards.models import Term
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +50,8 @@ def get_default_datetime():
         return datetime(default_date.year,
                         default_date.month,
                         default_date.day,
-                        0, 0, 1)
-    return datetime.now()
+                        0, 0, 1, tzinfo=dt_timezone.utc)
+    return datetime.now(tz=dt_timezone.utc)
 
 
 def get_comparison_datetime(request):
@@ -56,23 +63,19 @@ def get_comparison_datetime(request):
     FORMAT = "%Y-%m-%d %H:%M:%S"
 
     override_date = None
-    if request:
-        if "myuw_override_date" in request.session:
-            try:
-                val = request.session["myuw_override_date"]
-                override_date = datetime.strptime(val, FORMAT)
-            except ValueError:
-                # Accepts an override date as well, but adds 1 second
-                # so date logic works
-                try:
-                    date_format = "%Y-%m-%d"
-                    override_date = datetime.strptime(val, date_format) + \
-                        timedelta(seconds=1)
-                except Exception:
-                    raise
+    if request and "myuw_override_date" in request.session:
+        try:
+            val = request.session["myuw_override_date"]
+            override_date = datetime.strptime(val, FORMAT).astimezone(dt_timezone.utc)
 
-            except Exception as ex:
-                pass
+        except ValueError:
+            # Accepts an override date as well, but adds 1 second
+            # so date logic works
+            date_format = "%Y-%m-%d"
+            override_date = datetime.strptime(
+                val, date_format).astimezone(dt_timezone.utc) + timedelta(seconds=1)
+        except Exception:
+            logger.exception("Error parsing myuw_override_date: %s", val)
 
     if override_date:
         return override_date
@@ -126,7 +129,7 @@ def get_current_coda_term(request):
     # overriding this for continued testing
 
     sws_term = get_current_sws_quarter(request)
-    term, created = Term.objects.get_or_create(
+    term, _ = Term.objects.get_or_create(
         year=sws_term.year, quarter=sws_term.quarter)
 
     return term
@@ -186,8 +189,8 @@ def get_given_and_previous_quarters(quarter_string, num):
         try:
             sws_term = get_term_before(sws_term)
             sws_terms.insert(0, sws_term)
-        except Exception as ex:
-            logger.error(f"Previous term Fail: {sws_term}: {ex}")
+        except Exception:
+            logger.exception(f"Previous term Fail: {sws_term}")
 
     return sws_terms
 
@@ -528,7 +531,8 @@ def current_terms_prefetch(request):
 
 def get_term_after_current(current_term_name):
     next_term = get_term_after(current_term_name)
-    date = datetime.date(datetime.now())
+    date = datetime.date(datetime.now(tz=dt_timezone.utc))
+
     if date > next_term.registration_period2_start:
         return next_term
 

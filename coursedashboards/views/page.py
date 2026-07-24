@@ -2,26 +2,33 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import json
+
+from django.contrib.auth import logout as django_logout
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from coursedashboards.dao.user import get_current_user
-from coursedashboards.dao.term import (
-    get_current_coda_term, get_given_and_previous_quarters,
-    get_term_from_quarter_string, get_term_after_current)
-from coursedashboards.dao.exceptions import (
-    MissingNetIDException, NoTermAfterCurrent)
-from coursedashboards.models import Term, Instructor, CourseOffering
-from django.contrib.auth import logout as django_logout
 
+from coursedashboards.dao.exceptions import MissingNetIDException, NoTermAfterCurrent
+from coursedashboards.dao.term import (
+    get_current_coda_term,
+    get_given_and_previous_quarters,
+    get_term_after_current,
+    get_term_from_quarter_string,
+)
+from coursedashboards.dao.user import get_current_user
+from coursedashboards.models import CourseOffering, Instructor, Term
 
 LOGOUT_URL = "/user_logout"
 HISTORIC_TERM_COUNT = 12
 
 
 def page(request,
-         context={},
+         context=None,
          template='course-page.html'):
+
+    if context is None:
+        context = {}
+
     try:
         user = get_current_user()
         context["user"] = {
@@ -39,7 +46,7 @@ def page(request,
     context["err"] = None
     if ('year' in context and context['year'] and
             'quarter' in context and context['quarter']):
-        cur_term, created = Term.objects.get_or_create(
+        cur_term, _ = Term.objects.get_or_create(
             year=context['year'], quarter=context['quarter'])
     else:
         cur_term = get_current_coda_term(request)
@@ -54,7 +61,7 @@ def page(request,
         historical = {}
 
         for sws_term in get_page_terms(cur_term.sws_label):
-            term, created = Term.objects.get_or_create(
+            term, _ = Term.objects.get_or_create(
                 year=sws_term.year, quarter=sws_term.quarter)
 
             courses = Instructor.objects.filter(

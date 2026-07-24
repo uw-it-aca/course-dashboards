@@ -1,13 +1,15 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from coursedashboards.tests.api import CodaApiTest
 import json
+from typing import ClassVar
+
+from coursedashboards.tests.api import CodaApiTest
 
 
 class TestCourseAPIs(CodaApiTest):
 
-    course = {
+    course: ClassVar[dict[str, str]] = {
         'year': '2014', 'quarter': 'winter', 'curriculum': "POL S",
         'course_number': "201", 'section_id': "A"}
 
@@ -133,3 +135,5 @@ class TestCourseAPIs(CodaApiTest):
 
         payload = json.loads(response.content)
         gpas = payload['gpas']
+
+        self.assertEqual(len(gpas), 3)

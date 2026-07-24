@@ -1,7 +1,6 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.utils import timezone
 from django.db import models
 
 
@@ -36,7 +35,7 @@ class Term(models.Model):
         if not self.term_key:
             self.term_key = self.get_term_key()
 
-        super(Term, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __hash__(self):
         return super().__hash__()

@@ -1,15 +1,19 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from typing import ClassVar
+
 from django.test import TestCase
+
 from coursedashboards.dao.pds import get_students_by_uwnetids
 
 
 class TestPDS(TestCase):
     databases = '__all__'
-    fixtures = ['person.json', 'employee.json', 'term.json', 'major.json',
-                'student.json', 'adviser.json', 'transfer.json',
-                'transcript.json', 'hold.json', 'degree.json', 'sport.json']
+    fixtures: ClassVar[list[str]] = [
+        'person.json', 'employee.json', 'term.json', 'major.json',
+        'student.json', 'adviser.json', 'transfer.json',
+        'transcript.json', 'hold.json', 'degree.json', 'sport.json']
 
     def test_get_students_by_uwnetids(self):
         queryset = get_students_by_uwnetids(['javerage', 'jbothell'])

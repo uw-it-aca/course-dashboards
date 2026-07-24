@@ -1,14 +1,14 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-import os
-from unittest import skipIf
-from django.urls import reverse
-from django.core.management import call_command
-from django.test import TransactionTestCase, Client
+from typing import ClassVar
+
+from django.test import Client, TransactionTestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
+from django.urls import reverse
 from userservice.user import UserServiceMiddleware
+
 from coursedashboards.tests import get_user, get_user_pass
 
 Session = 'django.contrib.sessions.middleware.SessionMiddleware'
@@ -35,7 +35,7 @@ standard_test_override = override_settings(
 @standard_test_override
 class CodaApiTest(TransactionTestCase):
     databases = '__all__'
-    fixtures = [
+    fixtures: ClassVar[list[str]] = [
         'initial_data/term.json',
         'initial_data/user.json',
         'initial_data/course.json',
@@ -59,7 +59,6 @@ class CodaApiTest(TransactionTestCase):
         self.client = Client()
         self.request = RequestFactory().get("/")
         self.middleware = UserServiceMiddleware()
-        # call_command('initialize_person_db')
 
     def set_user(self, username):
         self.request.user = get_user(username)

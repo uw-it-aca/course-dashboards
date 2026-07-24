@@ -2,11 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.conf import settings
-from uw_saml.utils import is_member_of_group
 from uw_pws import PWS
-from coursedashboards.util.settings import (
-    get_coda_admin_group, get_coda_override_group)
+from uw_saml.utils import is_member_of_group
 
+from coursedashboards.util.settings import get_coda_admin_group, get_coda_override_group
 
 INVALID_STRING = ("Username not a valid netid (starts with a letter, "
                   "then 0-15 letters, _ or numbers)")

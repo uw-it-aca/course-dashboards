@@ -1,24 +1,26 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from coursedashboards.views.api.offering.historical import (
-    HistoricalPerformance, HistoricalCourseData, HistoricalConcurrentCourses,
-    HistoricalCourseGPAs, HistoricalStudentMajors,
-    HistoricalGraduatedMajors)
 from django.urls import re_path
+
+from coursedashboards.views.api.integration.offering_cgpa import OfferingCGPA
+from coursedashboards.views.api.integration.offering_fail_rate import OfferingFailRate
+from coursedashboards.views.api.integration.offering_majors import OfferingMajors
+from coursedashboards.views.api.introduction import Introduction
 from coursedashboards.views.api.offering.course import CourseData
+from coursedashboards.views.api.offering.general_education import CourseGenEdData
+from coursedashboards.views.api.offering.historical import (
+    HistoricalConcurrentCourses,
+    HistoricalCourseData,
+    HistoricalCourseGPAs,
+    HistoricalGraduatedMajors,
+    HistoricalPerformance,
+    HistoricalStudentMajors,
+)
 from coursedashboards.views.api.offering.profile import CourseProfileData
 from coursedashboards.views.api.offering.textbooks import CourseTextbookData
-from coursedashboards.views.api.offering.general_education import (
-    CourseGenEdData)
-from coursedashboards.views.api.integration.offering_cgpa import OfferingCGPA
-from coursedashboards.views.api.integration.offering_fail_rate import (
-    OfferingFailRate)
-from coursedashboards.views.api.integration.offering_majors import (
-    OfferingMajors)
-from coursedashboards.views.api.introduction import Introduction
 from coursedashboards.views.index import index
-from coursedashboards.views.page import user_login, logout
+from coursedashboards.views.page import logout, user_login
 
 course_regex = (
     r'^api/v1/course/(?P<year>\d{4})-'

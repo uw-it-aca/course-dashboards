@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 
-from coursedashboards.models import Term, StudentMajor
+from coursedashboards.models import StudentMajor, Term
 
 
 class TestStudentMajors(TestCase):
@@ -23,3 +23,5 @@ class TestStudentMajors(TestCase):
 
     def test_term_sort(self):
         sorted_majors = sorted([self.second_major, self.first_major])
+
+        self.assertEqual(sorted_majors[0].term.quarter, 'winter')
