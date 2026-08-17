@@ -11,9 +11,9 @@ resources:
     cpu: 100m
     memory: 512Mi
 gateway:
-  enabled: true
   hostnames:
     - test.coda.uw.edu
+  enabled: true
 #  maxRequestSize: 5e+5
 ingress:
   enabled: true
