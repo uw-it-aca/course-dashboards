@@ -14,9 +14,6 @@ gateway:
   enabled: true
   hostnames:
     - test.coda.uw.edu
-  maxRequestSize: 5e+5
-  #tlsOptions:
-  #  cipherSuites:
 securityPolicy:
   enabled: true
 lifecycle:
