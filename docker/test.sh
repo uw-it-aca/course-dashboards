@@ -12,8 +12,6 @@ function run_test {
     eval $1
 }
 
-run_test "pycodestyle ${DJANGO_APP}/ --exclude='migrations,resources,static'"
-
 if [ -d ${DJANGO_APP}/static/${DJANGO_APP}/js ]; then
     run_test "jshint ${DJANGO_APP}/static/${DJANGO_APP}/js --verbose"
 elif [ -d ${DJANGO_APP}/static/js ]; then

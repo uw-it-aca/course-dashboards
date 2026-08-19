@@ -2,10 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import TestCase
-from coursedashboards.models import User
-from coursedashboards.dao.pws import get_person_by_netid
+
 from coursedashboards.dao.person import get_person_from_regid
+from coursedashboards.dao.pws import get_person_by_netid
 from coursedashboards.dao.user import _user_from_person, user_from_person
+from coursedashboards.models import User
 
 
 class TestGetUser(TestCase):

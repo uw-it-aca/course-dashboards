@@ -1,12 +1,14 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from coursedashboards.models import CourseMedianGPA
-from uw_sws.enrollment import get_grades_by_regid_and_term, \
-    get_enrollment_by_regid_and_term, enrollment_search_by_regid
-from uw_sws.models import Term
-from uw_sws.person import get_person_by_regid
+from uw_sws.enrollment import (
+    enrollment_search_by_regid,
+    get_enrollment_by_regid_and_term,
+    get_grades_by_regid_and_term,
+)
 from uw_sws.registration import get_active_registrations_by_section
+
+from coursedashboards.models import CourseMedianGPA
 
 """
 Gets data about students e.g. students enrolled
@@ -77,43 +79,6 @@ def get_concurrent_sections_by_student(student, term):
     return concurrent_courses
 
 
-def get_majors_all_students(students, term):
-    majors_dict = {}
-    total_students = len(students)
-
-    for student in students:
-        major = get_student_major(student, term)
-        for m in major:
-            if m.full_name in majors_dict:
-                majors_dict[m.full_name] += 1
-            else:
-                majors_dict[m.full_name] = 1
-
-    return order_majors(majors_dict, total_students)
-
-
-def get_most_recent_majors_all_students(students):
-    majors_dict = {}
-    total_students = len(students)
-
-    for student in students:
-        person = get_person_by_regid(student["uwregid"])
-
-        term = Term()
-        term.quarter = person.last_enrolled.quarter
-        term.year = person.last_enrolled.year
-
-        majors = get_student_major(student, term)
-
-        for m in majors:
-            if m.full_name in majors_dict:
-                majors_dict[m.full_name] += 1
-            else:
-                majors_dict[m.full_name] = 1
-
-    return order_majors(majors_dict, total_students)
-
-
 def get_student_major(student, term):
     """
 
@@ -156,8 +121,6 @@ def get_student_gpa(student):
     :param student: an SWS Student object
     :return:
     """
-    #
-    #
 
     enrollments = enrollment_search_by_regid(student["uwregid"])
     grade_points = 0

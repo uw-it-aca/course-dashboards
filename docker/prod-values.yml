@@ -18,6 +18,10 @@ ingress:
         - "/"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+gateway:
+  enabled: true
+  hostnames:
+    - coda.uw.edu
 lifecycle:
   enabled: true
   preStop:

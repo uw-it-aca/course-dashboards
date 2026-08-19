@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.db import models
-from coursedashboards.models.user import User
-from coursedashboards.models.term import Term
+
 from coursedashboards.models.course import Course
+from coursedashboards.models.term import Term
+from coursedashboards.models.user import User
 
 
 class InstructorManager(models.Manager):

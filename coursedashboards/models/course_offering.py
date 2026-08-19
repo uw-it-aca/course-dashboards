@@ -1,25 +1,24 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
+from statistics import StatisticsError, median
+from threading import Thread
+from typing import ClassVar
+
 from django.conf import settings
-from django.db.models import Q, Count, Sum, F
-from django.db.models.functions import Round
-from statistics import median
-from statistics import StatisticsError
-from collections import Counter
 from django.db import models
-from coursedashboards.models.instructor import Instructor
+from django.db.models import Count, F, Q, Sum
+from django.db.models.functions import Round
+from uw_sws.term import get_current_term
+
 from coursedashboards.models.course import Course
 from coursedashboards.models.course_grade_average import CourseGradeAverage
-from coursedashboards.models.term import Term
-from coursedashboards.models.registration import Registration
+from coursedashboards.models.instructor import Instructor
 from coursedashboards.models.major import StudentMajor
-from coursedashboards.util.profile import (
-    profile, log_profile_data, clear_prof_data)
-from threading import Thread
-from uw_sws.term import get_current_term
-import logging
-
+from coursedashboards.models.registration import Registration
+from coursedashboards.models.term import Term
+from coursedashboards.util.profile import clear_prof_data, log_profile_data, profile
 
 logger = logging.getLogger(__name__)
 
@@ -200,7 +199,6 @@ class CourseOffering(models.Model):
                             '-course_students')[:100]
 
             for course in courses:
-                course_id = course.get('course_id')
                 curriculum = course.get('course__curriculum')
                 course_number = course.get('course__course_number')
                 course_ref = f"{curriculum}-{course_number}"
@@ -303,7 +301,7 @@ class CourseOffering(models.Model):
 
     def brief_json_object(self):
         json_obj = {
-            'section_label': '{}'.format(self),
+            'section_label': f'{self}',
             'year': self.term.year,
             'quarter': self.term.quarter,
             'curriculum': self.course.curriculum,
@@ -380,9 +378,10 @@ class CourseOffering(models.Model):
 
         for field in fields:
             if field not in json_obj:
-                raise Exception("There was an error in data processing!")
+                raise KeyError(
+                    f"Missing field {field} in json object for {self.course}")
 
-        log_profile_data('{},{}'.format(self.term, self.course), logger)
+        log_profile_data(f'{self.term},{self.course}', logger)
         clear_prof_data()
         return json_obj
 
@@ -394,7 +393,7 @@ class CourseOffering(models.Model):
             'year': self.term.year,
             'quarter': self.term.quarter,
             'course_title': self.course.course_title,
-            'section_label': '{}'.format(self),
+            'section_label': f'{self}',
             'current_enrollment': self.current_enrollment,
             'limit_estimate_enrollment': self.limit_estimate_enrollment,
             'canvas_course_url': self.canvas_course_url,
@@ -466,7 +465,7 @@ class CourseOffering(models.Model):
             'enrollment': self.get_enrollment_count(
                 terms=terms, instructor=instructor),
             'terms': [
-                "{}".format(t) for t in Term.objects.filter(id__in=terms)]
+                f"{t}" for t in Term.objects.filter(id__in=terms)]
         }
 
     @profile
@@ -511,11 +510,11 @@ class CourseOffering(models.Model):
 
         # by policy, only select past 20 terms (5 years)
         current_sws_term = get_current_term()
-        current_term, created = Term.objects.get_or_create(
+        current_term, _ = Term.objects.get_or_create(
             year=current_sws_term.year, quarter=current_sws_term.quarter)
 
         oldest_term_year = current_term.year - 5
-        last_term, created = Term.objects.get_or_create(
+        last_term, _ = Term.objects.get_or_create(
             year=oldest_term_year, quarter=current_term.quarter)
 
         return [t.id for t in sorted(
@@ -538,7 +537,7 @@ class CourseOffering(models.Model):
         }
 
         log_profile_data(
-            '{},{}: PAST: '.format(self.term, self.course), logger)
+            f'{self.term},{self.course}: PAST: ', logger)
         clear_prof_data()
         return json_obj
 
@@ -558,7 +557,7 @@ class CourseOffering(models.Model):
         }
 
         log_profile_data(
-            '{},{}: PAST: '.format(self.term, self.course), logger)
+            f'{self.term},{self.course}: PAST: ', logger)
         clear_prof_data()
         return json_obj
 
@@ -584,7 +583,7 @@ class CourseOffering(models.Model):
         for course in courses.split(','):
             try:
                 cur, num = course.split('-')
-            except Exception:
+            except (ValueError, AttributeError):
                 continue
 
             try:
@@ -633,12 +632,12 @@ class CourseOffering(models.Model):
         }
 
     def _explain(self, context, explanation):
-        logger.debug("explain {}: {}".format(context, explanation))
+        logger.debug(f"explain {context}: {explanation}")
 
     class Meta:
         db_table = 'CourseOffering'
         unique_together = ('term', 'course')
-        ordering = ['-term__year', '-term__quarter']
+        ordering: ClassVar[list[str]] = ['-term__year', '-term__quarter']
 
     def __str__(self):
-        return "{}-{}".format(self.term, self.course)
+        return f"{self.term}-{self.course}"

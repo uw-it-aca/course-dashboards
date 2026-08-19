@@ -1,30 +1,38 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
+from datetime import datetime, timedelta, timezone
+
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from datetime import datetime, timedelta, timezone
-import logging
-from coursedashboards.models import (
-    Term, Instructor, Course, CourseOffering,
-    Registration, Major, StudentMajor)
-from coursedashboards.dao.exceptions import (
-    MalformedOrInconsistentUser, NoTermAfterCurrent)
-from coursedashboards.dao.term import (
-    get_given_and_previous_quarters, get_term_after_current)
-from coursedashboards.dao.pws import get_person_by_netid
-from coursedashboards.dao.gws import get_effective_members
-from coursedashboards.dao.user import user_from_person
-from coursedashboards.dao.section import (
-    get_changed_sections, get_section_from_url)
-from coursedashboards.dao.person import get_person_from_regid
-from coursedashboards.dao.enrollment import (
-    get_student_majors_for_regid_and_term)
-from coursedashboards.dao.registration import (
-    get_active_registrations_for_section)
-from coursedashboards.dao.canvas import canvas_course_url_from_section
 from restclients_core.exceptions import DataFailureException
 
+from coursedashboards.dao.canvas import canvas_course_url_from_section
+from coursedashboards.dao.enrollment import get_student_majors_for_regid_and_term
+from coursedashboards.dao.exceptions import (
+    MalformedOrInconsistentUser,
+    NoTermAfterCurrent,
+)
+from coursedashboards.dao.gws import get_effective_members
+from coursedashboards.dao.person import get_person_from_regid
+from coursedashboards.dao.pws import get_person_by_netid
+from coursedashboards.dao.registration import get_active_registrations_for_section
+from coursedashboards.dao.section import get_changed_sections, get_section_from_url
+from coursedashboards.dao.term import (
+    get_given_and_previous_quarters,
+    get_term_after_current,
+)
+from coursedashboards.dao.user import user_from_person
+from coursedashboards.models import (
+    Course,
+    CourseOffering,
+    Instructor,
+    Major,
+    Registration,
+    StudentMajor,
+    Term,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -75,10 +83,9 @@ class Command(BaseCommand):
                 pass
 
         for sws_term in sws_terms:
-            logger.info('loading term: {},{}'.format(
-                sws_term.quarter, sws_term.year))
+            logger.info(f'loading term: {sws_term.quarter},{sws_term.year}')
 
-            term, created = Term.objects.get_or_create(
+            term, _ = Term.objects.get_or_create(
                 quarter=sws_term.quarter, year=sws_term.year)
             changed_since = term.last_queried
             if options['force'] or not changed_since:
@@ -87,7 +94,7 @@ class Command(BaseCommand):
 
             changed_date = datetime.now(timezone.utc)
             for instructor in instructors:
-                logger.debug('loading instructor: {}'.format(instructor))
+                logger.debug(f'loading instructor: {instructor}')
                 params = {
                     'transcriptable_course': 'yes',
                     'include_secondaries': False,
@@ -107,8 +114,7 @@ class Command(BaseCommand):
                         section = get_section_from_url(section_ref.url)
                         self._load_section(section, term, sws_term)
                     except DataFailureException as ex:
-                        logger.error("section fetch: {}: {}".format(
-                            section_ref.url, ex))
+                        logger.error(f"section fetch: {section_ref.url}: {ex}")
                         continue
                     for joint_section_url in section.joint_section_urls:
                         try:
@@ -116,8 +122,7 @@ class Command(BaseCommand):
                                 joint_section_url)
                             self._load_section(joint_section, term, sws_term)
                         except DataFailureException as ex:
-                            logger.error("section fetch: {}: {}".format(
-                                section_ref.url, ex))
+                            logger.error(f"section fetch: {section_ref.url}: {ex}")
                             continue
 
             # remember the last time we crawled this term
@@ -127,11 +132,10 @@ class Command(BaseCommand):
     @transaction.atomic
     def _load_section(self, section, term, sws_term):
         if not section.is_primary_section:
-            logger.info('skip non-primary: {}'.format(
-                section.section_label()))
+            logger.info(f'skip non-primary: {section.section_label()}')
             return
 
-        course, created = Course.objects.get_or_create(
+        course, _ = Course.objects.get_or_create(
             curriculum=section.curriculum_abbr,
             course_number=section.course_number,
             section_id=section.section_id)
@@ -150,7 +154,7 @@ class Command(BaseCommand):
 
             return
 
-        logger.info('load: {}'.format(self._offering_string(term, course)))
+        logger.info(f'load: {self._offering_string(term, course)}')
         self._course_offering_from_section(term, course, section)
         self._instructors_from_section(term, course, section)
         self._registrations_from_section(term, course, section)
@@ -188,8 +192,8 @@ class Command(BaseCommand):
                 user = user_from_person(section_instructor)
             except MalformedOrInconsistentUser:
                 continue
-            except Exception as ex:
-                logger.info(f"cannot load instructor: {ex}")
+            except DataFailureException as ex:
+                logger.error(f"cannot load instructor: {ex}")
                 continue
 
             inst_obj, created = Instructor.objects.get_or_create(
@@ -204,8 +208,7 @@ class Command(BaseCommand):
 
         # remove prior instructors
         if len(prior_instructors):
-            logger.debug('drop instructor: {} for course: {}'.format(
-                prior_instructors, self._offering_string(term, course)))
+            logger.debug(f'drop instructor: {prior_instructors} for course: {self._offering_string(term, course)}')
             Instructor.objects.filter(
                 user_id__in=prior_instructors,
                 term=term, course=course).delete()
@@ -261,8 +264,7 @@ class Command(BaseCommand):
 
         # remove dropped registrations
         if len(prior_registrations):
-            logger.debug('drop registrations: {} for course: {}'.format(
-                prior_registrations, self._offering_string(term, course)))
+            logger.debug(f'drop registrations: {prior_registrations} for course: {self._offering_string(term, course)}')
             Registration.objects.filter(
                 user_id__in=prior_registrations,
                 term=term, course=course).delete()
@@ -273,7 +275,7 @@ class Command(BaseCommand):
             for student_major in get_student_majors_for_regid_and_term(
                     reg.user.uwregid, sws_term):
                 if student_major.major_name:
-                    major, created = Major.objects.get_or_create(
+                    major, _ = Major.objects.get_or_create(
                         major=student_major.major_name,
                         degree_level=student_major.degree_level)
                     StudentMajor.objects.get_or_create(
@@ -285,10 +287,10 @@ class Command(BaseCommand):
                     majors[student_major.major_name] = 1
 
     def _remove_course(self, term, course):
-        logger.info('remove: {}'.format(self._offering_string(term, course)))
+        logger.info(f'remove: {self._offering_string(term, course)}')
         Registration.objects.filter(term=term, course=course).delete()
         Instructor.objects.filter(term=term, course=course).delete()
         CourseOffering.objects.filter(term=term, course=course).delete()
 
     def _offering_string(self, term, course):
-        return '{},{}'.format(term, course)
+        return f'{term},{course}'

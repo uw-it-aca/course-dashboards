@@ -2,10 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from uw_sws.person import get_person_by_regid
-from coursedashboards.util.retry import retry
-from urllib3.exceptions import MaxRetryError
 
+from urllib3.exceptions import MaxRetryError
+from uw_sws.person import get_person_by_regid
+
+from coursedashboards.util.retry import retry
 
 logger = logging.getLogger(__name__)
 

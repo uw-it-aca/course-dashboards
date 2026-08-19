@@ -8,7 +8,7 @@ def get_user(username):
     try:
         user = User.objects.get(username=username)
         return user
-    except Exception:
+    except User.DoesNotExist:
         user = User.objects.create_user(username, password='pass')
         return user
 

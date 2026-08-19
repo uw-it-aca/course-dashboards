@@ -1,11 +1,12 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.core.management.base import BaseCommand
-from coursedashboards.models import Course, Registration, CourseGradeAverage
-from statistics import mean
 import logging
+from statistics import mean
 
+from django.core.management.base import BaseCommand
+
+from coursedashboards.models import Course, CourseGradeAverage, Registration
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class Command(BaseCommand):
                     c.course_number: self._running_average(c)
                 }
 
-        for c in courses:
+        for c in courses.items():
             for n in courses[c]:
                 CourseGradeAverage.objects.update_or_create(
                     curriculum=c, course_number=n,
