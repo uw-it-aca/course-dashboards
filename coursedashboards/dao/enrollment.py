@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from uw_sws.enrollment import get_enrollment_by_regid_and_term
-from restclients_core.exceptions import DataFailureException
 
+from restclients_core.exceptions import DataFailureException
+from uw_sws.enrollment import get_enrollment_by_regid_and_term
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ def get_student_majors_for_regid_and_term(regid, term):
     except AttributeError as ex:
         logger.info(
             f"Student_majors: No enrollments for {regid}: {ex}")
-    except Exception as ex:
-        logger.exception(f"Student_majors: for {regid}: {ex}")
+    except Exception:
+        logger.exception(f"Student_majors: Unexpected error for {regid}")
 
     return []

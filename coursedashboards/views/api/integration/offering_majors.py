@@ -1,10 +1,11 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from django.http import HttpResponse
-from coursedashboards.views.api.integration.offering_info import\
-    OfferingInfoView
 import json
+
+from django.http import HttpResponse
+
+from coursedashboards.views.api.integration.offering_info import OfferingInfoView
 
 
 class OfferingMajors(OfferingInfoView):
@@ -28,7 +29,7 @@ class OfferingMajors(OfferingInfoView):
 
         response = {}
         majors = []
-        for x in range(0, num_majors):
+        for x in range(num_majors):
             try:
                 majors.append(json_obj['current_student_majors'][x])
             except IndexError:

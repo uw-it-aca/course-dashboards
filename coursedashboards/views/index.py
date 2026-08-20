@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.contrib.auth.decorators import login_required
-from coursedashboards.views.page import page
+
 from coursedashboards.dao.message import get_persistent_messages
+from coursedashboards.views.page import page
 
 
 @login_required

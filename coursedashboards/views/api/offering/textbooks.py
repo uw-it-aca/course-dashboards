@@ -1,11 +1,11 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from coursedashboards.views.api.endpoint import CoDaEndpoint
-from coursedashboards.views.api import UpStreamErrorException
-from coursedashboards.dao.textbook import get_books_for_offering
 import logging
 
+from coursedashboards.dao.textbook import get_books_for_offering
+from coursedashboards.views.api import UpStreamErrorException
+from coursedashboards.views.api.endpoint import CoDaEndpoint
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,6 @@ class CourseTextbookData(CoDaEndpoint):
                 'campus': campus,
                 'textbooks': [book.isbn for book in books]
             }
-        except Exception as ex:
-            logger.exception(f"bookstore service: {ex}")
+        except Exception:
+            logger.exception("bookstore service")
             raise UpStreamErrorException()

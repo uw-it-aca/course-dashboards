@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import time
-from django.conf import settings
 from functools import wraps
 
+from django.conf import settings
 
 PROF_DATA = {}
 

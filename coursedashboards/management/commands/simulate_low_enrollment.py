@@ -5,9 +5,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from coursedashboards.models import (
-    Course, CourseOffering,
-    User)
+from coursedashboards.models import Course, CourseOffering, User
 
 logger = logging.getLogger(__name__)
 

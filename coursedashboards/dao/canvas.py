@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from uw_canvas.courses import Courses as CanvasCourses
-from restclients_core.exceptions import DataFailureException
-from uw_sws.exceptions import InvalidCanvasIndependentStudyCourse
-from coursedashboards.util.retry import retry
 
+from restclients_core.exceptions import DataFailureException
+from uw_canvas.courses import Courses as CanvasCourses
+from uw_sws.exceptions import InvalidCanvasIndependentStudyCourse
+
+from coursedashboards.util.retry import retry
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,7 @@ def canvas_course_url_from_section(section):
             logger.error(f"problem with canvas: {ex}")
     except InvalidCanvasIndependentStudyCourse as ex:
         logger.error(f"problem with canvas: {ex}")
-    except Exception as ex:
-        logger.error(f"problem with canvas: {ex}")
+    except Exception:
+        logger.exception(f"course url from section: {section.section_label}")
 
     return ''

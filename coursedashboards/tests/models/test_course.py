@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from django.test import TestCase
-from django.conf import settings
+
 from coursedashboards.models import Course
 
 

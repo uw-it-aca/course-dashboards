@@ -2,11 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from coursedashboards.util.retry import retry
-from uw_sws.registration import get_active_registrations_by_section
+
 from restclients_core.exceptions import DataFailureException
 from urllib3.exceptions import MaxRetryError
+from uw_sws.registration import get_active_registrations_by_section
 
+from coursedashboards.util.retry import retry
 
 logger = logging.getLogger(__name__)
 

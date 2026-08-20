@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import sys
+
 from django.http import HttpResponse
-from restclients_core.exceptions import (DataFailureException, InvalidNetID,
-                                         InvalidRegID)
+from restclients_core.exceptions import DataFailureException, InvalidNetID, InvalidRegID
+
 # from myuw.logger.logresp import log_err
 
 
@@ -55,20 +56,18 @@ def data_error():
 
 def handle_exception(logger, timer, stack_trace):
     # log_err(logger, timer, stack_trace.format_exc())
-    exc_type, exc_value, exc_traceback = sys.exc_info()
-    if isinstance(exc_value, InvalidNetID) or\
-            isinstance(exc_value, InvalidRegID):
+    _exc_type, exc_value, _exc_traceback = sys.exc_info()
+    if isinstance(exc_value, (InvalidNetID, InvalidRegID)):
         return invalid_session()
 
     if isinstance(exc_value, InvalidInputFormData):
         return invalid_input_data()
 
-    if isinstance(exc_value, DataFailureException) and\
-            exc_value.status == 404:
+    if (isinstance(exc_value, DataFailureException) and exc_value.status == 404):
         return data_not_found()
+
     return data_error()
 
 
 class InvalidInputFormData(Exception):
     """malformed syntax in the form input data"""
-    pass

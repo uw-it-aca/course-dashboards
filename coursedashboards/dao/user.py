@@ -1,13 +1,13 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-import uw_pws
-from coursedashboards.models.user import User
-from coursedashboards.dao.pws import get_person_of_current_user, \
-    get_person_by_netid
-from coursedashboards.dao.exceptions import MalformedOrInconsistentUser
 import logging
 
+import uw_pws
+
+from coursedashboards.dao.exceptions import MalformedOrInconsistentUser
+from coursedashboards.dao.pws import get_person_by_netid, get_person_of_current_user
+from coursedashboards.models.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ def user_from_person(person):
                 user.uwnetid = person.uwnetid
                 save = True
             elif n_prior > 1:
-                raise Exception(
+                raise MalformedOrInconsistentUser(
                     f"Need to sort out netid {person.uwnetid} User models")
 
         if not user:

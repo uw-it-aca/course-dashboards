@@ -1,12 +1,13 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
-from restclients_core.exceptions import DataFailureException
 import math
 import time
 
+from restclients_core.exceptions import DataFailureException
 
-def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[],
+
+def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=None,
           logger=None):
     """
     Decorator function for retrying the decorated function,
@@ -42,7 +43,7 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2, status_codes=[],
 
                 except ExceptionToCheck as err:
                     if (type(err) is DataFailureException and
-                            len(status_codes) and
+                            status_codes and len(status_codes) and
                             err.status not in status_codes):
                         raise
 

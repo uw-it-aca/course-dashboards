@@ -1,10 +1,13 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from typing import ClassVar
+
 from django.db import models
-from coursedashboards.models.user import User
-from coursedashboards.models.term import Term
+
 from coursedashboards.models.course import Course
+from coursedashboards.models.term import Term
+from coursedashboards.models.user import User
 
 
 class Registration(models.Model):
@@ -22,7 +25,7 @@ class Registration(models.Model):
     class Meta:
         db_table = 'Registration'
         unique_together = ('user', 'term', 'course')
-        indexes = [
+        indexes: ClassVar[list[models.Index]] = [
             models.Index(fields=['term', 'course']),
             models.Index(fields=['grade', 'credits'])
         ]

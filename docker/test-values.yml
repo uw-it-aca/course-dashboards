@@ -10,21 +10,10 @@ resources:
   requests:
     cpu: 100m
     memory: 512Mi
-ingress:
+gateway:
   enabled: true
-  type: nginx
-  tls:
-    test-coda:
-      secretName: test.coda.uw.edu-ingress-cert
-      hosts:
-        - test.coda.uw.edu
-  hosts:
-    test-coda:
-      host: test.coda.uw.edu
-      paths:
-        - "/"
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
+  hostnames:
+    - test.coda.uw.edu
 securityPolicy:
   enabled: true
 lifecycle:

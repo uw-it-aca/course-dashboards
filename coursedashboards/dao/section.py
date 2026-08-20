@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
-from uw_sws.section import get_changed_sections_by_term, get_section_by_url
-from coursedashboards.util.retry import retry
+
 from urllib3.exceptions import MaxRetryError
+from uw_sws.section import get_changed_sections_by_term, get_section_by_url
+
+from coursedashboards.util.retry import retry
 
 logger = logging.getLogger(__name__)
 

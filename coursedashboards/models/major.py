@@ -1,6 +1,8 @@
 # Copyright 2026 UW-IT, University of Washington
 # SPDX-License-Identifier: Apache-2.0
 
+from typing import ClassVar
+
 from django.db import models
 
 from coursedashboards.models.term import Term
@@ -12,7 +14,7 @@ class Major(models.Model):
     degree_level = models.IntegerField(default=0)
 
     class Meta:
-        indexes = [
+        indexes: ClassVar[list[models.Index]] = [
             models.Index(fields=['major'], name='major_name_idx'),
         ]
 
