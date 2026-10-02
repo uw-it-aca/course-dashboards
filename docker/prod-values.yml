@@ -3,21 +3,6 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 6
 targetAverageUtilization: 100
-ingress:
-  enabled: true
-  type: nginx
-  tls:
-    coda-prod:
-      secretName: coda.uw.edu-ingress-cert
-      hosts:
-        - coda.uw.edu
-  hosts:
-    coda-prod:
-      host: coda.uw.edu
-      paths:
-        - "/"
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
 gateway:
   enabled: true
   hostnames:
@@ -79,7 +64,7 @@ certs:
 mountedSecrets:
   enabled: true
   mountPath: /ssl
-  secretName: test.coda.uw.edu-openssl-conf
+  secretName: coda.uw.edu-openssl-conf
 environmentVariables:
   - name: ENV
     value: prod
