@@ -55,10 +55,16 @@ certs:
   mounted: true
   certPath: /certs/test.coda.uw.edu.cert
   keyPath: /certs/test.coda.uw.edu.key
-  secretName: test.coda.uw.edu-ic-certs
+  secretName: test.coda.uw.edu-uwca-certs
+mountedSecrets:
+  enabled: true
+  mountPath: /ssl
+  secretName: test.coda.uw.edu-openssl-conf
 environmentVariables:
   - name: ENV
     value: dev
+  - name: OPENSSL_CONF
+    value: /ssl/openssl.cnf
   - name: WEBSERVER
     value: nginx
   - name: SESSION_BACKEND
@@ -110,8 +116,8 @@ externalSecrets:
           property: sql_user
         - name: password
           property: sql_pass
-    - name: test.coda.uw.edu-ic-certs
-      externalKey: coda/test/ic-certs
+    - name: test.coda.uw.edu-uwca-certs
+      externalKey: coda/test/uwca-certs
       data:
         - name: test.coda.uw.edu.cert
           property: cert
@@ -146,7 +152,7 @@ environmentVariablesSecrets:
     secretKey: person-db-pass
   SAMLServiceProviderCert:
     name: SP_CERT
-    secretName: test.coda.uw.edu-ic-certs
+    secretName: test.coda.uw.edu-uwca-certs
     secretKey: test.coda.uw.edu.cert
   SAMLIDPCert:
     name: IDP_CERT
