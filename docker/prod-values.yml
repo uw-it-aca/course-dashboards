@@ -75,10 +75,16 @@ certs:
   mounted: true
   certPath: /certs/coda.uw.edu.cert
   keyPath: /certs/coda.uw.edu.key
-  secretName: coda.uw.edu-ic-certs
+  secretName: coda.uw.edu-uwca-certs
+mountedSecrets:
+  enabled: true
+  mountPath: /ssl
+  secretName: test.coda.uw.edu-openssl-conf
 environmentVariables:
   - name: ENV
     value: prod
+  - name: OPENSSL_CONF
+    value: /ssl/openssl.cnf
   - name: WEBSERVER
     value: nginx
   - name: SESSION_BACKEND
@@ -138,8 +144,8 @@ externalSecrets:
           property: sql_user
         - name: password
           property: sql_pass
-    - name: coda.uw.edu-ic-certs
-      externalKey: coda/prod/ic-certs
+    - name: coda.uw.edu-uwca-certs
+      externalKey: coda/prod/uwca-certs
       data:
         - name: coda.uw.edu.cert
           property: cert
@@ -150,6 +156,11 @@ externalSecrets:
       data:
         - name: uw-idp-cert
           property: cert
+    - name: coda.uw.edu-openssl-conf
+      externalKey: openssl-conf
+      data:
+        - name: openssl.cnf
+          property: openssl.cnf
 
 environmentVariablesSecrets:
   djangoSecret:
@@ -174,7 +185,7 @@ environmentVariablesSecrets:
     secretKey: person-db-pass
   SAMLServiceProviderCert:
     name: SP_CERT
-    secretName: coda.uw.edu-ic-certs
+    secretName: coda.uw.edu-uwca-certs
     secretKey: coda.uw.edu.cert
   SAMLIDPCert:
     name: IDP_CERT
