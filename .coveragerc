@@ -1,8 +1,0 @@
-[run]
-source = coursedashboards
-parallel = True
-
-[paths]
-source =
-  coursedashboards/
-  /app/coursedashboards/
