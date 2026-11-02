@@ -64,7 +64,7 @@ certs:
 mountedSecrets:
   enabled: true
   mountPath: /ssl
-  secretName: test.coda.uw.edu-openssl-conf
+  secretName: coda.uw.edu-openssl-conf
 environmentVariables:
   - name: ENV
     value: prod
