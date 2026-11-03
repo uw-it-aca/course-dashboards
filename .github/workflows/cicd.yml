@@ -7,10 +7,10 @@ env:
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, task/django-container-chisel]
   pull_request:
     branches: [main, develop]
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, task/django-container-chisel]
 
 jobs:
   context:
@@ -151,7 +151,7 @@ jobs:
 
       - name: Deployment Pipeline
         if: >-
-          contains(fromJSON('["main", "develop"]'),
+          contains(fromJSON('["main", "develop", "task/django-container-chisel"]'),
             needs.context.outputs.git_repo_branch)
         uses: uw-it-aca/actions/cicd-deploy@main
         with:
@@ -159,6 +159,7 @@ jobs:
           commit_hash: ${{ needs.context.outputs.commit_hash }}
           git_repo_branch: ${{ needs.context.outputs.git_repo_branch }}
           gh_auth_token: ${{ secrets.GH_AUTH_TOKEN }}
+          helm_chart_branch: feature/http-proxy
 
       - name: 'Surface context from executed build step'
         id: context
