@@ -16,6 +16,8 @@ gateway:
   enabled: true
   hostnames:
     - test.coda.uw.edu
+proxyServer:
+  enabled: true
 securityPolicy:
   enabled: true
 lifecycle:
