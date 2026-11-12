@@ -12,12 +12,12 @@ resources:
     memory: 512Mi
 proxyServer:
   enabled: true
-proxyServer:
-  enabled: true
 gateway:
   enabled: true
   hostnames:
     - test.coda.uw.edu
+proxyServer:
+  enabled: true
 securityPolicy:
   enabled: true
 lifecycle:
