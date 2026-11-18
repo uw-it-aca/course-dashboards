@@ -16,8 +16,6 @@ gateway:
     - test.coda.uw.edu
 proxyServer:
   enabled: true
-  image:
-    tag: "stable-alpine-slim"
 securityPolicy:
   enabled: true
 lifecycle:
