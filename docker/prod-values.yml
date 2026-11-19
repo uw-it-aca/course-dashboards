@@ -7,6 +7,8 @@ gateway:
   enabled: true
   hostnames:
     - coda.uw.edu
+proxyServer:
+  enabled: true
 lifecycle:
   enabled: true
   preStop:
